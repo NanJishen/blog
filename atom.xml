@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://nanjishen.top/blog</id>
-    <title>Gridea</title>
-    <updated>2020-06-19T02:48:19.716Z</updated>
+    <title>极限导航</title>
+    <updated>2020-06-19T03:18:37.652Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://nanjishen.top/blog"/>
     <link rel="self" href="http://nanjishen.top/blog/atom.xml"/>
-    <subtitle>温故而知新</subtitle>
+    <subtitle>极限玩家的网站导航</subtitle>
     <logo>http://nanjishen.top/blog/images/avatar.png</logo>
     <icon>http://nanjishen.top/blog/favicon.ico</icon>
-    <rights>All rights reserved 2020, Gridea</rights>
+    <rights>All rights reserved 2020, 极限导航</rights>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>http://nanjishen.top/blog/post/hello-gridea/</id>

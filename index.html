@@ -1,121 +1,223 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh">
   <head>
-    <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gridea</title>
-<link rel="shortcut icon" href="http://nanjishen.top/blog/favicon.ico?v=1592534897615">
-<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
-<link rel="stylesheet" href="http://nanjishen.top/blog/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="Gridea - Atom Feed" href="http://nanjishen.top/blog/atom.xml">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
-
-
-
-    <meta name="description" content="温故而知新" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>极限导航</title>
+    <meta name="description" content="极限玩家的网站导航">
+    <link rel="shortcut icon" href="http://nanjishen.top/blog/media/images/eduifuns.png">
+    <link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic">
+    <link rel="stylesheet" href="http://nanjishen.top/blog/media/css/icomoon.css">
+    <link rel="stylesheet" href="http://nanjishen.top/blog/media/css/main.css?v=1592536710095">
   </head>
-  <body>
-    <div class="main">
-      <div class="main-content">
-        <div class="site-header">
-  <a href="http://nanjishen.top/blog">
-  <img class="avatar" src="http://nanjishen.top/blog/images/avatar.png?v=1592534897615" alt="">
-  </a>
-  <h1 class="site-title">
-    Gridea
-  </h1>
-  <p class="site-description">
-    温故而知新
-  </p>
-  <div class="menu-container">
-    
-      
-        <a href="/" class="menu">
-          首页
-        </a>
-      
-    
-      
-        <a href="/archives" class="menu">
-          归档
-        </a>
-      
-    
-      
-        <a href="/tags" class="menu">
-          标签
-        </a>
-      
-    
-      
-        <a href="/post/about" class="menu">
-          关于
-        </a>
-      
-    
-  </div>
-  <div class="social-container">
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-  </div>
-</div>
 
-    
-        <div class="post-container">
-  
-    <article class="post">
-      <a href="http://nanjishen.top/blog/post/hello-gridea/">
-        <h2 class="post-title">Hello Gridea</h2>
-      </a>
-      <div class="post-info">
-        <span>
-          2018-12-12
-        </span>
-        <span>
-          2 min read
-        </span>
-        
-          <a href="http://nanjishen.top/blog/tag/QxJwYdScn/" class="post-tag">
-            # Gridea
-          </a>
-        
-      </div>
-      
-        <a href="http://nanjishen.top/blog/post/hello-gridea/" class="post-feature-image" style="background-image: url('http://nanjishen.top/blog/post-images/hello-gridea.png')">
-        </a>
-      
-      <div class="post-abstract">
-        <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+<body class="page-body">
+    <!-- skin-white -->
+    <div class="page-container">
+        <div class="sidebar-menu toggle-others fixed">
+            <div class="sidebar-menu-inner">
+                <header class="logo-env">
+                    <!-- logo -->
+                    <div class="logo">
+                        <a href="http://nanjishen.top/blog" class="logo-expanded">
+                            <img src="http://nanjishen.top/blog/images/avatar.png"  style="height:68px" alt="" />
+                        </a>
+                        <a href="http://nanjishen.top/blog" class="logo-collapsed">
+                            <img src="http://nanjishen.top/blog/media/images/eduifuns.png" width="40" alt="" />
+                        </a>
+                    </div>
+                    <div class="mobile-menu-toggle visible-xs">
+                        <a href="#" data-toggle="mobile-menu">
+                            <i class="icon-bar"></i>
+                        </a>
+                    </div>
+                </header>
+                <ul id="main-menu" class="main-menu">
+                    <!-- li 加 has-sub 开启分组-->
+                    <li class="has-sub">
+                        <a>
+                            <i class="icon-globe"></i>
+                            <span class="title">在线工具</span>
+                        </a>
+                        <!-- ul li 格式添加子分组-->
+                        <ul>
+                            <li>
+                                <a href="#教学助手" class="smooth">
+                                    <i class="icon-star"></i>
+                                    <span class="title">教学助手</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#图文影音" class="smooth">
+                                    <i class="icon-pencil"></i>
+                                    <span class="title">图文影音</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#百科全书" class="smooth">
+                                    <i class="icon-database"></i>
+                                    <span class="title">百科全书</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    
+                    
+                    <li class="submit-tag">
+                        <a href="http://nanjishen.top/blog/about">
+                            <i class="icon-heart"></i>
+                            <span class="title">关于本站</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-content">
+            <nav class="navbar user-info-navbar" role="navigation">
+                <!-- User Info, Notifications and Menu Bar -->
+                <!-- Left links for user info navbar -->
+                <ul class="user-info-menu left-links list-inline list-unstyled">
+                    <li class="hidden-sm hidden-xs">
+                        <a href="#" data-toggle="sidebar">
+                            <i class="icon-bar"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
-      </div>
-    </article>
-  
-</div>
+            <!-- 今日诗词 -->
+            <div id="poem_content">
+                <h3 id="poem_sentence"></h3><span id="poem_info"></span>
+            </div>
+            <!-- 今日诗词 -->
+            <br />
+            <!-- 在线工具 -->
+            
+            
+            
+            <!-- END 在线工具 -->
 
-    
-        <div class="pagination-container">
-  
-  
-</div>
+            <!-- 实用软件 -->
+            
+            <!-- END 实用软件 -->
 
-    
-        <div class="site-footer">
-  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
-  <a class="rss" href="http://nanjishen.top/blog/atom.xml" target="_blank">
-    <i class="ri-rss-line"></i> RSS
-  </a>
-</div>
+            <!-- 线上课程 -->
+            
+            <!-- END 线上课程 -->
 
-      </div>
+            <!-- 素材资源 -->
+            
+            <!-- END 素材资源 -->
+
+
+            <!-- Main Footer -->
+            <!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
+            <!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
+            <!-- Or class "fixed" to  always fix the footer to the end of page -->
+            <footer class="main-footer sticky footer-type-1">
+                <div class="footer-inner">
+                    <!-- Add your copyright text here -->
+                    <div class="footer-text">
+                        Powered by <a href="https://ttti.cc" target="_blank">极限主页</a> <span id="busuanzi_container_site_pv" style='display:none'>总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+                    </div>
+                    <div class="go-up">
+                        <a href="#" rel="go-top">
+                            <i class="icon-up"></i>
+                        </a>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </div>
-  </body>
+
+
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    jinrishici.load(function(result) {
+        var sentence = document.querySelector("#poem_sentence")
+        var info = document.querySelector("#poem_info")
+        sentence.innerHTML = result.data.content
+        info.innerHTML = '【' + result.data.origin.dynasty + '】' + result.data.origin.author + '《' + result.data.origin.title + '》'
+    });
+    </script>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <script src="//cdnjs.loli.net/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- 锚点平滑移动 -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+         //img lazy loaded
+         const observer = lozad();
+         observer.observe();
+
+        $(document).on('click', '.has-sub', function(){
+            var _this = $(this)
+            if(!$(this).hasClass('expanded')) {
+               setTimeout(function(){
+                    _this.find('ul').attr("style","")
+               }, 300);
+              
+            } else {
+                $('.has-sub ul').each(function(id,ele){
+                    var _that = $(this)
+                    if(_this.find('ul')[0] != ele) {
+                        setTimeout(function(){
+                            _that.attr("style","")
+                        }, 300);
+                    }
+                })
+            }
+        })
+        $('.user-info-menu .hidden-sm').click(function(){
+            if($('.sidebar-menu').hasClass('collapsed')) {
+                $('.has-sub.expanded > ul').attr("style","")
+            } else {
+                $('.has-sub.expanded > ul').show()
+            }
+        })
+        $("#main-menu li ul li").click(function() {
+            $(this).siblings('li').removeClass('active'); // 删除其他兄弟元素的样式
+            $(this).addClass('active'); // 添加当前元素的样式
+        });
+        $("a.smooth").click(function(ev) {
+            ev.preventDefault();
+
+            public_vars.$mainMenu.add(public_vars.$sidebarProfile).toggleClass('mobile-is-visible');
+            ps_destroy();
+            $("html, body").animate({
+                scrollTop: $($(this).attr("href")).offset().top - 30
+            }, {
+                duration: 500,
+                easing: "swing"
+            });
+        });
+        return false;
+    });
+
+    var href = "";
+    var pos = 0;
+    $("a.smooth").click(function(e) {
+        $("#main-menu li").each(function() {
+            $(this).removeClass("active");
+        });
+        $(this).parent("li").addClass("active");
+        e.preventDefault();
+        href = $(this).attr("href");
+        pos = $(href).position().top - 30;
+    });
+    </script>
+    <!-- Bottom Scripts -->
+    <script src="http://nanjishen.top/blog/media/js/bootstrap.min.js"></script>
+    <script src="http://nanjishen.top/blog/media/js/TweenMax.min.js"></script>
+    <script src="http://nanjishen.top/blog/media/js/resizeable.js"></script>
+    <script src="http://nanjishen.top/blog/media/js/xenon-toggles.js"></script>
+    <script src="http://nanjishen.top/blog/media/js/xenon-custom.js"></script>
+    <script src="http://nanjishen.top/blog/media/js/lozad.js"></script>
+    <script src="http://nanjishen.top/blog/media/js/LetterAvatar.js"></script>
+</body>
+
+
+
 </html>
