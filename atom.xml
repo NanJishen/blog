@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://day.ttti.cc</id>
     <title>每日分享</title>
-    <updated>2020-06-19T06:39:07.493Z</updated>
+    <updated>2020-06-19T08:55:39.663Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://day.ttti.cc"/>
     <link rel="self" href="http://day.ttti.cc/atom.xml"/>
@@ -10,6 +10,40 @@
     <logo>http://day.ttti.cc/images/avatar.png</logo>
     <icon>http://day.ttti.cc/favicon.ico</icon>
     <rights>All rights reserved 2020, 每日分享</rights>
+    <entry>
+        <title type="html"><![CDATA[JSDelivr CDN 加速 GitHub]]></title>
+        <id>http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/</id>
+        <link href="http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/">
+        </link>
+        <updated>2020-06-19T08:49:13.000Z</updated>
+        <summary type="html"><![CDATA[<p>jsDelivr 提供了 Web 上常用静态资源的服务，不但有全球 CDN 加速，也采用了国内的 CDN 进行加速（有备案）</p>
+<p>jsDelivr 确保每个地区的使用者都能获得最好的连接速度，它还可以可将不同的 JavaScript 或 CSS 集合在一起使用。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>jsDelivr 提供了 Web 上常用静态资源的服务，不但有全球 CDN 加速，也采用了国内的 CDN 进行加速（有备案）</p>
+<p>jsDelivr 确保每个地区的使用者都能获得最好的连接速度，它还可以可将不同的 JavaScript 或 CSS 集合在一起使用。</p>
+<!-- more -->
+<p><a href="https://www.jsdelivr.com">官方网站</a> | 加速地址：https://cdn.jsdelivr.net</p>
+<h3 id="github-使用镜像加速服务">GitHub 使用镜像加速服务</h3>
+<p>很简单，比如，将仓库中的 DPlayer.min.js 文件利用 jsDelivr 加速，以下示例：</p>
+<p><strong>原始链接：</strong><br>
+<code>https://github.com/sunpma/goIndex/tree/master/js/DPlayer.min.js</code></p>
+<p><strong>jsDelivr 加速链接：</strong><br>
+<code>https://cdn.jsdelivr.net/gh/sunpma/goIndex/js/DPlayer.min.js</code></p>
+<h3 id="如果按版本分类releases-一个-v10-版本">如果按版本分类，Releases 一个 v1.0 版本，</h3>
+<p><strong>原始链接：</strong><br>
+<code>https://github.com/sunpma/goIndex/blob/v1.0/js/DPlayer.min.js</code></p>
+<p><strong>jsDelivr 加速链接：</strong><br>
+<code>https://cdn.jsdelivr.net/gh/sunpma/goIndex@v1.0/js/DPlayer.min.js</code></p>
+<p>如果要直接加载最新版本，可以使用 latest 标签：<br>
+<code>https://cdn.jsdelivr.net/gh/sunpma/goIndex@latest/js/DPlayer.min.js</code></p>
+<p><strong>加载镜像连接的规则：</strong></p>
+<ul>
+<li>GitHub 镜像，为 gh</li>
+<li>WordPress 镜像，为 wp</li>
+<li>npm 镜像，为 npm</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Windows Terminal Preview 1.1 更新内容]]></title>
         <id>http://day.ttti.cc/post/windows-terminal-preview-11-geng-xin-nei-rong/</id>
