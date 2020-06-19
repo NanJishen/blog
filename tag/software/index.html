@@ -5,7 +5,7 @@
     
 <meta charset="utf-8" >
 
-<title>这里是极限玩家的每日分享 | 每日分享</title>
+<title>软件 | 每日分享</title>
 <meta name="description" content="极限玩家的每日分享">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -16,12 +16,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="http://day.ttti.cc/styles/main.css">
 
-
-  
-    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
-  
-
-  
 
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -84,36 +78,54 @@
 
 
       <div class="content-container">
-        <div class="post-detail">
-          
-            <div class="feature-container" style="background-image: url('http://day.ttti.cc/post-images/hello.png')">
-            </div>
-          
-          <h2 class="post-title">这里是极限玩家的每日分享</h2>
-          <div class="post-info post-detail-info">
-            <span><i class="icon-calendar-outline"></i> 2018-12-12</span>
-            
-          </div>
-          <div class="post-content">
-            <p>👏  欢迎浏览 <strong>极限玩家的每日分享</strong> ！</p>
-<p>✍️  <strong>每日分享</strong> 会分享每天的，新闻、软件、知识、经验，以及各种资源</p>
-<!-- more -->
-<p><a href="https://ttti.cc/">极限搜索 主页</a></p>
-<p>😘 Enjoy~</p>
 
-          </div>
+        <div class="current-tag-container">
+          <h2 class="title">
+            <i class="icon icon-pricetags-outline"></i> 软件
+          </h2> 
         </div>
 
         
+<section class="post-item">
+    <div class="content">
+      <a href="http://day.ttti.cc/post/win10-setup/">
+        <h2 class="post-title">动图演示从官方下载并制作Win10启动U盘</h2>
+      </a>
+      <div class="post-abstract">
+        <p>微软今天发布 Win10 2004 正式版了，然而还是很多小白依赖第三方下载，事实上微软官方是提供镜像下载的，同时还具备U盘制作功能，就是说，根本不需要依赖第三方网站。</p>
+
       </div>
+      <div class="post-info">
+        <span><i class="icon icon-calendar-outline"></i> 2020-05-28</span>
+        
+          <span>
+            <i class="icon icon-pricetags-outline"></i>
+            
+              <a href="http://day.ttti.cc/tag/software/">
+                软件
+                
+              </a>
+            
+          </span>
+        
+      </div>
+    </div>
+    
+      <a href="http://day.ttti.cc/post/win10-setup/">
+        <div class="feature-container" style="background-image: url('https://ae01.alicdn.com/kf/H8cc740438cf44d4cb92928c7c4cfd4a6e.png')">
+        </div>
+      </a>
+    
+  </section>
 
-      
-        
-          <div id="gitalk-container"></div>
-        
 
-        
-      
+<div class="pagination-container">
+  
+  
+</div>
+
+
+      </div>
 
       <div class="site-footer">
   <div class="slogan">极限玩家的每日分享</div>
@@ -147,29 +159,6 @@ var app = new Vue({
 })
 
 </script>
-
-
-
-  
-    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-    <script>
-
-      var gitalk = new Gitalk({
-        clientID: 'd269a9771d1523606a2c',
-        clientSecret: '11e4d7f522184fa1f6d531584dbd7bc9404c9295',
-        repo: 'blog',
-        owner: 'NanJishen',
-        admin: ['NanJishen'],
-        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
-        distractionFreeMode: false  // Facebook-like distraction free mode
-      })
-
-      gitalk.render('gitalk-container')
-
-    </script>
-  
-
-  
 
 
 
