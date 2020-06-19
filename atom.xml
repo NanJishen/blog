@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://i.ttti.cc</id>
+    <id>http://day.ttti.cc</id>
     <title>每日分享</title>
-    <updated>2020-06-19T04:17:33.414Z</updated>
+    <updated>2020-06-19T05:15:42.861Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://i.ttti.cc"/>
-    <link rel="self" href="https://i.ttti.cc/atom.xml"/>
+    <link rel="alternate" href="http://day.ttti.cc"/>
+    <link rel="self" href="http://day.ttti.cc/atom.xml"/>
     <subtitle>极限玩家的每日分享</subtitle>
-    <logo>https://i.ttti.cc/images/avatar.png</logo>
-    <icon>https://i.ttti.cc/favicon.ico</icon>
+    <logo>http://day.ttti.cc/images/avatar.png</logo>
+    <icon>http://day.ttti.cc/favicon.ico</icon>
     <rights>All rights reserved 2020, 每日分享</rights>
     <entry>
         <title type="html"><![CDATA[这里是极限玩家的每日分享]]></title>
-        <id>https://i.ttti.cc/post/hello/</id>
-        <link href="https://i.ttti.cc/post/hello/">
+        <id>http://day.ttti.cc/post/hello/</id>
+        <link href="http://day.ttti.cc/post/hello/">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>👏  欢迎浏览 <strong>极限玩家的每日分享</strong> ！</p>
