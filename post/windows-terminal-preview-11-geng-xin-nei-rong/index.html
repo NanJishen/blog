@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<meta charset="utf-8" >
+
+<title>Windows Terminal Preview 1.1 更新内容 | 每日分享</title>
+<meta name="description" content="极限玩家的每日分享">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="http://day.ttti.cc/favicon.ico?v=1592545817278">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="http://day.ttti.cc/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="http://day.ttti.cc">
+        <img class="avatar" src="http://day.ttti.cc/images/avatar.png?v=1592545817278" alt="" width="32px" height="32px">
+      </a>
+      <a href="http://day.ttti.cc">
+        <h1 class="site-title">每日分享</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
+      
+        
+          <a href="/" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="menu purple-link">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+        
+          <a href="http://nanjishen.top/blog/post/about" class="menu purple-link">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">Windows Terminal Preview 1.1 更新内容</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2020-06-19</span>
+            
+          </div>
+          <div class="post-content">
+            <p>来源：开源中国  作者：xplanet</p>
+<p>微软宣布推出 Windows Terminal Preview 1.1 版本，该版本的最新功能将于 2020 年 7 月移至 Windows Terminal。下面来看看都有哪些新功能：</p>
+<h2 id="在-windows-terminal-中打开">在 Windows Terminal 中打开</h2>
+<p>现在，可以右键单击文件资源管理器中的文件夹，然后选择“在 Windows Terminal 中打开”。这将使用默认配置文件启动 Windows Terminal。</p>
+<h2 id="开机时启动-windows-terminal">开机时启动 Windows Terminal</h2>
+<p>此版本添加了一个新设置，能够将 Windows Terminal 设置为在启动计算机时启动。你可以在全局设置中将 startOnUserLogin 设置为 true 以启用此功能。</p>
+<p>&quot;startOnUserLogin&quot;: true</p>
+<h2 id="字体粗细支持">字体粗细支持</h2>
+<p>Windows Terminal Preview 现在支持将字体粗细作为新的配置文件设置。fontWeight 设置接受各种描述字体粗细的字符串，以及相应的字体粗细数字表示形式。</p>
+<p>&quot;fontWeight&quot;: &quot;normal&quot;</p>
+<h2 id="alt-单击-以打开窗格">Alt +单击 以打开窗格</h2>
+<p>如果你想从下拉菜单中打开配置文件作为当前窗口的窗格，可以在按住 Alt 的同时单击它。这将通过使用自动拆分功能在窗格中打开该配置文件，该功能会将活动窗口或窗格拆分为最长的长度。</p>
+<h2 id="tab-更新颜色选择器">Tab 更新颜色选择器</h2>
+<p>现在，可以通过右键单击选项卡并选择“颜色...”来进行着色。这将打开选项卡颜色菜单，你可以在其中选择预定义的颜色，或展开菜单以使用颜色选择器、十六进制代码或 RGB 字段选择任何颜色。每个选项卡的颜色将在该终端会话中保持不变。</p>
+<h2 id="重命名">重命名</h2>
+<p>选项卡重命名选项与颜色选择器在同样的上下文菜单中。单击此选项可重命名选项卡。</p>
+<p>更紧凑的选项卡尺寸</p>
+<p>新版本在 tabWidthMode 全局设置中添加了紧凑的选项卡大小，这能够将每个不活动的选项卡缩小到图标的宽度，从而为活动的选项卡留出更多空间来显示其完整标题。</p>
+<p>&quot;tabWidthMode&quot;: &quot;compact&quot;</p>
+<h2 id="新的命令行参数">新的命令行参数</h2>
+<p>此版本添加了一些命令参数。第一个是 --maximized, -M，它将以最大化的方式启动 Windows Terminal。第二个是 --fullscreen, -F，它将 Windows Terminal 作为全屏启动。这两个命令不能合并。</p>
+<p>最后一个是 --title，它使你可以在启动 Windows Terminal 之前自定义选项卡的标题。就像 tabTitle 配置文件设置一样。</p>
+<p>用键盘打开 defaults.json</p>
+<p>如果你想使用键盘打开 defaults.json 文件，新版本添加了一个新的默认键绑定&quot;ctrl+alt+,&quot;。openSettings命令已收到新操作，使用户可以分别使用 &quot;settingsFile&quot;、&quot;defaultsFile&quot; 或 &quot;allFiles&quot; 打开 settings.json 文件、defaults.json 文件或两者。</p>
+<pre><code>{ &quot;command&quot;: { &quot;action&quot;: &quot;openSettings&quot;, &quot;target&quot;: &quot;defaultsFile&quot; }, &quot;keys&quot;: &quot;ctrl+alt+,&quot; }
+</code></pre>
+
+          </div>
+        </div>
+
+        
+          <div class="next-post">
+            <a class="purple-link" href="http://day.ttti.cc/post/hello/">
+              <h3 class="post-title">
+                下一篇：这里是极限玩家的每日分享
+              </h3>
+            </a>
+          </div>
+          
+      </div>
+
+      
+
+      <div class="site-footer">
+  <div class="slogan">极限玩家的每日分享</div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  Powered by <a href="https://ttti.cc" target="_blank">极限主页</a> | <a class="rss" href="http://day.ttti.cc/atom.xml" target="_blank">RSS</a>
+</div>
+
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>
