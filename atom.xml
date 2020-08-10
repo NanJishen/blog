@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://day.ttti.cc</id>
+    <id>http://day.ttti.cc</id>
     <title>极限博客</title>
-    <updated>2020-08-10T11:49:02.004Z</updated>
+    <updated>2020-08-10T16:15:22.798Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://day.ttti.cc"/>
-    <link rel="self" href="https://day.ttti.cc/atom.xml"/>
+    <link rel="alternate" href="http://day.ttti.cc"/>
+    <link rel="self" href="http://day.ttti.cc/atom.xml"/>
     <subtitle>极限玩家的博客</subtitle>
-    <logo>https://day.ttti.cc/images/avatar.png</logo>
-    <icon>https://day.ttti.cc/favicon.ico</icon>
+    <logo>http://day.ttti.cc/images/avatar.png</logo>
+    <icon>http://day.ttti.cc/favicon.ico</icon>
     <rights>All rights reserved 2020, 极限博客</rights>
     <entry>
         <title type="html"><![CDATA[JSDelivr CDN 加速 GitHub]]></title>
-        <id>https://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/</id>
-        <link href="https://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/">
+        <id>http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/</id>
+        <link href="http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/">
         </link>
         <updated>2020-06-19T08:49:13.000Z</updated>
         <summary type="html"><![CDATA[<p>jsDelivr 提供了 Web 上常用静态资源的服务，不但有全球 CDN 加速，也采用了国内的 CDN 进行加速（有备案）</p>
@@ -45,8 +45,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[Windows Terminal Preview 1.1 更新内容]]></title>
-        <id>https://day.ttti.cc/post/windows-terminal-preview-11-geng-xin-nei-rong/</id>
-        <link href="https://day.ttti.cc/post/windows-terminal-preview-11-geng-xin-nei-rong/">
+        <id>http://day.ttti.cc/post/windows-terminal-preview-11-geng-xin-nei-rong/</id>
+        <link href="http://day.ttti.cc/post/windows-terminal-preview-11-geng-xin-nei-rong/">
         </link>
         <updated>2020-06-19T05:46:20.000Z</updated>
         <summary type="html"><![CDATA[<p>微软宣布推出 Windows Terminal Preview 1.1 版本，该版本的最新功能将于 2020 年 7 月移至 Windows Terminal。下面来看看都有哪些新功能：</p>
@@ -83,8 +83,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[读-写-问]]></title>
-        <id>https://day.ttti.cc/post/search-read-ask/</id>
-        <link href="https://day.ttti.cc/post/search-read-ask/">
+        <id>http://day.ttti.cc/post/search-read-ask/</id>
+        <link href="http://day.ttti.cc/post/search-read-ask/">
         </link>
         <updated>2020-06-10T10:25:57.000Z</updated>
         <summary type="html"><![CDATA[<p>很多问题的解决都可以通过三连：<strong>Search - Read - Ask</strong> ，这套连招很管用，然而大部分人都<strong>不习惯搜索、没耐心阅读、不会提问</strong>。</p>
@@ -99,8 +99,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[动图演示从官方下载并制作Win10启动U盘]]></title>
-        <id>https://day.ttti.cc/post/win10-setup/</id>
-        <link href="https://day.ttti.cc/post/win10-setup/">
+        <id>http://day.ttti.cc/post/win10-setup/</id>
+        <link href="http://day.ttti.cc/post/win10-setup/">
         </link>
         <updated>2020-05-28T02:21:50.000Z</updated>
         <summary type="html"><![CDATA[<p>微软今天发布 Win10 2004 正式版了，然而还是很多小白依赖第三方下载，事实上微软官方是提供镜像下载的，同时还具备U盘制作功能，就是说，根本不需要依赖第三方网站。</p>
@@ -119,8 +119,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[这里是极限玩家的每日分享]]></title>
-        <id>https://day.ttti.cc/post/hello/</id>
-        <link href="https://day.ttti.cc/post/hello/">
+        <id>http://day.ttti.cc/post/hello/</id>
+        <link href="http://day.ttti.cc/post/hello/">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>👏  欢迎浏览 <strong>极限玩家的每日分享</strong> ！</p>
