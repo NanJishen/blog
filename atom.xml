@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://day.ttti.cc</id>
-    <title>每日分享</title>
-    <updated>2020-08-10T11:27:59.434Z</updated>
+    <title>极限博客</title>
+    <updated>2020-08-10T11:46:11.814Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://day.ttti.cc"/>
     <link rel="self" href="http://day.ttti.cc/atom.xml"/>
-    <subtitle>极限玩家的每日分享</subtitle>
+    <subtitle>极限玩家的博客</subtitle>
     <logo>http://day.ttti.cc/images/avatar.png</logo>
     <icon>http://day.ttti.cc/favicon.ico</icon>
-    <rights>All rights reserved 2020, 每日分享</rights>
+    <rights>All rights reserved 2020, 极限博客</rights>
     <entry>
         <title type="html"><![CDATA[JSDelivr CDN 加速 GitHub]]></title>
         <id>http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/</id>

@@ -1,122 +1,166 @@
 <html>
-  <head>
-  <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>前端 | 每日分享</title>
-<link rel="shortcut icon" href="http://day.ttti.cc/favicon.ico?v=1597058865421">
-<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>前端 | 极限博客</title>
+
+<link rel="shortcut icon" href="http://day.ttti.cc/favicon.ico?v=1597059968958">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="http://day.ttti.cc/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="前端 | 每日分享 - Atom Feed" href="http://day.ttti.cc/atom.xml">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
 
 
 
-  <meta name="description" content="极限玩家的每日分享" />
-  </head>
-  <body>
-    <div class="main">
-      <div class="main-content">
-        <div class="site-header">
-  <a href="http://day.ttti.cc">
-  <img class="avatar" src="http://day.ttti.cc/images/avatar.png?v=1597058865421" alt="">
-  </a>
-  <h1 class="site-title">
-    每日分享
-  </h1>
-  <p class="site-description">
-    极限玩家的每日分享
-  </p>
-  <div class="menu-container">
-    
-      
-        <a href="/" class="menu">
-          首页
-        </a>
-      
-    
-      
-        <a href="/archives" class="menu">
-          归档
-        </a>
-      
-    
-      
-        <a href="/tags" class="menu">
-          标签
-        </a>
-      
-    
-      
-        <a href="http://nanjishen.top/blog/post/about" class="menu">
-          关于
-        </a>
-      
-    
-  </div>
-  <div class="social-container">
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-  </div>
-</div>
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <div class="main-content">
+        <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            极限博客
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="http://nanjishen.top/blog/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1597059968958" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
 
         <div class="current-tag-container">
-            <h2 class="title">
-                标签：# 前端
-            </h2> 
+            <h2 class="title gt-c-content-color-first">
+                #前端
+            </h2>
         </div>
-        <div class="post-container">
-  
-    <article class="post">
-      <a href="http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/">
-        <h2 class="post-title">JSDelivr CDN 加速 GitHub</h2>
-      </a>
-      <div class="post-info">
-        <span>
-          2020-06-19
-        </span>
-        <span>
-          2 min read
-        </span>
+        <div class="post-list-container">
+    <div class="post-inner">
         
-          <a href="http://day.ttti.cc/tag/webfront/" class="post-tag">
-            # 前端
-          </a>
+            <div class="post gt-bg-theme-color-second">
+                <div class="post-left">
+                    <div>
+                        
+                        <a href="http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/">
+                            <span class="post-title gt-c-content-color-first">JSDelivr CDN 加速 GitHub</span>
+                        </a>
+                    </div>
+                    <div class="gt-post-content post-abstract gt-c-content-color-second">
+                        <p>jsDelivr 提供了 Web 上常用静态资源的服务，不但有全球 CDN 加速，也采用了国内的 CDN 进行加速（有备案）</p>
+
+                    </div>
+                    <div class="post-info">
+                        <time class="post-time gt-c-content-color-first">
+                            发布于 · 2020-06-19 ·
+                        </time>
+                        
+                            <a href="http://day.ttti.cc/tag/webfront/" class="post-tag">
+                                # 前端
+                            </a>
+                        
+                    </div>
+                </div>
+                
+                    <a href="http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/" class="post-feature-image"
+                       style="background-image: url('https://i.loli.net/2020/06/25/vs4rCPfSKbWupey.png')">
+                    </a>
+                
+            </div>
         
-      </div>
-      
-        <a href="http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/" class="post-feature-image" style="background-image: url('https://i.loli.net/2020/06/25/vs4rCPfSKbWupey.png')">
-        </a>
-      
-      <div class="post-abstract">
-        <p>jsDelivr 提供了 Web 上常用静态资源的服务，不但有全球 CDN 加速，也采用了国内的 CDN 进行加速（有备案）</p>
-
-      </div>
-    </article>
-  
-</div>
-
-        <div class="pagination-container">
-  
-  
-</div>
-
-        <div class="site-footer">
-  Powered by <a href="https://ttti.cc" target="_blank">极限主页</a>
-  <a class="rss" href="http://day.ttti.cc/atom.xml" target="_blank">
-    <i class="ri-rss-line"></i> RSS
-  </a>
-</div>
-
-      </div>
     </div>
-  </body>
+</div>
+        <div class="pagination-container">
+    
+    
+</div>
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">极限玩家的博客</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Powered by <a href="https://ttti.cc" target="_blank">极限主页</a>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="http://day.ttti.cc/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
 </html>
