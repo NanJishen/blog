@@ -1,229 +1,225 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" >
-
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>每日分享</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="http://day.ttti.cc/favicon.ico?v=1597058655477">
+<link rel="shortcut icon" href="http://day.ttti.cc/favicon.ico?v=1597058865421">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="http://day.ttti.cc/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="每日分享 - Atom Feed" href="http://day.ttti.cc/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-
-
-    <meta name="description" content="极限玩家的每日分享">
-    
+    <meta name="description" content="极限玩家的每日分享" />
   </head>
   <body>
-    <div id="app" class="main">
-
-      <div class="sidebar" :class="{ 'full-height': menuVisible }">
-  <div class="top-container" data-aos="fade-right">
-    <div class="top-header-container">
-      <a class="site-title-container" href="http://day.ttti.cc">
-        <img src="http://day.ttti.cc/images/avatar.png?v=1597058655477" class="site-logo">
-        <h1 class="site-title">每日分享</h1>
-      </a>
-      <div class="menu-btn" @click="menuVisible = !menuVisible">
-        <div class="line"></div>
-      </div>
-    </div>
-    <div>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="http://day.ttti.cc">
+  <img class="avatar" src="http://day.ttti.cc/images/avatar.png?v=1597058865421" alt="">
+  </a>
+  <h1 class="site-title">
+    每日分享
+  </h1>
+  <p class="site-description">
+    极限玩家的每日分享
+  </p>
+  <div class="menu-container">
+    
       
-        
-          <a href="/" class="site-nav">
-            首页
-          </a>
-        
+        <a href="/" class="menu">
+          首页
+        </a>
       
-        
-          <a href="/archives" class="site-nav">
-            归档
-          </a>
-        
+    
       
-        
-          <a href="/tags" class="site-nav">
-            标签
-          </a>
-        
+        <a href="/archives" class="menu">
+          归档
+        </a>
       
-        
-          <a href="http://nanjishen.top/blog/post/about" class="site-nav">
-            关于
-          </a>
-        
+    
       
-    </div>
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="http://nanjishen.top/blog/post/about" class="menu">
+          关于
+        </a>
+      
+    
   </div>
-  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
-    <div class="social-container">
+  <div class="social-container">
+    
       
-        
+    
       
-        
+    
       
-        
+    
       
-        
+    
       
-        
-      
-    </div>
-    <div class="site-description">
-      极限玩家的每日分享
-    </div>
-    <div class="site-footer">
-      Powered by <a href="https://ttti.cc" target="_blank">极限主页</a> | <a class="rss" href="http://day.ttti.cc/atom.xml" target="_blank">RSS</a>
-    </div>
+    
   </div>
 </div>
 
+    
+        <div class="post-container">
+  
+    <article class="post">
+      <a href="http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/">
+        <h2 class="post-title">JSDelivr CDN 加速 GitHub</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-06-19
+        </span>
+        <span>
+          2 min read
+        </span>
+        
+          <a href="http://day.ttti.cc/tag/webfront/" class="post-tag">
+            # 前端
+          </a>
+        
+      </div>
+      
+        <a href="http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/" class="post-feature-image" style="background-image: url('https://i.loli.net/2020/06/25/vs4rCPfSKbWupey.png')">
+        </a>
+      
+      <div class="post-abstract">
+        <p>jsDelivr 提供了 Web 上常用静态资源的服务，不但有全球 CDN 加速，也采用了国内的 CDN 进行加速（有备案）</p>
 
-      <div class="main-container">
-        <div class="content-container" data-aos="fade-up">
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/">
-                  <h2 class="post-title">JSDelivr CDN 加速 GitHub</h2>
-                </a>
-                <div class="post-date">
-                  2020-06-19
-                </div>
-                <div class="post-abstract">
-                  <p>jsDelivr 提供了 Web 上常用静态资源的服务，不但有全球 CDN 加速，也采用了国内的 CDN 进行加速（有备案）</p>
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="http://day.ttti.cc/post/windows-terminal-preview-11-geng-xin-nei-rong/">
+        <h2 class="post-title">Windows Terminal Preview 1.1 更新内容</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-06-19
+        </span>
+        <span>
+          3 min read
+        </span>
+        
+          <a href="http://day.ttti.cc/tag/develop/" class="post-tag">
+            # 开发
+          </a>
+        
+      </div>
+      
+        <a href="http://day.ttti.cc/post/windows-terminal-preview-11-geng-xin-nei-rong/" class="post-feature-image" style="background-image: url('https://ae01.alicdn.com/kf/H86d0a47e3d02435eb4bdd782699e0e05x.png')">
+        </a>
+      
+      <div class="post-abstract">
+        <p>微软宣布推出 Windows Terminal Preview 1.1 版本，该版本的最新功能将于 2020 年 7 月移至 Windows Terminal。下面来看看都有哪些新功能：</p>
 
-                </div>
-              </div>
-              
-                <a class="right" href="http://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/">
-                  <div class="feature-container" style="background-image: url('https://i.loli.net/2020/06/25/vs4rCPfSKbWupey.png')">
-                  </div>
-                </a>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="http://day.ttti.cc/post/windows-terminal-preview-11-geng-xin-nei-rong/">
-                  <h2 class="post-title">Windows Terminal Preview 1.1 更新内容</h2>
-                </a>
-                <div class="post-date">
-                  2020-06-19
-                </div>
-                <div class="post-abstract">
-                  <p>微软宣布推出 Windows Terminal Preview 1.1 版本，该版本的最新功能将于 2020 年 7 月移至 Windows Terminal。下面来看看都有哪些新功能：</p>
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="http://day.ttti.cc/post/search-read-ask/">
+        <h2 class="post-title">读-写-问</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-06-10
+        </span>
+        <span>
+          2 min read
+        </span>
+        
+          <a href="http://day.ttti.cc/tag/zKg89Ra8E/" class="post-tag">
+            # 感悟
+          </a>
+        
+      </div>
+      
+        <a href="http://day.ttti.cc/post/search-read-ask/" class="post-feature-image" style="background-image: url('https://i.loli.net/2020/06/25/kjfNPqgSuhs4XKG.png')">
+        </a>
+      
+      <div class="post-abstract">
+        <p>很多问题的解决都可以通过三连：<strong>Search - Read - Ask</strong> ，这套连招很管用，然而大部分人都<strong>不习惯搜索、没耐心阅读、不会提问</strong>。</p>
 
-                </div>
-              </div>
-              
-                <a class="right" href="http://day.ttti.cc/post/windows-terminal-preview-11-geng-xin-nei-rong/">
-                  <div class="feature-container" style="background-image: url('https://ae01.alicdn.com/kf/H86d0a47e3d02435eb4bdd782699e0e05x.png')">
-                  </div>
-                </a>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="http://day.ttti.cc/post/search-read-ask/">
-                  <h2 class="post-title">读-写-问</h2>
-                </a>
-                <div class="post-date">
-                  2020-06-10
-                </div>
-                <div class="post-abstract">
-                  <p>很多问题的解决都可以通过三连：<strong>Search - Read - Ask</strong> ，这套连招很管用，然而大部分人都<strong>不习惯搜索、没耐心阅读、不会提问</strong>。</p>
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="http://day.ttti.cc/post/win10-setup/">
+        <h2 class="post-title">动图演示从官方下载并制作Win10启动U盘</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2020-05-28
+        </span>
+        <span>
+          2 min read
+        </span>
+        
+          <a href="http://day.ttti.cc/tag/software/" class="post-tag">
+            # 软件
+          </a>
+        
+      </div>
+      
+        <a href="http://day.ttti.cc/post/win10-setup/" class="post-feature-image" style="background-image: url('https://i.loli.net/2020/06/25/IvfzRMBH2FKn67Q.png')">
+        </a>
+      
+      <div class="post-abstract">
+        <p>微软今天发布 Win10 2004 正式版了，然而还是很多小白依赖第三方下载，事实上微软官方是提供镜像下载的，同时还具备U盘制作功能，就是说，根本不需要依赖第三方网站。</p>
 
-                </div>
-              </div>
-              
-                <a class="right" href="http://day.ttti.cc/post/search-read-ask/">
-                  <div class="feature-container" style="background-image: url('https://i.loli.net/2020/06/25/kjfNPqgSuhs4XKG.png')">
-                  </div>
-                </a>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="http://day.ttti.cc/post/win10-setup/">
-                  <h2 class="post-title">动图演示从官方下载并制作Win10启动U盘</h2>
-                </a>
-                <div class="post-date">
-                  2020-05-28
-                </div>
-                <div class="post-abstract">
-                  <p>微软今天发布 Win10 2004 正式版了，然而还是很多小白依赖第三方下载，事实上微软官方是提供镜像下载的，同时还具备U盘制作功能，就是说，根本不需要依赖第三方网站。</p>
-
-                </div>
-              </div>
-              
-                <a class="right" href="http://day.ttti.cc/post/win10-setup/">
-                  <div class="feature-container" style="background-image: url('https://i.loli.net/2020/06/25/IvfzRMBH2FKn67Q.png')">
-                  </div>
-                </a>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="http://day.ttti.cc/post/hello/">
-                  <h2 class="post-title">这里是极限玩家的每日分享</h2>
-                </a>
-                <div class="post-date">
-                  2018-12-12
-                </div>
-                <div class="post-abstract">
-                  <p>👏  欢迎浏览 <strong>极限玩家的每日分享</strong> ！</p>
+      </div>
+    </article>
+  
+    <article class="post">
+      <a href="http://day.ttti.cc/post/hello/">
+        <h2 class="post-title">这里是极限玩家的每日分享</h2>
+      </a>
+      <div class="post-info">
+        <span>
+          2018-12-12
+        </span>
+        <span>
+          1 min read
+        </span>
+        
+      </div>
+      
+        <a href="http://day.ttti.cc/post/hello/" class="post-feature-image" style="background-image: url('http://day.ttti.cc/post-images/hello.png')">
+        </a>
+      
+      <div class="post-abstract">
+        <p>👏  欢迎浏览 <strong>极限玩家的每日分享</strong> ！</p>
 <p>✍️  <strong>每日分享</strong> 会分享每天的，新闻、软件、知识、经验，以及各种资源</p>
 
-                </div>
-              </div>
-              
-                <a class="right" href="http://day.ttti.cc/post/hello/">
-                  <div class="feature-container" style="background-image: url('http://day.ttti.cc/post-images/hello.png')">
-                  </div>
-                </a>
-              
-            </article>
-          
+      </div>
+    </article>
+  
+</div>
 
-          <div class="pagination-container">
+    
+        <div class="pagination-container">
   
   
 </div>
 
-        </div>
+    
+        <div class="site-footer">
+  Powered by <a href="https://ttti.cc" target="_blank">极限主页</a>
+  <a class="rss" href="http://day.ttti.cc/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
       </div>
     </div>
-
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script type="application/javascript">
-
-AOS.init();
-
-var app = new Vue({
-  el: '#app',
-  data: {
-    menuVisible: false,
-  },
-})
-
-</script>
-
-
-
-
-
-
   </body>
 </html>
