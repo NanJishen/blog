@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>JSDelivr CDN 加速 GitHub | 极限博客</title>
+<title>youtube-dl 下载视频使用指南 | 极限博客</title>
 
 <link rel="shortcut icon" href="https://day.ttti.cc/favicon.ico?v=1613820597566">
 
@@ -210,42 +210,69 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    JSDelivr CDN 加速 GitHub
+                    youtube-dl 下载视频使用指南
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-06-19 ·
+                        · 2020-08-07 ·
                     </time>
                     
-                        <a href="https://day.ttti.cc/tag/webfront/" class="post-tags">
-                            # 前端
+                        <a href="https://day.ttti.cc/tag/software/" class="post-tags">
+                            # 软件
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>jsDelivr 提供了 Web 上常用静态资源的服务，不但有全球 CDN 加速，也采用了国内的 CDN 进行加速（有备案）</p>
+                    <p>youtube-dl 需要安装 Python 环境，并需配置好系统变量（安装时勾选 Add Python to PATH）</p>
 <!-- more -->
-<p>jsDelivr 确保每个地区的使用者都能获得最好的连接速度，它还可以可将不同的 JavaScript 或 CSS 集合在一起使用。</p>
-<p><a href="https://www.jsdelivr.com">官方网站</a> | 加速地址：https://cdn.jsdelivr.net</p>
-<h3 id="github-使用镜像加速服务">GitHub 使用镜像加速服务</h3>
-<p>很简单，比如，将仓库中的 DPlayer.min.js 文件利用 jsDelivr 加速，以下示例：</p>
-<p><strong>原始链接：</strong><br>
-<code>https://github.com/sunpma/goIndex/tree/master/js/DPlayer.min.js</code></p>
-<p><strong>jsDelivr 加速链接：</strong><br>
-<code>https://cdn.jsdelivr.net/gh/sunpma/goIndex/js/DPlayer.min.js</code></p>
-<h3 id="如果按版本分类releases-一个-v10-版本">如果按版本分类，Releases 一个 v1.0 版本，</h3>
-<p><strong>原始链接：</strong><br>
-<code>https://github.com/sunpma/goIndex/blob/v1.0/js/DPlayer.min.js</code></p>
-<p><strong>jsDelivr 加速链接：</strong><br>
-<code>https://cdn.jsdelivr.net/gh/sunpma/goIndex@v1.0/js/DPlayer.min.js</code></p>
-<p>如果要直接加载最新版本，可以使用 latest 标签：<br>
-<code>https://cdn.jsdelivr.net/gh/sunpma/goIndex@latest/js/DPlayer.min.js</code></p>
-<p><strong>加载镜像连接的规则：</strong></p>
+<h3 id="安装-youtube-dl">安装 youtube-dl</h3>
+<p>从<a href="https://yt-dl.org">官网</a>下载 youtube-dl.exe，然后放到任意目录下即可使用，同时视频默认会下载到它的同目录。</p>
+<p>一个视频文件，包含视频和音频两样，不同质量的可以有多种组合。</p>
+<blockquote>
+<p>假设要下载：https://www.youtube.com/watch?v=xxxxxxxx</p>
+</blockquote>
+<h3 id="下载最优视频默认">下载最优视频（默认）</h3>
+<pre><code>youtube-dl https://www.youtube.com/watch?v=xxxxxxxx
+</code></pre>
+<p>不带任何参数，则默认下载画质、音质最好的视频。</p>
+<h3 id="查看可选的视-音频格式">查看可选的视、音频格式</h3>
+<pre><code>youtube-dl -F https://www.youtube.com/watch?v=xxxxxxxx
+
+</code></pre>
+<p>呈现信息</p>
+<pre><code>249          webm       audio only tiny   53k , opus @ 50k (48000Hz), 1.09MiB
+251          webm       audio only tiny  127k , opus @160k (48000Hz), 2.48MiB
+140          m4a        audio only tiny  130k , m4a_dash container, mp4a.40.2@128k (44100Hz), 2.99MiB
+278          webm       256x144    144p   97k , webm container, vp9, 30fps, video only, 2.17MiB
+160          mp4        256x144    144p  110k , avc1.4d400c, 30fps, video only, 1.58MiB
+133          mp4        426x240    240p  205k , avc1.4d4015, 30fps, video only, 2.56MiB
+243          webm       640x360    360p  409k , vp9, 30fps, video only, 5.54MiB
+134          mp4        640x360    360p  427k , avc1.4d401e, 30fps, video only, 4.69MiB
+244          webm       854x480    480p  757k , vp9, 30fps, video only, 8.39MiB
+136          mp4        1280x720   720p 1142k , avc1.4d401f, 30fps, video only, 12.33MiB
+247          webm       1280x720   720p 1417k , vp9, 30fps, video only, 14.22MiB
+18           mp4        640x360    360p  529k , avc1.42001E, mp4a.40.2@ 96k (44100Hz), 12.22MiB (best)
+</code></pre>
+<h3 id="自行组合方案">自行组合方案</h3>
+<p>从返回的列出的信息中，挑选你想要视频，以及音频组合方案，填写对应序号即可，例如：</p>
+<pre><code>youtube-dl -f 136+140 https://www.youtube.com/watch?v=xxxxxxxx
+youtube-dl -f 136 https://www.youtube.com/watch?v=xxxxxxxx
+
+</code></pre>
+<h2 id="命令格式">命令格式</h2>
 <ul>
-<li>GitHub 镜像，为 gh</li>
-<li>WordPress 镜像，为 wp</li>
-<li>npm 镜像，为 npm</li>
+<li>youtube-dl [url]（直接下载，最优视频）</li>
+<li>youtube-dl -F [url]（列出所有音频和视频）</li>
+<li>youtube-dl [playlist_url]（下载视频列表）</li>
 </ul>
+<h2 id="字幕相关">字幕相关</h2>
+<p>以下命令能够实现，将视频带有的字幕一起下载下来</p>
+<pre><code>youtube-dl --write-sub --sub-format &quot;ass/srt/best&quot; --convert-subs &quot;srt&quot; &quot;video_url&quot;
+
+</code></pre>
+<p><code>—write-sub</code>：写入字幕，即把字幕下载。<br>
+<code>--sub-format</code>：指定字幕格式，按顺序选，不存在则选下一个。<br>
+<code>--convert-subs</code>： 转换字幕，格式有限制，通用为 srt ；若不转，某些字幕可能是 .vtt 的；如果有 ass 字幕可下载，则无须加此项。</p>
 
                 </div>
             </article>
@@ -254,8 +281,8 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://day.ttti.cc/post/windows-terminal-preview-11-geng-xin-nei-rong/" class="post-title gt-a-link">
-                    Windows Terminal Preview 1.1 更新内容
+                <a href="https://day.ttti.cc/post/wei-ruan-wen-jian-hui-fu-gong-ju-windows-file-recovery/" class="post-title gt-a-link">
+                    微软文件恢复工具：Windows File Recovery
                 </a>
             </div>
         

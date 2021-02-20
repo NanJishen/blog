@@ -2,14 +2,142 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://day.ttti.cc</id>
     <title>极限博客</title>
-    <updated>2020-12-23T02:19:24.277Z</updated>
+    <updated>2021-02-20T11:30:05.756Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://day.ttti.cc"/>
     <link rel="self" href="https://day.ttti.cc/atom.xml"/>
     <subtitle>极限玩家的博客</subtitle>
     <logo>https://day.ttti.cc/images/avatar.png</logo>
     <icon>https://day.ttti.cc/favicon.ico</icon>
-    <rights>All rights reserved 2020, 极限博客</rights>
+    <rights>All rights reserved 2021, 极限博客</rights>
+    <entry>
+        <title type="html"><![CDATA[youtube-dl 下载视频使用指南]]></title>
+        <id>https://day.ttti.cc/post/youtube-dl-xia-zai-shi-pin-shi-yong-zhi-nan/</id>
+        <link href="https://day.ttti.cc/post/youtube-dl-xia-zai-shi-pin-shi-yong-zhi-nan/">
+        </link>
+        <updated>2020-08-07T11:27:40.000Z</updated>
+        <summary type="html"><![CDATA[<p>youtube-dl 需要安装 Python 环境，并需配置好系统变量（安装时勾选 Add Python to PATH）</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>youtube-dl 需要安装 Python 环境，并需配置好系统变量（安装时勾选 Add Python to PATH）</p>
+<!-- more -->
+<h3 id="安装-youtube-dl">安装 youtube-dl</h3>
+<p>从<a href="https://yt-dl.org">官网</a>下载 youtube-dl.exe，然后放到任意目录下即可使用，同时视频默认会下载到它的同目录。</p>
+<p>一个视频文件，包含视频和音频两样，不同质量的可以有多种组合。</p>
+<blockquote>
+<p>假设要下载：https://www.youtube.com/watch?v=xxxxxxxx</p>
+</blockquote>
+<h3 id="下载最优视频默认">下载最优视频（默认）</h3>
+<pre><code>youtube-dl https://www.youtube.com/watch?v=xxxxxxxx
+</code></pre>
+<p>不带任何参数，则默认下载画质、音质最好的视频。</p>
+<h3 id="查看可选的视-音频格式">查看可选的视、音频格式</h3>
+<pre><code>youtube-dl -F https://www.youtube.com/watch?v=xxxxxxxx
+
+</code></pre>
+<p>呈现信息</p>
+<pre><code>249          webm       audio only tiny   53k , opus @ 50k (48000Hz), 1.09MiB
+251          webm       audio only tiny  127k , opus @160k (48000Hz), 2.48MiB
+140          m4a        audio only tiny  130k , m4a_dash container, mp4a.40.2@128k (44100Hz), 2.99MiB
+278          webm       256x144    144p   97k , webm container, vp9, 30fps, video only, 2.17MiB
+160          mp4        256x144    144p  110k , avc1.4d400c, 30fps, video only, 1.58MiB
+133          mp4        426x240    240p  205k , avc1.4d4015, 30fps, video only, 2.56MiB
+243          webm       640x360    360p  409k , vp9, 30fps, video only, 5.54MiB
+134          mp4        640x360    360p  427k , avc1.4d401e, 30fps, video only, 4.69MiB
+244          webm       854x480    480p  757k , vp9, 30fps, video only, 8.39MiB
+136          mp4        1280x720   720p 1142k , avc1.4d401f, 30fps, video only, 12.33MiB
+247          webm       1280x720   720p 1417k , vp9, 30fps, video only, 14.22MiB
+18           mp4        640x360    360p  529k , avc1.42001E, mp4a.40.2@ 96k (44100Hz), 12.22MiB (best)
+</code></pre>
+<h3 id="自行组合方案">自行组合方案</h3>
+<p>从返回的列出的信息中，挑选你想要视频，以及音频组合方案，填写对应序号即可，例如：</p>
+<pre><code>youtube-dl -f 136+140 https://www.youtube.com/watch?v=xxxxxxxx
+youtube-dl -f 136 https://www.youtube.com/watch?v=xxxxxxxx
+
+</code></pre>
+<h2 id="命令格式">命令格式</h2>
+<ul>
+<li>youtube-dl [url]（直接下载，最优视频）</li>
+<li>youtube-dl -F [url]（列出所有音频和视频）</li>
+<li>youtube-dl [playlist_url]（下载视频列表）</li>
+</ul>
+<h2 id="字幕相关">字幕相关</h2>
+<p>以下命令能够实现，将视频带有的字幕一起下载下来</p>
+<pre><code>youtube-dl --write-sub --sub-format &quot;ass/srt/best&quot; --convert-subs &quot;srt&quot; &quot;video_url&quot;
+
+</code></pre>
+<p><code>—write-sub</code>：写入字幕，即把字幕下载。<br>
+<code>--sub-format</code>：指定字幕格式，按顺序选，不存在则选下一个。<br>
+<code>--convert-subs</code>： 转换字幕，格式有限制，通用为 srt ；若不转，某些字幕可能是 .vtt 的；如果有 ass 字幕可下载，则无须加此项。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[微软文件恢复工具：Windows File Recovery]]></title>
+        <id>https://day.ttti.cc/post/wei-ruan-wen-jian-hui-fu-gong-ju-windows-file-recovery/</id>
+        <link href="https://day.ttti.cc/post/wei-ruan-wen-jian-hui-fu-gong-ju-windows-file-recovery/">
+        </link>
+        <updated>2020-06-30T11:23:49.000Z</updated>
+        <summary type="html"><![CDATA[<p>微软推出了免费的文件恢复工具：Windows File Recovery。你可以在 Microsoft Store 中下载（即 Win10 商店中下载）。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>微软推出了免费的文件恢复工具：Windows File Recovery。你可以在 Microsoft Store 中下载（即 Win10 商店中下载）。</p>
+<!-- more -->
+<p>同时，<strong>该工具仅支持 Win10 version 19041.0 及以上版本</strong>，也就是你要升级到最新版本 Win10 2004，才能使用它！</p>
+<p>我们删除文件时，实际上只是将其在硬盘上标记为“可写入新数据”而已，这时，如果此时没有新的数据写入覆盖该区域的硬盘块，那么就可以轻松的将其恢复。</p>
+<h2 id="命令格式">命令格式</h2>
+<p>结构上来说比较简单，命令格式为：</p>
+<pre><code>winfr source-drive: destination-drive: [/switches] 
+</code></pre>
+<p><strong>解释：</strong></p>
+<ul>
+<li>winfr（调用该工具的起始命令）</li>
+<li>source-drive（源驱动器）</li>
+<li>destination-drive（目标驱动器）</li>
+<li>/switches（调用的参数）</li>
+</ul>
+<p>注意：我们指定的恢复到磁盘，目标的位置和原删除文件所在的磁盘不能是同一个。比如我们恢复C盘删除的文件不能选择恢复到C盘，可以选择恢复到D盘E盘，然后再移动到你要移动的位置即可。</p>
+<figure data-type="image" tabindex="1"><img src="https://ae04.alicdn.com/kf/H63b15640b7e045249ea4a17814e0c781Q.png" alt="" loading="lazy"></figure>
+<h2 id="实际操作">实际操作</h2>
+<p>现在，我们来给 C 盘中刚刚删除的几个 mp3 文件恢复一下，将其恢复到 D 盘，输入命令：</p>
+<pre><code>winfr C: D: /r /n *.mp3
+</code></pre>
+<p>备注：<code>/r</code> 指定了分段模式  <code>/n</code> 指定了文件过滤器，即指定恢复了 mp3 文件</p>
+<h3 id="更多示例">更多示例：</h3>
+<p>恢复 C 盘里某个具体的文件恢复到 E 盘：</p>
+<pre><code>winfr C: E: /n \Users\&lt;username&gt;\Documents\xxx.docx
+</code></pre>
+<p>恢复 C 盘某个具体图片至 E 盘：</p>
+<pre><code>winfr C: E: /n \Users\&lt;username&gt;\Pictures\.JPEG /n \Users\&lt;username&gt;\Pictures\.PNG
+</code></pre>
+<p>恢复 C 盘的文档文件夹至 E 盘：</p>
+<pre><code>winfr C: E: /n \Users\&lt;username&gt;\Documents\
+</code></pre>
+<p><strong>段模式下的使用语法（/r）：</strong></p>
+<p>恢复 C 盘下已删除的 PDF 和 Word 文档至 E 盘：</p>
+<pre><code>winfr C: E: /r /n *.pdf /n *.docx
+</code></pre>
+<p>恢复 C 盘下包含 “invoice”文件名的文件至 E 盘：</p>
+<pre><code>winfr C: E: /r /n *invoice*
+</code></pre>
+<p><strong>签名模式下的使用语法（/x）：</strong></p>
+<p>建议使用前请使用以下命令查看支持的扩展格式以及文件类型：</p>
+<pre><code>winfr /#
+</code></pre>
+<p>恢复 JPEG 和 PNG 文件至 E 盘：</p>
+<pre><code>winfr C: E: /x /y:JPEG,PNG
+</code></pre>
+<p>恢复 ZIP 文件至 E 盘：</p>
+<pre><code>winfr C: E:\RecoveryTest /x /y:ZIP
+</code></pre>
+<h2 id="windows-file-recovery-的文件恢复模式">Windows File Recovery 的文件恢复模式</h2>
+<p>默认：如果你的硬盘是 NTFS，用这个即可</p>
+<p>签名：如果你的硬盘是 FAT 又或 FAT 和 exFAT 的U盘，就选这个</p>
+<p>分段：如果要恢复比较久的文件，选这个</p>
+<p><em>注：如果发现文件误删，应该立刻恢复，这样成功率是最高的，如果被覆写了，则难以恢复！</em></p>
+<p>微软推出的自家的恢复文件工具目前是命令行工具，不知道日后会不会推出图形化工具，不过我个人认为，命令行也不错，只是对小白不太友好。最后附上官方帮助文档：</p>
+<blockquote>
+<p><a href="https://support.microsoft.com/zh-cn/help/4538642/windows-10-restore-lost-files">https://support.microsoft.com/zh-cn/help/4538642/windows-10-restore-lost-files</a></p>
+</blockquote>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[JSDelivr CDN 加速 GitHub]]></title>
         <id>https://day.ttti.cc/post/jsdelivr-cdn-jia-su-github/</id>
@@ -115,22 +243,6 @@
 <figure data-type="image" tabindex="2"><img src="https://imgkr.cn-bj.ufileos.com/4006be09-7b6a-48f0-a770-0744ef441730.gif" alt="向导制作U盘" loading="lazy"></figure>
 <p>当向导完成后，U盘也制作好了，之后你就可以使用这个U盘进行全新安装 Win10 系统。是的就是如此简单，并没有那么繁琐。</p>
 <p>使用动图演示，往往更简练说明问题，如今很多科普文章喜欢长文啰嗦。我更相信李小龙说的：“文明的进度总是向着简单方向运行”，就是说应该把科普的内容做的简单，毕竟我们都没有耐心看长文不是吗？</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[这里是极限玩家的每日分享]]></title>
-        <id>https://day.ttti.cc/post/hello/</id>
-        <link href="https://day.ttti.cc/post/hello/">
-        </link>
-        <updated>2018-12-11T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎浏览 <strong>极限玩家的每日分享</strong> ！</p>
-<p>✍️  <strong>每日分享</strong> 会分享每天的，新闻、软件、知识、经验，以及各种资源</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎浏览 <strong>极限玩家的每日分享</strong> ！</p>
-<p>✍️  <strong>每日分享</strong> 会分享每天的，新闻、软件、知识、经验，以及各种资源</p>
-<!-- more -->
-<p><a href="https://ttti.cc/">极限搜索 主页</a></p>
-<p>😘 Enjoy~</p>
 ]]></content>
     </entry>
 </feed>
