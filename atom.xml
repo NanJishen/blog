@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://day.ttti.cc</id>
     <title>极限博客</title>
-    <updated>2021-02-20T11:30:05.756Z</updated>
+    <updated>2021-03-04T06:27:09.359Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://day.ttti.cc"/>
     <link rel="self" href="https://day.ttti.cc/atom.xml"/>
@@ -10,6 +10,32 @@
     <logo>https://day.ttti.cc/images/avatar.png</logo>
     <icon>https://day.ttti.cc/favicon.ico</icon>
     <rights>All rights reserved 2021, 极限博客</rights>
+    <entry>
+        <title type="html"><![CDATA[Youtube 详细统计信息测速指南]]></title>
+        <id>https://day.ttti.cc/post/youtube-xiang-xi-tong-ji-xin-xi-ce-su-zhi-nan/</id>
+        <link href="https://day.ttti.cc/post/youtube-xiang-xi-tong-ji-xin-xi-ce-su-zhi-nan/">
+        </link>
+        <updated>2021-03-04T06:23:46.000Z</updated>
+        <summary type="html"><![CDATA[<p>对于出海上网来说，无论是自架梯子还是购买机场，都需要测试网速，虽然可以使用 Speedtest 这样的标准测速网站，但实际不如直接观看 YouTube 视频“详细统计信息”来的实用高效。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>对于出海上网来说，无论是自架梯子还是购买机场，都需要测试网速，虽然可以使用 Speedtest 这样的标准测速网站，但实际不如直接观看 YouTube 视频“详细统计信息”来的实用高效。</p>
+<!-- more -->
+<p>因为，需求上来说，只要能满足视频流的播放，其他的也都满足了，在观看 YouTube 时，随时都可以<strong>右键视频 - 详细统计信息，查看“Connection Speed”项来确认当前速度。</strong></p>
+<p>公式：<strong>Connection Speed÷(1024*8)=实际速度 MB/s</strong>，当然，实际上不用去计算它，一般来说 15000-30000 的速度即可用方向键连续快进的观看1080P的视频了。</p>
+<p>**Video ID / sCPNY：**每个视频都有的唯一 ID 号码<br>
+**Viewport / Frames：**当前播放视窗的大小 / 丢帧数据<br>
+**Current / Optimal Res：**当前视频 / 推荐分辨率大小<br>
+**Volume / Normalized：**当前播放音量大小 / 标准音量的差异值<br>
+**Codecs：**视频采用的编码器<br>
+**Connection Speed：**当前客户端到服务器的实时链接速率（1024*8）<br>
+**Network Activity：**实时的网络活动<br>
+**Buffer Health：**缓冲时间（断网后视频可以继续播放的时间）<br>
+**Mystery Text：**神秘代码<br>
+S：播放状态（4暂停、8播放、19快进或快退、14加载视频中 ...）<br>
+T：视频的时间轨道线<br>
+B：缓冲区间和缓冲区大小（缓冲区的第二数字 - T（时间轨道线）= 缓冲的时间）</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[youtube-dl 下载视频使用指南]]></title>
         <id>https://day.ttti.cc/post/youtube-dl-xia-zai-shi-pin-shi-yong-zhi-nan/</id>
