@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://day.ttti.cc</id>
     <title>极限博客</title>
-    <updated>2021-03-05T13:35:18.506Z</updated>
+    <updated>2021-03-12T13:00:58.992Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://day.ttti.cc"/>
     <link rel="self" href="https://day.ttti.cc/atom.xml"/>
@@ -10,6 +10,44 @@
     <logo>https://day.ttti.cc/images/avatar.png</logo>
     <icon>https://day.ttti.cc/favicon.ico</icon>
     <rights>All rights reserved 2021, 极限博客</rights>
+    <entry>
+        <title type="html"><![CDATA[图片防盗链解决方案]]></title>
+        <id>https://day.ttti.cc/post/tu-pian-fang-dao-lian-jie-jue-fang-an/</id>
+        <link href="https://day.ttti.cc/post/tu-pian-fang-dao-lian-jie-jue-fang-an/">
+        </link>
+        <updated>2021-03-12T12:57:58.000Z</updated>
+        <summary type="html"><![CDATA[<p>很多时候，图片镜像缓存服务有不错的用途：</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>很多时候，图片镜像缓存服务有不错的用途：</p>
+<!-- more -->
+<ul>
+<li>将有防盗链的图片引用到网页，使其能显示出来</li>
+<li>将 http 图片引用到 https 页面，以绕过证书验证</li>
+<li>加载无法显示的图片（X号的图）</li>
+<li>加快显示，加载较慢的图片</li>
+</ul>
+<p>图片镜像缓存服务：</p>
+<pre><code>https://search.pstatic.net/common?src=
+https://imageproxy.pimg.tw/resize?url=
+https://images.weserv.nl/?url=
+https://pic1.xuehuaimg.com/proxy/
+</code></pre>
+<p>部分服务链接头可以不添加 <code>http(s)://</code> 协议:</p>
+<pre><code>https://imageproxy.pimg.tw/resize?url=https://i.imgur.com/hWghm6oh.jpg
+https://images.weserv.nl/?url=i.imgur.com/hWghm6oh.jpg
+https://pic1.xuehuaimg.com/proxy/i.imgur.com/hWghm6oh.jpg
+</code></pre>
+<p>首推 <a href="http://images.weserv.nl">images.weserv.nl</a> ，不仅可以作为图像缓存，还有多种参数可选，例如修改图片尺寸，旋转图片等。</p>
+<p>防盗链图片演示：</p>
+<pre><code>http://pic1.zhimg.com/v2-8b657dff159debf1cff463d61b7dcafd_r.jpg
+</code></pre>
+<p>该图片是知乎的图片，存在防盗链，在图片外链前面加上图片镜像服务后就可以正常显示了。</p>
+<pre><code>https://i.imgur.com/hWghm6oh.jpg
+</code></pre>
+<p>这是知名图床 imgur 上的图片，其不限制上传的图片类型，所以国内无法打开，但在外链前加上图片镜像服务后即可正常显示。</p>
+<p><a href="https://hao.su/pic.html">免费图床推荐</a></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Youtube 详细统计信息测速指南]]></title>
         <id>https://day.ttti.cc/post/youtube-xiang-xi-tong-ji-xin-xi-ce-su-zhi-nan/</id>

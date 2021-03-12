@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>Windows Terminal Preview 1.1 更新内容 | 极限博客</title>
+<title>图片防盗链解决方案 | 极限博客</title>
 
 <link rel="shortcut icon" href="https://day.ttti.cc/favicon.ico?v=1615554054172">
 
@@ -210,47 +210,47 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    Windows Terminal Preview 1.1 更新内容
+                    图片防盗链解决方案
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-06-19 ·
+                        · 2021-03-12 ·
                     </time>
                     
-                        <a href="https://day.ttti.cc/tag/develop/" class="post-tags">
-                            # 开发
+                        <a href="https://day.ttti.cc/tag/M8FNIzsjv/" class="post-tags">
+                            # 图床
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>微软宣布推出 Windows Terminal Preview 1.1 版本，该版本的最新功能将于 2020 年 7 月移至 Windows Terminal。下面来看看都有哪些新功能：</p>
+                    <p>很多时候，图片镜像缓存服务有不错的用途：</p>
 <!-- more -->
-<h3 id="在-windows-terminal-中打开">在 Windows Terminal 中打开</h3>
-<p>现在，可以右键单击文件资源管理器中的文件夹，然后选择“在 Windows Terminal 中打开”。这将使用默认配置文件启动 Windows Terminal。</p>
-<h3 id="开机时启动-windows-terminal">开机时启动 Windows Terminal</h3>
-<p>此版本添加了一个新设置，能够将 Windows Terminal 设置为在启动计算机时启动。你可以在全局设置中将 startOnUserLogin 设置为 true 以启用此功能。</p>
-<p>&quot;startOnUserLogin&quot;: true</p>
-<h3 id="字体粗细支持">字体粗细支持</h3>
-<p>Windows Terminal Preview 现在支持将字体粗细作为新的配置文件设置。fontWeight 设置接受各种描述字体粗细的字符串，以及相应的字体粗细数字表示形式。</p>
-<p>&quot;fontWeight&quot;: &quot;normal&quot;</p>
-<h3 id="alt-单击-以打开窗格">Alt +单击 以打开窗格</h3>
-<p>如果你想从下拉菜单中打开配置文件作为当前窗口的窗格，可以在按住 Alt 的同时单击它。这将通过使用自动拆分功能在窗格中打开该配置文件，该功能会将活动窗口或窗格拆分为最长的长度。</p>
-<h3 id="tab-更新颜色选择器">Tab 更新颜色选择器</h3>
-<p>现在，可以通过右键单击选项卡并选择“颜色...”来进行着色。这将打开选项卡颜色菜单，你可以在其中选择预定义的颜色，或展开菜单以使用颜色选择器、十六进制代码或 RGB 字段选择任何颜色。每个选项卡的颜色将在该终端会话中保持不变。</p>
-<h3 id="重命名">重命名</h3>
-<p>选项卡重命名选项与颜色选择器在同样的上下文菜单中。单击此选项可重命名选项卡。</p>
-<p>更紧凑的选项卡尺寸</p>
-<p>新版本在 tabWidthMode 全局设置中添加了紧凑的选项卡大小，这能够将每个不活动的选项卡缩小到图标的宽度，从而为活动的选项卡留出更多空间来显示其完整标题。</p>
-<p>&quot;tabWidthMode&quot;: &quot;compact&quot;</p>
-<h3 id="新的命令行参数">新的命令行参数</h3>
-<p>此版本添加了一些命令参数。第一个是 --maximized, -M，它将以最大化的方式启动 Windows Terminal。第二个是 --fullscreen, -F，它将 Windows Terminal 作为全屏启动。这两个命令不能合并。</p>
-<p>最后一个是 --title，它使你可以在启动 Windows Terminal 之前自定义选项卡的标题。就像 tabTitle 配置文件设置一样。</p>
-<p>用键盘打开 defaults.json</p>
-<p>如果你想使用键盘打开 defaults.json 文件，新版本添加了一个新的默认键绑定&quot;ctrl+alt+,&quot;。openSettings命令已收到新操作，使用户可以分别使用 &quot;settingsFile&quot;、&quot;defaultsFile&quot; 或 &quot;allFiles&quot; 打开 settings.json 文件、defaults.json 文件或两者。</p>
-<pre><code>{ &quot;command&quot;: { &quot;action&quot;: &quot;openSettings&quot;, &quot;target&quot;: &quot;defaultsFile&quot; }, &quot;keys&quot;: &quot;ctrl+alt+,&quot; }
-
-文章来源：开源中国   作者：xplanet
+<ul>
+<li>将有防盗链的图片引用到网页，使其能显示出来</li>
+<li>将 http 图片引用到 https 页面，以绕过证书验证</li>
+<li>加载无法显示的图片（X号的图）</li>
+<li>加快显示，加载较慢的图片</li>
+</ul>
+<p>图片镜像缓存服务：</p>
+<pre><code>https://search.pstatic.net/common?src=
+https://imageproxy.pimg.tw/resize?url=
+https://images.weserv.nl/?url=
+https://pic1.xuehuaimg.com/proxy/
 </code></pre>
+<p>部分服务链接头可以不添加 <code>http(s)://</code> 协议:</p>
+<pre><code>https://imageproxy.pimg.tw/resize?url=https://i.imgur.com/hWghm6oh.jpg
+https://images.weserv.nl/?url=i.imgur.com/hWghm6oh.jpg
+https://pic1.xuehuaimg.com/proxy/i.imgur.com/hWghm6oh.jpg
+</code></pre>
+<p>首推 <a href="http://images.weserv.nl">images.weserv.nl</a> ，不仅可以作为图像缓存，还有多种参数可选，例如修改图片尺寸，旋转图片等。</p>
+<p>防盗链图片演示：</p>
+<pre><code>http://pic1.zhimg.com/v2-8b657dff159debf1cff463d61b7dcafd_r.jpg
+</code></pre>
+<p>该图片是知乎的图片，存在防盗链，在图片外链前面加上图片镜像服务后就可以正常显示了。</p>
+<pre><code>https://i.imgur.com/hWghm6oh.jpg
+</code></pre>
+<p>这是知名图床 imgur 上的图片，其不限制上传的图片类型，所以国内无法打开，但在外链前加上图片镜像服务后即可正常显示。</p>
+<p><a href="https://hao.su/pic.html">免费图床推荐</a></p>
 
                 </div>
             </article>
@@ -259,8 +259,8 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://day.ttti.cc/post/search-read-ask/" class="post-title gt-a-link">
-                    读-写-问
+                <a href="https://day.ttti.cc/post/youtube-xiang-xi-tong-ji-xin-xi-ce-su-zhi-nan/" class="post-title gt-a-link">
+                    Youtube 详细统计信息测速指南
                 </a>
             </div>
         
