@@ -75,3 +75,6 @@ youtube-dl --write-sub --sub-format "ass/srt/best" --convert-subs "srt" "video_u
 `—write-sub`：写入字幕，即把字幕下载。  
 `--sub-format`：指定字幕格式，按顺序选，不存在则选下一个。  
 `--convert-subs`： 转换字幕，格式有限制，通用为 srt ；若不转，某些字幕可能是 .vtt 的；如果有 ass 字幕可下载，则无须加此项。
+
+![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+

@@ -107,3 +107,5 @@ winfr C: E:\RecoveryTest /x /y:ZIP
 微软推出的自家的恢复文件工具目前是命令行工具，不知道日后会不会推出图形化工具，不过我个人认为，命令行也不错，只是对小白不太友好。最后附上官方帮助文档：
 
 > [https://support.microsoft.com/zh-cn/help/4538642/windows-10-restore-lost-files](https://support.microsoft.com/zh-cn/help/4538642/windows-10-restore-lost-files)
+
+![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)

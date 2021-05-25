@@ -37,3 +37,5 @@ jsDelivr 确保每个地区的使用者都能获得最好的连接速度，它�
 - GitHub 镜像，为 gh
 - WordPress 镜像，为 wp
 - npm 镜像，为 npm
+
+![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)

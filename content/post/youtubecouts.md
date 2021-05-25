@@ -24,3 +24,5 @@ categories: ["方法"]
 	- S：播放状态（4暂停、8播放、19快进或快退、14加载视频中 ...）
 	- T：视频的时间轨道线
 	- B：缓冲区间和缓冲区大小（缓冲区的第二数字 - T（时间轨道线）= 缓冲的时间）
+
+![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)

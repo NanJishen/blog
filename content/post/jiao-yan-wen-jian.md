@@ -77,3 +77,5 @@ Windows Registry Editor Version 5.00
 ```
 
 保存退出并双击执行，系统就会删除掉对应的注册表键值，那么“校验 Hash”条目就不复存在了。
+
+![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)

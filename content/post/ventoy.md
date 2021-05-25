@@ -93,4 +93,4 @@ Ventoy Server 1.0.39 已经启动 ...
 
 哦对了，由于 Ventoy 的特性，你可以在该分区下放入 mp3、mp4、电子书、绿色版软件等，升级也不会干扰到其中的内容，也就是说它还可以当作普通U盘一样日用。
 
-
+![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)

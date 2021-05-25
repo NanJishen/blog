@@ -47,3 +47,5 @@ https://i.imgur.com/hWghm6oh.jpg
 这是知名图床 imgur 上的图片，其不限制上传的图片类型，所以国内无法打开，但在外链前加上图片镜像服务后即可正常显示。
 
 [免费图床推荐](https://hao.su/pic.html)
+
+![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)

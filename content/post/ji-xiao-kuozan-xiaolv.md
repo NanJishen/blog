@@ -49,3 +49,5 @@ Chrome / Edge 浏览器自带的书签管理虽然可以在顶部开启书签栏
 正所谓“纤毫毕现，极致轻巧”，这些小巧的扩展可以让你在日常中保持专注和方便，并且他们的占用很低。我们也感谢开发者能带来这么好的扩展，来改善 Chrome / Edge。哦对了，这些扩展你可以在 Chrome / Edge 他们各自的商店中下载到。如果有什么疑问，欢迎在下方留言。
 
 ![](https://s3.ax1x.com/2021/03/18/6RKYw9.png)
+
+![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)

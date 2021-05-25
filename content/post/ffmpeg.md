@@ -259,3 +259,5 @@ ffmpeg -i filename.mp4 -i logo.jpg -filter_complex [0:v][1:v]overlay=main_w-over
 ```
 
 **FFmpeg** 这个神器非常值得学习，因为视频在今天来说是很主流的内容载体，虽然对小白来来说，看起来很复杂，但其实只要掌握几个基本命令就足够了，同时它在 Windows 和 Linux 上都可以使用。
+
+![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
