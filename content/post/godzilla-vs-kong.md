@@ -20,4 +20,4 @@ categories: ["电影"]
 
 **修正偏移**：记住，*偏听则暗，兼听则明*，在观看豆瓣评论时，你应该多看，并且应该在看完电影后去看。对于动作片、特效片，在豆瓣评分总是低的。这是观众因子决定的，因此这类片不要轻易相信豆瓣打分。
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)

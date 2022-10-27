@@ -48,4 +48,4 @@ https://i.imgur.com/hWghm6oh.jpg
 
 [免费图床推荐](https://hao.su/pic.html)
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)

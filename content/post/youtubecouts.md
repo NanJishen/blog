@@ -25,4 +25,4 @@ categories: ["方法"]
 	- T：视频的时间轨道线
 	- B：缓冲区间和缓冲区大小（缓冲区的第二数字 - T（时间轨道线）= 缓冲的时间）
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)

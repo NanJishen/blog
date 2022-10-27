@@ -1,7 +1,7 @@
-baseURL = "https://blog.ttti.cc"
+baseURL = "https://ttti.cc"
 languageCode = "zh-cn"
 defaultContentLanguage = "zh-cn"
-title = "极限玩家博客"
+title = "极限玩家"
 preserveTaxonomyNames = true
 enableRobotsTXT = true
 enableEmoji = true
@@ -15,8 +15,8 @@ pygmentsCodefencesGuessSyntax = true
 
 hasCJKLanguage = true
 paginate = 10
-disqusShortname = ""
-googleAnalytics = ""
+disqusShortname = "extreme-1"
+googleAnalytics = "G-XK6SLX411H"
 copyright = "极限玩家"
 
 [author]
@@ -27,7 +27,7 @@ copyright = "极限玩家"
   priority = 0.5
   filename = "sitemap.xml"
 
-[[menu.main]]   # 配置目录
+[[menu.main]] # 配置目录
   name = "首页"
   weight = 10
   identifier = "home"
@@ -48,17 +48,22 @@ copyright = "极限玩家"
   identifier = "categories"
   url = "/categories/"
 
-[params]
-  version = "4.x"           # Used to give a friendly message when you have an incompatible update
-  debug = false             # If true, load `eruda.min.js`. See https://github.com/liriliri/eruda
+[[menu.main]]
+  name = "极限搜索"
+  weight = 40
+  identifier = "more"
+  url = "/so.html"
 
+[params]
+  version = "4.x"
+  debug = false
   since = "2018"
   gitRepo = ""
 
   # site info (optional)
-  logoTitle = "极限博客"
-  keywords = ["极限博客", "极限玩家","南极神"]
-  description = "极限玩家的博客"
+  logoTitle = "极限玩家"
+  keywords = ["极限玩家博客", "极限博客","极限玩家","南极神"]
+  description = "极限玩家博客"
 
   archivePaginate = 50
   dateFormatToUse = "2006-01-02"
@@ -110,8 +115,6 @@ copyright = "极限玩家"
 
   [params.social]  
     a-email = "mailto:njx.xyz@email.com"
-    c-twitter = "https://twitter.com/nanjishen"
-    g-github = "https://ttti.cc"
     h-weibo = "https://weibo.com/nanjishen"
 
 # See https://gohugo.io/about/hugo-and-gdpr/

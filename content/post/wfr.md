@@ -108,4 +108,4 @@ winfr C: E:\RecoveryTest /x /y:ZIP
 
 > [https://support.microsoft.com/zh-cn/help/4538642/windows-10-restore-lost-files](https://support.microsoft.com/zh-cn/help/4538642/windows-10-restore-lost-files)
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)

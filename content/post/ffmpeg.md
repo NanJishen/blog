@@ -16,35 +16,73 @@ categories: ["软件"]
 
 首先就是去[官网下载](http://ffmpeg.org)了，在下面选择 Windows 已经构建好的版本，下载后将压缩包解压，其中 bin 文件夹中的程序就是我们要的。
 
-我个人通常会将 bin 文件夹重命名为 FFmpeg，然后将其移动到个人的软件目录中，我的个人软件目录`C:\Users\nanji\OneDrive\Apps\FFmpeg`，当然你也可以放到任意目录。
+我个人通常会将 bin 文件夹重命名为 FFmpeg，然后将其移动到个人的软件目录中，我的个人软件目录 `C:\Users\nanji\OneDrive\Apps\FFmpeg`，当然你也可以放到任意目录。
 
-将上面的路径添加到添加环境变量，以便可以在命令行中直接调用：按 [Win]键，输入 env ，点击“编辑系统环境变量”，在下方点击“环境变量”，之后在系统变量中双击 Path ，添加上面的路径即可，如图所示：
-
-加入环境变量后就算完成了，在终端中执行下 `ffmpeg` 看看是否安装成功，如下图所示就表示成功
+将上面的路径添加到添加环境变量，以便可以在命令行中直接调用：按 [Win]键，输入 env ，点击“编辑系统环境变量”，在下方点击“环境变量”，之后在系统变量中双击 Path ，添加上面的路径即可。加入环境变量后就算完成了，在终端中执行：
+```bash
+ffmpeg 或 ffmpeg -version # 查看版本，以确认否安装成功
+```
 
 ## FFmpeg 的使用
 
 这里说说简单的日常使用，如果你是更专业的用户，可以参考官方帮助，了解更高级的用法，不过一般来说，这些对普通用户就足够了~
 
+### 视频信息
+
+```bash
+ffmpeg -i video.avi # 查看本地视频信息
+ffmpeg -i http://..file1.mp4 # 查看远程 Web 网络视频信息
+```
+
 ### 格式转换
 
 最常用的就是一个文件的格式转换成另一个：
-
-```
+```bash
 ffmpeg -i filename.flv filename.mp4
 # 反之
 ffmpeg -i filename.mp4 filename.flv
 
-# 拷贝转换，即保持原样的编码进行格式转换
-ffmpeg -i filename.flv -vcodec copy -acodec copy filename.mp4
+# 拷贝转换，即保持原样的编码不变，只转换格式
+ffmpeg -i filename.ts -vcodec copy -acodec copy filename.mp4
 
 # 中文名音乐转换
 ffmpeg -i '.\下辈子不一定遇见.m4a' -f mp3 '.\下辈子不一定遇见.mp3'
+
+# WAV 转换到 MP3
+ffmpeg -i a.wav -vn -ar 48000 -ac 2 -b:a 256 output-b.mp3
+
+# 选项：
+-i # 输入的视频
+-f # 输出的视频（格式）
+-vn # 有时音频文件有图片，指定不在输出中出现图像
+-ar # 设置要转换的音频文件的音频频率，可以使用 8kHz、44.1kHz 或 48kHz 等值调整音质和频率
+-ac # 设置音频通道的数量
+-b:a # 设置每秒的音频比特率，千位越高，音质越高
 ```
+
+### 编码并转换格式
+
+用 `-vcodec` 参数来手动指定格式：
+```bash
+ffmpeg -i filename.wmv -vcodec h264 filename.mp4
+ffmpeg -i filename.mp4 -vcodec wmv1 filename.wmv
+
+ffmpeg -i filename.wmv -s 640x480 -b 500k -vcodec h264 -r 30 -acodec libfaac -ab 48k -ac 2 filename.mp4 # 设定更多选项，说明如下
+
+# 选项
+-r ：指定帧率
+-s ：指定分辨率
+-b ：指定比特率；于此同时可以对声道进行转码
+-acodec ：指定音频编码
+-ab ：指定音频比特率
+-ac ：指定声道数
+```
+
+H264 为最佳，当然你还可以指定 mpeg4 、libxvid ，不过呢 FFmpeg 默认会根据文件格式选择最合适的容器格式与编码格式，一般不用指定的。
 
 ### 压缩视频
 
-```
+```bash
 # 降低fps和音频码率以减少大小，同时视频清晰度不变
 ffmpeg -i filename.mp4 -r 10 -b:a 32k filename.mp4
 
@@ -60,7 +98,7 @@ ffmpeg -i 480p.mp4 480p.webm
 
 可以将视频转成 Gif 动图：
 
-```
+```bash
 # 将视频前 30 帧转成 Gif 动图
 ffmpeg -i filename.mp4 -vframes 30 -y -f gif filename.gif
 
@@ -78,7 +116,7 @@ ffmpeg -i filename.mp4 -ss 0:0:30 -t 10 -s 320x240 -pix_fmt rgb24 filename.gif
 
 ### 选项与参数
 
-```
+```bash
 -i ：输入的文件，即文件的全面（filename）
 -vcodec ：编码格式，支持主流的 H.264和H.265（默认值：xvid）
 -preset ：编码速率控制，编码越快，信息丢失越多，即视频质量变差
@@ -88,39 +126,13 @@ ffmpeg -i filename.mp4 -ss 0:0:30 -t 10 -s 320x240 -pix_fmt rgb24 filename.gif
 -acodec ：音频编码方式
 -ab ：音频数据流量，一般选择 32，64，96，128（推荐）
 ```
-
 注：-crt 会直接影响到输出视频的码率，之后再设置－b 指定码率将不会生效；-preset 例如 x264 编码的预设值可以通过该参数指定。它主要影响编码的速度，并不会很大的影响编码出来的结果的质量。
-
-### 指定转换格式
-
-用 -vcodec 参数来手动指定格式：
-
-```
-ffmpeg -i filename.wmv -vcodec h264 filename.mp4
-ffmpeg -i filename.mp4 -vcodec wmv1 filename.wmv
-```
-
-H264为最佳，当然你还可以指定 mpeg4、libxvid，不过呢 FFmpeg 默认会根据文件格式选择最合适的容器格式与编码格式，一般不用指定的。
-
-**其它的附加选项：**
-
-```
--r ：指定帧率
--s ：指定分辨率
--b ：指定比特率；于此同时可以对声道进行转码
--acodec ：指定音频编码
--ab ：指定音频比特率
--ac ：指定声道数
-
-示例：
-ffmpeg -i filename.wmv -s 640x480 -b 500k -vcodec h264 -r 30 -acodec libfaac -ab 48k -ac 2 filename.mp4
-```
 
 ### 合并 MP4 视频
 
 将多个视频合并：
 
-```
+```bash
 # mp4 最好是先转成无损的 ts 后再进行合并
 ffmpeg -i file1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb file1.ts
 ffmpeg -i file2.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb file2.ts
@@ -129,21 +141,21 @@ ffmpeg -i "concat:file1.ts|file2.ts" -acodec copy -vcodec copy -absf aac_adtstoa
 
 ### 更改分辨率大小
 
-```
+```bash
 ffmpeg -i filename.mp4 -filter:v scale=1280:720 -c:a copy filename.mp4
 # 又或者
 ffmpeg -i filename.mp4 -s 1280x720 -c:a copy filename.mp4
 ```
 
-也可以调整视频的宽高比，：
+也可以调整视频的宽高比：
 
-```
+```bash
 ffmpeg -i filename.mp4 -aspect 16:9 filename.mp4
 ```
 
 ### 转换视频码率
 
-```
+```bash
 # 将视频转换成 3 Mbps 码率的视频
 ffmpeg -i filename.mp4 -b:v 3000k filename.mp4
 
@@ -156,9 +168,16 @@ ffmpeg -i filename.mp4 -b:v 3000k -bufsize 3000k -maxrate 3500k filename.mp4
 
 ### 剪辑视频
 
-```
+```bash
 # 从 00:00:21 开始剪辑，时间为 10 秒钟
 ffmpeg -i filename.mov -ss 00:00:21 -t 00:00:10 -acodec aac -vcodec h264 -strict -2 filename.mp4
+
+# 从 00:01:30 开始剪辑，持续时间为 20秒，编码原样不变
+ffmpeg -ss 0:1:30 -t 0:0:20 -i filename.avi -vcodec copy -acodec copy filename.avi
+
+# 从 10秒 开始剪辑，持续15秒（比上面更简洁）
+ffmpeg -i filename.mp4 -ss 10 -t 15 -codec copy filename.mp4
+ffmpeg -ss 10 -t 15 -i filename.mp4 -codec copy filename.mp4 #（相比上面解决第一帧黑屏问题）
 
 # 裁剪参数 crop=width:height:x:y 说明：
 # width 和 height 表示剪裁后的宽和高的尺寸，
@@ -180,23 +199,80 @@ ffmpeg -i filename.mp4 -filter:v "crop=in_w/2:in_h/2:in_w/2:in_h/2" -c:a copy fi
 ffmpeg -i filename.mp4 -filter:v "crop=in_w:in_h-40" -c:a copy filename.mp4
 ```
 
+### 视频旋转
+
+```bash
+# 旋转 90 度
+ffmpeg -i filename.mp4 -metadata:s:v rotate="90" -codec copy filename.mp4
+
+# 顺时针旋转 90 度
+ffmpeg -i filename.mp4 -vf "transpose=1" filename.mp4
+
+# 逆时针旋转 90 度
+ffmpeg -i filename.mp4 -vf "transpose=2" filename.mp4
+
+# 顺时针旋转 90 度后再水平翻转
+ffmpeg -i filename.mp4 -vf "transpose=3" filename.mp4
+
+# 逆时针旋转 90 度后再水平翻转
+ffmpeg -i filename.mp4 -vf "transpose=0" filename.mp4
+
+# 水平翻转视频
+ffmpeg -i filename.mp4 -vf hflip filename.mp4
+
+# 垂直翻转视频
+ffmpeg -i filename.mp4 -vf vflip filename.mp4
+```
+
+### 加减速与倒放
+
+```bash
+# 视频倒放：无音频
+ffmpeg -i filename.mp4 -filter_complex [0:v]reverse[v] -map [v] -preset superfast filename.mp4
+
+# 视频倒放：音频不变
+ffmpeg -i filename.mp4 -vf reverse filename.mp4
+
+# 音频倒放：视频不变
+ffmpeg -i filename.mp4 -map 0 -c:v copy -af "areverse" reversed_audio.mp4
+
+# 音视频同时倒放
+ffmpeg -i filename.mp4 -vf reverse -af areverse -preset superfast filename.mp4
+
+# 视频加速：帧速率变为 2 倍，调整倍速范围（0.25，4）
+1ffmpeg -i filename.mp4 -vf setpts=PTS/2 -af atempo=2 filename.mp4
+
+# 视频减速播放
+ffmpeg -i filename.mkv -an -filter:v "setpts=0.5*PTS" filename.mkv
+```
+
 ### 图片与视频转换
 
-```
+```bash
 # 将图片序列合成视频
 ffmpeg -f image2 -i image%d.jpg filename.mp4
 
 # 将视频分解成图片序列
 ffmpeg -i filename.mp4 image%d.jpg
+ffmpeg –i test.avi –r 1 –f image2 image-%3d.jpeg # -r 表示频率，-ss 开始时间，-t 持续时间
 
 # 将视频的 8.01 秒处截取 800*600 的缩略图
 ffmpeg -i filename.mp4 -y -f image2 -ss 08.010 -t 0.001 -s 800x600 jt.jpg
 ffmpeg -r 0.5 -i c:/tmp/image%04d.jpg -i c:/time.mp3 -vcodec mpeg4 c:/filename.mp4
+
+# 添加图片水印
+ffmpeg -i filename.mp4 -i logo.png -filter_complex overlay filename.mp4
+
+# 添加 GIF 文件
+ffmpeg -y -i filename.mp4 -ignore_loop 0 -i filename.gif -filter_complex overlay=0:H-h filename.mp4
 ```
 
-### 音频视频分离与合并
+### 分离与合并音视频
 
-```
+```bash
+ffmpeg -i filename.mp4 -vn filename.mp3 # 从视频分离出音频
+ffmpeg -i filename.mp4 -an output-mute.mp4 # 从视频分离出视频
+
 # 从视频中去除音频，使用 -an 参数去掉音频，使用 -vcodec copy 表示拷贝视频原样
 ffmpeg -i filename.mp4 -vcodec copy -an filename.mp4
 
@@ -205,11 +281,16 @@ ffmpeg -i filename.mp4 -acodec copy -vn filename.mp3
 
 # 音频与视频合成，使用 -y 参数表示覆盖输出文件
 ffmpeg -y –i filename.mp4 –i filename.mp3 –vcodec copy –acodec copy filename.mp4
+
+# 选项
+-ar # 设置采样率
+-ac # 设置声音的声道数
+-acodec # 设置声音编解码器，未设定则采用输入流相同的编解码器，一般后面加 copy 表示拷贝，-an 不处理音频
 ```
 
 ### 对视频进行操作
 
-```
+```bash
 # 剪切视频，-ss 表示开始时间; -t 表示持续时间
 ffmpeg -ss 0:2:50 -t 0:0:20 -i filename.mp4 -vcodec copy -acodec copy filename.mp4
 
@@ -220,7 +301,7 @@ ffmpeg –i filename.mp4 –f image2 -t 0.001 -s 320x240 image-%3d.jpg
 ffmpeg –i filename.mp4 –r 1 –f image2 image-%3d.jpg
 
 # 视频拼接
-ffmpeg -f concat -i filelist.txt -c copy output.mp4
+ffmpeg -f concat -i filelist.txt -c copy filename.mp4
 
 # 旋转视频
 ffmpeg -i filename.mp4 -vf rotate=PI/2 filename.mp4
@@ -240,9 +321,8 @@ ffmpeg -i filename.mp4 -filter_complex "[0:v]setpts=0.5*PTS[v];[0:a]atempo=2.0[a
 
 ### 合并图片为视频
 
-将要合并的图片放在同一个文件夹中，然后重命名为：img001.png, img002.png, img003.png
-
-```
+将要合并的图片放在同一个文件夹中，并重命名为：`img001.png` , `img002.png` , `img003.png`：
+```bash
 ffmpeg -framerate 24 -i img%03d.png filename.mp4
 # 或者
 ffmpeg -r 0.5 -i img%03d.jpg filename.mp4
@@ -253,11 +333,17 @@ ffmpeg -f image2 -i img%d.jpg filename.mp4
 
 ### 视频添加水印
 
-```
+```bash
 # 视频添加水印，main_w-overlay_w-10 表示视频的宽度-水印的宽度-水印边距
 ffmpeg -i filename.mp4 -i logo.jpg -filter_complex [0:v][1:v]overlay=main_w-overlay_w-10:main_h-overlay_h-10[out] -map [out] -map 0:a -codec:a copy filename.mp4
+
+# 添加文本水印
+ffmpeg -i filename.flv -vf "drawtext=fontfile=simhei.ttf: text='文本':x=100:y=10:fontsize=24:fontcolor=yellow:shadowy=2" filename.mp4
 ```
 
 **FFmpeg** 这个神器非常值得学习，因为视频在今天来说是很主流的内容载体，虽然对小白来来说，看起来很复杂，但其实只要掌握几个基本命令就足够了，同时它在 Windows 和 Linux 上都可以使用。
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+## 更多参考
+[在 Linux 上用 FFmpeg 命令进行音频和视频处理](https://www.linuxmi.com/linux-ffmpeg.html)
+
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)

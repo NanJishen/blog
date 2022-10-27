@@ -16,4 +16,4 @@ categories: ["方法"]
 
 当我们探索一个未知领域的时候，应该在过程中同时编写文档，这会直接让你内化，而不是“照猫画虎”，同时会留存一份回顾文档，毕竟昨天的知识你可能带不到明天。
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)

@@ -16,25 +16,25 @@ categories: ["软件"]
 
 浏览器访问官网：`ventoy.net/cn/download.html`，然后点击页面中的 `ventoy-1.x.xx-windows.zip` 后会跳转到 GitHub 页面（实际上点任何版本都会跳转到 GitHub 下载页面）。
 
-![](https://cdn.jsdelivr.net/gh/nassets/imgp/posts/d2103/3101.png)
+![](https://testingcf.jsdelivr.net/gh/nassets/imgp/posts/d2103/3101.png)
 
 接着在 GitHub 下载页面，点击 Windows 版本的：`ventoy-1.0.39-windows.zip` 即可弹出下载（注：这个指的是当前你制作U盘的系统，不是安装的系统，我当前使用 Win10 来制作U盘，那么选择 Windows 系统），如下图所示：
 
-![](https://cdn.jsdelivr.net/gh/nassets/imgp/posts/d2103/3102.png)
+![](https://testingcf.jsdelivr.net/gh/nassets/imgp/posts/d2103/3102.png)
 
 Ventoy 是一个绿色免安装工具，因此将其解压后便可直接使用了。
 
-![](https://cdn.jsdelivr.net/gh/nassets/imgp/posts/d2103/3103.png)
+![](https://testingcf.jsdelivr.net/gh/nassets/imgp/posts/d2103/3103.png)
 
 ## 制作启动U盘
 
 双击 Ventoy2Disk.exe 运行，可以看到如下画面。其中*1.0.39*代表当前 Ventoy 的版本。设备处是空的，表示当前还没有插入U盘。我们可以先插入U盘再双击运行 Ventoy，也可以先运行，再插入U盘后点击下绿色的刷新按钮检测U盘。
 
-![](https://cdn.jsdelivr.net/gh/nassets/imgp/posts/d2103/3104.png)
+![](https://testingcf.jsdelivr.net/gh/nassets/imgp/posts/d2103/3104.png)
 
 现在将U盘插入电脑，接着点击下绿色的刷新按钮。如你所见，现在看到了U盘，并且显示了U盘中的 Ventoy 版本（这是我之前安装的版本）。然后我们来配置选项，如下图所示 ↓
 
-![](https://cdn.jsdelivr.net/gh/nassets/imgp/posts/d2103/3105.png)
+![](https://testingcf.jsdelivr.net/gh/nassets/imgp/posts/d2103/3105.png)
 
 配置选项 - 分区类型 - GPT，这个分区格式选择指的是U盘所使用的格式，它默认的是 MBR ，因为我个人不在使用老设备，所以选择了 GPT 。
 
@@ -42,13 +42,13 @@ Ventoy 是一个绿色免安装工具，因此将其解压后便可直接使用�
 
 点击安装或升级后会弹出如下所示的提示，表示安装成功。
 
-![](https://cdn.jsdelivr.net/gh/nassets/imgp/posts/d2103/3106.png)
+![](https://testingcf.jsdelivr.net/gh/nassets/imgp/posts/d2103/3106.png)
 
 ## 放入镜像
 
 经过以上步骤 Ventoy 已成功安装到U盘。也就是说，该U盘现在已经可以引导启动系统了。但是它还不包含操作系统安装镜像。现在我们来将 ISO 镜像文件放入其中吧 ↓
 
-![](https://cdn.jsdelivr.net/gh/nassets/imgp/posts/d2103/3107.png)
+![](https://testingcf.jsdelivr.net/gh/nassets/imgp/posts/d2103/3107.png)
 
 如你所见，我放了3个镜像，分别是：*Windows10*、*ArchLinux*、*WePE64*。
 
@@ -93,4 +93,4 @@ Ventoy Server 1.0.39 已经启动 ...
 
 哦对了，由于 Ventoy 的特性，你可以在该分区下放入 mp3、mp4、电子书、绿色版软件等，升级也不会干扰到其中的内容，也就是说它还可以当作普通U盘一样日用。
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)

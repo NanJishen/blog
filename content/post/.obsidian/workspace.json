@@ -1,0 +1,147 @@
+{
+  "main": {
+    "id": "0c2ea28ebe65173d",
+    "type": "split",
+    "children": [
+      {
+        "id": "f9e63d6bf51e4459",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "473da176ec7789ac",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d24bb0d66d1c89f0",
+    "type": "split",
+    "children": [
+      {
+        "id": "f76ad3f63fda4935",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d9928fd942df4c86",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "203e2f86a4cbed72",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "1a64eb607f87f824",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 278.50152587890625
+  },
+  "right": {
+    "id": "cf332dafef801a9f",
+    "type": "split",
+    "children": [
+      {
+        "id": "64ba3f211f4db523",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1fb4145b3f5fab7e",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "d8ab411d326adfe8",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "27d6b5267a0055cd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "1b715ffd58df9756",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "ribbon": {
+    "mostRecentAction": ""
+  },
+  "active": "473da176ec7789ac",
+  "lastOpenFiles": [
+    "ffmpeg.md",
+    "qnap-Jellyfin-nyanmisaka.md",
+    "jsdelivrtogithub.md",
+    "pic-mirror-img.md",
+    "wfr.md",
+    "youtubedl.md",
+    "jiao-yan-wen-jian.md",
+    "ventoy.md",
+    "win10-setup.md",
+    "godzilla-vs-kong.md"
+  ]
+}

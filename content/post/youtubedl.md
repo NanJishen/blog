@@ -17,7 +17,7 @@ youtube-dl 需要安装 Python 环境，并需配置好系统变量（安装时�
 
 ### 下载最优视频（默认）
 
-```
+```bash
 youtube-dl https://www.youtube.com/watch?v=xxxxxxxx
 ```
 
@@ -25,14 +25,13 @@ youtube-dl https://www.youtube.com/watch?v=xxxxxxxx
 
 ### 查看可选的视、音频格式
 
-```
+```bash
 youtube-dl -F https://www.youtube.com/watch?v=xxxxxxxx
-
 ```
 
 呈现信息
 
-```
+```bash
 249          webm       audio only tiny   53k , opus @ 50k (48000Hz), 1.09MiB
 251          webm       audio only tiny  127k , opus @160k (48000Hz), 2.48MiB
 140          m4a        audio only tiny  130k , m4a_dash container, mp4a.40.2@128k (44100Hz), 2.99MiB
@@ -54,7 +53,6 @@ youtube-dl -F https://www.youtube.com/watch?v=xxxxxxxx
 ```
 youtube-dl -f 136+140 https://www.youtube.com/watch?v=xxxxxxxx
 youtube-dl -f 136 https://www.youtube.com/watch?v=xxxxxxxx
-
 ```
 
 ## 命令格式
@@ -67,14 +65,13 @@ youtube-dl -f 136 https://www.youtube.com/watch?v=xxxxxxxx
 
 以下命令能够实现，将视频带有的字幕一起下载下来
 
-```
+```bash
 youtube-dl --write-sub --sub-format "ass/srt/best" --convert-subs "srt" "video_url"
-
 ```
 
 `—write-sub`：写入字幕，即把字幕下载。  
 `--sub-format`：指定字幕格式，按顺序选，不存在则选下一个。  
 `--convert-subs`： 转换字幕，格式有限制，通用为 srt ；若不转，某些字幕可能是 .vtt 的；如果有 ass 字幕可下载，则无须加此项。
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)
 

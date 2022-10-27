@@ -50,4 +50,4 @@ Chrome / Edge 浏览器自带的书签管理虽然可以在顶部开启书签栏
 
 ![](https://s3.ax1x.com/2021/03/18/6RKYw9.png)
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)

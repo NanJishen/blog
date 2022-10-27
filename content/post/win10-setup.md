@@ -24,4 +24,4 @@ categories: ["方法"]
 
 使用动图演示，往往更简练说明问题，如今很多科普文章喜欢长文啰嗦。我更相信李小龙说的：“文明的进度总是向着简单方向运行”，就是说应该把科普的内容做的简单，毕竟我们都没有耐心看长文不是吗？
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)

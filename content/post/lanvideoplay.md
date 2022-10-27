@@ -57,4 +57,4 @@ SMB 英文全称是 Server Message Block，它是一种作为局域网内文件�
 
 就是这么简单，这样以后你就可以用家里的手机电视或平板来直接播放电脑里的视频了，并不需要什么投屏软件。投屏软件通常是为了手机投票演示手机操作用的，而播放电脑里的视频，我们称之为流媒体播放。
 
-![](https://gitee.com/nanjishen/Npic/raw/master/img/gzh-end.png)
+![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)
