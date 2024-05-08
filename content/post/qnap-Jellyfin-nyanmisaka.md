@@ -2,8 +2,8 @@
 title: "威联通通过 Docker 安装 Jellyfin"
 date: 2022-01-08T00:54:10+08:00
 draft: flase
-tags: ["软件"]
-categories: ["jellyfin"]
+tags: ["jellyfin"]
+categories: ["软件"]
 ---
 
 威联通通过 Docker 安装 Jellyfin 是很简单的。但是支持硬件解码对小白来说略难。不过其实采用  nyanmisaka 大神的 Docker 镜像，是默认支持硬件转码的。有效的减少了折腾。下面就来说说如何安装。

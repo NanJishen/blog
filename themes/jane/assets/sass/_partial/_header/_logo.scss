@@ -1,0 +1,16 @@
+// ==============================
+// Logo
+// =============================
+
+.logo-wrapper {
+  .logo {
+    font-size: $logo-font-size;
+    font-family: $logo-font-family;
+  }
+}
+
+@include max-screen() {
+  .logo-wrapper {
+    display: none;
+  }
+}

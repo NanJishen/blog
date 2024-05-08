@@ -1,28 +1,29 @@
 baseURL = "https://ttti.cc"
-languageCode = "zh-cn"
-defaultContentLanguage = "zh-cn"
 title = "极限玩家"
-preserveTaxonomyNames = true
 enableRobotsTXT = true
 enableEmoji = true
-theme = "even"
+theme = "jane"
 
-# Syntax highlighting by Chroma. NOTE: Don't enable `highlightInClient` and `chroma` at the same time!
-pygmentsOptions = "linenos=table"
-pygmentsCodefences = true
-pygmentsUseClasses = true
-pygmentsCodefencesGuessSyntax = true
+hasCJKLanguage = true     # 自动检测是否包含 中文\日文\韩文
+paginate = 8              # 首页每页显示的文章数
+rssLimit = 20             # 限制 Rss 文章输出数量
+disqusShortname = "extreme-1" # disqus_shortname
+googleAnalytics = "G-XK6SLX411H" # UA-XXXXXXXX-X
+copyright = "极限玩家"     # 默认为下面配置的author.name ↓
 
-hasCJKLanguage = true
-paginate = 10
-disqusShortname = "extreme-1"
-googleAnalytics = "G-XK6SLX411H"
-copyright = "极限玩家"
+# language support # en / zh-cn / other... translations present in i18n/
+defaultContentLanguage = "zh-cn"  # Default language to use
+[languages.en]
+  languageCode = "en"
+
+[Languages.zh-cn]
+  languageCode = "zh-cn"
 
 [author]
-  name = "南极神"
+  name = "南极神"        # 必需
+  url = "/about"        # 可选
 
-[sitemap]
+[sitemap]               # 必需
   changefreq = "weekly"
   priority = 0.5
   filename = "sitemap.xml"
@@ -31,102 +32,51 @@ copyright = "极限玩家"
   name = "首页"
   weight = 10
   identifier = "home"
-  url = "/"
+  pageref = "/"
 [[menu.main]]
   name = "存档"
   weight = 20
   identifier = "archives"
-  url = "/post/"
+  pageref = "/post/"
 [[menu.main]]
   name = "标签"
   weight = 30
   identifier = "tags"
-  url = "/tags/"
+  pageref = "/tags/"
 [[menu.main]]
   name = "分类"
   weight = 40
   identifier = "categories"
-  url = "/categories/"
-
+  pageref = "/categories/"
 [[menu.main]]
   name = "极限搜索"
-  weight = 40
-  identifier = "more"
+  weight = 50
   url = "/so.html"
 
 [params]
-  version = "4.x"
-  debug = false
-  since = "2018"
-  gitRepo = ""
+  since = "2018" # 站点建立时间
+  homeFullContent = false   # 如果为 false ，在主页上显示帖子摘要。否则显示完整的内容。
+  rssFullContent = true     # 如果是错误的，则rss feed而不是摘要
 
-  # site info (optional)
-  logoTitle = "极限玩家"
-  keywords = ["极限玩家博客", "极限博客","极限玩家","南极神"]
+  # 站点信息（可选，不需要的可以直接注释掉）
+  logoTitle = "极限玩家" # 默认值: 上面设置的title值
+  keywords = ["极限玩家", "极限玩家博客", "极限博客", "南极神"]
   description = "极限玩家博客"
 
-  archivePaginate = 50
+  # 使用的日期格式，可以参阅：https://gohugo.io/functions/format/
   dateFormatToUse = "2006-01-02"
 
-  # Syntax highlighting by highlight.js
-  highlightInClient = false
-
   # 一些全局开关，你也可以在每一篇内容的 front matter 中针对单篇内容关闭或开启某些功能，在 archetypes/default.md 查看更多信息。
-  toc = true
-  autoCollapseToc = false   # 目录自动展开/折叠
-  fancybox = true           # 是否启用fancybox（图片可点击）
-
-  postMetaInFooter = true   # 包含作者，上次修改时间，markdown链接，许可信息
-  linkToMarkDown = false    # 链接到markdown原始文件（仅当允许hugo生成markdown文件时有效）
-  contentCopyright = ''     # e.g. '<a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a>'
-
-  changyanAppid = ""        # Changyan app id    # 畅言
-  changyanAppkey = ""       # Changyan app key
-
-  livereUID = ""            # LiveRe UID        # 来必力
-
-  baiduPush = false        # baidu push        # 百度
-  baiduAnalytics = ""      # Baidu Analytics
-  baiduVerification = ""   # Baidu Verification
-  googleVerification = ""  # Google Verification   # 谷歌
+  toc = true  # 是否开启目录
+  photoswipe = true  # see https://github.com/dimsemenov/PhotoSwipe  # 是否启用PhotoSwipe（图片可点击）
+  contentCopyright = '由<a href="https://ttti.cc" target="_blank">极限玩家</a>驱动'
 
   # Link custom CSS and JS assets
   #   (relative to /static/css and /static/js respectively)
-  customCSS = []
-  customJS = []
+  customCSS = ['custom.css']   # 如果为 ['custom.css'], 则读取 '/static/css/custom.css' file
+  customJS = []    # 如果为 ['custom.js'], 则读取 '/static/js/custom.js' file
 
-  uglyURLs = false          # please keep same with uglyurls setting
-
-  # Show language selector for multilingual site.
-  showLanguageSelector = false
-
-  [params.flowchartDiagrams]# see https://blog.olowolo.com/example-site/post/js-flowchart-diagrams/
-    enable = false
-    options = ""
-
-  [params.sequenceDiagrams] # see https://blog.olowolo.com/example-site/post/js-sequence-diagrams/
-    enable = false
-    options = ""            # default: "{theme: 'simple'}"
-
-  [params.reward]                                         # 文章打赏
-    enable = false
-    wechat = "/path/to/your/wechat-qr-code.png"           # 微信二维码
-    alipay = "/path/to/your/alipay-qr-code.png"           # 支付宝二维码
-
-  [params.social]  
-    a-email = "mailto:njx.xyz@email.com"
+  [params.social] # 社交链接
+    a-email = "mailto:nanjishen@outlook.com"
     h-weibo = "https://weibo.com/nanjishen"
-
-# See https://gohugo.io/about/hugo-and-gdpr/
-[privacy]
-  [privacy.googleAnalytics]
-    anonymizeIP = true
-  [privacy.youtube]
-    privacyEnhanced = true
-
-# see https://gohugo.io/getting-started/configuration-markup
-[markup]
-  [markup.tableOfContents]
-    startLevel = 1
-  [markup.goldmark.renderer]
-    unsafe = true
+    q-bilibili = "https://space.bilibili.com/8965770/"

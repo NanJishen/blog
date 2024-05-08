@@ -1,0 +1,24 @@
+// ==============================
+// Back to top
+// =============================
+
+.button__back-to-top {
+  position: fixed;
+  right: 2em;
+  bottom: 2em;
+  transition-property: transform;
+  transition-timing-function: ease-out;
+  transition-duration: 0.3s;
+  z-index: 10;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+@include max-screen() {
+  .button__back-to-top {
+    display: none !important;
+  }
+}

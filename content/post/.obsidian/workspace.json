@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "f9e63d6bf51e4459",
+        "id": "430e9b4617cf537a",
         "type": "tabs",
         "children": [
           {
-            "id": "473da176ec7789ac",
+            "id": "a23c147041f4b6e2",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -58,6 +58,14 @@
             "type": "leaf",
             "state": {
               "type": "starred",
+              "state": {}
+            }
+          },
+          {
+            "id": "9313792c9091fa67",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
               "state": {}
             }
           }
@@ -128,15 +136,26 @@
     "direction": "horizontal",
     "width": 300
   },
-  "ribbon": {
-    "mostRecentAction": ""
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
   },
-  "active": "473da176ec7789ac",
+  "active": "a23c147041f4b6e2",
   "lastOpenFiles": [
-    "ffmpeg.md",
+    "qnap-aliyunpan.md",
+    "qnap-docker-transmission.md",
     "qnap-Jellyfin-nyanmisaka.md",
-    "jsdelivrtogithub.md",
+    "qnap-docker-aria.md",
     "pic-mirror-img.md",
+    "Infoverload.md",
+    "ffmpeg.md",
+    "jsdelivrtogithub.md",
     "wfr.md",
     "youtubedl.md",
     "jiao-yan-wen-jian.md",

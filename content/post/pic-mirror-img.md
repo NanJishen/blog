@@ -2,8 +2,8 @@
 title: "图片防盗链解决方案"
 date: 2021-03-12T20:50:06+08:00
 draft: flase
-tags: ["方法"]
-categories: ["图床"]
+tags: ["图床方法"]
+categories: ["方法"]
 ---
 
 很多时候，图片镜像缓存服务有不错的用途：

@@ -23,14 +23,13 @@ youtube-dl https://www.youtube.com/watch?v=xxxxxxxx
 
 不带任何参数，则默认下载画质、音质最好的视频。
 
-### 查看可选的视、音频格式
+### 查看可选的音视频格式
 
 ```bash
 youtube-dl -F https://www.youtube.com/watch?v=xxxxxxxx
 ```
 
-呈现信息
-
+呈现信息：
 ```bash
 249          webm       audio only tiny   53k , opus @ 50k (48000Hz), 1.09MiB
 251          webm       audio only tiny  127k , opus @160k (48000Hz), 2.48MiB
@@ -61,17 +60,54 @@ youtube-dl -f 136 https://www.youtube.com/watch?v=xxxxxxxx
 * youtube-dl -F \[url\]（列出所有音频和视频）
 * youtube-dl \[playlist_url\]（下载视频列表）
 
+## 下载并合并音视频
+
+```bash
+youtube-dl -f 序号+bestaudio --merge-output-format mp4 [url]
+
+# 注意：合并为 mp4 时，音频如果是 webm 格式则会出现错误，因此可以指定格式：
+youtube-dl -f 'bestvideo+bestaudio[ext=m4a]' --merge-output-format mp4 [url]
+```
+
+### 下载音乐
+
+```bash
+youtube-dl -x --audio-format mp3 [url] # 指定下载 mp3 格式的音频（-x 为提取音频；--audio-format 指定格式：best（预设），aac，flac，mp3，m4a，opus（最高音质）等）
+
+youtube-dl -x --audio-format mp3 --embed-thumbnail --add-metadata [url] # 嵌入缩略图并写入说明（--embed-thumbnail：嵌入影片缩图（仅限 mp3 和 m4a/mp4）；--add-metadata：加入影片资讯到 ID3 标签里）
+
+youtube-dl --extract-audio --audio-format mp3 -o "%(title)s.%(ext)s" [playlist_url] # 下载播放列表，并指定用视频标题题和扩展名
+
+youtube-dl -x --audio-format mp3 --embed-thumbnail --add-metadata --playlist-items 1-3 [playlist_url] # 下载该播放列表的 1~3 首歌，并存成 MP3
+```
+
+### 设定代理
+
+```bash
+youtube-dl --proxy 127.0.0.1:1080 [url] # 指定 HTTP 代理下载，IP 开头用 socks5:// 可以指定 Socks5 代理
+```
+
 ## 字幕相关
 
 以下命令能够实现，将视频带有的字幕一起下载下来
 
 ```bash
-youtube-dl --write-sub --sub-format "ass/srt/best" --convert-subs "srt" "video_url"
+youtube-dl --list-subs [url] # 列出所有字幕
+youtube-dl --write-sub --sub-format "ass/srt/best" --convert-subs "srt" "url"
+
+# 选项
+—write-sub # 写入字幕
+--sub-format # 指定字幕格式，按顺序选，不存在则选下一个
+--convert-subs # 转换字幕，格式有限制，通用为 srt ，若不转，某些字幕可能是 .vtt 的，如果有 ass 字幕可下载，则无须加此项
+--list-subs # 列出所有字幕
+--embed-sub # 将字幕合并至影片中，需搭配 --write-sub 使用
+--all-subs # 下载所有字幕
+--sub-lang # 指定字幕语言，多个语言用逗号分隔
+
+# 实例
+youtube-dl --sub-lang zh-CN,en --write-sub --embed-subs [url] # 下载中英字幕并写入到影片
+youtube-dl --write-sub --sub-format "ass/srt/best" --convert-subs "srt" url # 一并下载字幕
+youtube-dl --skip-download --all-subs url # 下载所有字幕
 ```
 
-`—write-sub`：写入字幕，即把字幕下载。  
-`--sub-format`：指定字幕格式，按顺序选，不存在则选下一个。  
-`--convert-subs`： 转换字幕，格式有限制，通用为 srt ；若不转，某些字幕可能是 .vtt 的；如果有 ass 字幕可下载，则无须加此项。
-
 ![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)
-

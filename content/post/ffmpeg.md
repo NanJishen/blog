@@ -32,6 +32,8 @@ ffmpeg 或 ffmpeg -version # 查看版本，以确认否安装成功
 ```bash
 ffmpeg -i video.avi # 查看本地视频信息
 ffmpeg -i http://..file1.mp4 # 查看远程 Web 网络视频信息
+ffmpeg -i "video.mkv" 2>&1 | sed -n "s/.*, \(.*\) tbr.*/\1/p" # 查看视频帧率
+ffprobe -v 0 -of compact=p=0 -select_streams 0 -show_entries stream=r_frame_rate "video.mkv" # 查看视频帧率
 ```
 
 ### 格式转换
@@ -51,7 +53,12 @@ ffmpeg -i '.\下辈子不一定遇见.m4a' -f mp3 '.\下辈子不一定遇见.mp
 # WAV 转换到 MP3
 ffmpeg -i a.wav -vn -ar 48000 -ac 2 -b:a 256 output-b.mp3
 
-# 选项：
+# ppt 导出的 webm 转 mp4
+ffmpeg -fflags +genpts -i in.webm -r 24 out.mp4
+# mpg 转 mp4
+ffmpeg -i in.mpg -c:v libx264 -c:a aac -crf 20 -preset:v veryslow out.mp4
+
+# 选项
 -i # 输入的视频
 -f # 输出的视频（格式）
 -vn # 有时音频文件有图片，指定不在输出中出现图像
@@ -79,6 +86,28 @@ ffmpeg -i filename.wmv -s 640x480 -b 500k -vcodec h264 -r 30 -acodec libfaac -ab
 ```
 
 H264 为最佳，当然你还可以指定 mpeg4 、libxvid ，不过呢 FFmpeg 默认会根据文件格式选择最合适的容器格式与编码格式，一般不用指定的。
+
+**软件编码和硬件编码**
+```bash
+# 软件编码速度慢，但压缩效果更好，输出质量更高，如果有时间并希望获得更高质量的编码，应该使用软件编码
+ffmpeg -i input -c:v libx265 -crf 26 -preset fast -c:a aac -b:a 128k output.mp4
+
+# 硬件编码，在 -vaapi_devices 参数中添加驱动程序路径
+ls /dev/dri
+ffmpeg -vaapi_device /dev/dri/renderD128 -i input -vf 'format=nv12,hwupload' -c:v hevc_vaapi -profile:v main -rc_mode CQP -global_quality 25 output.mp4
+```
+**VP9 的编码**
+```bash
+# 为了使 VP9 编码获得更好的压缩效果，使用了两道程序
+ffmpeg -i input.mkv -b:v 0 -tile-columns 2 -g 240 -threads 8 -quality good -crf 31 -c:v libvpx-vp9 -pass 1 -an -f null /dev/null && \
+ffmpeg -i input.mkv -b:v 0 -tile-columns 3 -g 240 -threads 8 -quality good -crf 31 -c:v libvpx-vp9 -c:a libopus -pass 2 -speed 4 -y output.webm
+```
+
+**AV1 的编码**，AV1 是比 vp9 和 h265 更优的压缩算法（优30%），但其软件编码速度非常慢，所以你应该使用支持 AV1 的专用显卡
+```bash
+ffmpeg -h encoder=libaom-av1 # 检查 libaom 模块是否存在于 ffmpeg 安装中 
+ffmpeg -i input.mp4 -c:v libaom-av1 -crf 30 av1_test.mkv
+```
 
 ### 压缩视频
 
