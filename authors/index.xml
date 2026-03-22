@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Authors on 极限玩家</title>
+    <link>/authors/</link>
+    <description>Recent content in Authors on 极限玩家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <managingEditor>nanji_shen@qq.com (极限玩家)</managingEditor>
+    <webMaster>nanji_shen@qq.com (极限玩家)</webMaster>
+    <copyright>© 2026 极限玩家</copyright>
+    <atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
+    
+  </channel>
+</rss>

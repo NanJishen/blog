@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>方法 on 极限玩家</title>
+    <link>/categories/%E6%96%B9%E6%B3%95/</link>
+    <description>Recent content in 方法 on 极限玩家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <managingEditor>nanji_shen@qq.com (极限玩家)</managingEditor>
+    <webMaster>nanji_shen@qq.com (极限玩家)</webMaster>
+    <copyright>© 2026 极限玩家</copyright>
+    <lastBuildDate>Wed, 05 Oct 2022 00:37:56 +0800</lastBuildDate><atom:link href="/categories/%E6%96%B9%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Google谷歌搜索方法和技巧</title>
+      <link>/posts/googlesearch/</link>
+      <pubDate>Wed, 05 Oct 2022 00:37:56 +0800</pubDate>
+      <author>nanji_shen@qq.com (极限玩家)</author>
+      <guid>/posts/googlesearch/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>如何更好的提问</title>
+      <link>/posts/askquestion-/</link>
+      <pubDate>Wed, 05 Jan 2022 00:37:56 +0800</pubDate>
+      <author>nanji_shen@qq.com (极限玩家)</author>
+      <guid>/posts/askquestion-/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>给Win10右键菜单加上校验文件功能</title>
+      <link>/posts/jiao-yan-wen-jian/</link>
+      <pubDate>Sun, 14 Mar 2021 16:50:37 +0800</pubDate>
+      <author>nanji_shen@qq.com (极限玩家)</author>
+      <guid>/posts/jiao-yan-wen-jian/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>图片防盗链解决方案</title>
+      <link>/posts/pic-mirror-img/</link>
+      <pubDate>Fri, 12 Mar 2021 20:50:06 +0800</pubDate>
+      <author>nanji_shen@qq.com (极限玩家)</author>
+      <guid>/posts/pic-mirror-img/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Youtube 详细统计信息测速指南</title>
+      <link>/posts/youtubecouts/</link>
+      <pubDate>Thu, 04 Mar 2021 14:45:18 +0800</pubDate>
+      <author>nanji_shen@qq.com (极限玩家)</author>
+      <guid>/posts/youtubecouts/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>JSDelivr CDN 加速 GitHub</title>
+      <link>/posts/jsdelivrtogithub/</link>
+      <pubDate>Fri, 19 Jun 2020 16:49:13 +0800</pubDate>
+      <author>nanji_shen@qq.com (极限玩家)</author>
+      <guid>/posts/jsdelivrtogithub/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>读-写-问</title>
+      <link>/posts/search-read-ask/</link>
+      <pubDate>Wed, 10 Jun 2020 18:25:57 +0800</pubDate>
+      <author>nanji_shen@qq.com (极限玩家)</author>
+      <guid>/posts/search-read-ask/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>动图演示从官方下载并制作Win10启动U盘</title>
+      <link>/posts/win10-setup/</link>
+      <pubDate>Thu, 28 May 2020 10:21:57 +0800</pubDate>
+      <author>nanji_shen@qq.com (极限玩家)</author>
+      <guid>/posts/win10-setup/</guid>
+      <description></description>
+      
+    </item>
+    
+  </channel>
+</rss>

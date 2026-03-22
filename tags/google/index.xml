@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Google on 极限玩家</title>
+    <link>/tags/google/</link>
+    <description>Recent content in Google on 极限玩家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <managingEditor>nanji_shen@qq.com (极限玩家)</managingEditor>
+    <webMaster>nanji_shen@qq.com (极限玩家)</webMaster>
+    <copyright>© 2026 极限玩家</copyright>
+    <lastBuildDate>Wed, 05 Oct 2022 00:37:56 +0800</lastBuildDate><atom:link href="/tags/google/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Google谷歌搜索方法和技巧</title>
+      <link>/posts/googlesearch/</link>
+      <pubDate>Wed, 05 Oct 2022 00:37:56 +0800</pubDate>
+      <author>nanji_shen@qq.com (极限玩家)</author>
+      <guid>/posts/googlesearch/</guid>
+      <description></description>
+      
+    </item>
+    
+  </channel>
+</rss>
