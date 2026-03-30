@@ -1,0 +1,3094 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><title>极限导航</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/png" href="https://ttti.cc/favicon.ico">
+<style>:root{
+--primary-color: #ecbe7d;
+--primary-hover: #c5840e;
+--background: #111;
+--text-color: #ffbb00;
+--border-color: #333;
+--shadow: 0 1px 6px #333;
+--font-family: 'Microsoft YaHei', -apple-system, Roboto, sans-serif
+}html::-webkit-scrollbar{display:none}
+*{padding:0;list-style:none}i{font-size:20px;color:var(--primary-color)}body{font-family:var(--font-family);background:var(--background);padding-bottom:6rem;color:var(--text-color)}main{max-width:2000px;padding:8vh 5px 0}a,a:active,a:visited{text-decoration:none;color:var(--primary-color);transition:color .3s ease}a:hover{color:var(--primary-hover)}span{color:var(--primary-color)}nav{position:fixed;top:-10px;z-index:2;width:100%;max-width:78em;padding:19px 2px;background:var(--background);display:flex;align-items:center}#s-menu{position:fixed;left:15px;padding:10px;border:none;background:var(--background);color:var(--primary-color)}option{color:var(--primary-color);background:var(--background)}#Searchbox{flex:1;padding-left:5rem;height:3rem;border:1px solid var(--border-color);border-radius:23px;outline:0;font-size:1.1rem;background:var(--background);color:var(--text-color)}#Searchbox:hover{box-shadow:var(--shadow)}nav button{position:relative;right:34px;background:0 0;border:none;cursor:pointer;color:var(--primary-color)}.t1{width:2em;height:2.5em;line-height:2.5em}#list{display:inline-block;margin-top:0}#list>li{float:left;margin:.3vh;text-align:center;border:1px solid var(--border-color);border-radius:9px;background:var(--background);transition:box-shadow .3s ease}#list>li:hover{box-shadow:var(--shadow)}#list li a{display:block;line-height:2.5em;min-width:7em;color:var(--primary-color)}#list a:hover{color:var(--primary-hover)}#list:hover .t1{color:var(--primary-hover)}.submenu{position:relative}.sublist{position:absolute;display:none;background:var(--background);border:1px solid var(--primary-color);padding:.2em;border-radius:6px}.submenu:focus .sublist,.submenu:hover .sublist{display:block;z-index:1}.submenu-up{position:relative}.submenu-up:focus .sublist,.submenu-up:hover .sublist{display:block;bottom:36px;z-index:1}#sidebar{position:fixed;bottom:30px;right:20px;text-align:center;border:1px solid var(--border-color);background:var(--background);box-shadow:var(--shadow)}#sidebar li a{display:block;padding:.6em}#sidebar li a:hover{color:var(--primary-hover)}.sidebar-submenu{position:relative}.sidebar-submenu:focus .sublist,.sidebar-submenu:hover .sublist{display:block;z-index:3;bottom:-5rem;right:37px;width:7rem}
+
+textarea{margin-left:3px;padding:6px;width:80%;max-width:1100px;height:110px;font-size:1.1rem;color:var(--text-color);background:0 0;border:1px solid var(--primary-color);outline:0;resize:none}
+
+.clipdiv{width:90%}.clipdiv button{margin:8px 3px;padding:6px;background:0 0;color:var(--primary-color);border:1px dotted var(--primary-color);cursor:pointer}
+
+#navhide{position:absolute;left:-3px;top:1px;z-index:9;width:90%;height:200%;padding:0 1rem;background:var(--background);display:none}#navhide li{display:inline-block;width:7rem;line-height:35px;border:1px solid var(--border-color);text-align:center}
+
+@media screen and (max-width:800px){#list li{width:8.5em;clear:left;text-align:left;text-indent:1em}.submenu-up::before,.submenu::before{content:'';width:5px;height:5px;position:absolute;left:120px;top:16px;border:2px solid var(--primary-color);border-width:0 1px 1px 0;transform:rotate(45deg)}}
+
+@font-face{font-family:'Line Awesome Solid';src:url('assets/la-solid-900.woff2') format('woff');font-weight:900;font-style:normal;font-display:swap}.las{font-family:'Line Awesome Solid';font-weight:900;display:inline-block;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.la-play:before{content:"\f04b"}.la-search:before{content:"\f002"}.la-home:before{content:"\f015"}.la-vector-square:before{content:"\f5cb"}.la-folder-minus:before{content:"\f65d"}.la-download:before{content:"\f019"}.la-laptop:before{content:"\f109"}.la-microchip:before{content:"\f2db"}.la-wrench:before{content:"\f0ad"}.la-copy:before{content:"\f0c5"}.la-retweet:before{content:"\f079"}.la-code:before{content:"\f121"}.la-globe:before{content:"\f0ac"}.la-paint-brush:before{content:"\f1fc"}.la-image:before{content:"\f03e"}.la-leaf:before{content:"\f06c"}.la-gamepad:before{content:"\f11b"}.la-book:before{content:"\f02d"}.la-university:before{content:"\f19c"}.la-cube:before{content:"\f1b2"}.la-stream:before{content:"\f550"}.la-city:before{content:"\f64f"}.la-bookmark:before{content:"\f02e"}.la-clock:before{content:"\f017"}.la-sun:before{content:"\f185"}.la-calendar-alt:before{content:"\f073"}.la-map-marker-alt:before{content:"\f3c5"}.la-pen:before{content:"\f304"}.la-music:before{content:"\f001"}.la-chart-line:before{content:"\f201"}.la-language:before{content:"\f1ab"}.la-envelope:before{content:"\f0e0"}.la-angle-up:before{content:"\f106"}.la-angle-down:before{content:"\f107"}
+</style>
+
+<script>const searchGo = () => {
+const input = document.getElementById('Searchbox').value.trim();
+if (!input) return window.open('so.html');
+if (input.startsWith('http')) return window.open(input);
+const engines = {
+  baidu: 'https://www.baidu.com/s?wd=',
+  google: 'https://www.google.com/search?q=',
+  chatgpt: 'https://chatgpt.com/?q=',
+  douban: 'https://www.douban.com/search?q=',
+  zhihu: 'https://www.zhihu.com/search?type=content&q=',
+  zimu: 'https://subhd.tv/search/'
+};
+const engine = document.getElementById('s-menu').value;
+window.open(engines[engine] ? engines[engine] + encodeURIComponent(input) : 'so.html');
+};
+const runcmd = () => ({
+  n: () => document.getElementById('navhide').style.display = 'block',
+  cheat: () => location.href = 'cheatsheets/index.html',
+  nas: () => location.href = 'https://nas.aaxyz.de:55',
+  nasweb: () => location.href = 'https://web.aaxyz.de:55'
+}[document.getElementById('Searchbox').value]?.());
+
+const API_KEY = 'AIzaSyBi2_u5h2hjzLTKVPtiQMrlyfdGpdKVtyw';
+const generateRSS = async () => {
+  const input = document.getElementById('Searchbox');
+  const {items: [{id}]} = await (await fetch(`https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=${input.value.trim()}&key=${API_KEY}`)).json();
+  input.value = `https://www.youtube.com/feeds/videos.xml?channel_id=${id}`;
+};
+function xnavhide(){document.getElementById("navhide").style.display="none"}</script>
+</head><body ontouchstart><nav><select id="s-menu" onchange="searchGo()"><option value="baidu">百度</option><option value="google">谷歌</option><option value="chatgpt">GPT</option><option value="douban">豆瓣</option><option value="zhihu">知乎</option><option value="zimu">字幕</option></select><input name="" type="text" id="Searchbox" autofocus onblur="runcmd()" onkeydown="if(event.keyCode==13) searchGo()"><button onclick="searchGo()"><i class="las la-search"></i></button></nav>
+<main>
+<ul id="list"><li class="t1"><i class="las la-home" title="Home"></i></li>
+<li class="submenu"><a href="https://ttti.cc">Home</a>
+<ul class="sublist">
+<li><a href="app.html">Apps</a></li>
+<li><a href="win.html">Win</a></li>
+<li><a href="https://bkey.aaxyz.de:55">Key</a></li>
+<li><a href="https://nav.ttti.cc">Nav</a></li>
+<li><a href="https://xyz.556660.xyz/wiki">Wiki</a></li>
+<li><a href="https://nanjishen.github.io/nanjishen">Sayings</a></li>
+<li><a href="https://news.ttti.cc">News</a></li>
+<li><a href="https://sevr.556660.xyz">Serv00-16</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://192.168.10.1/cgi-bin/luci/admin/services/passwall2/acl">Router</a><!-- https://rt.aaxyz.de:55 -->
+<ul class="sublist">
+<li><a href="http://192.168.10.111:5000">NAS</a></li>
+<li><a href="http://192.168.10.1:8123">HAssistant</a></li>
+<li><a href="https://192.168.10.111:9443">Portainer</a></li>
+<li><a href="http://192.168.10.1:9090/ui">Nikki</a></li>
+<li><a href="http://192.168.10.1:299">Uptime</a></li>
+<li><a href="http://aaxyz.de:811">NPM</a></li>
+<li><a href="http://192.168.10.111:8384">Syncthing</a></li>
+<li><a href="http://192.168.10.213">MiWifi</a></li>
+<li><a href="http://192.168.10.158">Awtrix</a></li>
+<!-- <li><a href="http://192.168.10.1:9876">DDNSGO</a></li> -->
+<!-- <li><a href="http://192.168.10.1:9008">Dockge</a></li> -->
+</ul>
+</li>
+<li class="submenu"><a href="http://aria2.aaxyz.de:56/ariang">AriaNg</a>
+<ul class="sublist">
+<li><a href="http://duf.aaxyz.de:56">Dufs</a></li>
+<li><a href="http://192.168.10.111:5000/filestation">NAS FM</a></li>
+<li><a href="https://aaxyz.de:281">Nextcloud</a></li>
+<li><a href="http://car4vtworay.556660.xyz:9501">Clipboard</a></li>
+<li><a href="http://car1vtworay.556660.xyz:3555">PicoShare</a></li>
+<li><a href="https://photo.aaxyz.de:55">Immich</a></li>
+<li><a href="http://192.168.10.111:9092">qBittorrent</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://nf.aaxyz.de:56">Jellyfin</a>
+<ul class="sublist">
+<li><a href="http://192.168.10.111:7878">Radarr</a></li>
+<li><a href="http://192.168.10.111:8989">Sonarr</a></li>
+<li><a href="http://192.168.10.111:9696">Prowlarr</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://frss.aaxyz.de:56">FreshRSS</a>
+<ul class="sublist">
+<li><a href="https://app.folo.is">Folo</a></li>
+<li><a href="https://theoldreader.com">OldReader</a></li>
+<li><a href="https://www.inoreader.com">Inoreader</a></li>
+<li><a href="https://feedly.com">Feedly</a></li>
+<li><a href="https://weloverss.com">WLRss</a></li>
+<li><a href="https://rss.anyant.com">Anyant</a></li>
+<li><a href="https://cakereader.com/tour">Cake</a></li>
+<li><a href="https://vore.website">Vore</a></li>
+<li><a href="https://fraidyc.at">Fraidycat</a></li>
+<li><a href="http://car1vtworay.556660.xyz:1200">myRSShub</a></li>
+<li><a href="#" onclick="generateRSS()">ytupRSS</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://linkd.aaxyz.de:56/bookmarks/new">Linkding</a>
+<ul class="sublist">
+<li><a href="https://app.clearlyreader.com">Clearly</a></li>
+<li><a href="https://tagpacker.com">Tagpacker</a></li>
+<li><a href="https://start.me">Start.me</a></li>
+<li><a href="https://hypothes.is">Hypothesis</a></li>
+<li><a href="https://app.raindrop.io">Raindrop</a></li>
+<li><a href="https://notado.app">Notado</a></li>
+<li><a href="https://mirror.xyz">Mirror</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://member.bilibili.com/platform/upload-manager">Bilibili</a>
+<ul class="sublist">
+<li><a href="https://mp.weixin.qq.com">公众号</a></li>
+<li><a href="https://weibo.com/nanjishen/home">微博</a></li>
+<li><a href="https://channels.weixin.qq.com">视频号</a></li>
+<li><a href="https://douyin.com">抖音</a></li>
+<li><a href="https://xiaohongshu.com">小红书</a></li>
+<li><a href="https://studio.ixigua.com">西瓜</a></li>
+<li><a href="https://mp.douyu.com/live/main">斗鱼</a></li>
+<li><a href="https://i.huya.com/index.php?m=ProfileSetting#ktylts">虎牙</a></li>
+<li><a href="https://mediatrack.cn">分秒帧</a></li>
+<li><a href="https://work.weixin.qq.com">企业微信</a></li>
+<li><a href="https://tieba.baidu.com">贴吧</a></li>
+<li><a href="https://baijiahao.baidu.com">百家号</a></li>
+<li><a href="https://zhubai.love">竹白</a></li>
+<li><a href="https://www.zhubai.wiki">竹白百科</a></li>
+<li><a href="https://zb.liey.cn">竹白检索</a></li>
+<li><a href="https://substack.com">Substack</a></li>
+<li><a href="https://www.lofter.com">Lofter</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="minitools/stitching.html">Stitching</a>
+<ul class="sublist">
+<li><a href="https://marked.cc">Marked</a></li>
+<li><a href="https://liuguangka.com/zh">流光卡片</a></li>
+<li><a href="https://oneimgai.com">OneIMG</a></li>
+<li><a href="https://geekcard.app">GeekCard</a></li>
+<li><a href="https://www.memonotepad.com">Memo</a></li>
+<li><a href="https://doocs.github.io/md/">mdEdit</a></li>
+<li><a href="https://md2card.cn">mdCard</a></li>
+<li><a href="https://card.3min.top">Card3</a></li>
+<li><a href="https://cardify.godsbee.com">Cardify</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://coder.aaxyz.de:55">VSCode</a>
+<ul class="sublist">
+<li><a href="http://car4vtworay.556660.xyz:2820">Drawio</a></li>
+<li><a href="https://itool.car4vtworay.556660.xyz">IT-Tools</a></li>
+<li><a href="https://refe.car4vtworay.556660.xyz">Reference</a></li>
+<li><a href="http://192.168.10.1:284">PDFtool</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="minitools/etr.html">Translator</a>
+<ul class="sublist">
+<li><a href="minitools/calculator.html">计算器</a></li>
+<li><a href="minitools/textedit.html">文本处理</a></li>
+<li><a href="minitools/calcdate.html">日期计算</a></li>
+<li><a href="minitools/calcdeposit.html">存款利息计算</a></li>
+<li><a href="minitools/wmtiao/index.html">图像打水印条</a></li>
+<li><a href="minitools/Palette/palette.html">颜色编码</a></li>
+<li><a href="cheatsheets/index.html">命令备忘单</a></li>
+<li><a href="minitools/cfpng/index.html">生成颜色图</a></li>
+<li><a href="minitools/stickynote.html">浮动便笺</a></li>
+<li><a href="minitools/todolist.html">代办列表</a></li>
+<li><a href="minitools/htmlcode.html">测试html</a></li>
+<li><a href="minitools/draw.html">画图</a></li>
+<li><a href="minitools/texttoimg.html">图片便笺</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-search" title="Search"></i></li>
+<li class="submenu"><a href="https://www.google.com/ncr">Google</a>
+<ul class="sublist">
+<li><a href="https://www.bing.com/copilotsearch">Copilot</a></li>
+<li><a href="https://labs.kagi.com/fastgpt">FastGPT</a></li>
+<li><a href="https://duckduckgo.com">DuckGo</a></li>
+<li><a href="https://www.bing.com">Bing</a></li>
+<li><a href="https://yandex.com">Yandex</a></li>
+<li><a href="https://www.wikipedia.org">Wikipedia</a></li>
+<li><a href="https://fsoufsou.com">F搜</a></li>
+<li><a href="https://neeva.com">Neeva</a></li>
+<li><a href="https://sou.best">Sou.best</a></li>
+<li><a href="http://www.surfok.de">Surfok</a></li>
+<li><a href="https://peekier.com">Peekier</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.youtube.com">YouTube</a>
+<ul class="sublist">
+<li><a href="https://x.com">X</a></li>
+<li><a href="https://www.tiktok.com">TikTok</a></li>
+<li><a href="https://bsky.app">Bluesky</a></li>
+<li><a href="https://lemmy.ml">Lemmy</a></li>
+<li><a href="https://www.reddit.com">Reddit</a></li>
+<li><a href="https://www.facebook.com">Facebook</a></li>
+<li><a href="https://www.instagram.com">Instagram</a></li>
+<li><a href="https://www.threads.net">Threads</a></li>
+<li><a href="https://joinmastodon.org">Mastodon</a></li>
+<li><a href="https://mastodon.social">.social</a></li>
+<li><a href="https://www.spotify.com">Spotify</a></li>
+<li><a href="https://www.netflix.com">Netflix</a></li>
+<li><a href="https://d.tube">DTube</a></li>
+<li><a href="https://www.twitch.tv">Twitch</a></li>
+<li><a href="https://kick.com">Kick</a></li>
+<li><a href="https://9gag.com">9GAG</a></li>
+<li><a href="https://onlyfans.com">Onlyfans</a></li>
+<li><a href="https://telegra.ph">Telegraph</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.tineye.com">TinEye</a>
+<ul class="sublist">
+<li><a href="https://www.imgops.com">ImgOps</a></li>
+<li><a href="https://imgdownloader.com">imgdl</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://pan.baidu.com">Yunpan</a>
+<ul class="sublist">
+<li><a href="https://pan.baidu.com/youth/pan/main">青春版</a></li>
+<li><a href="https://www.aliyundrive.com/drive">AliYunPan</a></li>
+<li><a href="https://www.weiyun.com">WeiYun</a></li>
+<li><a href="https://cloud.189.cn">Cloud189</a></li>
+<li><a href="https://pan.quark.cn">Quark</a></li>
+<li><a href="https://up.woozooo.com">Lanzou</a></li>
+<li><a href="https://www.jianguoyun.com">JGYun</a></li>
+<li><a href="https://pan.xunlei.com">Xunlei</a></li>
+<li><a href="https://www.terabox.com">Terabox</a></li>
+<li><a href="https://www.dropbox.com">Dropbox</a></li>
+<li><a href="https://drive.mypikpak.com">PikPak</a></li>
+<li><a href="https://mega.nz">MEGA</a></li>
+<li><a href="https://infini-cloud.net/en/">InfiniCLOUD</a></li>
+<li><a href="https://app.koofr.net">Koofr</a></li>
+<li><a href="https://drive.filen.io">Filen</a></li>
+<li><a href="https://firefile.cc">Firefile</a></li>
+<li><a href="https://www.multcloud.com">MultCloud</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://www.chongbuluo.com">虫部落</a>
+<ul class="sublist">
+<li><a href="https://www.similarsites.com">SimilarSite</a></li>
+<li><a href="http://xiaoso.net">小不点</a></li>
+<li><a href="https://tgnav.github.io">TGNav</a></li>
+<li><a href="https://tgdriver.com">TGdriver</a></li>
+<li><a href="https://meow.tg">TG猫</a></li>
+<li><a href="http://www.sssoou.com">TG中文搜索</a></li>
+<li><a href="https://tg.qianfan.app">TG千帆搜索</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.taobao.com">淘宝</a>
+<ul class="sublist">
+<li><a href="https://www.jd.com">京东</a></li>
+<li><a href="https://www.suning.com">苏宁易购</a></li>
+<li><a href="https://www.vip.com">唯品会</a></li>
+<li><a href="https://www.mi.com">小米</a></li>
+<li><a href="http://www.meituan.com">美团网</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.amazon.com">美亚</a>
+<ul class="sublist">
+<li><a href="https://www.paypal.com">PayPal</a></li>
+<li><a href="https://www.uszcn.com">转中转运</a></li>
+<li><a href="https://www.zhonghuanus.com">中环转运</a></li>
+<li><a href="https://www.mxhaitao.com">铭宣海淘</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.smzdm.com">值得买</a>
+<ul class="sublist">
+<li><a href="http://www.manmanbuy.com">慢慢买</a></li>
+<li><a href="https://www.zhizhizhi.com">值值值</a></li>
+<li><a href="https://www.gwdang.com">购物党</a></li>
+<li><a href="https://www.miaomiaozhe.com">喵喵折</a></li>
+<li><a href="https://tao.henduonian.com">优惠券</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.kuaidi100.com">快递100</a>
+<ul class="sublist">
+<li><a href="http://www.sf-express.com">顺丰</a></li>
+<li><a href="http://www.jdl.cn">京东</a></li>
+<li><a href="http://www.sto.cn">申通</a></li>
+<li><a href="http://www.yto.net.cn">圆通</a></li>
+<li><a href="http://www.zto.cn">中通</a></li>
+<li><a href="http://www.yundaex.com">韵达</a></li>
+<li><a href="http://www.jtexpress.com.cn">极兔</a></li>
+<li><a href="https://www.ems.com.cn">邮政</a></li>
+<li><a href="http://www.deppon.com">德邦</a></li>
+<li><a href="http://www.fwx-network.com">丰网</a></li>
+<li><a href="https://www.yimidida.com">壹米滴答</a></li>
+</ul>
+</li>
+<li><a href="https://www.goofish.com">闲鱼</a></li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-vector-square" title="ChatAI"></i></li>
+<li class="submenu"><a href="http://grok.com">Grok</a>
+<ul class="sublist">
+<li><a href="https://chatgpt.com">ChatGPT</a></li>
+<li><a href="https://gemini.google.com">Gemini</a></li>
+<li><a href="https://duckduckgo.com/aichat">DuckGoAI</a></li>
+<li><a href="https://www.perplexity.ai">Perplexity</a></li>
+<li><a href="https://kimi.moonshot.cn">KimiChat</a></li>
+<li><a href="https://copilot.microsoft.com">Copilot</a></li>
+<li><a href="https://beta.character.ai">Character</a></li>
+<li><a href="https://claude.ai">Claude</a></li>
+<li><a href="https://huggingface.co/chat">Hugging</a></li>
+<li><a href="https://groq.com">Groq</a></li>
+<li><a href="https://ai.azure.com">Azure</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://chat.deepseek.com">Deepseek</a>
+<ul class="sublist">
+<li><a href="https://www.doubao.com">豆包</a></li>
+<li><a href="https://yuanbao.tencent.com">元宝</a></li>
+<li><a href="https://chat.baidu.com">百度AI</a></li>
+<li><a href="https://chat.qwen.ai">Qwen</a></li>
+<li><a href="https://www.tongyi.com">通义</a></li>
+<li><a href="https://www.volcengine.com">火山引擎</a></li>
+<li><a href="https://yiyan.baidu.com">文心一言</a></li>
+<li><a href="https://metaso.cn">秘塔AI</a></li>
+<li><a href="https://xiaoyi.huawei.com">小艺</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://github.com/marketplace/models">Models</a>
+<ul class="sublist">
+<li><a href="https://openrouter.ai">OpenRouter</a></li>
+<li><a href="https://huggingface.co/models">HuggingFace</a></li>
+<li><a href="https://siliconflow.cn">硅基流动</a></li>
+<li><a href="https://bailian.console.aliyun.com">阿里百炼</a></li>
+<li><a href="https://modelscope.cn">魔搭社区</a></li>
+<li><a href="https://github.com/deepseek-ai/DeepSeek-R1">DeepSeek-R1</a></li>
+<li><a href="https://github.com/chatchat-space/Langchain-Chatchat">LangChain</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://github.com/xx025/carrot">Carrot</a>
+<ul class="sublist">
+<li><a href="https://iui.su/3854/">BSN</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://mapify.so/cn">Mapify</a>
+<ul class="sublist">
+<li><a href="https://openl.io">OpenL</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://codex.packycode.com">Packycode</a>
+<ul class="sublist">
+<li><a href="https://chutes.ai">Chutes</a></li>
+<li><a href="https://poe.com">POE</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.bing.com/images/create">Bing img</a>
+<ul class="sublist">
+<li><a href="https://raphael.app/zh">Raphael</a></li>
+<li><a href="https://www.domoai.app/zh-Hant">DomoAI</a></li>
+<li><a href="https://app.pixverse.ai">PixVerse</a></li>
+<li><a href="https://hailuoai.video">Hailuo</a></li>
+<li><a href="https://dreamina.capcut.com/zh-tw/">Dreamina</a></li>
+<li><a href="https://www.midjourney.com">Midjourney</a></li>
+<li><a href="https://imagine.meta.com">Imagine</a></li>
+<li><a href="https://www.argil.ai">Argil</a></li>
+<li><a href="https://www.aipromptsearch.net">AI pt sh</a></li>
+<li><a href="https://prompt.noonshot.com">Prompt Help</a></li>
+<li><a href="https://diffusionart.co">DiffArt</a></li>
+<li><a href="https://designer.microsoft.com">Designer</a></li>
+<li><a href="https://6pen.art">6PEN</a></li>
+<li><a href="https://draft.art/drawing">Draft</a></li>
+<li><a href="https://www.gaituya.com/aiimg">改图鸭</a></li>
+<li><a href="https://www.wujieai.com">无界AI</a></li>
+<li><a href="https://picso.ai">PicSo</a></li>
+<li><a href="https://nightcafe.studio">Nightcafe</a></li>
+<li><a href="https://starryai.com/app/my-creations">Starryai</a></li>
+<li><a href="https://novelai.net">NovelAI</a></li>
+<li><a href="https://art.elbo.ai">Elbo</a></li>
+<li><a href="https://crypko.ai/cn">Crypko</a></li>
+<li><a href="https://ghibliphotos.com/zh/ghibli">吉卜力风格</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://sora.chatgpt.com">Sora</a>
+<ul class="sublist">
+<li><a href="https://pollo.ai">Pollo</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://foundr.ai/chatgpt-prompts">Foundr</a>
+<ul class="sublist">
+<li><a href="https://academy.openai.com">Prompt Pack</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.ainavpro.com">AI Nav</a>
+<ul class="sublist">
+<li><a href="https://www.aiznx.com">AI智能箱</a></li>
+<li><a href="https://github.com/yzfly/awesome-chatgpt-zh">中文指南</a></li>
+<li><a href="https://www.learnprompt.pro">提示工程</a></li>
+<li><a href="https://www.aiyjs.com">AI研究所</a></li>
+<li><a href="https://blog.frytea.com/archives/757/">AIGC合集</a></li>
+<li><a href="https://www.aiagc.com">AIAGC</a></li>
+<li><a href="https://ai-bot.cn">AI工具集</a></li>
+<li><a href="https://www.gptdemo.net/cn">发现AI工具</a></li>
+<li><a href="http://wanrenmi8.com">万人迷吧</a></li>
+<li><a href="https://www.toolai.io">ToolAI</a></li>
+<li><a href="https://www.aitoolhub.net/cn">AiToolHub</a></li>
+<li><a href="https://www.jailbreakchat.com">Jailbreak</a></li>
+<li><a href="https://aiol.club">Aiol</a></li>
+<li><a href="https://chatgpt-sites.com">gpt-sites</a></li>
+<li><a href="https://www.gptcases.com">Gptcases</a></li>
+<li><a href="https://learningprompt.wiki">Learning</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-folder-minus" title="Notes"></i></li>
+<li class="submenu"><a href="https://www.yuque.com">Yuque</a>
+<ul class="sublist">
+<li><a href="https://docs.qq.com">Tencent</a></li>
+<li><a href="https://shimo.im">ShiMo</a></li>
+<li><a href="https://loop.microsoft.com">Loop</a></li>
+<li><a href="https://www.notion.so">Notion</a></li>
+<li><a href="https://www.baklib.com">Baklib</a></li>
+<li><a href="https://app.yinxiang.com/client/web">Yinxiang</a></li>
+<li><a href="https://www.teambition.com">Teambition</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://mubu.com">Mubu</a>
+<ul class="sublist">
+<li><a href="https://www.workflowy.com">Workflowy</a></li>
+<li><a href="https://dynalist.io">Dynalist</a></li>
+<li><a href="https://www.manifest.app">Manifest</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://gitmind.cn/app/my">GitMind</a>
+<ul class="sublist">
+<li><a href="https://amymind.com">AmyMind</a></li>
+<li><a href="https://processon.com">ProcessOn</a></li>
+<li><a href="https://naotu.baidu.com">NaoTu</a></li>
+<li><a href="https://www.zhixi.com">Zhixi</a></li>
+<li><a href="https://coggle.it">Coggle</a></li>
+<li><a href="https://whimsical.com">Whimsical</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://stackedit.io">StackEdit</a>
+<ul class="sublist">
+<li><a href="https://markdown.new">MdNew</a></li>
+<li><a href="https://markdown.lovejade.cn">Arya</a></li>
+<li><a href="https://hackmd.io">Hackmd</a></li>
+<li><a href="http://dillinger.io">Dillinger</a></li>
+<li><a href="https://daringfireball.net/projects/markdown/dingus">Dingus</a></li>
+<li><a href="https://euangoddard.github.io/clipboard2markdown">Paste to</a></li>
+<li><a href="https://mermaidjs.github.io/mermaid-live-editor">Mermaid</a></li>
+<li><a href="https://www.zybuluo.com">作业部落</a></li>
+<li><a href="http://xiaoshujiang.com">小书匠</a></li>
+<li><a href="https://crossnote.app">交叉笔记</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://md.doocs.org">mdNice</a>
+<ul class="sublist">
+<li><a href="https://mihoyonb.com">原牛</a></li>
+<li><a href="https://xiezuocat.com">写作猫</a></li>
+<li><a href="https://www.writingo.net/document">火山写作</a></li>
+<li><a href="https://wucuozi.com">无错字</a></li>
+<li><a href="https://effidit.qq.com">Effidit</a></li>
+<li><a href="https://markdown.com.cn/editor">mdEditor</a></li>
+<li><a href="https://lab.lyric.im/wxformat">WeFormat</a></li>
+<li><a href="https://md.qikqiak.com">Qikqiak</a></li>
+<li><a href="https://md.openwrite.cn">OpenWrite</a></li>
+<li><a href="https://md.aclickall.com">Md2All</a></li>
+<li><a href="https://knb.im/mp">可能吧</a></li>
+<li><a href="https://yiban.io">壹伴</a></li>
+<li><a href="https://ad.weixin.qq.com">微信广告</a></li>
+<li><a href="http://www.wxmarkdown.com">公众号辅助</a></li>
+<li><a href="https://doc.supernice.cn">附件无忧</a></li>
+<li><a href="https://ip.ntrqq.net">IP签名档</a></li>
+<li><a href="http://wechat2pdf.com">Wechat2pdf</a></li>
+<li><a href="https://mianbaoduo.com">面包多</a></li>
+<li><a href="https://www.chongya.com">冲呀</a></li>
+<li><a href="https://wejizan.com">微信集赞</a></li>
+<li><a href="https://picprose.pixpark.net">Pixpark</a></li>
+<li><a href="https://www.kaolamedia.com">考拉自媒体导航</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://wentu.io">文图</a>
+<ul class="sublist">
+<li><a href="https://makegraph.app">Make Graph</a></li>
+<li><a href="https://aigraphmaker.net/zh-hans">AI GMaker</a></li>
+<li><a href="https://tiermaker.com">Tier List</a></li>
+<li><a href="https://graphy.app">Graphy</a></li>
+<li><a href="https://datagifmaker.withgoogle.com">Data GIF</a></li>
+<li><a href="https://raycharts.raykite.com">Raycharts</a></li>
+<li><a href="https://www.taskade.com">Taskade</a></li>
+<li><a href="https://tushuo.baidu.com">百度图说</a></li>
+<li><a href="https://chartcube.alipay.com">ChartCube</a></li>
+<li><a href="https://dycharts.com">镝数图表</a></li>
+<li><a href="https://www.tubiaoxiu.com">图标秀</a></li>
+<li><a href="https://hanabi.data-viz.cn">花火Hanabi</a></li>
+<li><a href="https://linegraphmaker.co">Line GM</a></li>
+<li><a href="https://pixelmap.amcharts.com">Pixel Map</a></li>
+<li><a href="http://tinychart.co">Tinychart</a></li>
+<li><a href="http://www.lizibuluo.com/bar">LiziBuluo</a></li>
+<li><a href="https://chartsfactory.com">Chart Factory</a></li>
+<li><a href="https://flourish.studio">Flourish</a></li>
+</ul>
+</li>
+<li><a href="https://miro.com ">Miro</a></li>
+<li><a href="https://seatable.cn">SeaTable</a></li>
+<li class="submenu"><a href="http://asciiflow.com">Asciiflow</a>
+<ul class="sublist">
+<li><a href="https://tree.nathanfriend.io">TreeMD</a></li>
+<li><a href="https://textkool.com">TextKool</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.diagrams.net">Diagrams</a>
+<ul class="sublist">
+<li><a href="https://www.liuchengtu.com">Xunjie</a></li>
+<li><a href="https://wireflow.co">Wireflow</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-download" title="NetDisk"></i></li>
+<li><a href="https://www.dashengpan.com">大圣盘</a></li>
+<li class="submenu"><a href="https://www.upyunso.com">UP云搜</a>
+<ul class="sublist">
+<li><a href="https://pansou.jkai.de">盘搜</a></li>
+<li><a href="https://panku8.com">盘库吧</a></li>
+<li><a href="https://www.yunso.net">小云盘搜</a></li>
+<li><a href="https://ssgo.app">SSGo</a></li>
+<li><a href="https://xiaotusoso.com">小兔搜搜</a></li>
+<li><a href="https://yiso.eu.org">易搜</a></li>
+<li><a href="https://upyunso3.com">阿里盘搜</a></li>
+<li><a href="https://www.alipansou.com">喵狸盘搜</a></li>
+<li><a href="https://kkxz.vip">夸克小站</a></li>
+<li><a href="https://www.iizhi.cn">毕方铺</a></li>
+<li><a href="https://panyq.com">盘友圈</a></li>
+<li><a href="https://miaosou.fun">秒搜</a></li>
+<li><a href="https://www.xuebapan.com">学霸盘</a></li>
+</ul>
+</li>
+<li><a href="http://www.chaonengsou.com">超能搜</a></li>
+<li><a href="https://niceso.net">千帆搜索</a></li>
+<li><a href="https://www.dabaipan.com">大白盘</a></li>
+<li><a href="https://www.xiaobaipan.com">小白盘</a></li>
+<li><a href="http://www.pansoso.com">盘搜</a></li>
+<li><a href="http://megasearch.co">Mega</a></li>
+<li class="submenu"><a href="https://cn.torrentkitty.tv/search">Torrents</a>
+<ul class="sublist">
+<li><a href="https://tellme.pw/btsow">BTsow</a></li>
+<li><a href="https://downloadtorrentfile.com">DLfile</a></li>
+<li><a href="https://katcr.to">Kickass</a></li>
+<li><a href="https://www.aiosearch.com">Aiosearch</a></li>
+<li><a href="https://jubt.fun">聚BT</a></li>
+<li><a href="https://nyaa.si">Nyaa</a></li>
+<li><a href="https://github.com/fwonggh/Bthub">Bthub</a></li>
+<li><a href="https://www.zhongzilou.com">种子搜</a></li>
+<li><a href="https://clmclm.com">磁力猫</a></li>
+<li><a href="https://xn--tfrq9jjzak83g.com">磁力天堂</a></li>
+<li><a href="https://0mag.net">0Magnet</a></li>
+<li><a href="https://m2t.lolicon.app">磁链转种子</a></li>
+<li><a href="https://www.wqtool.com/magnetlink">种子转磁链</a></li>
+</ul>
+</li>
+<li><a href="https://webtor.io">Web-BT</a></li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-laptop" title="Software"></i></li>
+<li class="submenu"><a href="https://www.producthunt.com">Product</a>
+<ul class="sublist">
+<li><a href="https://nicelinks.site">倾城之链</a></li>
+<li><a href="https://xinquji.com">新趣集</a></li>
+<li><a href="https://creatorsdaily.com">创造者日报</a></li>
+<li><a href="https://fancycrave.com">Fancycrave</a></li>
+<li><a href="https://www.uneed.best">Uneed</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://fmhy.net">FMHY</a>
+<ul class="sublist">
+<li><a href="https://www.slant.co">Slant</a></li>
+<li><a href="https://trend.quickso.cn">开软软件趋势</a></li>
+<li><a href="https://github.com/Axorax/awesome-free-apps">自由软件合集</a></li>
+<li><a href="https://github.com/coracoo/awesome_docker_cn">Docker合集带教程</a></li>
+<li><a href="https://selfh.st/apps">自部署应用合集</a></li>
+<li><a href="https://github.com/songtianlun/selfhost-hub">自部署合集</a></li>
+<li><a href="https://github.com/awesome-selfhosted/awesome-selfhosted">自部署合集</a></li>
+<li><a href="https://github.com/itgoyo/awesome-docker">Docker合集</a></li>
+<li><a href="https://github.com/zhaoolee/OnlineToolsBook">在线工具</a></li>
+<li><a href="https://tiny-helpers.dev">开源在线工具</a></li>
+<li><a href="https://hellogithub.com">HelloGithub</a></li>
+<li><a href="https://github.com/SunWuyuan/awesome-linuxdo">Awesome LinuxDo</a></li>
+<li><a href="https://github.com/luong-komorebi/Awesome-Linux-Software/blob/master/README_zh-CN.md">Linux软件合集</a></li>
+<li><a href="https://github.com/dubinc/oss-gallery">发现优秀开源项目</a></li>
+<li><a href="https://github.com/LisaDziuba/Awesome-Design-Tools">最佳设计工具</a></li>
+<li><a href="https://github.com/bestxtools/awesome-toolbox-chinese">优秀工具箱</a></li>
+<li><a href="https://github.com/zhaoolee/ChromeAppHeroes">扩展英雄榜</a></li>
+<li><a href="https://github.com/AboutRSS/ALL-about-RSS">AboutRSS</a></li>
+<li><a href="https://github.com/zhaoolee/pi">树莓派防吃灰</a></li>
+<li><a href="https://cybermagicsec.github.io/privacytools-zh/">Privacytool</a></li>
+<li><a href="https://github.com/tobyglei/tech-stack-china">tech-stack</a></li>
+<li><a href="https://github.com/jaywcjlove/awesome-mac/blob/master/README-zh.md">MacOS软件合集</a></li>
+<li><a href="https://www.fileeagle.com/software/zh-CN">文件鹰软件推荐</a></li>
+<li><a href="https://www.coolist.net">酷软清单</a></li>
+<li><a href="https://github.com/flygon2018/All-Defense-Tool">攻防武器项目</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://free.com.tw">Free</a>
+<ul class="sublist">
+<li><a href="https://www.landiannews.com">蓝点网</a></li>
+<li><a href="https://www.ithome.com">IT之家</a></li>
+<li><a href="https://www.xitmi.com">系统迷</a></li>
+<li><a href="https://readhub.cn">Readhub</a></li>
+<li><a href="https://minapp.com">知晓</a></li>
+<li><a href="https://www.microsoft.com">微软</a></li>
+<li><a href="https://zhutix.com">致美化</a></li>
+<li><a href="https://itnext.cn">元宇宙</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://alternativeto.net">Alternative</a>
+<ul class="sublist">
+<li><a href="https://openalternative.co">OpenAlternative</a></li>
+<li><a href="https://opensource.builders">Builders</a></li>
+<li><a href="https://switching.software">Switching</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.ghxi.com">果核剥壳</a>
+<ul class="sublist">
+<li><a href="https://www.gndown.com">绿软小站</a></li>
+<li><a href="https://uultd.com/zh/">uultd</a></li>
+<li><a href="https://www.52pojie.cn">吾爱破解</a></li>
+<li><a href="https://www.aichunjing.com/soft/">爱纯净</a></li>
+<li><a href="https://www.rjno1.com">软件No1</a></li>
+<li><a href="http://www.dayanzai.me">大眼仔旭</a></li>
+<li><a href="http://www.ypojie.com">易破解</a></li>
+<li><a href="https://www.mefcl.com">MEFCL</a></li>
+<li><a href="https://www.423down.com">423down</a></li>
+<li><a href="https://www.mpyit.com">老殁</a></li>
+<li><a href="https://ldqk.xyz">懒得勤快</a></li>
+<li><a href="https://www.fuzhugou.com">西部落</a></li>
+<li><a href="https://www.yutu.cn">羽兔网</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://www.appinn.com">小众软件</a>
+<ul class="sublist">
+<li><a href="https://sspai.com">少数派</a></li>
+<li><a href="http://www.iplaysoft.com">异次元软件</a></li>
+<li><a href="https://www.playpcesor.com">电脑玩物</a></li>
+<li><a href="https://www.jokerps.com">鹏少资源网</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://github.com/xlucn/oh-my-foss-android">安卓软件</a>
+<ul class="sublist">
+<li><a href="https://www.yxssp.com">异星软件</a></li>
+<li><a href="https://findappweb.com">找应用</a></li>
+<li><a href="https://coolapk.com/apk/">酷安市场</a></li>
+<li><a href="http://zuimeia.com/">最美应用</a></li>
+<li><a href="https://cn.apkjam.com">安卓果酱</a></li>
+<li><a href="https://apkcombo.com/zh/apk-downloader/">APKCombo</a></li>
+<li><a href="https://apkpure.com">ApkPure</a></li>
+<li><a href="https://apkfab.com/zh">Apkfab</a></li>
+<li><a href="https://www.apkmirror.com">APKMirror</a></li>
+<li><a href="http://apps.evozi.com/apk-downloader">Evozi-Apk</a></li>
+<li><a href="https://apk-dl.com">APK-DL</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.v1tx.com">V1TX</a>
+<ul class="sublist">
+<li><a href="https://www.aihao.cc">爱好论坛</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.linuxcool.com">LinuxCool</a>
+<ul class="sublist">
+<li><a href="https://git.io/linux">Linux-cmd</a></li>
+<li><a href="https://www.myfreax.com">Linux 爱好者</a></li>
+<li><a href="https://explainshell.com">Explainshell</a></li>
+<li><a href="https://crontab.guru">Crontab.guru</a></li>
+<li><a href="https://cmdhelp.com">CMDhelp</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://portableapps.com">Portable</a>
+<ul class="sublist">
+<li><a href="https://portableappk.com">Portablek</a></li>
+<li><a href="https://www.softonic.com">Softonic</a></li>
+<li><a href="https://www.fosshub.com">FossHub</a></li>
+<li><a href="http://www.softwareok.com">Softwareok</a></li>
+<li><a href="http://www.nirsoft.net">Nirsoft</a></li>
+<li><a href="https://www.mazterize.com">Mazterize</a></li>
+<li><a href="https://www.sadeempc.com">Sadeempc</a></li>
+<li><a href="https://repack.me">Repack</a></li>
+<li><a href="https://sourceforge.net">Sourceforge</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-microchip" title="Hardware"></i></li>
+<li><a href="http://www.dgtle.com">数字尾巴</a></li>
+<li><a href="http://www.expreview.com">超能网</a></li>
+<li><a href="https://www.chiphell.com">Chiphell</a></li>
+<li><a href="http://www.weistang.com">外设堂</a></li>
+<li><a href="http://www.hitnology.com">触动力</a></li>
+<li class="submenu" ><a href="http://topic.expreview.com/GPU/">天梯榜</a>
+<ul class="sublist">
+<li><a href="https://www.socpk.com">移动端</a></li>
+<li><a href="https://www.userbenchmark.com">Ubenchmark</a></li>
+<li><a href="https://versus.com/cn">Versus</a></li>
+<li><a href="https://testufo.com">TestUfo</a></li>
+<li><a href="http://dieshot.com">Dieshot</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://www.right.com.cn">恩山无线</a>
+<ul class="sublist">
+<li><a href="https://www.acwifi.net">AcWifi</a></li>
+<li><a href="https://www.koolcenter.com">Koolcenter</a></li>
+<li><a href="http://www.gebi1.com">隔壁网</a></li>
+<li><a href="http://bbs.gfan.com">机锋论坛</a></li>
+<li><a href="https://bbs.hassbian.com">瀚思彼岸</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://zj.zol.com.cn">模拟装机</a>
+<ul class="sublist">
+<li><a href="https://zhuanlan.zhihu.com/p/217881116">Gyusang</a></li>
+<li><a href="https://whatsabyte.com/P1/byteconverter.htm">容量计算</a></li>
+</ul>
+</li>
+<li><a href="https://www.guru3d.com">Guru3D</a></li>
+<li class="submenu"><a href="https://www.mchose.com.cn/#/detail">迈从驱动</a>
+<ul class="sublist">
+<li><a href="https://vgn.rongyuan.tech">VGN A75</a></li>
+<li><a href="https://ldt.pc.wiki">LDTools</a></li>
+<li><a href="https://key-test.com/cn/">Key-test</a></li>
+<li><a href="https://hardwaretester.com/gamepad">Gamepad</a></li>
+<li><a href="https://controllertest.io">ContTest</a></li>
+<li><a href="https://test.screamingline.com">屏幕测试</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-play" title="music,film"></i></li>
+<li class="submenu"><a href="https://music.creasource.app">Music</a>
+<ul class="sublist">
+<li><a href="https://www.fangpi.net">Fangpi</a></li>
+<li><a href="http://tool.liumingye.cn">MyFree</a></li>
+<li><a href="https://xiageba.com">下歌吧</a></li>
+<li><a href="https://spotifymate.com">SpotifyMate</a></li>
+<li><a href="https://www.mehdmv.com">艾木微</a></li>
+<li><a href="https://www.mvbox.net">MVBOX</a></li>
+<li><a href="https://tonzhon.com">铜钟</a></li>
+<li><a href="https://flac.life">无损生活</a></li>
+<li><a href="http://aekun.com">AeKun</a></li>
+<li><a href="http://www.at38.cn">51下载器</a></li>
+<li><a href="https://music.migu.cn">咪咕音乐</a></li>
+<li><a href="https://audiomack.com">Audiomack</a></li>
+<li><a href="https://streetvoice.cn">街声</a></li>
+<li><a href="http://47.112.23.238/music">天天静听</a></li>
+<li><a href="http://music.jsososo.com">一起听音乐</a></li>
+<li><a href="https://www.sq688.com">超高无损</a></li>
+<li><a href="http://5sing.kugou.com">高清伴奏</a></li>
+<li><a href="https://www.xlebbs.com">享乐音乐</a></li>
+<li><a href="https://bbs.musicool.cn">炫音音乐</a></li>
+<li><a href="http://www.acgjc.com">漫音社</a></li>
+<li><a href="https://github.com/yueyericardo/Netease-to-Youtube-or-Spotify">提取歌单</a></li>
+<li><a href="https://www.tunemymusic.com/zh-cn/">TunemyMusic</a></li>
+<li><a href="https://tool.sacdr.net">音乐解锁</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://movie.douban.com">豆瓣电影</a>
+<ul class="sublist">
+<li><a href="https://neodb.social">NeoDB</a></li>
+<li><a href="http://www.imdb.com">IMDb</a></li>
+<li><a href="https://www.themoviedb.org">TMDB</a></li>
+<li><a href="https://thetvdb.com">TVDB</a></li>
+<li><a href="https://www.rottentomatoes.com">烂番茄</a></li>
+<li><a href="https://www.metacritic.com">Metacritic</a></li>
+<li><a href="http://www.mtime.com">时光网</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://rargb.to">RARBG</a>
+<ul class="sublist">
+<li><a href="https://uindex.org">Uindex</a></li>
+<li><a href="https://therarbg.com">TheRarbg</a></li>
+<li><a href="https://www.mini4k.com">迷客电影</a></li>
+<li><a href="http://gaoqing.la">高清网</a></li>
+<li><a href="http://www.languang.co">蓝光网</a></li>
+<li><a href="http://www.languangdy.com">蓝光电影网</a></li>
+<li><a href="http://film.blu-raydisc.tv">蓝光电影</a></li>
+<li><a href="https://sub.shinybbs.vip">深影译站</a></li>
+<li><a href="https://dianying4k.com">电影4K</a></li>
+<li><a href="https://www.grab4k.com">Grab4k</a></li>
+<li><a href="http://vrfilmlink.com">影网</a></li>
+<li><a href="https://www.bugutv.cn">布谷TV</a></li>
+<li><a href="https://www.hdtvbt.com">HDTV</a></li>
+<li><a href="https://thepiratebay.org">海盗湾</a></li>
+<li><a href="https://github.com/proxyninja/Pirateproxy">海盗湾列表</a></li>
+<li><a href="https://1337x.to">1337X</a></li>
+<li><a href="https://yts.mx">YTS</a></li>
+<li><a href="https://torrentgalaxy.to">TGx</a></li>
+<li><a href="https://www.torrentdownload.info">Torrentdd</a></li>
+<li><a href="https://btdig.com">BTDigg</a></li>
+<li><a href="https://eztv.re">EZTV</a></li>
+<li><a href="https://onlytorrents.net">OnlyTorrents</a></li>
+<li><a href="https://acg.rip">ACG.RIP</a></li>
+<li><a href="https://unblockit.asia">Unblockit</a></li>
+<li><a href="https://champagne.pages.dev/online-streaming--dl/general-streaming">Champagne</a></li>
+<li><a href="https://fmhy.pages.dev/videopiracyguide">Fmhy</a></li>
+<li><a href="https://bitsearch.to">Bitsearch</a></li>
+<li><a href="https://extratorrent.proxyninja.org">Proxyninja</a></li>
+<li><a href="https://tgx.rs">Tgx</a></li>
+<li><a href="https://rlsbb.cc">Rlsbb</a></li>
+<li><a href="https://kickasstorrents.pw">Kickasstorrents</a></li>
+<li><a href="https://kickass.torrentbay.net">Torrentbay</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.iqiyi.com">爱奇艺</a>
+<ul class="sublist">
+<li><a href="https://v.qq.com">腾讯</a></li>
+<li><a href="http://www.youku.com">优酷</a></li>
+<li><a href="https://www.iq.com">爱奇艺海外</a></li>
+<li><a href="https://wetv.vip">腾讯海外</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.btdx8.com">比特大雄</a>
+<ul class="sublist">
+<li><a href="https://www.cnwml.com">好片网</a></li>
+<li><a href="http://www.hao6v.com">6V电影</a></li>
+<li><a href="https://www.uump4.net">悠悠Mp4</a></li>
+<li><a href="https://www.12bt.net">12bt电影天堂</a></li>
+<li><a href="https://www.dy2018.com">电影天堂</a></li>
+<li><a href="https://www.dygod.net">电影天堂</a></li>
+<li><a href="https://www.bttwo.vip">两个BT</a></li>
+<li><a href="https://www.dygang.cc">电影港</a></li>
+<li><a href="https://www.dianying.co">新电影</a></li>
+<li><a href="https://www.dytt89.com">电影天堂</a></li>
+<li><a href="https://www.piaohua.com">飘花电影</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://ddys.io">低端影视</a>
+<ul class="sublist">
+<li><a href="https://www.laodifang.tv">老地方影院</a></li>
+<li><a href="https://www.ncat22.com">网飞猫</a></li>
+<li><a href="https://www.cilixiong.com">磁力熊</a></li>
+<li><a href="https://gmtv1.top/iui">剧迷影视</a></li>
+<li><a href="https://v.dsb.ink">SOZMZ</a></li>
+<li><a href="https://yanetflix.com">鸭奈飞</a></li>
+<li><a href="https://dogechan.com">悟空视频</a></li>
+<li><a href="https://www.dandanzan.cc">蛋蛋赞</a></li>
+<li><a href="https://www.olevod.com">欧乐影院</a></li>
+<li><a href="http://www.pdoro.com">PDORO</a></li>
+<li><a href="https://www.hdmoli.com">HDmoli</a></li>
+<li><a href="https://gaze.run">注视影视</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.poxiao.com">破晓电影</a>
+<ul class="sublist">
+<li><a href="https://kpkuang.com">看片狂人</a></li><!-- https://listed.to/p/l1PbMlAK7g -->
+</ul>
+</li>
+<li class="submenu"><a href="https://t-rex.tzfile.com">团长资源</a>
+<ul class="sublist">
+<li><a href="https://www.meijumi.net">美剧迷</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://subhd.tv">SubHD</a>
+<ul class="sublist">
+<li><a href="https://zimuku.org">字幕库</a></li>
+<li><a href="http://zmk.pw">字幕库新</a></li>
+<li><a href="https://www.a4k.net">A4k字幕网</a></li>
+<li><a href="https://assrt.net">伪射手</a></li>
+<li><a href="https://r3sub.com">R3字幕网</a></li>
+<li><a href="http://www.ddzimu.com">点点字幕</a></li>
+<li><a href="https://www.subtitlecat.com">Subtitlecat</a></li>
+<li><a href="https://translatesubtitles.co">Translate Sub</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://neets.cc">Neets</a>
+<ul class="sublist">
+<li><a href="https://tv.garden">tv.garden</a></li>
+<li><a href="https://cupfox.love">茶杯狐</a></li><!-- https://cupfox.app -->
+<li><a href="https://trace.moe" title="以图搜动漫">Trace</a></li>
+<li><a href="https://z1.m1907.cn">m1907</a></li>
+<li><a href="https://www.chaojidianshi.net">牛视网TV</a></li>
+<li><a href="http://www.tvyan.com">电视眼</a></li>
+<li><a href="https://mtime.info">港澳台直播</a></li>
+<li><a href="https://www.nettv.live">NettvLive</a></li>
+<li><a href="https://tv.naver.com">Naver TV</a></li>
+<li><a href="https://nkzy.top">NK资源网</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-wrench" title="Tool"></i></li>
+<li class="submenu"><a href="https://itty.bitty.site">Itty bitty</a>
+<ul class="sublist">
+<li><a href="https://parseurlonline.com">ParseUrl</a></li>
+<li><a href="https://github.com/rutikwankhade/CoverView">CoverView</a></li>
+<li><a href="https://bubble.ilioslabs.dev">Bubble</a></li>
+<li><a href="https://notepin.co">Notepin</a></li>
+<li><a href="https://www.publishthis.email/zh/">P-email</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://qr.io">QR.io</a>
+<ul class="sublist">
+<li><a href="https://www.qrcode-monkey.com">QRMonkey</a></li>
+<li><a href="https://qrframe.kylezhe.ng">Qrframe</a></li>
+<li><a href="https://app.y.gy">Y.GY</a></li>
+<li><a href="http://cli.im">草料二维码</a></li>
+<li><a href="http://liantu.com">联图网</a></li>
+<li><a href="https://qrcode.jiudian.link">9点二维码</a></li>
+<li><a href="https://jiema.wwei.cn">微微二维码</a></li>
+<li><a href="https://www.qrdream.com">二维码梦工厂</a></li>
+<li><a href="https://qrbtf.com">QRBTF</a></li>
+<li><a href="https://www.adobe.com/tw/express/feature/image/qr-code-generator">Adobeqrcode</a></li>
+<li><a href="https://link-to-qr.com">Linktoqr</a></li>
+<li><a href="https://www.logaster.com/qr-code-generator">Logaster</a></li>
+<li><a href="https://www.mywifisign.com">WifiSign</a></li>
+<li><a href="https://wificard.io">WiFiCard</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.screenshotmaster.com">网页截屏</a>
+<ul class="sublist">
+<li><a href="https://screen.guru">Screen Guru</a></li>
+<li><a href="https://web-capture.net">Web-Capture</a></li>
+<li><a href="https://fullpagescreencapture.com">FullpageSC</a></li>
+<li><a href="https://www.screenshotmachine.com">Screenshot</a></li>
+<li><a href="https://browserframe.com">Browserfrm</a></li>
+<li><a href="https://shar.ec">Shar.ec</a></li>
+<li><a href="https://recordscreen.io">Rec-Screen</a></li>
+<li><a href="https://screenapp.io">ScreenRec</a></li>
+<li><a href="https://www.loom.com">Loom</a></li>
+<li><a href="https://shareit.video">Shareit</a></li>
+<li><a href="https://scrnrcrd.com">Scrnrcrd</a></li>
+<li><a href="https://recordit.co">Recordit</a></li>
+<li><a href="https://www.recordcast.com">RecordCast</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://10minutemail.com">10m-Email</a>
+<ul class="sublist">
+<li><a href="https://temp-mail.org/zh/">Temp-Mail</a></li>
+<li><a href="https://temp-mail.to">Temp-mailto</a></li>
+<li><a href="https://www.snapmail.cc">SnapMail</a></li>
+<li><a href="http://www.yopmail.com/zh/">Yopmail</a></li>
+<li><a href="http://www.tempinbox.com">Tempinbox</a></li>
+<li><a href="https://www.guerrillamail.com/zh/">Guerrilla Mail</a></li>
+<li><a href="http://www.fakemailgenerator.com">Fake Mail</a></li>
+<li><a href="https://generator.email">Email-G</a></li>
+<li><a href="https://emailfake.com">Emailfake</a></li>
+<li><a href="https://www.emailondeck.com">EmailDeck</a></li>
+<li><a href="https://tempmail.plus/zh/">TempMailP</a></li>
+<li><a href="https://www.mailinator.com">Mailnator</a></li>
+<li><a href="https://www.throwawaymail.com">Throwaway</a></li>
+<li><a href="https://linshiyouxiang.net">临时邮箱</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://sms-man.com/cn">SMS-Man</a>
+<ul class="sublist">
+<li><a href="https://hero-sms.com">HeroSMS</a></li>
+<li><a href="https://sms-activate.ru">SMS-active</a></li>
+<li><a href="https://grizzlysms.com">Grizzly</a></li>
+<li><a href="https://anonymsms.com">AnonymSMS</a></li>
+<li><a href="https://temporarynumber.com">TempNumber</a></li>
+<li><a href="https://sms24.me/en">SMS24</a></li>
+<li><a href="https://receive-sms.com">Receive-SMS</a></li>
+<li><a href="https://www.storytrain.info">云短信</a></li>
+<li><a href="https://www.pdflibr.com">云短信</a></li>
+<li><a href="https://mianfeijiema.com">免费接码</a></li>
+<li><a href="http://www.114sim.com">在线短信接收</a></li>
+<li><a href="https://yunduanxin.net">在线接受短信</a></li>
+<li><a href="http://www.shejiinn.com">在线短信接收</a></li>
+<li><a href="https://jiemahao.com">接码号</a></li>
+<li><a href="https://www.freeonlinephone.org">Free Phone</a></li>
+<li><a href="https://www.receivesmsonline.net">SMS Online</a></li>
+<li><a href="http://sms.sellaite.com">Sellaite SMS</a></li>
+<li><a href="https://ch.freephonenum.com">FreePNum</a></li>
+<li><a href="https://zh.mytrashmobile.com">mytrashm</a></li>
+<li><a href="https://smsreceivefree.com">ReSMSol</a></li>
+<li><a href="https://www.receive-sms-online.info">RSOI</a></li>
+<li><a href="https://receiveasms.com">ReSMS</a></li>
+<li><a href="https://sms-online.co/receive-free-sms">ReSMSolfree</a></li>
+<li><a href="https://us-phone-number.com">ReSMSFree</a></li>
+<li><a href="https://tempsmss.com">TempSMSS</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.imageextraction.com">Img Ext</a>
+<ul class="sublist">
+<li><a href="https://extract.pics">ImgExtor</a></li>  
+</ul>
+</li>
+<li class="submenu"><a href="https://www.newocr.com">FreeOCR</a>
+<ul class="sublist">
+<li><a href="https://pearocr.com">PearOCR</a></li>
+<li><a href="https://deepseekocr.app">DSOCR</a></li>
+<li><a href="https://github.com/plantree/ocr-pwa">离线OCR</a></li>
+<li><a href="https://ocrify.com">OCRify</a></li>
+<li><a href="https://olocr.com/chinese_simplified">OLOCR</a></li>
+<li><a href="https://ocr.space">OCRSpace</a></li>
+<li><a href="https://web.baimiaoapp.com">白描</a></li>
+<li><a href="https://zhiyakeji.com/freg/">转表格</a></li>
+<li><a href="http://online.easyscreenocr.com/ZH">EasyScreen</a></li>
+<li><a href="https://www.onlineocr.net/zh_hans">OnlineOCR</a></li>
+<li><a href="https://duguang.aliyun.com/experience">DuGuang</a></li>
+<li><a href="https://ocr.wdku.net">TextConv</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.virustotal.com">Virustotal</a>
+<ul class="sublist">
+<li><a href="https://virusscan.jotti.org">Jotti</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://rthsoftware.cn">RTHTool</a>
+<ul class="sublist">
+<li><a href="https://toolight.cn">偷懒工具</a></li>
+<li><a href="https://www.67tool.com">67tool</a></li>
+<li><a href="https://tools.miku.ac">MikuTools</a></li>
+<li><a href="http://www.atoolbox.net">AtoolBox</a></li>
+<li><a href="https://uutool.cn">UUtool</a></li>
+<li><a href="https://123apps.com/cn/">123apps</a></li>
+<li><a href="https://web.woobx.cn">一个木函</a></li>
+<li><a href="https://www.toolnb.com">Toolnb</a></li>
+<li><a href="https://www.fastools.cn">快用工具</a></li>
+<li><a href="https://www.apowersoft.cn/compress-file-online">Apowersoft</a></li>
+<li><a href="https://youtils.cc">Youtils</a></li>
+<li><a href="http://www.atool.org">Atool</a></li>
+<li><a href="https://www.dute.org">Dute</a></li>
+<li><a href="https://tools.fun">Toolfun</a></li>
+<li><a href="https://www.iamwawa.cn">蛙蛙工具</a></li>
+<li><a href="https://toolbon.com">优工具</a></li>
+<li><a href="https://www.ygktool.cn">云极客</a></li>
+<li><a href="https://www.coder.work">IT工具网</a></li>
+<li><a href="http://www.lizibuluo.com">迷你工具箱</a></li>
+</ul>
+</li>
+<li><a href="https://pin.gl">Pin.gl</a></li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-wrench" title="2"></i></li>
+<li class="submenu"><a href="https://www.fakepersongenerator.com">Generator</a>
+<ul class="sublist">
+<li><a href="https://addressgenerator.top/zh">多国身份生成器</a></li>
+<li><a href="https://www.meiguodizhi.com">Meiguodz</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.namegenerator.co/fantasy/roman-name-generator">R-Name</a>
+<ul class="sublist">
+<li><a href="https://randomwordgenerator.com">R-Words</a></li>
+<li><a href="https://www.usaddrgen.com">美国地址生成器</a></li>
+<li><a href="https://toolfig.com/fake-name-generator">美国身份生成器</a></li>
+<li><a href="https://www.dute.org/fake-name-generator">美国身份生成器 </a></li>
+<li><a href="https://www.addresscopy.com">各国地址生成器</a></li>
+<li><a href="https://www.qmsjmfb.com">网名生成器</a></li>
+<li><a href="https://www.lastpass.com/features/username-generator">用户名生成器</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://passwrd.in">Passwrd</a>
+<ul class="sublist">
+<li><a href="https://www.dashlane.com/features/password-generator">dashlane</a></li>
+<li><a href="https://www.strongpasswordgenerator.org">Strongpsd</a></li>
+<li><a href="https://www.lastpass.com/password-generator">Lastpass</a></li>
+<li><a href="https://techzoom.net/lab/password-generator">Techzoom</a></li>
+<li><a href="https://passwordsgenerator.net">Psdgentor</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://savebilibili.com/zh-CN">SaveBilibili</a>
+<ul class="sublist">
+<li><a href="https://savexr.com">SaveXR</a></li>
+<li><a href="https://savexr.com/"></a></li>
+<li><a href="https://www.easydown.org/zh">Easydown</a></li>
+<li><a href="https://ytd.app/zh-CN/">Ytd.app</a></li>
+<li><a href="https://dlbunny.com/zh-CN">DLBunny</a></li>
+<li><a href="https://oneforalldownloader.com/zh/">OFA Dl</a></li>
+<li><a href="https://www.bestvideow.com">Best Video</a></li>
+<li><a href="https://zeemo.ai/cn/">Zeemo</a></li>
+<li><a href="https://downr.org">Downr</a></li>
+<li><a href="https://naver.online-downloader.com/index-Chinese">Naver</a></li>
+<li><a href="https://greenvideo.cc">GreenVideo</a></li>
+<li><a href="https://www.saveplays.com/zh/">SavePlays</a></li>
+<li><a href="https://loader.fo/zh/">Loader.fo</a></li>
+<li><a href="https://yt2k.com/zh3">yt2k</a></li>
+<li><a href="https://www.slicetube.io">SliceTube</a></li>
+<li><a href="https://github.com/imputnet/cobalt">Cobalt</a></li>
+<li><a href="https://anydownloader.com/en/">Anydler</a></li>
+<li><a href="https://dmsave.top">DmSave</a></li>
+<li><a href="https://igdown.cc">igDown</a></li>
+<li><a href="https://ssyoutube.com">SSYouTube</a></li>
+<li><a href="https://catchv.fooish.com">CatchV</a></li>
+<li><a href="https://www.y2meta.com/zh-cn63">Y2meta</a></li>
+<li><a href="https://ingramer.com/downloader">Ingramer</a></li>
+<li><a href="https://keeppost.com">KeepPost</a></li>
+<li><a href="https://savieo.com/zh/">Savido</a></li>
+<li><a href="https://dirpy.link">Dirpy</a></li>
+<li><a href="https://x2download.com">X2Download</a></li>
+<li><a href="https://snapsave.io">SnapSave</a></li>
+<li><a href="https://savemedia.website">SaveMedia</a></li>
+<li><a href="https://saveyt.cc/cn">SaveYT</a></li>
+<li><a href="https://savett.cc">SaveTT</a></li>
+<li><a href="https://youtube4kdownloader.com">YouTube4KDL</a></li>
+<li><a href="https://www.youtubedld.com">YouTubeDLD</a></li>
+<li><a href="https://alltubedownload.net">AllTubeDL</a></li>
+<li><a href="https://ytcutter.net">YTCutter</a></li>
+<li><a href="https://ytgoconverter.com">YTGoConverter</a></li>
+<li><a href="https://keepvid.pw/zh/">Keepvid</a></li>
+<li><a href="https://www.cutyt.com">Cut YouTube</a></li>
+<li><a href="https://mp3convert.cc">Mp3converter</a></li>
+<li><a href="https://www.backupmp3.com/zh-cn">Backupmp3</a></li>
+<li><a href="https://loader.to">Loader.to</a></li>
+<li><a href="https://ddownr.com">ddownr</a></li>
+<li><a href="https://www.fdown.net">Fdown</a></li>
+<li><a href="https://ontiva.com">Ontiva</a></li>
+<li><a href="https://instaer.app">Insta</a></li>
+<li><a href="https://www.bigconverter.com/v1/">BigConverter</a></li>
+<li><a href="https://www.parsevideo.com">Parsevideo</a></li>
+<li><a href="https://www.clipconverter.cc">ClipConverter</a></li>
+<li><a href="https://www.videofk.com">VideoFk</a></li>
+<li><a href="https://socialsnapper.net">SocialSnapper</a></li>
+<li><a href="https://you-tldr.com">You-Tldr</a></li>
+<li><a href="https://www.converto.io">Converto</a></li>
+<li><a href="https://www.download4.cc">Download4</a></li>
+<li><a href="https://odownloader.com">odownloader</a></li>
+<li><a href="https://en.onlymp3.to">OnlyMP3</a></li>
+<li><a href="https://ytsmp3.com">YTSmp3</a></li>
+<li><a href="https://bilibili.iiilab.com">iiitab</a></li>
+<li><a href="https://video.ciding.cc">蜜蜂去水印</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://twittervideodownloader.com">Twitter-dl</a>
+<ul class="sublist">
+<li><a href="https://twdown.net">TWDown</a>  </li>
+<li><a href="https://tweeload.com">Tweeload</a></li>
+<li><a href="https://xdownload.top/zh-cn">XDownload</a></li> 
+<li><a href="https://www.twitterdown.com/zh">TwitterDown</a></li>
+<li><a href="https://xunlangbot.com/download">Xunlangbot</a></li>
+<li><a href="https://twdownload.com">TWDownload</a></li>
+<li><a href="https://www.getmytweet.com">GetMyTweet</a></li>
+<li><a href="https://ssstwitter.com">sssTwitter</a></li>
+<li><a href="https://www.savetweetvid.com">SaveTweetVid</a></li>
+<li><a href="https://savetik.co">SaveTik</a></li>
+<li><a href="https://qload.info/zh/">Qload</a></li>
+<li><a href="https://proxitok.pabloferreiro.es">Proxitok</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://downsub.com">Downsub</a>
+<ul class="sublist">
+<li><a href="https://savesubs.com">Savesubs</a></li>
+<li><a href="https://www.downloadyoutubesubtitles.com">Dlytsub</a></li>
+<li><a href="https://ytbcomments.com">YouTubeCS</a></li>
+<li><a href="https://transcriptgenerator.org/zh-TW">YTG</a></li>
+<li><a href="https://tools.newzone.top/zh/subtitle-translator">字幕翻译</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://github.com/lazy-guy/tomodoro">Tomodoro</a>
+<ul class="sublist">
+<li><a href="https://pomofocus.io">Pomofocus</a></li>
+<li><a href="https://pomotimer.com">Pomotimer</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.littlediffer.com">Littlediffer</a>
+<ul class="sublist">
+<li><a href="https://www.diffchecker.com">Diffchecker</a></li>
+<li><a href="https://diffsuite.com">Diffsuite</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://sqliteonline.com">SQL OLC</a>
+<ul class="sublist">
+<li><a href="https://sqlook.com">SQLook </a></li>
+</ul>
+</li>
+<li><a>占位符</a></li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-copy" title="Convert Files"></i></li>
+<li class="submenu"><a href="http://www.officeplus.cn">OfficePlus</a>
+<ul class="sublist">
+<li><a href="https://csv.ink">CSVInk</a></li>
+<li><a href="https://www.excelhome.net">Excelhome</a></li>
+<li><a href="https://www.1ppt.com">第1PPT</a></li>
+<li><a href="http://www.tretars.com">比格PPT</a></li>
+<li><a href="https://www.ypppt.com">优品PPT</a></li>
+<li><a href="https://www.xiaomippt.com">小米PPT</a></li>
+<li><a href="https://ppt.sotary.com">PPT超级市场</a></li>
+<li><a href="http://hiwenku.com">嗨文库</a></li>
+<li><a href="https://www.bangongziyuan.com">办公资源网</a></li>
+<li><a href="https://www.xiangdang.net">香当网</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://vert.sh">VERT</a>
+<ul class="sublist">
+<li><a href="http://convertio.co/zh">ConvertIO</a></li>
+<li><a href="https://www.fileconverto.com">FileConverto</a></li>
+<li><a href="https://cn.office-converter.com">OfficeCver</a></li>
+<li><a href="https://word.to">Word.to</a></li>
+<li><a href="https://markitdown.pro">MarkItDown</a></li>
+<li><a href="https://doc2x.noedgeai.com/markdownEdit">Doc2X</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://smallpdf.com/cn">SmallPDF</a>
+<ul class="sublist">
+<li><a href="https://quicklypdf.com/zh">quicklypdf</a></li>
+<li><a href="https://avepdf.com/zh">AvePDF</a></li>
+<li><a href="https://pdf.to">Pdf.to</a></li>
+<li><a href="https://www.cleverpdf.com/cn">CleverPDF</a></li>
+<li><a href="https://lightpdf.com/tw">LightPDF</a></li>
+<li><a href="https://www.pdf2go.com/zh">PDF2Go</a></li>
+<li><a href="https://www.pdftool.org/zh">PDFtool</a></li>
+<li><a href="https://pdf.online">PDF.Online</a></li>
+<li><a href="https://pdfconvertfree.com">PDFtoImg</a></li>
+<li><a href="https://pdfcandy.com/cn">PDF Candy</a></li>
+<li><a href="https://www.ilovepdf.com/zh-cn">iLovePDF</a></li>
+<li><a href="https://tools.pdf24.org/zh/">PDF24</a></li>
+<li><a href="https://www.hipdf.cn">HiPDF</a></li>
+<li><a href="https://pdfcrowd.com">Pdfcrowd</a></li>
+<li><a href="https://www.printfriendly.com">printpdf</a></li>
+<li><a href="https://www.pdfescape.com">PDFescape</a></li>
+<li><a href="https://www.sejda.com/pdf-editor">Sejda PDF</a></li>
+<li><a href="https://oakpdf.com">OakPDF</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.aconvert.com/cn/">Aconvert</a>
+<ul class="sublist">
+<li><a href="https://converttool.org/zh-cn/">ConvertTool</a></li>
+<li><a href="https://www.online-convert.com">OL-Convert</a></li>
+<li><a href="https://convertr.org">Convertr</a></li>
+<li><a href="https://cloudconvert.com">CloudCnv</a></li>
+<li><a href="https://www.files-conversion.com">Files-Conversion</a></li>
+<li><a href="https://cdkm.com">CDKM</a></li>
+<li><a href="https://www.zamzar.com">Zamzar</a></li>
+<li><a href="https://anyconv.com">AnyConv</a></li>
+<li><a href="https://www.filezigzag.com/online-converter">FileZigZag</a></li>
+</ul>
+<li><a href="https://tinywow.com">TinyWow</a></li>
+<li><a href="http://www.alltoall.net">AlltoAlll</a></li>
+</li>
+<li class="submenu"><a href="https://extract.me/cn/">Archive Ext</a>
+<ul class="sublist">
+<li><a href="https://cn.fileunzip.com">FileUNZIP</a></li>
+<li><a href="https://www.ezyzip.com/cn.html">EzyZip</a></li>
+<li><a href="https://online.b1.org/online">b1</a></li>
+<li><a href="https://www.youcompress.com/zh-cn/">YouCompress</a></li>
+<li><a href="https://web.archive.org">WebArchive</a></li>
+<li><a href="https://www.archiveforever.xyz">Archive Forever</a></li>
+<li><a href="https://github.com/JasonGrass/rename">Rename</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://wavvy.app">Wavvy</a>
+<ul class="sublist">
+<li><a href="https://ringer.org">Ringer</a></li>
+<li><a href="https://clideo.com/cut-audio">Audio Cutter</a></li>
+<li><a href="https://audiocutter.online">Audio Cutter</a></li>
+<li><a href="https://cutmp3.net">Cut Mp3 ol</a></li>
+<li><a href="https://mp3cut.foxcom.su/en/">Mp3 Cut</a></li>
+<li><a href="https://myedit.online/cn">MyEdit</a></li>
+<li><a href="https://www.mazmazika.com/vocalremover">UVR5MazMazika</a></li>
+<li><a href="https://uvr5.online">UVR5</a></li>
+<li><a href="https://vocalremover.org/zh">Vocalremover</a></li>
+<li><a href="https://www.notta.ai/en/tools/online-vocal-remover">NottaOVRe</a></li>
+<li><a href="https://www.aoqiv.com">Aoqiv</a></li>
+<li><a href="https://www.mycassette.app">Mycassette</a></li>
+<li><a href="https://audiomass.co">Audiomass</a></li>
+<li><a href="https://jianwai.youdao.com">网易见外</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://azure.microsoft.com/zh-cn/services/cognitive-services/text-to-speech/">文本转语音</a>
+<ul class="sublist">
+<li><a href="http://www.voiceclub.cn">悦录</a></li>
+<li><a href="https://huggingface.co/spaces/sanchit-gandhi/whisper-jax">语音转文字</a></li>
+<li><a href="https://ttsmaker.com/zh-cn">TTSMaker</a></li>
+<li><a href="https://notevibes.com">Notevibes</a></li>
+<li><a href="https://speechlogger.appspot.com/zh/">Speechlogger</a></li>
+<li><a href="https://otranscribe.com">oTranscribe</a></li>
+<li><a href="https://www.speakpipe.com/voice-recorder">Speakpipe</a></li>
+<li><a href="https://vocaroo.com">Vocaroo</a></li>
+<li><a href="https://www.mygoodtape.com">Good Tape</a></li>
+</ul>
+</li>
+<li><a href="https://www.videoconverter.com/zh/">VideoConv</a></li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-retweet" title="Transfer"></i></li>
+<li class="submenu"><a href="https://drop.space">Drop</a>
+<ul class="sublist">
+<li><a href="https://quwenjian.cc">取文件</a></li>
+<li><a href="https://biji.ci">笔记词</a></li>
+<li><a href="https://box.zjuqsc.com ">潮云U盘</a></li>
+<li><a href="https://www.wenshushu.cn">文叔叔</a></li>
+<li><a href="http://qingwendang.com">轻文档</a></li>
+<li><a href="https://app.tmp.link">钛盘</a></li>
+<li><a href="https://deershare.com/send">小鹿快传</a></li>
+<li><a href="https://quqi.com">曲奇云盘</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://ufile.io">Ufile</a>
+<ul class="sublist">
+<li><a href="https://transfer.it">Transfer</a></li>
+<li><a href="https://filebin.net">Filebin</a></li>
+<li><a href="https://dash.cecily.eu.org">Tg-Imge</a></li>
+<li><a href="https://www.grosfichiers.com/zh/">GrosFichiers</a></li>
+<li><a href="https://www.sendbig.com">SendBig</a></li>
+<li><a href="https://zaix.ru/upload">Zaix</a></li>
+<li><a href="https://www.upload.ee">Upload.ee</a></li>
+<li><a href="https://gofile.io">Gofile</a></li>
+<li><a href="https://filedoge.com">File Doge</a></li>
+<li><a href="https://send.internxt.com">Internxt</a></li>
+<li><a href="https://file.coffee">F.coffee</a></li>
+<li><a href="https://transfer.pcloud.com">pCloud</a></li>
+<li><a href="https://sendfileonline.com">Sendfile</a></li>
+<li><a href="https://filetransfer.io">FileTransfer</a></li>
+<li><a href="https://wetransfer.com">WeTransfer</a></li>
+<li><a href="https://www.transfernow.net">TransferNow</a></li>
+<li><a href="https://www.sendgb.com">SendGB</a></li>
+<li><a href="https://ac-data.info">ACdata</a></li>
+<li><a href="https://www.jetdrop.net">Jetdrop</a></li>
+<li><a href="https://wormhole.app">Wormhole</a></li>
+<li><a href="https://www.mirrored.to">Mirrored</a></li>
+<li><a href="https://decentrafile.com">Decentrafile</a></li>
+<li><a href="https://misty-meadow-6745.on.fleek.co">Saturn</a></li>
+<li><a href="https://transferkit.io">TransferKit</a></li>
+<li><a href="https://transfereasy.in">TransferEasy</a></li>
+<li><a href="https://www.transferbigfiles.com">TrBigFiles</a></li>
+<li><a href="https://streamtape.com">Streamtape</a></li>
+<li><a href="https://new.space">New.Space</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.sharedrop.io">ShareDrop</a>
+<ul class="sublist">
+<li><a href="https://snapdrop.net">Snapdrop</a></li>
+<li><a href="https://drop.lol">Drop-lol</a></li>
+<li><a href="https://airportal.cn">AirPortal</a></li>
+<li><a href="https://www.file.io">File.io</a></li>
+<li><a href="https://copypaste.me">Copyp</a></li>
+<li><a href="https://netcut.cn">Netcut</a></li>
+<li><a href="https://filehelper.weixin.qq.com">WeFile</a></li>
+<li><a href="http://transfer.zip">Transfer</a></li>
+<li><a href="https://rdrop.link">rDrop</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.ppzhilian.com">PPlink</a>
+<ul class="sublist">
+<li><a href="https://blaze.now.sh">Blaze</a></li>
+<li><a href="https://file.pizza">FilePizza</a></li>
+<li><a href="https://blymp.io">Blymp</a></li>
+<li><a href="https://toffeeshare.com">ToffeeShare</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://hack.chat">HackChat</a>
+<ul class="sublist">
+<li><a href="https://volafile.org">Volafile</a></li>
+<li><a href="https://fileroom.io">FileRoom</a></li>
+<li><a href="https://saladroom.net">SaladRoom</a></li>
+<li><a href="https://quicksync.me">QSyncme</a></li>
+<li><a href="https://safer.chat">Safer.chat</a></li>
+</ul>
+</li>
+<li><a href="https://anonfiles.com">Anonfiles</a></li>
+<li class="submenu"><a href="https://imgkr.com">图壳</a>
+<ul class="sublist">
+<li><a href="https://www.ossking.com">OSS King</a></li>
+<li><a href="https://freeimage.host">Freeimage</a></li>
+<li><a href="https://im.ge">IM.GE</a></li>
+<li><a href="https://imgtu.com">路过</a></li>
+<li><a href="https://www.superbed.cn">聚合图床</a></li>
+<li><a href="https://imagelol.com">笑果</a></li>
+<li><a href="https://tucang.cc">图仓</a></li>
+<li><a href="https://chuangetu.com">传个图</a></li>
+<li><a href="https://img.kuibu.net">跬步</a></li>
+<li><a href="https://gejiba.com">鸡霸</a></li>
+<li><a href="https://p.sda1.dev">流浪</a></li>
+<li><a href="https://pic.baixiongz.com">白熊</a></li>
+<li><a href="https://7bu.top">去不</a></li>
+<li><a href="https://riyugo.com">薄荷</a></li>
+<li><a href="https://kjava.com">酷Java</a></li>
+<li><a href="https://ipfs.xkx.me">IPFS</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://sm.ms">SM.SM</a>
+<ul class="sublist">
+<li><a href="https://snappable.media">Snappable</a></li>
+<li><a href="https://imgbee.com">imgBee</a></li>
+<li><a href="https://postimages.org">Postimg</a></li>
+<li><a href="https://pasteboard.co">Pasteboard</a></li>
+<li><a href="https://img.rruu.net">如优</a></li>
+<li><a href="https://imgbb.com">ImgBB</a></li>
+<li><a href="https://imgurl.org">ImgURL</a></li>
+<li><a href="https://upload.cc">Upload.cc</a></li>
+<li><a href="https://img.onl">Img.onl</a></li>
+<li><a href="https://img.fghrsh.net">Fghrsh</a></li>
+<li><a href="https://z4a.net">ZA4</a></li>
+<li><a href="https://catbox.moe">Catbox</a></li>
+<li><a href="https://imgur.com">Imgur</a></li>
+<li><a href="https://folio.ink">Folio.ink</a></li>
+<li><a href="https://pixhost.to">PiXhost</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.verybin.com">Verybin</a>
+<ul class="sublist">
+<li><a href="https://cmd.im">鸡毛信</a></li>
+<li><a href="http://pasted.co">ControlC</a></li>
+<li><a href="https://safenote.co">SafeNote</a></li>
+<li><a href="http://www.vua.sh">vua.sh</a></li>
+<li><a href="https://yhjf.cc">阅后即焚</a></li>
+<li><a href="https://privnote.com">Privnote</a></li>
+<li><a href="https://getnote.cf">Getnote</a></li>
+<li><a href="https://note.ms/nanji">Note.ms</a></li>
+<li><a href="https://note.mk">Note.mk</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://tny.im">tyn.im</a>
+<ul class="sublist">
+<li><a href="https://bitly.com">Bitly</a></li>
+<li><a href="https://urlify.cn">Urlify</a></li>
+<li><a href="https://mergeurl.com">MergeURL</a></li>
+<li><a href="https://mork.ro">Mork</a></li>
+<li><a href="https://dlj.li">厘短链</a></li>
+<li><a href="https://offf.to">Offf.to</a></li>
+<li><a href="https://ji.hn">Ji.hn</a></li>
+<li><a href="https://tinyurl.com">TinyURL</a></li>
+<li><a href="https://t2mio.com">T2M</a></li>
+<li><a href="https://www.rebrandly.com">Rebrandly</a></li>
+<li><a href="https://adf.ly">AdFly</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-code" title="Development"></i></li>
+<li class="submenu"><a href="https://github.com/NanJishen">GitHub</a>
+<ul class="sublist">
+<li><a href="https://github.com/nassets">Nassets</a></li>
+<li><a href="https://gitee.com">Gitee</a></li>
+<li><a href="https://gitlab.com">GitLab</a></li>
+<li><a href="https://hosts.gitcdn.top/hosts.txt">Githubhosts</a></li>
+<li><a href="https://jihulab.com">极狐</a></li>
+<li><a href="https://codeup.aliyun.com">阿里云效</a></li>
+<li><a href="https://mytemplate.xyz">DevBuilder</a></li>
+<li><a href="https://readmd.itsvg.in">readMD</a></li>
+<li><a href="https://gitclone.com">gitclone</a></li>
+<li><a href="https://ghdl.ttti.cc">gh.ttti</a></li>
+<li><a href="https://xiake.pro">虾壳</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://coding.net">Coding</a></li>
+<li class="submenu"><a href="https://1024tools.com">Devtool</a>
+<ul class="sublist">
+<li><a href="https://onesapk.com/zh">OnesAPK</a></li>
+<li><a href="https://coding.tools/cn">Coding.Tools</a></li>
+<li><a href="https://tab.tools">Tab.tools</a></li>
+<li><a href="https://bar.ssstab.com">ssstab</a></li>
+<li><a href="https://freecodetools.org">FreeCode</a></li>
+<li><a href="http://tool.lu">Tool.lu</a></li>
+<li><a href="https://devtool.tech">开发者武器库</a></li>
+<li><a href="https://tools.yuanfen.net">猿奋工具箱</a></li>
+<li><a href="https://c.runoob.com">菜鸟工具</a></li>
+<li><a href="https://qqe2.com">奇Q工具</a></li>
+<li><a href="https://www.fetoolkit.io">Fetoolkit</a></li>
+<li><a href="https://regex101.com">Regex101</a></li>
+<li><a href="https://regexper.com">Regexper</a></li>
+<li><a href="https://regexlearn.com/zh-cn">RegexLearn</a></li>
+<li><a href="https://any86.github.io/any-rule">正则大全</a></li>
+<li><a href="https://github.com/geongeorge/i-hate-regex">iHateRegex</a></li>
+<li><a href="https://haxi.im">Hash 算法</a></li>
+<li><a href="https://www.base64decode.org">Base64C</a></li>
+<li><a href="https://base64.us">base64.us</a></li>
+<li><a href="http://tool.oschina.net/encrypt">Encrypt</a></li>
+<li><a href="https://www.uuidgenerator.net">UUIDgr</a></li>
+<li><a href="https://www.commands.dev">Commands</a></li>
+<li><a href="https://cheet.dev">Cheet</a></li>
+<li><a href="https://it-tools.tech">IT Tools</a></li>
+<li><a href="https://free.tools">Free Tools</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.thiscodeworks.com">Thiscodes</a>
+<ul class="sublist">
+<li><a href="https://codeset.io ">Codeset</a></li>
+<li><a href="https://devhints.io">Devhints</a></li>
+<li><a href="https://explainshell.com">Explainshell</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://jsonhero.io">JSON Hero</a>
+<ul class="sublist">
+<li><a href="https://jsoncrack.com">JSON Crack</a></li>
+<li><a href="http://www.jsons.cn">jsons</a></li>
+<li><a href="https://www.sojson.com">sojson</a></li>
+<li><a href="http://www.kjson.com">kjson</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.v2ex.com">V2EX</a>
+<ul class="sublist">
+<li><a href="https://linux.do">Linux.do</a></li>
+<li><a href="https://www.nodeseek.com">Nodeseek</a></li>
+<li><a href="https://geekhub.com">Geekhub</a></li>
+<li><a href="https://idcflare.com">IDC Flare</a></li>
+<li><a href="https://shadowq.com">影子论坛</a></li>
+<li><a href="https://assbbs.com">屌丝论坛</a></li>
+<li><a href="https://www.qqvps.com">VPS社区</a></li>
+<li><a href="https://www.csdn.net">CSDN</a></li>
+<li><a href="https://hackershare.dev">极客分享</a></li>
+<li><a href="https://www.xqxz.cn">兴趣小组</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://juejin.im">掘金</a>
+<ul class="sublist">
+<li><a href="http://www.chinaz.com">站长之家</a></li>
+<li><a href="https://segmentfault.com">思否</a></li>
+<li><a href="https://www.helloworld.net">HelloWorld</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.qikegu.com">奇客谷</a>
+<ul class="sublist">
+<li><a href="https://www.oschina.net">开源中国</a></li>
+<li><a href="https://www.heikewan.com">黑客新闻</a></li>
+<li><a href="https://www.infoq.cn">InfoQ</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://carbon.now.sh">Carbon</a>
+<ul class="sublist">
+<li><a href="https://app.codeimage.dev">Codeimage</a></li>
+<li><a href="https://ray.so">Ray.so</a></li>
+<li><a href="https://chalk.ist">Chalk.ist</a></li>
+<li><a href="https://codeimg.io">Codeimg</a></li>
+<li><a href="https://codekeep.io/screenshot">Codekeep</a></li>
+<li><a href="https://showcode.app">Showcode</a></li>
+<li><a href="https://kod.so">Kod.so</a></li>
+<li><a href="https://codetoimg.com">CodetoIMG</a></li>
+<li><a href="https://snappify.com">Snappify</a></li>
+<li><a href="https://10015.io">10015</a></li>
+<li><a href="https://shields.io">Shields</a></li>
+<li><a href="https://purple-photo.web.app/code-editor">Purple PhotoE:</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://www.jb51.net">脚本之家</a>
+<ul class="sublist">
+<li><a href="http://www.php.cn">php中文网</a></li>
+<li><a href="https://integrately.com">Integrately</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-globe" title="Front-end Tools"></i></li>
+<li class="submenu"><a href="https://codepen.io">CodePen</a>
+<ul class="sublist">
+<li><a href="https://glitch.com">Glitch</a></li>
+<li><a href="https://codesandbox.io">Sendbox</a></li>
+<li><a href="https://next.plnkr.co">Plunker</a></li>
+<li><a href="https://jsbin.com">JSBin</a></li>
+<li><a href="https://jsrun.net">JSRun</a></li>
+<li><a href="https://riju.codes">Riju</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.htmlwasher.com">HtmlWash</a>
+<ul class="sublist">
+<li><a href="https://html.cafe">Html</a></li>
+<li><a href="https://textcleaner.net">Text Cleaner</a></li>
+<li><a href="https://markdowndown.vercel.app">Markdowndl</a></li>
+<li><a href="https://kangax.github.io/html-minifier">Html Minifier</a></li>
+<li><a href="https://www.projectwallace.com">Wallace</a></li>
+<li><a href="https://www.css-js.com">Css.Js</a></li>
+<li><a href="https://megatags.co">Mega Tags</a></li>
+<li><a href="https://placeholder.com">Placeholder</a></li>
+<li><a href="https://picsum.photos">PicsumPhoto</a></li>
+<li><a href="https://placeimg.com">Picsum</a></li>
+<li><a href="https://placekitten.com">PlaceIMG</a></li>
+<li><a href="https://dummyimage.com">Dummyimg</a></li>
+<li><a href="https://ipsm.io">ipsm.io</a></li>
+<li><a href="http://www.tablesgenerator.com">Tables Gen</a></li>
+<li><a href="https://tableconvert.com/zh-CN/">TableConvert</a></li>
+<li><a href="http://www.mergely.com">Mergely</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://techbrood.com">踏得网</a>
+<ul class="sublist">
+<li><a href="https://www.yourware.so">Yourware</a></li>
+<li><a href="https://devtooly.com">Web-tools</a></li>
+<li><a href="https://griddy.io">Griddy</a></li>
+<li><a href="https://markodenic.com/tools/buttons-generator">Buttons</a></li>
+<li><a href="https://metaseo.itsvg.in">metaSEO</a></li>
+<li><a href="https://html5up.net">HtmlUP</a></li>
+<li><a href="https://copy-paste-css.com">CpoyCSS</a></li>
+<li><a href="https://github.com/QiShaoXuan/css_tricks">CSS_Tricks</a></li>
+<li><a href="https://cssfx.lovejade.cn">CSS Effect</a></li>
+<li><a href="https://getcssscan.com/css-box-shadow-examples">CSS Shadow</a></li>
+<li><a href="https://uiverse.io">Uiverse</a></li>
+<li><a href="https://www.checklist.design">Checklist</a></li>
+<li><a href="https://bootsnipp.com">Bootsnipp</a></li>
+<li><a href="https://emilkowalski.github.io/css-effects-snippets">ESnippets</a></li>
+<li><a href="https://favicon.io">Favicon</a></li>
+<li><a href="https://realfavicongenerator.net">Realfavico</a></li>
+<li><a href="https://geticon.cn">Geticon</a></li>
+<li><a href="https://loading.io">Loading</a></li>
+<li><a href="https://uiball.com/loaders">Loaders</a></li>
+<li><a href="https://whirl.netlify.app">Whirl</a></li>
+<li><a href="https://card-logo.com">Card-logo</a></li>
+<li><a href="https://onelineplayer.com">Olplayer</a></li>
+<li><a href="https://ui.glass/generator">GlassUI</a></li>
+<li><a href="http://www.17sucai.com">17素材</a></li>
+<li><a href="https://echarts.apache.org">Echart</a></li>
+<li><a href="https://fffuel.co">Fffuel</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.visiwig.com">Visiwig</a>
+<ul class="sublist">
+<li><a href="https://neumorphism.io">Soft-UI</a></li>
+<li><a href="https://shadows.brumm.af">SShadow</a></li>
+<li><a href="https://9elements.github.io/fancy-border-radius/">9elements</a></li>
+<li><a href="https://larsenwork.com/easing-gradients/">Easing</a></li>
+<li><a href="https://learnui.design/tools/data-color-picker.html">Data Color</a></li>
+<li><a href="https://cssgrid-generator.netlify.app">Gridgen</a></li>
+<li><a href="https://accordionslider.com">Accordion</a></li>
+<li><a href="https://www.bestcssbuttongenerator.com">ButtonX</a></li>
+<li><a href="https://getwaves.io">Waves</a></li>
+<li><a href="https://bennettfeely.com/clippy">Clip-path</a></li>
+<li><a href="https://observablehq.com/@d3/color-schemes">Color-se</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://coolbackgrounds.io">Cool BG</a>
+<ul class="sublist">
+<li><a href="https://haikei.app">Haikei</a></li>
+<li><a href="https://uigradients.com">Uigradient</a></li>
+<li><a href="https://www.color-morph.com">Color-Morph</a></li>
+<li><a href="https://www.grabient.com">Grabient</a></li>
+<li><a href="https://gradienta.io">Gradienta</a></li>
+<li><a href="https://www.svgbackgrounds.com">SVG-Bg</a></li>
+<li><a href="https://animatedbackgrounds.me">AnimatedBG</a></li>
+<li><a href="https://webgradients.com">WebGradient</a></li>
+<li><a href="https://webkul.github.io/coolhue">CoolHue</a></li>
+<li><a href="https://www.svgwaves.io">SVGWaves</a></li>
+<li><a href="http://www.heropatterns.com">Hero Pattern</a></li>
+<li><a href="https://gradient.style">CSS HD Gen</a></li>
+<li><a href="https://www.bestvist.com/css-gradient">css-gradient</a></li>
+<li><a href="https://wickedbackgrounds.com">Wicked</a></li>
+<li><a href="https://gra.dient.art">Gradient</a></li>
+<li><a href="https://xiaomingtang.github.io/colorful-wallpaper/dist/">渐变图生成</a></li>
+<li><a href="https://www.magicpattern.design/tools/css-backgrounds">Magicp</a></li>
+<li><a href="http://thepatternlibrary.com">TPL</a></li>
+<li><a href="https://www.noiseandgradient.com">Noisegt</a></li>
+<li><a href="https://www.designgradients.com">Design Gradients</a></li>
+<li><a href="https://www.shadergradient.co">Shader Gradient</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://www.iconfont.cn">Iconfont</a>
+<ul class="sublist">
+<li><a href="https://www.freeicons.org">FreeIcons</a></li>
+<li><a href="https://lucide.dev">Lucide</a></li>
+<li><a href="https://css.gg">css.gg</a></li>
+<li><a href="https://yesicon.app">Yesicon</a></li>
+<li><a href="https://fluenticons.co">Fluenticons</a></li>
+<li><a href="https://www.iconfinder.com">iconfinder</a></li>
+<li><a href="https://iconpark.oceanengine.com">IconPark</a></li>
+<li><a href="https://fontawesome.com/search">FontAwese</a></li>
+<li><a href="https://icons8.com/line-awesome">LineAwese</a></li>
+<li><a href="https://blendicons.com">BlendIcons</a></li>
+<li><a href="http://www.potlabicons.com">Potlab Icon</a></li>
+<li><a href="https://phosphoricons.com">Phospicons</a></li>
+<li><a href="https://icons8.com/l/fluent-system">icon-flt</a></li>
+<li><a href="https://icons.craftwork.design">Craftwork</a></li>
+<li><a href="https://iconhub.io">Iconhub</a></li>
+<li><a href="https://lineicons.com">Lineicons</a></li>
+<li><a href="https://www.zwicon.com">Zwicon</a></li>
+<li><a href="https://icons.modulz.app">Modulz</a></li>
+<li><a href="https://iconsvg.xyz">Iconsvg</a></li>
+<li><a href="https://www.ikonate.com">Ikonate</a></li>
+<li><a href="https://simpleicons.org">Simpleicons</a></li>
+<li><a href="https://iconer.app">Iconer</a></li>
+<li><a href="https://boxicons.com">Boxicons</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://gtmetrix.com">Gtmetrix</a>
+<ul class="sublist">
+<li><a href="https://www.webpagetest.org">Webptest</a></li>
+<li><a href="https://tools.pingdom.com ">Pingdom</a></li>
+<li><a href="https://www.webtoolhub.com/tn561353-website-speed-test.aspx">Webtoolhub</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://cdn.bytedance.com">Bytedance</a>
+<ul class="sublist">
+<li><a href="https://getquick.link ">Quicklink</a></li>
+<li><a href="https://cdn.baomitu.com">75CDN</a></li>
+<li><a href="https://staticfile.org">Staticfile</a></li>
+<li><a href="http://www.bootcdn.cn">BootCDN</a></li>
+<li><a href="https://sb.sb/blog/css-cdn/">LOLI</a></li>
+<li><a href="https://cdnjs.com">CDNJS</a></li>
+<li><a href="http://ecomfe.github.io/fontmin">Fontmin</a></li>
+<li><a href="https://www.webfont.com">有字库</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://gallery.manypixels.co">Manypixels</a>
+<ul class="sublist">
+<li><a href="https://www.reshot.com">Reshot</a></li>
+<li><a href="https://www.drawkit.io">DrawKit</a></li>
+<li><a href="https://blush.design">Blush</a></li>
+<li><a href="https://www.pixiv.net">Pixiv</a></li>
+<li><a href="https://undraw.co">Undraw</a></li>
+<li><a href="https://icons8.com/vector-creator/">Vector</a></li>
+<li><a href="https://iradesign.io">IRADesign</a></li>
+<li><a href="https://www.humaaans.com">Humaaans</a></li>
+<li><a href="https://illlustrations.co">illl.co</a></li>
+<li><a href="https://freeillustrations.xyz">Freeill</a></li>
+<li><a href="https://icons8.cn/illustrations">OUCH</a></li>
+<li><a href="https://www.pixeltrue.com/illustrations">Pixeltrue</a></li>
+<li><a href="https://manufactory.craftwork.design">Manufactory</a></li>
+<li><a href="http://instantlogosearch.com">Logosearch</a></li>
+<li><a href="https://weareskribbl.com">Weareskribbl</a></li>
+<li><a href="https://passionhacks.com/gradient-isometric-illustrations">PassionHacks</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://nav.web-hub.cn">前端导航</a>
+<ul class="sublist">
+<li><a href="https://www.frontendjs.com">前站导航</a></li>
+<li><a href="https://www.similarweb.com/top-websites">网站排名</a></li>
+<li><a href="https://www.iowen.cn">一为亿</a></li>
+<li><a href="https://downforeveryoneorjustme.com">Downfor</a></li>
+<li><a href="https://carrd.co">Carrd.co</a></li>
+<li><a href="http://www.fly63.com">Fly63</a></li>
+<li><a href="https://www.vipbic.com">Vipbic</a></li>
+<li><a href="https://www.montastic.com">Montastic</a></li>
+<li><a href="https://xjq.icu/books">Geek books</a></li>
+<li><a href="https://allmylinks.com">AllMyLinks</a></li>
+<li><a href="https://clink.bio">Clink</a></li>
+<li><a href="https://capturemytweet.in">Capturetweet</a></li>
+<li><a href="http://howbigismybrowser.com">How-Browser</a></li>
+<li><a href="https://www.ssllabs.com/ssltest">SSL-Labs</a></li>
+<li><a href="https://www.bookmark.style">Bookmark</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-paint-brush" title="Design"></i></li>
+<li class="submenu"><a href="https://dribbble.com">Dribbble</a>
+<ul class="sublist">
+<li><a href="http://www.bigbigwork.com">大作</a></li>
+<li><a href="https://design.maliquankai.com">码力全开</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://color.adobe.com">A-Color</a>
+<ul class="sublist">
+<li><a href="https://kigen.design/color">Kigen Color</a></li>
+<li><a href="https://aicolors.co">AI Colors</a></li>
+<li><a href="https://pigmentsapp.com">Pigments</a></li>
+<li><a href="https://fffuel.co">fffuel</a></li>
+<li><a href="https://coolors.co">Coolors</a></li>
+<li><a href="https://encycolorpedia.cn">Encycolor</a></li>
+<li><a href="https://verandacolor.com">Veranda</a></li>
+<li><a href="https://palettemaker.com">PaletteMaker</a></li>
+<li><a href="https://colordrop.io">ColorDrop</a></li>
+<li><a href="https://colorhunt.co">ColorHunt</a></li>
+<li><a href="http://colormind.io">ColorMind</a></li>
+<li><a href="https://colorkit.co">ColorKit</a></li>
+<li><a href="https://colourco.de">Colourco</a></li>
+<li><a href="https://colors.eva.design">Eav Colors</a></li>
+<li><a href="https://www.materialui.co">Material</a></li>
+<li><a href="https://www.materialpalette.com">MPalette</a></li>
+<li><a href="https://palettegenerator.colorion.co">Colorion</a></li>
+<li><a href="http://brandcolors.net">Brandcolor</a></li>
+<li><a href="https://palette.ninja">Ninja</a></li>
+<li><a href="https://coolors.co/generate">Coolors</a></li>
+<li><a href="https://flatuicolors.com">Flat UI</a></li>
+<li><a href="https://imagecolorpicker.com">Imgpicker</a></li>
+<li><a href="https://color.hailpixel.com">Colordot</a></li>
+<li><a href="https://colorie.web.app">Colorie</a></li>
+<li><a href="https://color.dumogu.top">毒蘑菇</a></li>
+<li><a href="https://alwane.io">Alwane</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.photopea.com">Photopea</a>
+<ul class="sublist">
+<li><a href="https://revizepic.toolooz.com">RevizePic</a></li>
+<li><a href="https://www.vectorpea.com">Vectorpea</a></li>
+<li><a href="https://tugaigai.com">图改改</a></li>
+<li><a href="https://studio.creativefabrica.com/studio">CFStudio</a></li>
+<li><a href="https://edit.photo">Edit.photo</a></li>
+<li><a href="https://pixlr.com/cn/">Pixlr</a></li>
+<li><a href="https://img.logosc.cn">改图神器</a></li>
+<li><a href="https://online.hitpaw.tw">HitPaw</a></li>
+<li><a href="https://www.uupoop.com">UUPoop</a></li>
+<li><a href="https://renzhezhilu.github.io/webp2jpg-online">Webp2jpg</a></li>
+<li><a href="https://www.markmyimages.com">Mark Img</a></li>
+<li><a href="https://ctrl.vi">Ctrl.vi</a></li>
+<li><a href="https://www.cartoonize.net">Colorcinch</a></li>
+<li><a href="https://www.adobe.com/tw/express">Adobe Express</a></li>
+<li><a href="https://www.3dimg.com/editor/">3Dimg</a></li>
+<li><a href="https://www.fotor.com.cn">Fotor</a></li>
+<li><a href="https://dimmy.club">Dimmy.Club</a></li>
+<li><a href="https://tt0.top">TT0</a></li>
+<li><a href="https://www.befunky.com">BeFunky</a></li>
+<li><a href="https://photoeditor.polarr.com">泼辣修图</a></li>
+<li><a href="https://www.gaitubao.com">改图宝</a></li>
+<li><a href="https://photokit.com">Photokit</a></li>
+<li><a href="https://www11.lunapic.com/editor/">LunaPic</a></li>
+<li><a href="https://sagrafix.co/Editors/GrafixEditor">Sagrafix</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://clipchamp.com/zh-hans/">Clipchamp</a>
+<ul class="sublist">
+<li><a href="https://www.freecut.net">FreeCut</a></li>
+<li><a href="https://zh.pickfrom.net">Pickfrom</a></li>
+<li><a href="https://videocandy.com">Video Candy</a></li>
+<li><a href="https://www.kapwing.com">Kapwing</a></li>
+<li><a href="https://www.flexclip.com">FlexClip</a></li>
+<li><a href="https://www.unscreen.com">Unscreen</a></li>
+<li><a href="https://zenvideo.qq.com">智影</a></li>
+<li><a href="https://online.aimu-app.com">爱幕</a></li>
+<li><a href="https://www.zimujiang.com">字幕酱</a></li>
+<li><a href="https://2zimu.com">突字幕</a></li>
+<li><a href="https://www.mu-yan.net">文本配音</a></li>
+<li><a href="http://www.peiyinwa.com">配音娃</a></li>
+<li><a href="https://www.text-to-speech.online">文字转语音</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://mockup.photos">Mockup</a>
+<ul class="sublist">
+<li><a href="https://smartmockups.com">Smartmockup</a></li>
+<li><a href="https://epic.ai/mockdown">Mockdown</a></li>
+<li><a href="https://deviceshots.com">Deviceshot</a></li>
+<li><a href="https://screenshot.rocks">Screenshot</a></li>
+<li><a href="https://mockdrop.io">Mockdrop</a></li>
+<li><a href="https://www.mockmagic.com">Mockmagic</a></li>
+<li><a href="https://magicmockups.com">Magicmockup</a></li>
+<li><a href="https://mockups.pixeltrue.com">Pixeltrue</a></li>
+</ul>
+</li>
+<li><a href="https://placeit.net">Placeit</a></li>
+<li class="submenu"><a href="https://www.canva.cn">可画</a>
+<ul class="sublist">
+<li><a href="https://github.com/gezhaoyou/picprose">PicProse</a></li>
+<li><a href="https://ps.wondershare.com">PixStudio</a></li>
+<li><a href="https://www.gaoding.com">稿定设计</a></li>
+<li><a href="https://www.figma.com">Figma</a></li>
+<li><a href="https://www.chuangkit.com">创客贴</a></li>
+<li><a href="https://818ps.com">图怪兽</a></li>
+<li><a href="http://www.zuohaotu.com">做好图</a></li>
+<li><a href="https://www.designcap.com">Designcap</a></li>
+<li><a href="https://github.com/rutikwankhade/CoverView">Coverview</a></li>
+<li><a href="https://www.motionelements.com/zh-hant/banner">广告横幅生成</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://wordart.com">WordArt</a>
+<ul class="sublist">
+<li><a href="http://www.word2art.com">Word2Art</a></li>
+<li><a href="https://www.wordclouds.com">WordClouds</a></li>
+<li><a href="https://www.logoly.pro">Logoly</a></li>
+<li><a href="https://www.moage.cn">美寄</a></li>
+<li><a href="https://www.weiciyun.com">微词云</a></li>
+<li><a href="http://yciyun.com">易词云</a></li>
+<li><a href="https://zh-cn.cooltext.com">Cooltext</a></li>
+<li><a href="http://www.makepic.com">Makepic</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://hao.shejidaren.com">设计导航</a>
+<ul class="sublist">
+<li><a href="https://uiset.com">UISET</a></li>
+<li><a href="https://www.vlogquan.com">视频创作</a></li>
+<li><a href="https://www.shejidaren.com">设计达人</a></li>
+<li><a href="https://hao.uisdc.com">优设导航</a></li>
+<li><a href="http://hao.psefan.com">饭团导航</a></li>
+<li><a href="http://chuangzaoshi.com">创造狮</a></li>
+<li><a href="http://so.uigreat.com">UI设计师</a></li>
+<li><a href="http://www.bossdesign.cn/designnav/">Boss设计</a></li>
+<li><a href="https://www.seeseed.com">Seeseed</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.yoo.la">Yoo</a><!-- http://join-screenshots.zhanghai.me -->
+<ul class="sublist">
+<li><a href="https://ps.keepmot.com/zh/">Keepmot</a></li>
+<li><a href="https://img.ops-coffee.com/photo/">免费拼图</a></li>
+<li><a href="https://www.collaigo.com/zh/collage-maker">Collage</a></li>
+<li><a href="https://collage87.com/zh-CN">Collage87</a></li>
+<li><a href="https://sideit.app">SideIt</a></li>
+<li><a href="http://www.zuohaotu.com/image-merge.aspx">做好图拼图</a></li>
+<li><a href="https://www.fotor.com/cn/features/collage.html">Fotor collage</a></li>
+<li><a href="https://piccollages.com/zh/pic">PicCollages</a></li>
+<li><a href="https://33.agilestudio.cn">33台词</a></li>
+<li><a href="https://disksing.com/fake-screenshot/">字幕截图生成器</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-paint-brush" title="Design"></i></li>
+<li class="submenu"><a href="http://tinypng.com">TinyPng</a>
+<ul class="sublist">
+<li><a href="https://www.icompressimg.com/zh-CN">ICImg</a></li>
+<li><a href="https://www.zippic.cn/zh">Zippic</a></li>
+<li><a href="https://github.com/joye61/pic-smaller">Pic Smaller</a></li>
+<li><a href="https://imgsmall.com">imgsmall</a></li>
+<li><a href="https://mozjpeg.com">MozJpeg</a></li>
+<li><a href="https://compressjpg.io/zh-CN">Compress jpg</a></li>
+<li><a href="https://tool.tanpok.com">Tanpok</a></li>
+<li><a href="https://compressimage.io">CompressIMG</a></li>
+<li><a href="https://img.top">img.top</a></li>
+<li><a href="https://www.websiteplanet.com/zh-hans/webtools/imagecompressor/">WebPlanet</a></li>
+<li><a href="https://www.optimizeimages.com/tool">Optimges</a></li>
+<li><a href="https://zh.recompressor.com">Recompressor</a></li>
+<li><a href="https://www.picdiet.com/zh-cn">Picdiet</a></li>
+<li><a href="https://squoosh.app">Squoosh</a></li>
+<li><a href="https://docsmall.com">Docsmall</a></li>
+<li><a href="https://www.tuhaokuai.com">图好快</a></li>
+<li><a href="http://zhitu.isux.us">智图</a></li>
+<li><a href="https://www.jpeg.io">Jpeg.io</a></li>
+<li><a href="https://compressjpeg.com">C-JPEG</a></li>
+<li><a href="https://imagecompresiosor.com/zh/">Optimizilla</a></li>
+<li><a href="https://bench.tanpok.com">Bench</a></li>
+<li><a href="https://www.shrink.media">Shrink.media</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://tiomg.org">太美工具</a>
+<ul class="sublist">
+<li><a href="https://omnifile.co/zh-cn/">Omnifile</a></li>
+<li><a href="https://imagestool.com/zh_CN/">ImagesTool</a></li>
+<li><a href="https://imageonline.co/cn/">Imageol</a></li>
+<li><a href="https://www.iloveimg.com/zh-cn">iLoveIMG</a></li>
+<li><a href="https://zh.vectormagic.com">VectorM</a></li>
+<li><a href="https://www.vectorizer.io">VectoR</a></li>
+<li><a href="https://pixer.us">Pixer.us</a></li>
+<li><a href="https://picflow.com/image-converter">Picflow</a></li>
+<li><a href="https://jpg2.cn">图像转换大师</a></li>
+<li><a href="https://www.convertfiles.ai">ConvertFiles</a></li>
+<li><a href="https://magicstudio.com/zh/webp-to-png">WebptoPng</a></li>
+<li><a href="https://webptopng.com/cn">WebptoPng</a></li>
+<li><a href="https://iconscout.com/converter/svg-to-png">SVGtoPNG</a></li>
+<li><a href="https://anywebp.com">AnyWebP</a></li>
+<li><a href="https://heicfile.com">HEICFile</a></li>
+<li><a href="https://pixelied.com/convert">Pixelied</a></li>
+<li><a href="https://www.shutterstock.com/zh/file-converter">Shutter</a></li>
+<li><a href="https://scannerd.co/zh">ScanNerd</a></li>
+<li><a href="https://lookscanned.io/scan">Look Scanned</a></li>
+<li><a href="https://imgsli.com">Imgsli</a></li>
+<li><a href="https://id.zhengzhaopai.com">智能证件照</a></li>
+<li><a href="https://github.com/zhbhun/idify">Idify</a></li>
+<li><a href="https://onlineexifviewer.com">EXIF Viewer</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.remove.bg">Remove.bg</a>
+<ul class="sublist">
+<li><a href="https://remove.pictures">Remove.pic</a></li>
+<li><a href="https://remove.photos/zh-cn/">Remove.photos</a></li>
+<li><a href="https://remaker.ai/cn/ai-tools">BG Remaker</a></li>
+<li><a href="https://www.removebg.dev">RemoveBG</a></li>
+<li><a href="https://pixian.ai">Pixian.AI</a></li>
+<li><a href="https://snapedit.app/remove-bg">SnapEdit ReBG</a></li>
+<li><a href="https://bgsub.com">BgSub</a></li>
+<li><a href="https://extractbg.com">Extractbg</a></li>
+<li><a href="https://express.adobe.com/tools/remove-background/">Adobe Rebg</a></li>
+<li><a href="https://removal.ai">Removal</a></li>
+<li><a href="https://www.zapbg.com">ZapBG</a></li>
+<li><a href="https://backgroundcut.co">BGCut</a></li>
+<li><a href="https://photoshop.adobe.com">PS Express</a></li>
+<li><a href="https://aipix.net">Aipix</a></li>
+<li><a href="https://zh.clippingmagic.com">ClippingM</a></li>
+<li><a href="https://photoscissors.com">PhotosC</a></li>
+<li><a href="https://autoclipping.com">Autoclip</a></li>
+<li><a href="https://burner.bonanza.com">Burner</a></li>
+<li><a href="https://www.stickermule.com/trace">Trace</a></li>
+<li><a href="https://www.unscreen.com">UnScreen</a></li>
+<li><a href="https://bgeraser.com">Bgeraser</a></li>
+<li><a href="https://socialbook.io/remove-background/">Socialbook</a></li>
+<li><a href="https://www.slazzer.com">Slazzer</a></li>
+<li><a href="https://imgcleaner.com">ImgCleaner</a></li>
+<li><a href="https://quququ.cn">去去去水印</a></li>
+<li><a href="https://watermarkzero.com">WatermarkZero</a></li>
+<li><a href="https://dewatermark.ai">Dewatermark</a></li>
+<li><a href="https://cleanupphotos.com">Cleanup Photos</a></li>
+<li><a href="https://theinpaint.com">Theinpaint</a></li>
+<li><a href="https://www.inpixio.com/remove-background/">Inpixio</a></li>
+<li><a href="https://purephotos.app">PurePhotos</a></li>
+<li><a href="https://icons8.com/bgremover">Bgremover</a></li>
+<li><a href="https://www.erase.bg">Erase.bg</a></li>
+<li><a href="https://picwish.cn">Picwish</a></li>
+<li><a href="https://baseline.is/tools/background-remover">Baseline</a></li>
+<li><a href="https://www.watermarkremover.io">WatermarkR</a></li>
+<li><a href="https://www.magiceraser.io">Magic Eraser</a></li>
+<li><a href="https://www.photoroom.com/tools/remove-object-from-photo">Magic Retouch</a></li>
+<li><a href="https://clipdrop.co/remove-background">ClipDrop</a></li>
+<li><a href="https://jpgrm.com">jpgRM</a></li>
+<li><a href="https://kaze.ai/watermark-removal">Kaze.ai</a></li>
+</ul>
+</li>
+</li>
+<li class="submenu"><a href="http://bigjpg.com">BigJpg</a>
+<ul class="sublist">
+<li><a href="https://image-upscaling.net">Img-Upscaling </a></li>
+<li><a href="https://qingtu.cn">清图</a></li>
+<li><a href="https://imgupscaler.com">AIImgUpscaler</a></li>
+<li><a href="https://bigmp4.com">BigMp4</a></li>
+<li><a href="https://bulkresizephotos.com/zh">Bulkre</a></li>
+<li><a href="https://letsenhance.io">LetsEnhance</a></li>
+<li><a href="http://waifu2x.udp.jp">Waifu2x</a></li>
+<li><a href="https://upscalepics.com">Upscale</a></li>
+<li><a href="https://www.upscale.media">Upscale.media</a></li>
+<li><a href="http://imglarger.com">Imglarger</a></li>
+<li><a href="https://icons8.com/upscaler">Upscaler</a></li>
+<li><a href="https://pixfix.com">Pixfix</a></li>
+<li><a href="https://imageupscalerai.com">ImageUpAi</a></li>
+<li><a href="https://imageupscaler.com">imgUpscaler</a></li>
+<li><a href="https://deep-image.ai">Deep</a></li>
+<li><a href="https://www.stickermule.com/upscale">Upscale</a></li>
+<li><a href="https://upscaler.stockphotos.com">Upscaler</a></li>
+<li><a href="https://vanceai.com/image-enlarger">V-AIEnlarge</a></li>
+<li><a href="https://clipdrop.co/image-upscaler">Clipdro</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.photoresizer.com">Photo Resizer</a>
+<ul class="sublist">
+<li><a href="https://easyresizer.com/zh-cn">EasyResizer</a></li>
+<li><a href="https://imagesplitter.pro">imgsplitter</a></li>
+<li><a href="https://4in1crop.com">4in1crop</a></li>
+<li><a href="https://imageresizer.com">ImageResizer</a></li>
+<li><a href="https://promo.com/tools/image-resizer">img-resizer</a></li>
+<li><a href="https://www.resizenow.com/zh-CN">ResizeNow</a></li>
+<li><a href="https://onlinepngtools.com/round-png-corners/">Corners</a></li>
+<li><a href="https://socialsizes.io">Socialsize</a></li>
+<li><a href="https://www.birme.net">Batchimg</a></li>
+<li><a href="http://webresizer.com">Webresizer</a></li>
+<li><a href="https://picresize.com/cn">Picresize</a></li>
+<li><a href="https://resizeimage.net">Resizeimage.net</a></li>
+<li><a href="https://resizing.app">Resizing.app</a></li>
+<li><a href="https://sproutsocial.com/landscape/">Landscape</a></li>
+<li><a href="https://www.onlineimageresize.com">OnlineImgR</a></li>
+<li><a href="https://imagator.co">Imagator</a></li>
+<li><a href="https://www.internetmarketingninjas.com/seo-tools/favicon-generator-crop-images/">SIRT</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://redacted.app">Redacted</a>
+<ul class="sublist">
+<li><a href="https://redact.photo">Redact.photo</a></li>
+<li><a href="https://watermarkly.com">Watermarkly</a></li>
+<li><a href="https://www.imgtools.co/face-privacy">imgtools</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://makeup.pho.to/zh">pho.to</a>
+<ul class="sublist">
+<li><a href="https://create.pixelcut.ai">Image Recolor</a></li>
+<li><a href="https://productshot.app">Productshot</a></li>
+<li><a href="https://photolab.me">Photolab</a></li>
+<li><a href="http://www.easymoza.com">EasyMoza</a></li>
+<li><a href="https://magicstudio.com/zh/backgroundblur">BGBlur</a></li>
+<li><a href="https://pictiler.com">PicTiler</a></li>
+<li><a href="https://photofunia.com/cn/">Photofunia</a></li>
+<li><a href="https://pixelartvillage.com">Img to Pixel</a></li>
+<li><a href="https://imagetopixel.art">ImageToPixel</a></li>
+<li><a href="https://32comic.com/Pixel_Art_Converter/">The Pixel Art</a></li>
+<li><a href="https://photomosh.com">PhotoMosh</a></li>
+<li><a href="https://shapefactory.co">ShapeFactory</a></li>
+<li><a href="http://textify.it">Textify</a></li>
+<li><a href="https://colourise.sg">ColourSG</a></li>
+<li><a href="https://imagecolorizer.com">Imagecolor</a></li>
+<li><a href="https://petalica-paint.pixiv.dev">PetalicaP</a></li>
+<li><a href="https://demos.algorithmia.com/colorize-photos">C-photos</a></li>
+<li><a href="https://www.myheritage.cn">Myheritage</a></li>
+<li><a href="https://wangyasai.github.io/designtools.html">Wangyasai</a></li>
+<li><a href="http://geektyper.com">Geektyper</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://pika.style">Pika</a>
+<ul class="sublist">
+<li><a href="https://pixzens.com/zh">Pixzens</a></li>
+<li><a href="https://shotzio.com">Shotzio</a></li>
+<li><a href="https://pretty-snap.iwhy.dev">Shot Sleek</a></li>
+<li><a href="https://www.photor.fun/editor">Photor</a></li>
+<li><a href="https://superblog.ai/supershots/app">Supershots</a></li>
+<li><a href="https://app.jellylade.com">Jellylade</a></li>
+<li><a href="https://picyard.ubout.in">Picyard</a></li>
+<li><a href="https://www.fabpic.app">FabPic</a></li>
+<li><a href="https://xxbiji.gitee.io/logo-frame-web">xxbiji</a></li>
+<li><a href="https://github.com/kangabru/pretty-snap">Pretty-snap</a></li>
+<li><a href="https://www.blurmatic.com">Blurmatic</a></li>
+</ul>
+</li><!-- github.com/rishimohan/pika -->
+<li class="submenu"><a href="https://ezgif.com">EzGif</a>
+<ul class="sublist">
+<li><a href="https://gifsuper.com">Gifsuper</a></li>
+<li><a href="http://www.weshineapp.com">闪萌</a></li>
+<li><a href="https://www.soogif.com">SooGIF</a></li>
+<li><a href="https://www.sosogif.com/tool">SosoGIF</a></li>
+<li><a href="https://gifcompressor.com">GIF C</a></li>
+<li><a href="https://tool.gifhome.com">GIF Tool</a></li>
+<li><a href="https://dongci.kawo.com">动次</a></li>
+<li><a href="https://tt0.top">tt0Gif</a></li>
+<li><a href="https://www.easygif.tools">Easygif</a></li>
+<li><a href="https://www.youcompress.com">YouCompress</a></li>
+<li><a href="http://gifgifs.com">GIFGIFS</a></li>
+<li><a href="http://www.gifreducer.com">Reducer</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.designevo.com/cn/">Designevo</a>
+<ul class="sublist">
+<li><a href="https://www.logoko.com.cn">标点狗</a></li>
+<li><a href="https://www.logosc.cn">标小志</a></li>
+<li><a href="http://bingoicon.com">Bingolcon</a></li>
+<li><a href="https://www.ucraft.com/free-logo-maker">Ucraft</a></li>
+<li><a href="https://www.logodesign.net">Logodesign</a></li>
+<li><a href="https://www.logomyway.com/logo-maker">Logomyway</a></li>
+<li><a href="https://hatchful.shopify.com">Shopify</a></li>
+<li><a href="https://www.logogarden.com">LogoGarden</a></li>
+<li><a href="https://www.graphicsprings.com">GraphicS</a></li>
+<li><a href="https://www.designmantic.com">DesignMantic</a></li>
+<li><a href="https://logocreator.io">LogoCreator</a></li>
+<li><a href="https://mi-logo.lvwzhen.com">Mi-Logo</a></li>
+<li><a href="https://www.uugai.com">U钙网</a></li>
+<li><a href="https://worldvectorlogo.com">Worldlogos</a></li>
+<li><a href="https://www.logosc.cn/logo/badge">印章生成</a></li>
+<li><a href="https://pdf.zhheo.com">给PDF盖章</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-image" title="Photo"></i></li>
+<li class="submenu"><a href="https://alpha.wallhaven.cc">Wallhaven</a>
+<ul class="sublist">
+<li><a href="https://ultrawidewallpapers.net">超宽壁纸</a></li>
+<li><a href="https://www.pixground.com">Pixground</a></li>
+<li><a href="https://www.desktophut.com">Desktophut</a></li>
+<li><a href="https://wallpaperstudio10.com">Wallpaper</a></li>
+<li><a href="https://www.goodfon.com">Goodfon</a></li>
+<li><a href="https://gallery.wallaura.cn">AURA壁纸</a></li>
+<li><a href="https://backiee.com">Backiee</a></li>
+<li><a href="https://wallpaperscraft.com">Scraft</a></li>
+<li><a href="https://www.2dwallpapers.com">2dwallpapers</a></li>
+<li><a href="https://newevolutiondesigns.com/wallpapers">Wallpapers</a></li>
+<li><a href="https://www.wallpaperup.com">Wallpaperup</a></li>
+<li><a href="https://wallpapershome.com">Shome</a></li>
+<li><a href="https://wallpapertag.com">Tag</a></li>
+<li><a href="https://wallspic.com/cn">Wallhere</a></li>
+<li><a href="https://wallpapercave.com">WallpaperCave</a></li>
+<li><a href="https://wallpaperswide.com">Wide</a></li>
+<li><a href="https://wallroom.io">Wallroom</a></li>
+<li><a href="http://tupian.gq">图图ACG</a></li>
+<li><a href="https://www.soohub.com">SooHub</a></li>
+<li><a href="https://wallpapers.microsoft.design">微软设计</a></li>
+<li><a href="https://konachan.com">Konachan</a></li>
+<li><a href="http://www.netbian.com">彼岸</a></li>
+<li><a href="http://simpledesktops.com">Simpled</a></li>
+<li><a href="http://bimg.top">Bing</a></li>
+<li><a href="http://bizihu.com">壁纸湖</a></li>
+<li><a href="https://wall.alphacoders.com">Wallabyss</a></li>
+<li><a href="https://www.wallpapermaiden.com">hqWallpaper</a></li>
+<li><a href="https://www.3gbizhi.com">36壁纸</a></li>
+<li><a href="https://photo.ihansen.org">美图集</a></li>
+<li><a href="https://www.gamewallpapers.com">GameWallpaper</a></li>
+<li><a href="https://everia.club">Everia</a></li>
+<li><a href="https://haowallpaper.com">哲风壁纸</a></li>
+<li><a href="https://alphacoders.com">Alpha Coders</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://unsplash.com">Unsplash</a>
+<ul class="sublist">
+<li><a href="https://unsplash.dogedoge.com">Unsplash镜像</a></li>
+<li><a href="http://www.pexels.com">Pexels</a></li>
+<li><a href="https://pixabay.com">Pixabay</a></li>
+<li><a href="https://unrealimages.com">Unreal Images</a></li>
+<li><a href="https://mmtstock.com">MMTStock</a></li>
+<li><a href="https://yayimages.com">YayImages</a></li>
+<li><a href="https://imagefinder.co">ImgFinder</a></li>
+<li><a href="https://stocksnap.io">StockSnap</a></li>
+<li><a href="https://www.freepik.com">Freepik</a></li>
+<li><a href="https://pikwizard.com">PikWizard</a></li>
+<li><a href="https://freephotos.cc/zh">Freephotos</a></li>
+<li><a href="https://pxhere.com">PxHere</a></li>
+<li><a href="https://isorepublic.com">ISO Republic</a></li>
+<li><a href="https://www.piqsels.com/zh">Piqsels</a></li>
+<li><a href="https://jeshoots.com">Jeshoots</a></li>
+<li><a href="https://www.kisscc0.com">kisscc0</a></li>
+<li><a href="https://burst.shopify.com">Burst</a></li>
+<li><a href="https://skitterphoto.com">SkitterPhoto</a></li>
+<li><a href="https://barnimages.com">Barnimages</a></li>
+<li><a href="https://wunderstock.com">Wunderstock</a></li>
+<li><a href="https://negativespace.co">NegativeSpace</a></li>
+<li><a href="http://gahag.net">GAHAG</a></li>
+<li><a href="https://captionn.me">Captionn</a></li>
+<li><a href="https://blackwhite.pictures">Blackwhite</a></li>
+<li><a href="https://librestock.com">LibreStock</a></li>
+<li><a href="https://freerangestock.com">Freerange</a></li>
+<li><a href="https://www.freeimages.com">Freeimages</a></li>
+<li><a href="https://skuawk.com">Skuawk</a></li>
+<li><a href="https://www.hippopx.com">Hippopx</a></li>
+<li><a href="https://www.rgbstock.com">Rgbstock</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://ccsearch.creativecommons.org">CC Search</a>
+<ul class="sublist">
+<li><a href="https://pixelmob.co">Pixel Mob</a></li>
+<li><a href="https://www.canva.com/photos/free">CanvaImg</a></li>
+<li><a href="https://visualhunt.com">Visual Hunt</a></li>
+<li><a href="https://imagecyseborg.com">ImgCyborg</a></li>
+<li><a href="https://www.logosc.cn/so/">Logosc</a></li>
+<li><a href="https://www.91sotu.com">搜图导航</a></li>
+<li><a href="http://duososo.com">多搜搜</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.dreamstime.com/free-photos">Dreamtime</a>
+<ul class="sublist">
+<li><a href="https://picjumbo.com">Picjumbo</a></li>
+<li><a href="http://www.designerspics.com">DesignSpics</a></li>
+<li><a href="https://www.reshot.com">Reshot</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.ssyer.com">沙沙野</a>
+<ul class="sublist">
+<li><a href="http://www.gaoimg.com">高图网</a></li>
+<li><a href="https://footagecrate.com">FootageCrate</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://mixkit.co">Mixkit</a>
+<ul class="sublist">
+<li><a href="https://www.motionelements.com/zh-hans">MotionE</a></li>
+<li><a href="https://free-stock.video">FS.video</a></li>
+<li><a href="https://coverr.co">Coverr</a></li>
+<li><a href="https://www.videvo.net ">Videvo</a></li>
+<li><a href="http://mazwai.com">Mazwai</a></li>
+<li><a href="https://www.wedistill.io">Distill</a></li>
+<li><a href="https://www.videezy.com">Videezy</a></li>
+<li><a href="https://lifeofvids.com">Life Vids</a></li>
+<li><a href="https://dareful.com">Dareful</a></li>
+<li><a href="https://www.pond5.com">pond5</a></li>
+<li><a href="https://www.ignitemotion.com">IgniteMotion</a></li>
+<li><a href="https://www.vecteezy.com/free-videos">Vecteezy</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.zuoshipin.com">做视频网</a>
+<ul class="sublist">
+<li><a href="https://www.newcger.com">新CG儿</a></li>
+<li><a href="https://www.2amok.com">凌晨亮点</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://thestocks.im">TheStocks</a>
+<ul class="sublist">
+<li><a href="https://www.lummi.ai">Lummi.ai</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://colorhub.me">ColorHub</a>
+<ul class="sublist">
+<li><a href="https://gratisography.com">Gratisography</a></li>
+<li><a href="https://morguefile.com">Morguefile</a></li>
+<li><a href="https://www.pakutaso.com">Pakutaso</a></li>
+<li><a href="https://magdeleine.co">Magdeleine</a></li>
+<li><a href="https://freebies.bypeople.com">Freebies</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://travelcoffeebook.com">Travel</a>
+<ul class="sublist">
+<li><a href="https://foodiesfeed.com">Foodies</a></li>
+<li><a href="http://www.houzz.com">Houzz</a></li>
+<li><a href="https://233.fi">LALA</a></li>
+<li><a href="http://www.xiuren.org">XiuRen</a></li>
+<li><a href="http://cupcake.nilssonlee.se">CupCake</a></li>
+<li><a href="http://moveast.me">Jeffrey Betts</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-leaf" title="Material"></i></li>
+<li class="submenu"><a href="https://elements.envato.com">Envato</a>
+<ul class="sublist">
+<li><a href="https://www.pinterest.com">Pinterest</a></li>
+<li><a href="http://huaban.com">花瓣网</a></li>
+<li><a href="http://www.zcool.com.cn">ZCOOL</a></li>
+<li><a href="https://ibaotu.com">包图网</a></li>
+<li><a href="http://www.588ku.com">千库网</a></li>
+<li><a href="http://www.58pic.com">千图网</a></li>
+<li><a href="http://90sheji.com">90设计</a></li>
+<li><a href="http://www.nipic.com">昵图网</a></li>
+<li><a href="http://699pic.com">摄图网</a></li>
+<li><a href="https://www.hellorf.com">站酷海洛</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.easyicon.cc">Easyicon</a>
+<ul class="sublist">
+<li><a href="https://ico.bytecook.io">Icons</a></li>
+<li><a href="https://icon.kitchen">IconKitchen</a></li>
+<li><a href="http://www.findicons.com">Findicons</a></li>
+<li><a href="http://www.iconarchive.com">IconArchive</a></li>
+<li><a href="https://icons8.cn">icons8</a></li>
+<li><a href="https://www.iconhunt.site">iconhunt</a></li>
+<li><a href="https://icones.js.org">Icones</a></li>
+<li><a href="https://www.iconshock.com/vectoricons">Vectoricon</a></li>
+<li><a href="https://www.flaticon.com">Flaticon</a></li>
+<li><a href="https://igoutu.cn/app/windows">igoutu-win</a></li>
+<li><a href="https://3dicons.co">3dicons</a></li>
+<li><a href="https://iconpark.bytedance.com/official">Iconpark</a></li>
+<li><a href="https://illustration-free.net">IFN icons</a></li>
+<li><a href="http://thestocks.im">Stocks2</a></li>
+<li><a href="https://icons8.com/icons/fluency">FluentIcon</a></li>
+<li><a href="https://iconduck.com">Iconduck</a></li>
+<li><a href="https://iconmonstr.com">iconmonstr</a></li>
+<li><a href="https://iconic.app">Iconic</a></li>
+<li><a href="https://tablericons.com">TableSVG</a></li>
+<li><a href="https://www.shareicon.net">Share Icon</a></li>
+<li><a href="https://icongo.github.io">IconGo</a></li>
+<li><a href="https://www.svgrepo.com">Svgrepo</a></li>
+<li><a href="https://flaticons.net">Flaticons</a></li>
+<li><a href="https://iconstore.co">Iconstore</a></li>
+<li><a href="https://vectorportal.com">Vectorportal</a></li>
+<li><a href="https://www.toicon.com">Toicon</a></li>
+<li><a href="https://game-icons.net">Games</a></li>
+<li><a href="https://iconscout.com">Iconscout</a></li>
+<li><a href="https://gitee.com/heizicao/my-icon">NasIcon</a></li>
+<li><a href="https://vectorwiki.com">VectorWiki</a></li>
+<li><a href="https://ahaicon.com/zh">AhaIcon</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://copychar.cc">CopyChar</a>
+<ul class="sublist">
+<li><a href="https://www.emojiall.com/zh-hans">EmojiAll</a></li>
+<li><a href="https://www.getemoji.com">GetEmoji</a></li>
+<li><a href="https://emojipedia.org/zh">Emojipedia</a></li>
+<li><a href="https://coolsymbol.com">Cool Symbol</a></li>
+<li><a href="https://www.toptal.com/designers/htmlarrows">Html Arrows</a></li>
+<li><a href="https://copyarrow.com">CopyArrow</a></li>
+<li><a href="https://qwerty.dev">Qwerty</a></li>
+<li><a href="https://www.hotsymbol.com">Hotsymbol</a></li>
+<li><a href="https://emoji.aranja.com">EmojiPNG</a></li>
+<li><a href="https://alohe.github.io/emojicloud">EmojiSVG</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://getavataaars.com">AvatarGen</a>
+<ul class="sublist">
+<li><a href="https://avamake.com">Ava Maker</a></li>
+<li><a href="https://artbreeder.com">Artbreeder</a></li>
+<li><a href="https://thehashavatars.com">HashAvatar</a></li>
+<li><a href="https://pfpmaker.com">PFPMaker</a></li>
+<li><a href="https://toonme.com">Toonme</a></li>
+<li><a href="https://cvbox.org">Cvbox</a></li>
+<li><a href="http://www.liaotiantu.com/customd/2567">锦鲤头像</a></li>
+<li><a href="https://h5.moo-e.com/roomis">团长头像</a></li>
+<li><a href="https://hu.lvwzhen.com">虎年头像</a></li>
+<li><a href="https://bdd2022.com">Bingdwun</a></li>
+<li><a href="https://thuscn.com/lab/">Thus</a></li>
+<li><a href="https://small-upup.upuptoyou.com">举牌小人</a></li>
+<li><a href="https://www.jiuwa.net/jupai">举牌小人</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://pngimg.com">Pngimg</a>
+<ul class="sublist">
+<li><a href="https://www.pngdirs.com">PNGDirs</a></li>
+<li><a href="https://imgbin.com">ImgBin</a></li>
+<li><a href="https://kcaps.app">Kcaps</a></li>
+<li><a href="https://shotki.app">Shotki</a></li>
+<li><a href="https://www.cleanpng.com">Cleanpng</a></li>
+<li><a href="https://github.com/hampusborgos/country-flags">国旗图</a></li>
+<li><a href="https://flmg.guychienll.dev">Line</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.fontshow.com/zh">FontShow</a>
+<ul class="sublist">
+<li><a href="https://www.fontke.com">字客网</a></li>
+<li><a href="https://www.100font.com">100font</a></li>
+<li><a href="https://github.com/wordshub/free-font">免费商用字体</a></li>
+<li><a href="https://ziyouziti.com">自由字体</a></li>
+<li><a href="https://51ifonts.com">iFonts</a></li>
+<li><a href="http://www.hellofont.cn">字由</a></li>
+<li><a href="https://www.fonts.net.cn">字体天下</a></li>
+<li><a href="http://www.ziticq.com">字体传奇</a></li>
+<li><a href="http://wordmark.it">Wordmark</a></li>
+<li><a href="http://www.maoken.com">猫啃网</a></li>
+<li><a href="https://www.likefont.com">识字体</a></li>
+<li><a href="http://www.qiuziti.com">求字体</a></li>
+<li><a href="https://www.qt86.com">艺术字体</a></li>
+<li><a href="http://www.beautifulcarrot.com">萝卜工坊</a></li>
+<li><a href="https://www.fontspace.com">FontSpace</a></li>
+<li><a href="https://www.fontshare.com">Fontshare</a></li>
+<li><a href=" https://uncut.wtf">uncut</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.aigei.com/sound">爱给音效</a>
+<ul class="sublist">
+<li><a href="https://www.tosound.com">淘声网</a></li>
+<li><a href="https://freepd.com">FreePD</a></li>
+<li><a href="https://www.ear0.com">耳聆网</a></li>
+<li><a href="https://audiotrimmer.com/cn/royalty-free-music">Audio Trimmer</a></li>
+<li><a href="https://www.fesliyanstudios.com">Fesliyan Studios</a></li>
+<li><a href="https://pixabay.com/zh/music">Pixabay-Music</a></li>
+<li><a href="https://open.sampld.app">Sampld</a></li>
+<li><a href="https://kongano.com">Kongano</a></li>
+<li><a href="https://filmmusic.io">Filmmusic</a></li>
+<li><a href="https://soundcloud.com">Soundcloud</a></li>
+<li><a href="https://www.bensound.com">Bensound</a></li>
+<li><a href="https://www.tunefind.com">Tunefind</a></li>
+<li><a href="https://audionautix.com">Audionautix</a></li>
+<li><a href="https://mixkit.co/free-stock-music/">Mixkit</a></li>
+<li><a href="https://www.youtube.com/audiolibrary">Audiolib</a></li>
+<li><a href="https://audiohub.com">Audiohub</a></li>
+<li><a href="https://www.videvo.net/royalty-free-music/">Videvo-Music</a></li>
+<li><a href="https://musopen.org">Incompetech</a></li>
+<li><a href="https://freesfx.co.uk">Freesfx</a></li>
+<li><a href="https://cchound.com">cchound</a></li>
+<li><a href="https://taira-komori.jpn.org/freesoundcn.html">小森平</a></li>
+<li><a href="http://dig.ccmixter.org">dig.ccMixter</a></li>
+<li><a href="https://usemysound.com">Usemysound</a></li>
+<li><a href="https://www.streemtunes.com">StreemTunes</a></li>
+<li><a href="https://www.chanmama.com/musicRank">蝉妈妈</a></li>
+<li><a href="https://whyp.it">Whyp</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://www.hituyu.com">图鱼纹理</a>
+<ul class="sublist">
+<li><a href="https://www.textures.com">Textures</a></li>
+<li><a href="https://ambientcg.com">AmbientCG</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://flowcv.io">Flowcv</a>
+<ul class="sublist">
+<li><a href="http://www.500d.me">五百丁</a></li>
+<li><a href="https://www.polebrief.com">极简简历</a></li>
+<li><a href="https://www.cakeresume.com/zh-CN">CakeResume</a></li>
+<li><a href="https://enhancv.com">Enhancv</a></li>
+<li><a href="https://tool.osjobs.net">Osjobs</a></li>
+<li><a href="https://wonderfulcv.com">橙子简历</a></li>
+<li><a href="https://cv.ftqq.com">白熊简历</a></li>
+<li><a href="https://www.1024.cool">程序员简历</a></li>
+<li><a href="https://pingshequ.com/new">平社区</a></li>
+<li><a href="http://www.printfreegraphpaper.com">方格纸</a></li>
+<li><a href="https://paperme.toolooz.com">纸由我</a></li>
+<li><a href="https://onepage.czl.net/tools/seal_generation">印章生成</a></li>
+<li><a href="https://www.mygraphpaper.com">GraphPaper</a></li>
+<li><a href="http://gridzzly.com">Gridzzly</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.meihua.info">梅花网</a>
+<ul class="sublist">
+<li><a href="https://www.topys.cn">TOPYS</a></li>
+<li><a href="https://www.yxgapp.com">译学馆</a></li>
+<li><a href="https://www.yizhuan5.com">易撰</a></li>
+<li><a href="http://www.wenangou.com">文案狗</a></li>
+<li><a href="https://article.xmt.cn">热搜榜</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-gamepad" title="Game"></i></li>
+<li class="submenu"><a href="https://store.steampowered.com">Steam</a>
+<ul class="sublist">
+<li><a href="https://www.epicgames.com">Epic</a></li>
+<li><a href="https://zh-cn.ubisoft.com">Uplay</a></li>
+<li><a href="https://www.xbox.com">Xbox</a></li>
+<li><a href="https://www.gog.com">GOG</a></li>
+<li><a href="http://wegame.com">WeGame</a></li>
+<li><a href="https://battlenet.com.cn">Blizzard</a></li>
+<li><a href="https://www.blizzard.com/zh-tw">战网台服</a></li>
+<li><a href="https://www.origin.com">Origin</a></li>
+<li><a href="https://www.greenmangaming.com/zh">GMG</a></li>
+<li><a href="https://www.fhyx.com">凤凰游戏</a></li>
+<li><a href="https://www.sonkwo.com">杉果游戏</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://xboxfan.com">盒心光环</a>
+<ul class="sublist">
+<li><a href="http://psnine.com">PSN中文站</a></li>
+<li><a href="https://store.playstation.com">PlayStation</a></li>
+<li><a href="https://www.a9vg.com">A9VG</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://www.gamersky.com">游民星空</a>
+<ul class="sublist">
+<li><a href="http://www.3dmgame.com">3dmGame</a></li>
+<li><a href="https://www.ali213.net">游侠网</a></li>
+<li><a href="https://fsx.org.cn">飞行宝</a></li>
+<li><a href="https://fitgirl-repacks.site">Fitgirl</a></li>
+<li><a href="https://bl.otxataba.net">Xatab</a></li>
+<li><a href="https://www.xdgame.com">XD Game</a></li>
+<li><a href="https://www.zzzz688.com">游戏天堂</a></li>
+</ul>
+</li>
+<li><a href="https://discordapp.com">Discord</a></li>
+<li><a href="https://www.gcores.com">机核</a></li>
+<li><a href="http://www.vgtime.com">游戏时光</a></li>
+<li><a href="https://www.17173.com">17173</a></li>
+<li><a href="https://www.tgbus.com">电玩巴士</a></li>
+<li class="submenu"><a href="https://www.huijiwiki.com">灰机Wiki</a>
+<ul class="sublist">
+<li><a href="https://steamcommunity.com/app/2074920">第一后裔人数</a></li>
+<li><a href="https://steamdb.info">SteamDB</a></li>
+<li><a href="https://steamcharts.com">SteamCharts</a></li>
+<li><a href="https://www.op.gg/champions">op.gg</a></li>
+<li><a href="https://yz.lol.qq.com/zh_CN/">英雄联盟宇宙</a></li>
+</ul>
+</li>
+<li><a href="https://www.uu898.com/newTrade.aspx?gm=95&area=2328&srv=25074&c=-3">UU898</a></li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-book" title="Reading"></i></li>
+<li class="submenu"><a href="https://zh.z-library.sk">ZLibrary</a><!-- https://z-lib.ps -->
+<ul class="sublist">
+<li><a href="https://clibrary.cn">Clibrary</a></li>
+<li><a href="https://zh.annas-archive.org">安娜的档案</a></li>
+</ul>
+</li><!-- https://singlelogin.me -->
+<li class="submenu"><a href="http://jiumodiary.com">鸠摩搜书</a>
+<ul class="sublist">
+<li><a href="https://book.tstrs.me">SaltyLeo</a></li>
+<li><a href="https://yibook.org">易书</a></li>
+<li><a href="https://ebook.huzerui.com">熊猫搜书</a></li>
+<li><a href="https://24hbook.com">24H搜书</a></li>
+<li><a href="https://bks.thefuture.top">TheFuture</a></li>
+<li><a href="https://www.toplinks.cc">淘链客</a></li>
+<li><a href="https://www.tianlangbooks.com">天浪书屋</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://www.neat-reader.cn/webapp">Neat Reader</a>
+<ul class="sublist">
+<li><a href="https://github.com/pacexy/flow">Flowoss</a></li>
+<li><a href="https://app.lotareader.com">Lota</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="http://www.shenmezhidedu.com">什么值得读</a>
+<ul class="sublist">
+<li><a href="https://yidanshu.com">一单书</a></li>
+</ul>
+</li>
+<li class="submenu"><a href="https://gen.lib.rus.ec">Library Gens</a>
+<ul class="sublist">
+<li><a href="https://www.getfreeebooks.com">GetFreeBooks</a></li>
+</ul>
+</li>
+<li><a href="https://bookfere.com">书伴</a></li>
+<li class="submenu"><a href="https://kgbook.com">苦瓜书盘</a>
+<ul class="sublist">
+<li><a href="https://xxskvip.ctfile.com/dir/4015388-26932121-b2aa31">小小书库</a></li>
+</ul>
+</li>
+<li><a href="https://obook.cc">偶书</a></li>
+<li class="submenu"><a href="http://bestcbooks.com">计算机书籍</a>
+<ul class="sublist">
+<li><a href="https://ebookfoundation.github.io/free-programming-books/">Programming</a></li>
+<li><a href="http://freecomputerbooks.com">FreeC books</a></li>
+</ul>
+</li>
+<li><a href="http://zoudupai.com">走读派导航</a></li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-university" title="Knowledge"></i></li>
+<li class="submenu-up"><a href="https://www.zhihu.com">知乎</a>
+<ul class="sublist">
+<li><a href="https://www.jianshu.com">简书</a></li>
+<li><a href="http://zh.wikihow.com">WikiHow</a></li>
+<li><a href="https://topbook.cc">Topbook</a></li>
+<li><a href="https://www.cn-ki.net">仿知网</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="http://www.imooc.com">慕课网</a>
+<ul class="sublist">
+<li><a href="https://developer.mozilla.org/zh-CN">MDN Web</a></li>
+<li><a href="https://www.jiuzhang.com">九章算法</a></li>
+<li><a href="https://zh.javascript.info">现代JS教程</a></li>
+<li><a href="https://www.w3schools.com">W3School</a></li>
+<li><a href="http://www.runoob.com">菜鸟教程</a></li>
+<li><a href="http://www.yyyweb.com">前端里</a></li>
+<li><a href="http://www.qdfuns.com">前端网</a></li>
+<li><a href="http://www.w3cplus.com">w3cplus</a></li>
+<li><a href="https://www.axihe.com">阿西河</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://uiiiuiii.com">优优教程网</a>
+<ul class="sublist">
+<li><a href="http://www.jikexueyuan.com">极客学院</a></li>
+<li><a href="https://www.doyoudo.com">Doyoudo</a></li>
+</ul>
+</li>
+<li><a href="http://xuetangx.com">学堂在线</a></li>
+<li><a href="https://www.lanqiao.cn">蓝桥云课</a></li>
+<li><a href="http://cn.udacity.com">优达学城</a></li>
+<li class="submenu-up"><a href="http://study.163.com">网易云课堂</a>
+<ul class="sublist">
+<li><a href="http://open.163.com">网易公开课</a></li>
+</ul>
+</li>
+<li><a href="http://khanacademy.org">可汗学院</a></li>
+<li><a href="http://wiki.mbalib.com/">MBAlib</a></li>
+<li class="submenu-up"><a href="http://www.51zxw.net">51自学网
+<ul class="sublist">
+<li><a href="https://www.myenglishpages.com">MyEnglish</a></li>
+<li><a href="https://www.ted.com">TED</a></li>
+<li><a href="https://wordforest.cn">单词森林</a></li>
+<li><a href="https://github.com/cuixueshe/earthworm">Earthworm</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-cube" title="VPS"></i></li>
+<li class="submenu-up"><a href="https://bandwagonhost.com">搬瓦工</a>
+<ul class="sublist">
+<li><a href="https://vmcheap.com">白菜服务器比价</a></li>
+<li><a href="https://www.cloudcone.com">CloudCone</a></li>
+<li><a href="https://www.dmit.io/cart.php?a=confproduct&i=0&language=chinese">DMIT</a></li>
+<li><a href="https://www.vmrack.net/zh-CN">VMRack</a></li>
+<li><a href="https://claw.cloud">ClawCloud</a></li>
+<li><a href="https://www.vultr.com">Vultr</a></li>
+<li><a href="https://www.linode.com">Linode</a></li>
+<li><a href="https://contabo.com">Contabo</a></li>
+<li><a href="https://www.olink.cloud">Olink</a></li>
+<li><a href="https://www.digitalocean.com">DigitalOcean</a></li>
+<li><a href="https://www.sugarhosts.com">Sugarhosts</a></li>
+<li><a href="https://hostus.us">HostUS</a></li>
+<li><a href="https://www.hostyun.com">HostYun</a></li>
+<li><a href="https://www.hostkvm.com">HostKVM</a></li>
+<li><a href="https://hosteons.com">Hosteons</a></li>
+<li><a href="https://digital-vm.com">DigitalVM</a></li>
+<li><a href="https://greencloudvps.com">Greencloud</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://vm.dogyun.com/server/list">极限拼车</a>
+<ul class="sublist">
+<li><a href="https://racknerd.com">RackNerd</a></li>
+<li><a href="https://justhost.ru">Justhost</a></li>
+<li><a href="https://www.lcayun.com">莱卡云</a></li>
+<li><a href="https://virmach.com">VirMach</a></li>
+<li><a href="https://lowendaff.com">lowendaff</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="http://www.qiniu.com">七牛云</a>
+<ul class="sublist">
+<li><a href="https://www.cfhost.cn">咖啡主机</a></li>
+<li><a href="https://www.ucloud.cn">UCloud</a></li>
+<li><a href="http://www.80vps.com">80VPS</a></li>
+<li><a href="https://www.qingcloud.com">青云</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://vps.apponfly.com">AppOnFly</a>
+<ul class="sublist">
+<li><a href="https://www.onworks.net">Onworks</a></li>
+<li><a href="https://hyperbeam.com">Hyperbeam</a></li>
+<li><a href="https://distrosea.com">Distrosea</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://www.fanqiangzhe.com">FQZ</a>
+<ul class="sublist">
+<li><a href="https://free-ss.site">Free-SS</a></li>
+<li><a href="https://fanqiangdang.com">FQD</a></li>
+<li><a href="https://freefq.com">FreeFQ</a></li>
+<li><a href="https://lncn.org">lncn.org</a></li>
+<li><a href="https://github.com/Alvin9999/new-pac/wiki/v2ray免费账号">v2raymf</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://www.expressvpn.com">Express</a>
+<ul class="sublist">
+<li><a href="https://www.urban-vpn.com">Urban</a></li>
+<li><a href="https://surfshark.com">Surfshark</a></li>
+<li><a href="https://protonvpn.com">ProtonVPN</a></li>
+<li><a href="https://nordvpn.com/zh/">Nordvpn</a></li>
+<li><a href="https://www.vpnbook.com/freevpn">VPNBook</a></li>
+<li><a href="https://justmysocks.net">justmysocks</a></li>
+<li><a href="https://www.flyvpn.com">FlyVPN</a></li>
+<li><a href="https://www.vyprvpn.com">VyprVPN</a></li>
+</ul>
+</li>
+<li><a href="https://vtexs.com">Vtexs</a></li>
+<li class="submenu-up"><a href="https://ipcheck.ing">MyIP</a>
+<ul class="sublist">
+<li><a href="https://ip.im">IP.im</a></li>
+<li><a href="https://ip.me">IP.me</a></li>
+<li><a href="https://ip.network">IP.network</a></li>
+<li><a href="https://www.ipaddress.com">IPAddress</a></li>
+<li><a href="https://test-IPv6.com">IPv6-test</a></li>
+<li><a href="https://www.testipv6.net/cn/">Testipv6</a></li>
+<li><a href="https://ipw.cn">ipw</a></li>
+<li><a href="http://www.ip111.cn">IP111</a></li>
+<li><a href="https://tcp.mk">TCP.mk</a></li>
+<li><a href="https://ip.skk.moe">IPSKK</a></li>
+<li><a href="https://ipstack.com">Ipstack</a></li>
+<li><a href="https://ip.sb">IP.sb</a></li>
+<li><a href="https://ip8.com">IP8</a></li>
+<li><a href="http://www.cip.cc">CIP</a></li>
+<li><a href="https://ipinfo.io">ipinfo</a></li>
+<li><a href="https://scamalytics.com/ip">Scamalytics</a></li>
+<li><a href="https://ipleak.net">ipleak</a></li>
+<li><a href="https://whoer.net/zh">Whoer</a></li>
+<li><a href="https://www.opengps.cn">openGPS</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://ping.pe">Ping.pe</a>
+<ul class="sublist">
+<li><a href="https://ping0.cc">Ping0</a></li>
+<li><a href="https://check-host.net">Checkhost</a></li>
+<li><a href="https://ipinfo.cv">IPinfo.CV</a></li>
+<li><a href="https://www.yougetsignal.com">yougetsignal</a></li>
+<li><a href="https://ping.chinaz.com">Chinaz Ping</a></li>
+<li><a href="https://zijian.aliyun.com">阿里云自检</a></li>
+<li><a href="https://www.boce.com">Boce</a></li>
+<li><a href="https://www.17ce.com">17CE</a></li>
+<li><a href="https://ping.sx">Ping.sx</a></li>
+<li><a href="https://www.itdog.cn">ITDog</a></li>
+<li><a href="https://ipcheck.alice.ws">AliceNoc</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="http://www.speedtest.net">Speedtest</a>
+<ul class="sublist">
+<li><a href="https://fast.com">Fast</a></li>
+<li><a href="https://flyingttfb.com">Flying</a></li>
+<li><a href="https://www.speedtest.cn">测速网</a></li>
+<li><a href="https://www.speedcheck.org">Speedcheck</a></li>
+<li><a href="https://librespeed.org">Librespeed</a></li>
+<li><a href="https://speed.cloudflare.com">CF-speed</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-stream" title="website"></i></li>
+<li class="submenu-up"><a href="https://dash.cloudflare.com">Cloudflare</a>
+<ul class="sublist">
+<li><a href="https://www.namesilo.com">Namesilo</a></li>
+<li><a href="https://www.netcup.com">Netcup</a></li>
+<li><a href="https://squarespace.com">Squarespace</a></li>
+<li><a href="https://spaceship.com">Spaceship</a></li>
+<li><a href="https://godaddy.com">Godaddy</a></li>
+<li><a href="https://www.namecheap.com">Namecheap</a></li>
+<li><a href="https://www.freenom.com">Freenom</a></li>
+<li><a href="https://freessl.cn">FreeSSL</a></li>
+<li><a href="https://www.sslforfree.com">SSL For Free</a></li>
+<li><a href="https://zerossl.com">ZeroSSL</a></li>
+<li><a href="https://www.lookssl.com">Lookssl</a></li>
+<li><a href="https://namebeta.com">Namebeta</a></li>
+<li><a href="https://improvmx.com">Improvmx</a></li>
+<li><a href="https://lab.feifanju.com/domain-query/">域名查询</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://edgeone.ai/products/pages">EdgeOne</a>
+<ul class="sublist">
+<li><a href="https://www.netlify.com">Netlify</a></li>
+<li><a href="https://vercel.com">Vercel</a></li>
+<li><a href="https://kinsta.com/static-site-hosting">Kinsta</a></li>
+<li><a href="https://www.freehostia.com">Freehostia</a></li>
+<li><a href="https://static.app">Static</a></li>
+<li><a href="https://www.jsdelivr.com">Jsdelivr</a></li>
+<li><a href="https://cdn.staticdn.net">Staticdn</a></li>
+<li><a href="https://neocities.org">Neocities</a></li>
+<li><a href="https://www.wulihub.com.cn">Wulihub</a></li>
+<li><a href="https://www.sxl.cn">Sxl</a></li>
+<li><a href="https://www.brizy.cloud">Brizy</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://blog.naibabiji.com/step">奶爸建站</a>
+<ul class="sublist">
+<li><a href="https://wzfou.com">挖站否</a></li>
+<li><a href="https://railway.app">Railway</a></li>
+<li><a href="https://www.pikapods.com">Pikapods</a></li>
+<li><a href="https://render.com">Render</a></li>
+<li><a href="https://fly.io">Fly.io</a></li>
+</ul>
+</li>
+<li><a href="http://coolaf.com">Coolaf</a></li>
+<li class="submenu-up"><a href="https://dns.ip.cn">DNS.ip</a>
+<ul class="sublist">
+<li><a href="https://www.opennic.org">OpenNIC</a></li>
+</ul>
+</li>
+<li><a href="https://hopjs.bunny.net">Hop.js</a></li>
+<li><a>占位符</a></li>
+<li><a>占位符</a></li>
+<li><a>占位符</a></li>
+<li><a>占位符</a></li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-city" title="Life"></i></li>
+<li class="submenu-up"><a>服务号码</a>
+<ul class="sublist">
+<li><a href="tel:95598">国家电网</a></li>
+<li><a href="tel:96219">辽东水务</a></li>
+<li><a href="tel:43852344">自来水务</a></li>
+<li><a href="tel:44525016">新明社区</a></li>
+<li><a href="tel:44583323">峪东民办处</a></li>
+<li><a href="tel:42133036">樱桃花园物业</a></li>
+<li><a href="tel:95588">工商银行</a></li>
+<li><a href="tel:18704146466" title="王天诗员工代码 001301211">工商专属客服</a></li>
+<li><a href="tel:47114423">西门子助听器</a></li>
+<li><a href="tel:15141419777，15174007677，45587888">朱权口腔</a></li>
+<li><a href="tel:42133396">送水</a></li>
+<li><a href="tel:44525147">明山区综执局</a></li>
+<li><a href="tel:44599679">新明派出所</a></li>
+<li><a href="tel:44389453">明山城管局</a></li>
+</ul>
+</li>
+<li><a href="http://www.xiachufang.com">下厨房</a></li>
+<li class="submenu-up"><a href="https://dxy.com">丁香医生</a>
+<ul class="sublist">
+<li><a href="https://ask.nocode.com">就诊问问</a></li>
+<li><a href="https://www.120ask.com">120ask</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://upsort.com">UpSort</a>
+<ul class="sublist">
+<li><a href="http://www.hexun.com">和讯</a></li>
+<li><a href="http://www.eastmoney.com">东方财富</a></li>
+<li><a href="http://cn.morningstar.com">晨星网</a></li>
+<li><a href="http://www.macd.cn">MACD</a></li>
+<li><a href="http://lib.guhai66.com">古道观海</a></li>
+<li><a href="https://www.taoguba.com.cn">淘股吧</a></li>
+<li><a href="https://www.jisilu.cn">集思录</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://www.icbc.com.cn">工商银行</a>
+<ul class="sublist">
+<li><a href="https://www.boc.cn">中国银行</a></li>
+<li><a href="https://www.abchina.com/cn/">农业银行</a></li>
+<li><a href="http://www.ccb.com">建设银行</a></li>
+<li><a href="https://www.cmbchina.com">招商银行</a></li>
+<li><a href="https://fc.frytea.com">理财计算器</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://www.bybit.com">Bybit</a>
+<ul class="sublist">
+<li><a href="https://www.huobi.com">火币网</a></li>
+<li><a href="https://www.okx.com">欧易</a></li>
+<li><a href="https://localbitcoins.com">L-bitcoins</a></li>
+<li><a href="https://www.coinbase.com">Coinbase</a></li>
+<li><a href="https://waves.exchange">Exchange</a></li>
+<li><a href="https://www.binance.com">币安</a></li>
+<li><a href="https://localmonero.co">Localmonero</a></li>
+<li><a href="https://www.gate.io">Gate.io</a></li>
+<li><a href="https://www.bitget.com">Bitget</a></li>
+<li><a href="https://www.mxc.com">抹茶MXC</a></li>
+<li><a href="https://coinw.ai">币赢CoinW</a></li>
+<li><a href="https://www.aicoin.cn">AICoin</a></li>
+<li><a href="https://www.feixiaohao.com">非小号</a></li>
+<li><a href="https://www.coingecko.com">CoinGecko</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://www.tree.fm">Tree.fm</a>
+<ul class="sublist">
+<li><a href="https://earth.fm">Earth.fm</a></li>
+<li><a href="https://lofi.co">Lofi</a></li>
+<li><a href="https://lofifm.vercel.app">Lofi FM</a></li>
+<li><a href="http://coffeesalon.com">咖啡沙龙</a></li>
+<li><a href="https://www.windy.com">Windy</a></li>
+<li><a href="https://zoom.earth">Zoom Earth</a></li>
+<li><a href="https://www.ventusky.com">Ventusky</a></li>
+<li><a href="https://goldfishies.com">在线喂鱼</a></li>
+<li><a href="https://pickerwheel.com">随机轮盘</a></li>
+<li><a href="http://yun.kujiale.com">酷乐家</a></li>
+<li><a href="https://www.homestyler.com">Homestyler</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://keyboard.afjs.dev">键盘测试</a>
+<ul class="sublist">
+<li><a href="https://www.typingclub.com/da-zi">打字俱乐部</a></li>
+<li><a href="https://www.eletypes.com">Ele types</a></li>
+<li><a href="https://qwerty.kaiyi.cool">Qwerty Learner</a></li>
+<li><a href="https://www.autopiano.cn">自由钢琴</a></li>
+<li><a href="https://www.an2.net">田字格字帖</a></li>
+<li><a href="http://www.keyboard-layout-editor.com">Keyboard</a></li>
+<li><a href="http://c.00077.top/t.html">鼠标滚轮检测</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="https://www.ctrip.com">携程旅行</a>
+<ul class="sublist">
+<li><a href="http://www.mafengwo.cn">马蜂窝</a></li>
+<li><a href="https://www.qyer.com">穷游</a></li>
+<li><a href="https://www.tripadvisor.cn">猫途鹰</a></li>
+<li><a href="https://www.booking.com">缤客</a></li>
+<li><a href="http://www.lotour.com">乐途</a></li>
+<li><a href="https://zh.airbnb.com">Airbnb</a></li>
+<li><a href="http://www.dianping.com">大众点评</a></li>
+<li><a href="https://www.fliggy.com">飞猪</a></li>
+</ul>
+</li>
+<li class="submenu-up"><a href="http://si.12333.gov.cn">社保服务</a>
+<ul class="sublist">
+<li><a href="https://www.12315.cn">315</a></li>
+<li><a href="https://www.miit.gov.cn">工信部</a></li>
+<li><a href="https://www.tianyancha.com">天眼查</a></li>
+<li><a href="https://www.qcc.com">企查查</a></li>
+<li><a href="https://zh.tradingeconomics.com/china/indicators">经济指标</a></li>
+<li><a href="https://zh.semrush.com/trending-websites/global/all">查热门网站</a></li>
+</ul>
+</li>
+</ul>
+<ul id="list"><li class="t1"><i class="las la-bookmark" title="Other2"></i></li>
+<li><a href="https://www.abbreviations.com">缩略短语</a></li>
+<li class="submenu-up"><a href="https://www.jinjugu.com">金句谷</a>
+<ul class="sublist">
+<li><a href="http://www.shuoshuodaitupian.com">好句子迷</a></li>
+<li><a href="https://www.mingyantong.com">名言通</a></li>
+<li><a href="https://www.jinrishici.com">今日诗词</a></li>
+<li><a href="https://wantwords.net">反向词典</a></li>
+<li><a href="https://www.brainyquote.com">Brainyquote</a></li>
+<li><a href="https://www.gushici.com">古诗词网</a></li>
+</ul>
+</li>
+<li><a href="https://www.best-teleprompter.com/zh">提词器</a></li>
+<li><a>占位符</a></li>
+<li><a>占位符</a></li>
+<li><a>占位符</a></li>
+<li><a>占位符</a></li>
+<li><a>占位符</a></li>
+<li><a href="https://github.com/DustinBrett/daedalOS">仿桌面OS</a></li>
+<li><a href="https://periodic-table-pro.netlify.app">元素周期表</a></li>
+</ul>
+<ul id="sidebar">
+<li class="sidebar-submenu"><a><i class="las la-clock"></i></a>
+<ul class="sublist">
+<li><a href="./minitools/wallclock.html" id="ctime">时间</a></li>
+<script>setInterval(()=>document.getElementById('ctime').textContent=new Date().toTimeString().slice(0,5),60000);document.getElementById('ctime').textContent=new Date().toTimeString().slice(0,5);</script>
+<li><a href="./minitools/wclock.html">周时钟</a></li>
+<li><a href="https://minutetimers.net">计时器</a></li>
+<li><a href="https://justpomodoro.com">番茄钟</a></li>
+<li><a href="https://pomodor.app">Pomodor</a></li>
+<li><a href="https://datetime.app/zh-hans">全球时间</a></li>
+</ul>
+</li>
+<li><a href="http://www.weather.com.cn/weather1dn/101070501.shtml"><i class="las la-sun"></i></a></li>
+<li><a href="https://www.baidu.com/s?wd=%E6%97%A5%E5%8E%86"><i class="las la-calendar-alt"></i></a></li>
+<li class="sidebar-submenu"><a><i class="las la-map-marker-alt"></i></a>
+<ul class="sublist">
+<li><a href="https://map.baidu.com">百度地图</a></li>
+<li><a href="https://maps.google.com">谷歌地图</a></li>
+<li><a href="https://earth.google.com">谷歌地球</a></li>
+<li><a href="https://www.amap.com">高德地图</a></li>
+<li><a href="https://www.openstreetmap.org">OSM</a></li>
+</ul>
+</li>
+<li class="sidebar-submenu"><a><i class="las la-pen"></i></a>
+<ul class="sublist">
+<li><a href="https://xyz.556660.xyz/nanji">Notepad</a></li>
+<li><a href="https://viliusle.github.io/miniPaint">Paint</a></li>
+<li><a href="https://xyz.556660.xyz/pb/">PrivateBin</a></li>
+<li><a href="https://leaflet.pub">Leaflet</a></li>
+<li><a href="https://nute.app">Nute</a></li>
+<li><a href="https://notepadtab.com">Notetab</a></li>
+<li><a href="https://drawnix.com">Drawnix</a></li>
+<li><a href="https://www.tldraw.com">Tldraw</a></li>
+<li><a href="https://excalidraw.com">Exdraw</a></li>
+<li><a href="https://vectr.com">Vectr</a></li>
+<li><a href="https://www.google.com/intl/zh-CN/inputtools/try/">IME</a></li>
+</ul>
+</li>
+<li class="sidebar-submenu"><a><i class="las la-chart-line"></i></a>
+<ul class="sublist">
+<li><a href="https://www.desmos.com/fourfunction">Calc</a></li>
+<li><a href="https://xueqiu.com">Stock</a></li>
+<li><a href="https://cn.tradingview.com">Tview</a></li>
+<li><a href="https://www.google.com/search?q=%E7%BE%8E%E5%85%83+%E4%BA%BA%E6%B0%91%E5%B8%81">Currency</a></li>
+<li><a href="https://www.xe.com/zh-CN/currencyconverter/convert/?Amount=1&From=USD&To=CNY">Xe-Cnv</a></li>
+</ul>
+</li>
+<li class="sidebar-submenu"><a><i class="las la-wrench"></i></a>
+<ul class="sublist">
+<li><a href="https://www.the-qrcode-generator.com">QRcode</a></li>
+<li><a href="https://memotalk.hamsterbase.com">记事本</a></li>
+<li><a href="https://www.metric-converter.com/zh-CN">单位转换</a></li>
+<li><a href="https://www.keepscreenon.com">屏幕常亮</a></li>
+<li><a href="https://flipclocker.com">屏保时钟</a></li>
+<li><a href="https://flipclock.tk">屏保时钟</a></li>
+<li><a href="https://ssh.mtab.cc">WebSSH</a></li>
+</ul>
+</li>
+<li class="sidebar-submenu"><a><i class="las la-language"></i></a>
+<ul class="sublist">
+<li><a href="https://cn.bing.com/translator">Bing</a></li>
+<li><a href="https://translate.google.com">Google</a></li>
+<li><a href="https://my.eudic.net/studyList">欧路</a></li>
+<li><a href="https://translate.kagi.com">Kagi</a></li>
+<li><a href="https://www.deepl.com/translator">Deepl</a></li>
+<li><a href="https://papago.naver.com">Papago</a></li>
+<li><a href="https://translate.alibaba.com">阿里</a></li>
+<li><a href="https://fanyi.caiyunapp.com">彩云</a></li>
+<li><a href="https://transmart.qq.com">腾讯</a></li>
+<li><a href="https://miraitranslate.com/en/trial">Mirai</a></li>
+<li><a href="https://translate.volcengine.com">火山</a></li>
+<li><a href="https://fanyi.sogou.com">搜狗</a></li>
+<li><a href="https://zhconvert.org">繁化姬</a></li>
+<li><a href="https://www.chineseconverter.com/zh-cn">中文转换</a></li>
+</ul>
+</li>
+<li class="sidebar-submenu"><a><i class="las la-envelope"></i></a>
+<ul class="sublist">
+<li><a href="https://mail.proton.me">Proton</a></li>
+<li><a href="https://outlook.com/mail">Outlook</a></li>
+<li><a href="https://mail.google.com">Gmail</a></li>
+<li><a href="https://mail.yandex.com">Yandex</a></li>
+<li><a href="https://mail.qq.com">QQ</a></li>
+<li><a href="https://mail.163.com">163</a></li>
+<li><a href="https://www.88.com">88</a></li>
+</ul>
+</li>
+<li class="sidebar-submenu"><a href="#top"><i class="las la-angle-up"></i></a></li><li class="sidebar-submenu"><a href="#bar"><i class="las la-angle-down"></i></a></li></ul>
+<textarea class="textinput" id="bar" placeholder=">_"></textarea><div class="clip">
+<div class="clipdiv"><button onclick="document.getElementById('bar').select();document.execCommand('cut')">剪切</button>
+<button onclick="copyText('geekplayers')">公众号</button>
+<button onclick="copyText('geekplayer')">微博</button>
+<button onclick="copyText('极限玩家A')">视频号</button>
+<button onclick="copyText('geek_player')">抖音号</button>
+<button onclick="copyText('2623999419')">小红书</button>
+<button onclick="copyText('https://www.douyu.com/220004')">斗鱼</button>
+<button onclick="copyText('东西不错，是我想要的，快递服务态度也不错，如果还有需要会再次光临的')">淘宝评价</button></div>
+</div>
+<script>function copyText(t){navigator.clipboard?navigator.clipboard.writeText(t).catch(()=>fallbackCopyText(t)):fallbackCopyText(t)}function fallbackCopyText(t){const e=document.createElement('textarea');e.value=t;document.body.appendChild(e);e.select();document.execCommand('copy');document.body.removeChild(e)}</script>
+<p>数字：<span class="counts"></span>&nbsp&nbsp英文：<span class="counts"></span>&nbsp&nbsp中文：<span class="counts"></span></p>
+<script>const input = document.querySelector(".textinput");const spans = document.querySelectorAll(".counts");input.oninput = (e) => {const value = e.target.value;spans[0].textContent = (value.match(/\d/g) || []).length;spans[1].textContent = (value.match(/[a-zA-Z]/g) || []).length;  spans[2].textContent = (value.match(/[\u4e00-\u9fa5]/g) || []).length;};</script>
+</main>
+<div id="navhide" onclick="xnavhide()"><h2>导航</h2><ul>
+<li><a href="https://quickso.cn">快点搜</a></li>
+<li><a href="http://guozhivip.com">果汁</a></li>
+<li><a href="https://video.bqrdh.com">不求人</a></li>
+<li><a href="https://www.ziyuantu.com">资源兔</a></li>
+<li><a href="https://www.bookmarkearth.com">书签地球</a></li>
+<li><a href="http://www.xiacoo.com">虾库</a></li>
+<li><a href="https://nav.sbkko.com">SBKKO</a></li>
+<li><a href="https://www.bidianer.com">笔点导航</a></li>
+<li><a href="https://www.jikedaohang.com">极客导航</a></li>
+<li><a href="https://www.a.cool">阿酷导航</a></li>
+<li><a href="https://nav.hzwdd.cn">西瓜导航</a></li>
+<li><a href="https://daohangwan.com">导航湾</a></li>
+<li><a href="http://wanyouw.com">万有导航</a></li>
+<li><a href="http://ilxdh.com">龙轩导航</a></li>
+<li><a href="http://b.lackk.com">兰客导航</a></li>
+<li><a href="https://www.chaidu.com">柴都导航</a></li>
+<li><a href="http://www.gitnavi.com">GitNavi</a></li>
+<li><a href="http://www.haoyonghaowan.com">好用好玩</a></li>
+<li><a href="http://www.waysto.work">沃客导航</a></li>
+<li><a href="https://anee.cc">安逸影视</a></li>
+<li><a href="https://adzhp.cn">爱达杂货铺</a></li>
+<li><a href="https://gate.ofo.moe">随机去网站</a></li>
+<li><a href="https://site.sciping.com">科塔学术</a></li>
+<li><a href="https://www.wechatrss.com">微信导航</a></li>
+<li><a href="http://hao.199it.com">大数据</a></li>
+<li><a href="https://wht.im">W.万花筒</a></li>
+<li><a href="http://www.jianfast.com">简法搜索</a></li>
+<li><a href="https://xydh.fun">炫猿</a></li>
+<li><a href="http://search.coderschool.cn">Justsoit</a></li>
+<li><a href="http://guozhivip.com/lab/">有点意思</a></li>
+<li><a href="https://www.miguyu.com">咪咕鱼</a></li>
+<li><a href="https://www.zkcee.com">知客导航</a></li>
+<li><a href="https://axutongxue.com">阿虚储物间</a></li>
+<li><a href="https://www.24kdh.com">24K</a></li>
+<li><a href="https://www.ixsdh.com">爱学术</a></li>
+<li><a href="https://404l.com">迷鹿</a></li>
+</ul>
+<h2>资源</h2><ul>
+<li><a href="https://dalao.ru">不死鸟大佬分享</a></li><!-- https://bde.su -->
+<li><a href="https://www.rdonly.com">只读</a></li>
+<li><a href="https://mo.fish">鱼塘热榜</a></li>
+<li><a href="https://rebang.today">今日热榜</a></li>
+<li><a href="https://tophub.today">今日热榜</a></li>
+<li><a href="https://the.top">拓扑排行榜</a></li>
+<li><a href="https://www.heji.ltd">合集网</a></li>
+<li><a href="https://super-nb.com">小牛导航</a></li>
+<li><a href="https://jike.info">Jike</a></li>
+<li><a href="https://zzzmh.cn">zzzmh</a></li>
+<li><a href="https://www.zmki.cn">钻芒博客</a></li>
+<li><a href="https://imyshare.com">精品资源</a></li>
+<li><a href="http://lcoc.top">蓝调</a></li>
+<li><a href="https://www.8ziyuan.com">8资源</a></li>
+<li><a href="https://aleikeji.github.io">阿雷</a></li>
+<li><a href="http://www.qyun.vip">Q云资源</a></li>
+<li><a href="https://fuliba-1251744788.file.myqcloud.com">福利吧</a></li>
+<li><a href="https://iao.su/909/">不死鸟资源合集</a></li>
+</ul>
+<h2>个人</h2><ul>
+<li><a href="https://a.maorx.cn">青柠起始页</a></li>
+<li><a href="http://www.xiaoshesoso.com">小蛇搜搜</a></li>
+<li><a href="https://hufangyun.com">小猿大圣</a></li>
+<li><a href="https://baideye.com">白的夜</a></li>
+<li><a href="https://hoxis.github.io">Hoxis</a></li>
+<li><a href="https://www.quchao.net">Mark</a></li>
+<li><a href="https://www.emin.ink">Emin</a></li>
+<li><a href="https://zoomyale.com">Zoomyale</a></li>
+<li><a href="https://mkblog.cn">孟坤博客</a></li>
+<li><a href="https://www.daniao.org">大鸟博客</a></li>
+<li><a href="https://www.vediotalk.com">VedioTalk</a></li>
+<li><a href="https://www.liangzl.com">梁钟霖</a></li>
+<li><a href="https://hellodk.cn">AllenHua</a></li>
+<li><a href="https://cayzlh.github.io">CAYZLH</a></li>
+<li><a href="http://jeffjade.com">晚晴幽草轩</a></li>
+<li><a href="https://www.moewah.com">喵斯基部落</a></li>
+<li><a href="https://tstrs.me">Tstrs</a></li>
+<li><a href="https://www.xjisme.com">小俊博客</a></li>
+<li><a href="https://haoduck.com">好鸭</a></li>
+<li><a href="https://www.cyanhall.com/cn/">CyanHall</a></li>
+<li><a href="https://www.flyzy2005.com">flyzy小站</a></li>
+<li><a href="https://www.laozuo.org">老左博客</a></li>
+<li><a href="https://rawchen.com/links.html">友链</a></li>
+<li><a href="https://blogwe.com">博客大全</a></li>
+<li><a href="https://0x3.com">0x3</a></li>
+</ul>
+<h2>柠檬</h2><ul>
+<li><a href="https://jable.tv">Jable</a></li>
+<li><a href="https://missav.live">Missav</a></li>
+<li><a href="https://missavtv.com">Missav</a></li>
+<li><a href="https://rou.pub/dizhi">Rou</a></li>
+<li><a href="https://123av.com/zh">123av</a></li>
+<li><a href="https://theporndude.com/zh">PornDude</a></li>
+<li><a href="https://www.pornhub.com">PornHub</a></li>
+<li><a href="https://www.sehuatang.org">SHtang</a></li>
+<li><a href="https://twitter-ero-video-ranking.com/zh-CN">X-video</a></li>
+<li><a href="http://xp1024.com">Bt7086</a></li>
+<li><a href="http://t66y.com">CaoLiu</a></li>
+<li><a href="https://www.javbus.com">JavBus</a></li>
+<li><a href="https://www.eporner.com">Eporner</a></li>
+<li><a href="http://www.xvideos.com">Xvideos</a></li>
+<li><a href="http://javcc.com">Javcc</a></li>
+<li><a href="https://www.iwank.pro">Iwank</a></li>
+<li><a href="http://www.youporn.com">YouPorn</a></li>
+<li><a href="https://xhamster.com">Xhamster</a></li>
+<li><a href="https://chaturbate.com">Chaturbate</a></li>
+<li><a href="https://bongacams.com">Bongacams</a></li>
+<li><a href="https://www.redtube.com">RedTube</a></li>
+<li><a href="https://app.swag.live">Swag</a></li>
+<li><a href="https://x18r.com">JaponX</a></li>
+<li><a href="https://avhd101.com">AvHD101</a></li>
+<li><a href="http://tokyotosho.info">Toshokan</a></li>
+<li><a href="https://www.acgbox.org">ACG盒子</a></li>
+<li><a href="https://github.com/gentlemansolo/JavbuslibraryRealse">番号库</a></li>
+<li><a href="https://xslist.org/zh">识脸</a></li>
+<li><a href="https://www.javlibrary.com">Javlibrary</a></li>
+<li><a href="https://www.javdatabase.com">Javdatabase</a></li><br>
+<li><a href="https://www.sehuatang.net/forum-38-1.html">欧美无码</a></li>
+<li><a href="https://www.sehuatang.net/forum-36-1.html">亚洲无码</a></li>
+<li><a href="https://www.sehuatang.net/forum-103-1.html">高清中文</a></li>
+</ul>
+<h2>工具</h2><ul>
+<li><a href="https://www.xarchiver.tk">查压缩包密码</a></li>
+<li><a href="https://segmentfault.com/a/1190000021847172">m3u8视频提取</a></li>
+<li><a href="https://www.dbbqb.com">表情包搜索</a></li>
+<li><a href="https://link.gimhoy.com">OneDrive直链</a></li>
+<li><a href="http://189.ly93.cc">天翼云盘解析</a></li>
+<li><a href="https://www.ihezu.cn">奈飞小铺</a></li>
+<li><a href="https://nf.video">银河录像局</a></li>
+<li><a href="https://pkeytools.azurewebsites.net/ShareKeys">微软密钥</a></li>
+<li><a href="https://lab.5ime.cn/video/">短视频去水印</a></li>
+</ul></div></body></html>

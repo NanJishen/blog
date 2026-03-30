@@ -11,7 +11,6 @@ categories: ["软件"]
 ## 安装
 
 ```bash
-
 # 通过包管理器
 sudo pacman -S yt-dlp 
 sudo pacman -S ffmpeg # 支持转换格式

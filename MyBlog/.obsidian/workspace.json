@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "430e9b4617cf537a",
+        "id": "d4770ac35a4792e7",
         "type": "tabs",
         "children": [
           {
-            "id": "a23c147041f4b6e2",
+            "id": "daacb53954b35fea",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "jsdelivrtogithub.md",
+                "file": "posts/everything.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "jsdelivrtogithub"
+              "title": "everything"
             }
           }
         ]
@@ -70,8 +70,8 @@
             "state": {
               "type": "starred",
               "state": {},
-              "icon": "lucide-file",
-              "title": "插件不再活动"
+              "icon": "lucide-ghost",
+              "title": "starred"
             }
           },
           {
@@ -150,13 +150,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "jsdelivrtogithub.md",
+                "file": "posts/everything.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "jsdelivrtogithub 的大纲"
+              "title": "everything 的大纲"
             }
           }
         ],
@@ -168,6 +168,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:新建数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
@@ -176,21 +177,30 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "a23c147041f4b6e2",
+  "active": "1b715ffd58df9756",
   "lastOpenFiles": [
+    "posts/everything.md",
+    "_Template/New Article.md",
+    "lanvideoplay.md",
+    "jsdelivrtogithub.md",
+    "obsidianforfirst.md",
+    "jiao-yan-wen-jian.md",
+    "2026-03-29.md",
+    "googlesearch.md",
+    "Infoverload.md",
+    "godzilla-vs-kong.md",
+    "ji-xiao-kuozan-xiaolv.md",
+    "ytdlp.md",
+    "_Template",
     "qnap-aliyunpan.md",
     "qnap-docker-aria.md",
     "qnap-docker-transmission.md",
     "qnap-Jellyfin-nyanmisaka.md",
     "pic-mirror-img.md",
-    "Infoverload.md",
     "ffmpeg.md",
-    "jsdelivrtogithub.md",
     "wfr.md",
     "youtubedl.md",
-    "jiao-yan-wen-jian.md",
     "ventoy.md",
-    "win10-setup.md",
-    "godzilla-vs-kong.md"
+    "win10-setup.md"
   ]
 }

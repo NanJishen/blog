@@ -502,7 +502,8 @@ luci-theme-material # Material
 <pre># 格式：src/gz + 自定义名 + 你刚复制的链接
 src/gz dllkids https://op.dllkids.xyz/packages/aarch64_generic/</pre>提交后再刷新列表
 <a name="passwall2"></a><h3>PassWall2</h3><strong>手动安装，</strong><a href="https://github.com/Openwrt-Passwall/openwrt-passwall2/releases">先下载</a><ul><li>luci-app-passwall_x.xx-x_all.ipk（主程序）</li><li>luci-i18n-passwall-zh-cn_git-xx.xxx.xx-xx_all.ipk</li>
-<li>passwall_packages_ipk_对应软路由的架构<ul><li>_x86_64.zip（X86）</li><li>_aarch64_generic.zip（R2S）</li><li>_aarch64_cortex-a53 # 小米 AX3600</li></ul></li></ul>将下载的所有包解压并上传到软路由的<code> /tmp/tmp </code>目录中，然后 SSH 登录软路由执行<pre>cd /tmp/tmp # 进入上传的目录
+<li>passwall_packages_ipk_对应软路由的架构<ul><li>_x86_64.zip（X86）</li><li>_aarch64_generic.zip（R2S）</li><li>_aarch64_cortex-a53 # 小米 AX3600</li></ul></li></ul><pre>scp *.ipk Router:/tmp/tmp # 在本机将下载的 ipk 包上传到软路由
+cd /tmp/tmp # 在软路由进入该目录
 opkg install *.ipk --force-reinstall # 强制安装所有软件包
 
 # 验证版本
