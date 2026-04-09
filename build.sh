@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+#------------------------------------------------------------------------------
+# @file
+# Builds a Hugo site hosted on a Cloudflare Worker.
+#
+# The Cloudflare Worker automatically installs Node.js dependencies.
+#------------------------------------------------------------------------------
+
+# Exit on error, undefined variables, or pipe failures
 set -euo pipefail
 
 build_temp_dir=""
@@ -16,13 +24,13 @@ trap cleanup EXIT SIGINT SIGTERM
 
 main() {
   # Define tool versions
-  DART_SASS_VERSION=1.98.0
+  DART_SASS_VERSION=1.99.0
   GO_VERSION=1.26.1
-  HUGO_VERSION=0.158.0
-  NODE_VERSION=24.14.0
+  HUGO_VERSION=0.160.0
+  NODE_VERSION=24.14.1
 
   # Set the build timezone
-  export TZ=Asia/Shanghai
+  export TZ=Europe/Oslo
 
   # Create and move into a temporary directory for downloads
   build_temp_dir=$(mktemp -d)
