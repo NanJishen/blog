@@ -1,7 +1,7 @@
 ---
 title: "Logseq 使用方法简单总结"
 date: 2022-01-08T00:50:20+08:00
-draft: flase
+draft: false
 tags: ["logseq"]
 categories: ["软件"]
 ---

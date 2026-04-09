@@ -1,7 +1,7 @@
 ---
 title: "Youtube 详细统计信息测速指南"
 date: 2021-03-04T14:45:18+08:00
-draft: flase
+draft: false
 tags: ["youtube"]
 categories: ["方法"]
 ---

@@ -1,7 +1,7 @@
 ---
 title: "解锁家庭局域网内手机和电视观看电脑里的影片"
 date: 2021-03-21T15:15:36+08:00
-draft: flase
+draft: false
 tags: ["局域网串流"]
 categories: ["软件"]
 ---

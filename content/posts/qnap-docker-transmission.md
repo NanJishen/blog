@@ -1,7 +1,7 @@
 ---
 title: "威联通通过 Docker 安装 Transmission"
 date: 2022-01-07T17:17:13+08:00
-draft: flase
+draft: false
 tags: ["transmission"]
 categories: ["软件"]
 ---

@@ -1,0 +1,144 @@
+{
+  "workspaces": {
+    "博客": {
+      "main": {
+        "id": "0c2ea28ebe65173d",
+        "type": "split",
+        "children": [
+          {
+            "id": "d5717efa87d41610",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "e805a78cb399ab23",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "posts/mpv.md",
+                    "mode": "source",
+                    "source": true,
+                    "backlinks": false
+                  },
+                  "icon": "lucide-file",
+                  "title": "mpv"
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "vertical"
+      },
+      "left": {
+        "id": "d24bb0d66d1c89f0",
+        "type": "split",
+        "children": [
+          {
+            "id": "f76ad3f63fda4935",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "d9928fd942df4c86",
+                "type": "leaf",
+                "state": {
+                  "type": "file-explorer",
+                  "state": {
+                    "sortOrder": "alphabetical",
+                    "autoReveal": false
+                  },
+                  "icon": "lucide-folder-closed",
+                  "title": "文件列表"
+                }
+              },
+              {
+                "id": "203e2f86a4cbed72",
+                "type": "leaf",
+                "state": {
+                  "type": "search",
+                  "state": {
+                    "query": "",
+                    "matchingCase": false,
+                    "explainSearch": false,
+                    "collapseAll": false,
+                    "extraContext": false,
+                    "sortOrder": "alphabetical"
+                  },
+                  "icon": "lucide-search",
+                  "title": "搜索"
+                }
+              },
+              {
+                "id": "1a64eb607f87f824",
+                "type": "leaf",
+                "state": {
+                  "type": "starred",
+                  "state": {},
+                  "icon": "lucide-ghost",
+                  "title": "starred"
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "horizontal",
+        "width": 266.5
+      },
+      "right": {
+        "id": "cf332dafef801a9f",
+        "type": "split",
+        "children": [
+          {
+            "id": "64ba3f211f4db523",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "27d6b5267a0055cd",
+                "type": "leaf",
+                "state": {
+                  "type": "tag",
+                  "state": {
+                    "sortOrder": "frequency",
+                    "useHierarchy": true,
+                    "showSearch": false,
+                    "searchQuery": ""
+                  },
+                  "icon": "lucide-tags",
+                  "title": "标签"
+                }
+              },
+              {
+                "id": "1b715ffd58df9756",
+                "type": "leaf",
+                "state": {
+                  "type": "outline",
+                  "state": {
+                    "file": "posts/mpv.md",
+                    "followCursor": false,
+                    "showSearch": false,
+                    "searchQuery": ""
+                  },
+                  "icon": "lucide-list",
+                  "title": "mpv 的大纲"
+                }
+              }
+            ],
+            "currentTab": 1
+          }
+        ],
+        "direction": "horizontal",
+        "width": 200
+      },
+      "left-ribbon": {
+        "hiddenItems": {
+          "switcher:打开快速切换": false,
+          "templates:插入模板": false,
+          "workspaces:管理工作区布局": false,
+          "markdown-importer:打开 Markdown 格式转换器": false
+        }
+      },
+      "active": "e805a78cb399ab23",
+      "mtime": "2026-04-05T10:26:44+08:00"
+    }
+  },
+  "active": "博客"
+}

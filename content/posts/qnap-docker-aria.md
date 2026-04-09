@@ -1,7 +1,7 @@
 ---
 title: "威联通 QNAP 通过 Docker 部署 Aria2 下载神器"
 date: 2021-12-22T01:01:34+08:00
-draft: flase
+draft: false
 tags: ["NAS"]
 categories: ["软件"]
 ---

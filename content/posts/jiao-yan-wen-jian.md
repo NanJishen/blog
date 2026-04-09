@@ -1,7 +1,7 @@
 ---
 title: "给Win10右键菜单加上校验文件功能"
 date: 2021-03-14T16:50:37+08:00
-draft: flase
+draft: false
 tags: ["校验哈希值"]
 categories: ["方法"]
 ---

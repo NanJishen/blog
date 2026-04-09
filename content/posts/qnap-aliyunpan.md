@@ -1,7 +1,7 @@
 ---
 title: "威联通 QNAP 挂载阿里云盘简单明快教程"
 date: 2021-12-13T17:46:13+08:00
-draft: flase
+draft: false
 tags: ["NAS"]
 categories: ["软件"]
 ---

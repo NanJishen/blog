@@ -1,7 +1,7 @@
 ---
 title: "更换到更现代的双向链笔记软件 Obsidian"
 date: 2021-03-21T15:21:50+08:00
-draft: flase
+draft: false
 tags: ["Obsidian"]
 categories: ["软件"]
 ---

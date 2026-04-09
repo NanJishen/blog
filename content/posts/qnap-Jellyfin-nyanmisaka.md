@@ -1,7 +1,7 @@
 ---
 title: "威联通通过 Docker 安装 Jellyfin"
 date: 2022-01-08T00:54:10+08:00
-draft: flase
+draft: false
 tags: ["jellyfin"]
 categories: ["软件"]
 ---

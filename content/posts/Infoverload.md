@@ -1,7 +1,7 @@
 ---
 title: "你并非缺乏创造力而是不知所措"
 date: 2023-10-19T15:17:11+08:00
-draft: flase
+draft: false
 tags: ["信息过载"]
 categories: ["知识"]
 ---

@@ -1,7 +1,7 @@
 ---
 title: "如何更好的提问"
 date: 2022-01-05T00:37:56+08:00
-draft: flase
+draft: false
 tags: ["方法"]
 categories: ["方法"]
 ---

@@ -1,7 +1,7 @@
 ---
 title: "新一代多系统启动U盘 Ventoy 使用指南"
 date: 2021-04-02T21:49:08+08:00
-draft: flase
+draft: false
 tags: ["Ventoy"]
 categories: ["软件"]
 ---

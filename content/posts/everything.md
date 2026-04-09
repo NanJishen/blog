@@ -1,13 +1,13 @@
 ---
-title: Everything 简洁使用方法指南
-description: ""
+title: Everything 使用方法教程指南
 date: 2026-03-29T19:59:00
-draft: true
+draft: false
 categories:
   - 软件
 tags:
   - Everything
 ---
+
 ## 设置
 
 - 常规 - 随系统启动；Everything 服务

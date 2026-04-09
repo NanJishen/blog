@@ -1,7 +1,7 @@
 ---
 title: "图片防盗链解决方案"
 date: 2021-03-12T20:50:06+08:00
-draft: flase
+draft: false
 tags: ["图床方法"]
 categories: ["方法"]
 ---

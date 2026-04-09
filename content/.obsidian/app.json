@@ -1,4 +1,6 @@
 {
   "livePreview": true,
-  "showInlineTitle": false
+  "showInlineTitle": false,
+  "propertiesInDocument": "source",
+  "openBehavior": "file:posts/_Drafts"
 }

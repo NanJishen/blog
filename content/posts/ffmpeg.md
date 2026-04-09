@@ -1,7 +1,7 @@
 ---
 title: "开源免费音视频处理神器 FFmpeg"
 date: 2020-09-26T16:04:00+08:00
-draft: flase
+draft: false
 tags: ["ffmpeg"]
 categories: ["软件"]
 ---

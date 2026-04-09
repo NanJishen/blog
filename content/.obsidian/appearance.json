@@ -4,5 +4,6 @@
   "interfaceFontFamily": "微软雅黑",
   "textFontFamily": "微软雅黑",
   "baseFontSize": 18,
-  "monospaceFontFamily": "等距更纱黑体 SC"
+  "monospaceFontFamily": "等距更纱黑体 SC",
+  "showRibbon": false
 }

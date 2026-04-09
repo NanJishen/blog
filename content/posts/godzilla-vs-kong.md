@@ -1,7 +1,7 @@
 ---
 title: "《哥斯拉大战金刚》完全展现出观众对巨兽对决的期望-值8.5分"
 date: 2021-05-25T20:57:30+08:00
-draft: flase
+draft: false
 tags: ["电影评分"]
 categories: ["电影"]
 ---

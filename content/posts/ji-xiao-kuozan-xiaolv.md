@@ -1,7 +1,7 @@
 ---
 title: "5款极致小巧的扩展让你的浏览器更高效"
 date: 2021-03-18T23:19:54+08:00
-draft: flase
+draft: false
 tags: ["浏览器扩展"]
 categories: ["软件"]
 ---
