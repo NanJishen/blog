@@ -1,6 +1,6 @@
 ---
-title: DokuWiki 使用方法教程指南
-date: 2018-06-018T19:00:00
+title: "DokuWiki 使用方法教程指南"
+date: 2018-06-08T19:00:00
 draft: false
 categories: ["自部署"]
 tags: ["wiki"]

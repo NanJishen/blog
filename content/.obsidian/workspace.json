@@ -4,22 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "ee2524407bad098c",
+        "id": "5768e9c6a8db5e96",
         "type": "tabs",
         "children": [
           {
-            "id": "7a2081ca27c7d94a",
+            "id": "2ec2c64313420151",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "posts/dokuwiki.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "dokuwiki"
+              "title": "新标签页"
             }
           }
         ]
@@ -110,13 +105,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "posts/dokuwiki.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "dokuwiki 的大纲"
+              "title": "大纲"
             }
           }
         ],
@@ -134,11 +128,13 @@
       "markdown-importer:打开 Markdown 格式转换器": false
     }
   },
-  "active": "7a2081ca27c7d94a",
+  "active": "2ec2c64313420151",
   "lastOpenFiles": [
-    "posts/mpv.md",
-    "posts/dokuwiki.md",
     "posts/_Drafts.md",
+    "posts/mpv.md",
+    "posts/ytdlp.md",
+    "posts/dokuwiki.md",
+    "posts/everything.md",
     "posts/ji-xiao-kuozan-xiaolv.md",
     "posts/Infoverload.md",
     "posts/godzilla-vs-kong.md",
@@ -147,7 +143,6 @@
     "posts/youtubedl.md",
     "posts/ventoy.md",
     "posts/qnap-docker-transmission.md",
-    "posts/everything.md",
     "posts/youtubecouts.md",
     "posts/win10-setup.md",
     "posts/search-read-ask.md",
@@ -161,7 +156,6 @@
     "posts/lanvideoplay.md",
     "posts/logseq.md",
     "posts/jiao-yan-wen-jian.md",
-    "posts/ytdlp.md",
     "_Template"
   ]
 }
