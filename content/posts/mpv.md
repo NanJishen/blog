@@ -45,20 +45,20 @@ gpu-context=winvk # GPU渲染方案 <d3d11|winvk>，Linux <auto|wayland|waylandv
 hwdec=auto # 解码方式，<auto|no（软解）|yes（硬解）>，播放时可用 Ctrl+H 切换
 profile=high-quality # 启用内置的高质量预设 <默认平衡|high-quality>
 
-# 渲染算法
-cale=ewa_lanczossharp # 高质量亮度
-cscale=ewa_lanczossharp # 高质量色度
-deband=yes # 减少可能的色带（可选）
-# dither-depth=auto # 显示器颜色深度，<10|12> bit
-
-# 开启插帧（适合低帧率视频，如 24fps 平滑播放）
-interpolation
-video-sync=display-resample # 确保视频与显示器刷新率同步，必须，不然会有音画不同步
+# 开启插帧，平滑播放
+video-sync=display-resample # 音频重采样保持 A/V 同步，减少丢帧
+interpolation=yes # 运动插值（平滑运动）
 
 # 高质量反光晕/抗锯齿
 # sigmoid-upscaling=yes # 启用 Sigmoid 曲线，减少高对比度边缘的光晕
 # linear-upscaling=yes # 启用线性光照，改善缩放画质
- 
+
+# 画质增强
+deband=yes # 去色带
+cale=ewa_lanczossharp # 高质量亮度
+cscale=ewa_lanczossharp # 高质量色度
+# dither-depth=auto # 显示器颜色深度，<10|12> bit
+
 ## HDR
 target-colorspace-hint=auto # 自动 HDR（向显示器发送 HDR 元数据）
 # target-trc=pq # 指定色彩空间（PQ 为 HDR10 标准，HLG 为广播）
@@ -138,6 +138,9 @@ gpu-shader-cache-dir="T:/cache/mpv" # 已编译的GLSL着色器缓存
 icc-cache-dir="T:/cache/mpv" # 保存缓存加速启动
 watch-later-dir="T:/cache/mpv/watch_later" # 保存稍后观看的记录
 log-file="T:/cache/mpv/mpv.log" # 日志记录
+
+## 指定 yt-dlp 在线视频下载哪种格式
+ytdl-format=bestvideo+bestaudio/best # 最佳视频音频，如果没有，回退到下载综合最佳的单一文件
 ```
 
 ## 快捷键

@@ -43,9 +43,13 @@
 <a href="https://shortcuts.design">快捷键</a>
 </div>
 <div class="container">
-
 <h2 id="common-tools" class="category-title">常用工具</h2>
 <ul class="cat">
+<li dcts=""><div><a>Scoop</a><p>软件包管理器</p></div>
+<div class="dls">
+<a href="https://scoop.sh">🪟</a>
+</div>
+</li>
 <li dcts="<p>🪟 只支持 Windows</p><p>🐧 只支持 Linux 包括 CLI</p><p>🖥️ 跨平台 GUI</p><p>✨ 跨平台 CLI</p><p>💽 备选代替品</p> <p>🐬 有 Docker 版</p><p>⚓ 扩展/插件</p><p>🔨 补丁</p><p>📱 手机应用</p>"><div><a href="">7-zip</a><p>压缩与解压缩</p></div>
 <div class="dls">
 <a href="http://www.7-zip.org">🖥️</a>
@@ -79,26 +83,22 @@ BBDown -p ALL url # 下载全集</pre>">
 <div><a href="">BBDown</a><p>哔哩哔哩视频下载</p></div>
 <div class="dls">
 <a href="https://github.com/nilaoda/BBDown">✨</a>
-<a href="https://github.com/leiurayer/downkyi">🪟</a>
 <a href="https://github.com/ScottSloan/Bili23-Downloader">🪟</a>
-<a href="https://github.com/HFrost0/bilix">💽</a>
 <a href="https://github.com/yu1745/bili-dl">💽</a>
-<a href="https://github.com/Zhouqluo/bilidown-web">💽</a>
 </div>
 </li>
-<li dcts="下载后将其中64位目录解压到你指定的路径中并重命名，建议布局<pre>Chrlauncher
-├─bin # 程序目录
-├─profile # 用户数据
-├─chrlauncher.ini # 配置文件
-</pre>修改 chrlauncher.ini 配置文件<pre>--user-data-dir=..\profile # 指定用户数据（可用绝对路径）
-ChromiumBinary=chrome.exe # 浏览器主程序
-ChromiumDirectory=.\bin # 程序目录
-ChromiumType=stable-codecs-sync # 选择版本（支持7种）
-ChromiumCheckPeriod=7 # 7天检测更新</pre>管理员执行 SetDefaultBrowser.bat 注册为默认浏览器<p>Windows 设置 - 应用 - 默认应用 - 搜索 Chrlaunger 并设置默认值</p><p>启动 chrlauncher.exe 会自动下载浏览器程序到指定的路径中（bin）</p><p>浏览器访问 chrome://version 查看用户数据目录路径</p><p>启用并行下载 chrome://flags/#enable-parallel-downloading - Enabled</p><p>多浏览器配置（实现数据和Cookie分开）：点右上角头像 - 添加个人资料</p><h3>ungoogled-chromium</h3>首次访问指引 chrome://ungoogled-first-run<p>设置允许命令安装应用：chrome://flags/#extension-mime-request-handling 选 Always prompt for install<p><a href='https://github.com/NeverDecaf/chromium-web-store/releases'>下载</a>并安装该安装扩展</p></p>可选，如果没有使用 Chrlauncher）可以快捷方式中指定用户数据目录<pre>T:\PortableApps\ungoogled-chromium\chrome.exe --user-data-dir='./userdata' # ./ 程序路径下的 userdata 目录</pre>设置关联数据目录，解决点击http不会引用指定数据目录的问题<pre>注册表：HKEY_CLASSES_ROOT\ChromiumHTM...\shell\open\command 修改默认值，加上 --user-data-dir='T:/PortableApps/ungoogled-chromium/userdata' --single-argument %1</pre><p>未安装，且有用的扩展：BlockTube、Better bilibili、Get cookies.txt LOCALLY、MEGA、MetaMask、Scribe、简阅、读点东西</p>">
-<div><a href="">Chrlauncher</a><p>便携化谷歌浏览器启动器</p></div>
+<li dcts="使用 Scoop 安装，创建数据目录 D:\Chromedata 并修改注册表<pre>
+HKEY_CURRENT_USER\Software\Classes\chromium\shell\open\command
+HKEY_CURRENT_USER\Software\Classes\ChromiumHTM.数字\shell\open\command
+# 双击右侧“默认”改为（需将单引号换成双引号）
+'C:\Users\用户名\scoop\apps\ungoogled-chromium\current\chrome.exe' --user-data-dir='D:\Chromedata' %1</pre>
+Windows 设置 - 应用 - 默认应用 - 搜索 Chromium 或 Chrlaunger 并设置默认值</p><h3>ungoogled-chromium</h3>首次访问指引 chrome://ungoogled-first-run<p>设置安装应用 chrome://flags/#extension-mime-request-handling 选 Always prompt for install 后<a href='https://github.com/NeverDecaf/chromium-web-store/releases/latest/download/Chromium.Web.Store.crx'>安装商店</a></p><p>解决重启浏览器重新登录问题 chrome://settings/content/siteData 选“允许网站将数据保存在设备上”</p><p>启用并行下载 chrome://flags/#enable-parallel-downloading - Enabled</p><p>浏览器访问 chrome://version 查看用户数据目录路径</p>">
+<div><a href="">Chromium</a><p>便携化谷歌浏览器</p></div>
 <div class="dls">
 <a href="https://github.com/henrypp/chrlauncher" >🖥️</a>
-<a href="https://github.com/ungoogled-software/ungoogled-chromium">💽</a>
+<a href="https://brave.com">💽</a>
+<a href="https://librewolf.net">💽</a>
+<a href="https://github.com/floorp-Projects/floorp">💽</a>
 <a href="https://helium.computer">💽</a>
 </div>
 </li>
@@ -110,41 +110,11 @@ ChromiumCheckPeriod=7 # 7天检测更新</pre>管理员执行 SetDefaultBrowser.
 <a href="https://www.executor.dk">💽</a>
 </div>
 </li>
-<li dcts="<h3>添加命令（F6）</h3>左上角点“添加”- 选择自带命令：<br>固定：Ctrl+↑<br>解除固定：Ctrl+↓<br>移动到“任务”标签页：Ctrl+→（可在高级选项卡中指定格式类型）<br>在浏览器中打开：Ctrl+U<br>粘贴当前日期：Ctrl+Alt+F5<br>剪贴板粘贴为纯文本：Shift+V<br>忽略“密码”窗口（高级选项卡，修改窗口为密码管理器）<br><h3>新建命令</h3>添加 - 新建命令 - 高级选项卡：<p>自动将 http 开头的内容移动到指定标签，类型：自动执行<br>内容：^(https?|ftp)://<br>格式：text/plain<br>动作：复制到“你指定标签”并勾选“删除”<br></p><p>删除所有非固定项目：Ctrl+Del（菜单中）</p><pre>copyq:
-var items = Array
-.apply(0, Array(size()))
-.map(function(_, i){ return i; })
-.filter(function(row){ return !plugins.itempinned.isPinned(row) })
-
-if (items.length > 0) {
-remove.apply(this, items)
-}</pre>
-编辑并粘贴：Ctrl+Alt+Shift+V（全局快捷键）<pre>copyq:
-var text = dialog('paste', str(clipboard()))
-if (text) {
-copy(text)
-copySelection(text)
-paste()
-}</pre>清空指定标签：Ctrl+Del（菜单中）<br>筛选器 copyq: size() || fail()<pre>copyq:
-tab(config('clipboard_tab'))
-items = Array
-.apply(0, Array(size()))
-.map(function(x,i){return i})
-remove.apply(this, items)</pre>快速保存为文件：Ctrl+S（菜单中），<a href='https://github.com/hluk/copyq-commands/blob/master/Application/QuickSave.ini'>下载 ini</a>并修改其中 currentPath('T:/Downloads') 为你要保存的路径，加载命令导入该文件
-<h3>设置（Ctrl + P）</h3>托盘 - 禁用托盘图标，显示剪贴板内容10条，选择“快捷”标签页<br>条目 - 图片 - 图片编辑器命令：mspaint.exe %1<br>条目 - 文本 - 取消“保存和现实 HTML 和 富文本”<br>条目 - 标记：自定义标签，例如 todo，之后右键条目选添加标记<br>快捷键 - 显示托盘菜单（Alt + , ），显示/隐藏主窗口（Alt + . ）<br>设置 - 外观 - 编辑主题：
-<pre># 修改以下两项可以改变标签宽度
-tab_bar_tab_selected_css=padding: 0.5em 1em
-tab_bar_tab_unselected_css=padding: 0.5em 1em
-
-# 修改以下两项可以去掉标签之间的空隙
-tab_bar_tab_selected_css=padding: border: 0em solid
-tab_bar_tab_unselected_css=padding: border: 0em solid</pre><h3>主题备份</h3>One-Dark，字体：等距更纱黑体 SC SemiBold 12px<br>——：背景 -- 前景 --<br>正常：#1e2227，#a8afbc<br>选中：#161616，#d0852e<br>发现：#ffff7f，#ff5500<br>编辑器：#ffffff，#000000<br>交替：#23272e<br>勾选：系统图标、消除锯齿、主题色用于标签页">
-<div><a href="CopyQ">CopyQ</a><p>剪贴板管理</p></div>
+<li dcts="">
+<div><a>CopyQ</a><p>剪贴板管理</p></div>
 <div class="dls">
 <a href="https://github.com/hluk/CopyQ">🖥️</a>
-<a href="https://github.com/hluk/copyq-commands">⚓</a>
 <a href="https://github.com/EcoPasteHub/EcoPaste">💽</a>
-<a href="https://github.com/LeastBit/CatClipboard">💽</a>
 <a href="https://github.com/Slackadays/Clipboard">💽</a>
 </div>
 </li>
@@ -197,6 +167,7 @@ tab_bar_tab_unselected_css=padding: border: 0em solid</pre><h3>主题备份</h3>
 <a href="https://mpv.io">🖥️📱</a>
 <a href="https://potplayer.tv">🪟</a>
 <a href="https://github.com/Aleksoid1978/MPC-BE">💽</a>
+<a href="https://github.com/diegopvlk/Cine">🐧</a>
 </div>
 </li>
 <li dcts=""><div><a>Obsidian</a><p>双向链笔记本</p></div>
@@ -215,13 +186,12 @@ tab_bar_tab_unselected_css=padding: border: 0em solid</pre><h3>主题备份</h3>
 </div>
 </li>
 <li dcts="截图时<p>取色后按贴图快捷键（Shift+F3）可以贴成图</p><p>标注时，鼠标滚轮或键盘 1,2 可调整大小</p><p>选颜色时，可点击大颜色块更改透明度</p><p>标注形状时按住 Shift 可等比画出</p><p>贴图时</p><p>Ctrl+滚轮：调整贴图透明度，适用于比对</p><p>拖动贴图时按住 Shift 再松开鼠标左键可吸附其它贴图或程序窗口以对齐</p>">
-<div><a>Snipaste</a><p>截图贴图钉图</p></div>
+<div><a>Snipaste</a><p>屏幕截图贴图钉图</p></div>
 <div class="dls">
 <a href="https://zh.snipaste.com">🖥️</a>
 <a href="https://github.com/ksnip/ksnip">💽</a>
-<a href="https://pixpinapp.com">💽</a>
 <a href="https://www.reasyze.com/sniptool">🪟</a>
-<a href="https://www.ntwind.com/software/winsnap.html">🪟</a>
+<a href="https://pixpinapp.com">💽</a>
 </div>
 </li>
 <li dcts=""><div><a>Tencent</a><p>腾讯软件</p></div>
@@ -241,22 +211,6 @@ tab_bar_tab_unselected_css=padding: border: 0em solid</pre><h3>主题备份</h3>
 <div class="dls">
 <a href="https://apps.microsoft.com">🏠</a>
 <a href="https://store.rg-adguard.net">🔨</a>
-</div>
-</li>
-<li dcts=""><div><a>Archlinux Packages</a><p>Arch 官方软件包库</p></div>
-<div class="dls">
-<a href="https://archlinux.org/packages/">🏠</a>
-<a href="https://aur.archlinux.org/packages/">🏠</a>
-</div>
-</li>
-<li dcts=""><div><a>Flathub</a><p>Linux 软件应用商店</p></div>
-<div class="dls">
-<a href="https://flathub.org/home">🐧</a>
-</div>
-</li>
-<li dcts=""><div><a>AppImageHub</a><p>Linux AppImage 便携包合集</p></div>
-<div class="dls">
-<a href="https://www.appimagehub.com">🐧</a>
 </div>
 </li>
 <li dcts=""><div><a>Terminal Trove</a><p>命令行软件合集</p></div>
@@ -396,8 +350,9 @@ tab_bar_tab_unselected_css=padding: border: 0em solid</pre><h3>主题备份</h3>
 </li>
 <li dcts=""><div><a>Dufs</a><p>HTTP文件服务器</p></div>
 <div class="dls">
-<a href="https://github.com/sigoden/dufs">🖥️🐬</a>
+<a href="https://github.com/sigoden/dufs">🐬</a>
 <a href="https://github.com/TransparentLC/dufs-material-assets">🎨</a>
+<a href="https://github.com/9001/copyparty">💽</a>
 <a href="https://github.com/codeskyblue/servefs">💽</a>
 <a href="https://github.com/codeskyblue/gohttpserver">💽</a>
 <a href="https://github.com/TheWaWaR/simple-http-server">💽</a>
@@ -470,6 +425,7 @@ glow -s mystyle.json # 指定主题</pre>隐藏文章：在 TUI 中按 Tab 键�
 <div><a href="">Glow</a><p>终端查看 Markdown</p></div>
 <div class="dls">
 <a href="https://github.com/charmbracelet/glow">✨</a>
+<a href="https://github.com/ttscoff/mdless">🐧</a>
 <a href="https://github.com/splitmark/splitmark">💽</a>
 </div>
 </li>
@@ -540,11 +496,6 @@ glow -s mystyle.json # 指定主题</pre>隐藏文章：在 TUI 中按 Tab 键�
 <a href="https://apps.kde.org/zh-cn/marknote">🐧</a>
 </div>
 </li>
-<li dcts=""><div><a>mdless</a><p>终端看Markdown</p></div>
-<div class="dls">
-<a href="https://github.com/ttscoff/mdless">🐧</a>
-</div>
-</li>
 <li dcts=""><div><a>Metadata Cleaner</a><p>清除元数据</p></div>
 <div class="dls">
 <a href="https://gitlab.com/rmnvgr/metadata-cleaner">🐧</a>
@@ -604,7 +555,9 @@ glow -s mystyle.json # 指定主题</pre>隐藏文章：在 TUI 中按 Tab 键�
 <a href="https://github.com/dail8859/NotepadNext">🖥️</a>
 <a href="https://www.emeditor.com">💽</a>
 <a href="https://github.com/zufuliu/notepad4">🪟</a>
+<a href="https://github.com/rizonesoft/Notepad3">🪟</a>
 <a href="https://notepad-plus-plus.org">🪟</a>
+<a href="https://github.com/JasonStein/Notepads">🪟</a>
 </div>
 </li>
 <li dcts=""><div><a>OCR助手</a><p>截图并识别</p></div>
@@ -794,6 +747,12 @@ fusermount -qzu /root/googledrive # 卸载挂载</pre><a href='https://shimo.im/
 <a href="https://gitlab.gnome.org/GNOME/geary">💽</a></td></tr>
 </div>
 </li>
+<li dcts=""><div><a>TMSpeech</a><p>语音转文字字幕</p></div>
+<div class="dls">
+<a href="https://github.com/jxlpzqc/TMSpeech">🖥️</a>
+<a href="https://github.com/k2-fsa/sherpa-onnx">⚙️</a>
+</div>
+</li>
 <li dcts=""><div><a>Transmission</a><p>BT下载</p></div>
 <div class="dls">
 <a href="https://transmissionbt.com">🖥️</a>
@@ -925,19 +884,11 @@ fusermount -qzu /root/googledrive # 卸载挂载</pre><a href='https://shimo.im/
 <a href="https://www.bluestacks.com">📥</a>
 </div>
 </li>
-<li dcts=""><div><a>Brave</a><p>隐私浏览器</p></div>
-<div class="dls">
-<a href="https://brave.com">📥🐧</a>
-<a href="https://librewolf.net">💽</a>
-<a href="https://github.com/floorp-Projects/floorp">💽</a>
-</div>
-</li>
 <li dcts=""><div><a>CapsWriter</a><p>离线语音输入</p></div>
 <div class="dls">
-<a href="https://github.com/H1DDENADM1N/CapsWriter-Offline">🪟</a>
-<a href="https://github.com/HaujetZhao/CapsWriter-Offline">🐧</a>
-<a href="https://github.com/WhiteSmoogy/audiov">💽</a>
+<a href="https://github.com/HaujetZhao/CapsWriter-Offline">🪟</a>
 <a href="https://github.com/Oxidane-bot/SonicInput">💽</a>
+<a href="https://github.com/jatinkrmalik/vocalinux">🐧</a>
 <a href="https://www.bilibili.com/video/BV1tt4y1d75s">📑</a>
 </div>
 </li>
@@ -1019,7 +970,8 @@ fusermount -qzu /root/googledrive # 卸载挂载</pre><a href='https://shimo.im/
 </li>
 <li dcts=""><div><a>Delapp</a><p>删除被占用文件</p></div>
 <div class="dls">
-<a href="https://github.com/differentrain/Delapp">🖥️</a>
+<a href="https://github.com/differentrain/Delapp">🪟</a>
+<a href="https://www.softwareok.com/?seite=Freewar/ThisIsMyFile">💽</a>
 <a href="https://lockhunter.com">💽</a>
 </div>
 </li>
@@ -1163,12 +1115,10 @@ fusermount -qzu /root/googledrive # 卸载挂载</pre><a href='https://shimo.im/
 <div class="dls">
 <a href="https://github.com/fatedier/frp">🖥️</a>
 <a href="https://tailscale.com">💽</a>
-<a href="https://github.com/yosebyte/nodepass">💽</a>
 <a href="https://netbird.io">💽</a>
 <a href="https://www.zerotier.com">💽</a>
-<a href="https://doc.oee.icu:60009">💽</a>
 <a href="https://github.com/wiredoor/docker-setup">💽</a>
-
+<a href="https://www.twingate.com">☁️</a>
 </div>
 </li>
 <li dcts=""><div><a>FSViewer</a><p>图像浏览器</p></div>
@@ -1215,7 +1165,7 @@ fusermount -qzu /root/googledrive # 卸载挂载</pre><a href='https://shimo.im/
 <li dcts=""><div><a>Gopeed</a><p>BT下载</p></div>
 <div class="dls">
 <a href="https://github.com/GopeedLab/gopeed">🖥️</a>
-<a href="https://motrix.app">💽</a>
+<a href="https://github.com/AnInsomniacy/motrix-next">💽</a>
 <a href="https://picotorrent.org">💽</a>
 </div>
 </li>
@@ -1287,7 +1237,7 @@ fusermount -qzu /root/googledrive # 卸载挂载</pre><a href='https://shimo.im/
 <li dcts="<a href='https://www.internetdownloadmanager.com'>IDM</a> <a href='https://lrepacks.ru/repaki-programm-dlya-interneta/56-internet-download-manager-repack.html'>🔨</a>"><div><a>NDM</a><p>多线程下载工具</p></div>
 <div class="dls">
 <a href="https://www.neatdownloadmanager.com">🪟</a>
-<a href="https://chromewebstore.google.com/detail/neatdownloadmanager-exten/cpcifbdmkopohnnofedkjghjiclmhdah">🧩</a>
+<a href="https://chromewebstore.google.com/detail/neatdownloadmanager-exten/cpcifbdmkopohnnofedkjghjiclmhdah">🌐</a>
 <a href="https://erickutcher.github.io">💽</a>
 <a href="https://github.com/XiaoYouChR/Ghost-Downloader-3">💽</a>
 <a href="https://xdown.org">💽</a>
@@ -1376,6 +1326,7 @@ fusermount -qzu /root/googledrive # 卸载挂载</pre><a href='https://shimo.im/
 <a href="https://github.com/pot-app/pot-desktop">🖥️</a>
 <a href="https://github.com/InkTimeRecord/TTime">💽</a>
 <a href="https://github.com/ZGGSONG/STranslate">💽</a>
+<a href="https://github.com/ifocus9/PopTrans">💽</a>
 </div>
 </li>
 <li dcts=""><div><a>PowerToys</a><p>Win实用工具集</p></div>
@@ -1490,10 +1441,14 @@ f2 -r '{x.cdt.YYYY}/{x.cdt.MM}/{x.cdt.YYYY}-{x.cdt.MM}-{x.cdt.DD}_{n}{ext}' -R -
 <a href="https://github.com/Textualize/rich-cli">🖥️</a>
 </div>
 </li>
-<li dcts=""><div><a>Rufus</a><p>启动U盘制作</p></div>
+<li dcts="<pre>lsblk # 先确认U盘路径，例如 /dev/sdX
+sudo umount /dev/sda* # 卸载设备来确保未挂载该设备
+sudo woeusb --device Win11.iso /dev/sdX</pre>"><div><a>Rufus</a><p>启动U盘制作</p></div>
 <div class="dls">
 <a href="https://rufus.ie">🖥️</a>
 <a href="https://www.balena.io/etcher">🖥️</a>
+<a href="https://github.com/WoeUSB/WoeUSB-ng">🐧</a>
+<a href="https://unetbootin.github.io">🐧</a>
 <a href="https://gitlab.com/bztsrc/usbimager">💽</a>
 <a href="https://sourceforge.net/projects/win32diskimager">💽</a>
 <a href="https://github.com/EtchDroid/EtchDroid">📱</a>
@@ -1512,7 +1467,6 @@ f2 -r '{x.cdt.YYYY}/{x.cdt.MM}/{x.cdt.YYYY}-{x.cdt.MM}-{x.cdt.DD}_{n}{ext}' -R -
 <li dcts=""><div><a>Sandboxie</a><p>沙盒</p></div>
 <div class="dls">
 <a href="https://github.com/sandboxie-plus/Sandboxie">🖥️</a>
-<a href="https://sandboxie-plus.com">💽</a>
 </div>
 </li>
 <li dcts=""><div><a>Screenote</a><p>快捷键截图</p></div>
@@ -1702,12 +1656,6 @@ f2 -r '{x.cdt.YYYY}/{x.cdt.MM}/{x.cdt.YYYY}-{x.cdt.MM}-{x.cdt.DD}_{n}{ext}' -R -
 <a href="https://github.com/xksoft/OcrHelper">🖥️</a>
 </div>
 </li>
-<li dcts=""><div><a>Ubiquity</a><p>轻量 markdown</p></div>
-<div class="dls">
-<a href="https://github.com/opensourcecheemsburgers/ubiquity">🖥️</a>
-<a href="https://github.com/OlaProeis/Ferrite">💽</a>
-</div>
-</li>
 <li dcts=""><div><a>Unicodia</a><p>表情符号字符表</p></div>
 <div class="dls">
 <a href="https://github.com/Mercury13/unicodia">🖥️</a>
@@ -1866,7 +1814,7 @@ f2 -r '{x.cdt.YYYY}/{x.cdt.MM}/{x.cdt.YYYY}-{x.cdt.MM}-{x.cdt.DD}_{n}{ext}' -R -
 <a href="https://sites.google.com/site/boisvertlab/computer-stuff/online-teaching#Highlighter">💽</a>
 <a href="http://www.swordsoft.idv.tw/mousetrack/">💽</a>
 <a href="https://github.com/sqmw/MFCMouseEffect">💽</a>
-<a href="https://apps.microsoft.com/detail/9P7SB9S4RQ7Z">🪁</a>
+<a href="https://apps.microsoft.com/detail/9P7SB9S4RQ7Z">🪟</a>
 </div>
 </li>
 <li dcts="添加音乐路径：输入 :a /home/nanji/music<p>K 向上 J 向下移动，T​​ab 在艺术家/专辑和曲目之间切换</p><p>Enter 和 x 播放，c 暂停</p><p>l h 向前/向后搜索b 下一首，z 跳回</p><a href='https://github.com/cmus/cmus/wiki/'>下载插件</a>，赋予执行权限 chmod a+x script">
@@ -1906,10 +1854,9 @@ sh alias dw=&quot;dw --done 'o' --left '0' --current '>'&quot; # 设置别名以
 </li>
 <li dcts="更多选择：<a href='https://www.airy-youtube-downloader.com'>💽</a>、
 <a href='https://www.4kdownload.com/zh-cn/'>💽</a>、<a href='https://www.dvdvideosoft.com'>💽</a>、<a href='https://notmp3.com'>💽</a>、<a href='https://www.atube.me'>💽</a>、
-<a href='https://github.com/NickvisionApps/Parabolic'>💽</a>"><div><a>Hitomi</a><p>在线视频下载</p></div>
+<a href='https://github.com/NickvisionApps/Parabolic'>💽</a>、<a href='https://github.com/tonhowtf/omniget'>💽<a/>"><div><a>VidBee</a><p>在线视频下载</p></div>
 <div class="dls">
-<a href="https://github.com/KurtBestor/Hitomi-Downloader">🖥️</a>
-<a href="https://github.com/nexmoe/VidBee">💽</a>
+<a href="https://github.com/nexmoe/VidBee">🖥️</a>
 <a href="https://github.com/vanloctech/youwee">💽</a>
 <a href="https://github.com/Bluegrams/Vividl">💽</a>
 </div>
@@ -1919,12 +1866,12 @@ sh alias dw=&quot;dw --done 'o' --left '0' --current '>'&quot; # 设置别名以
 <a href="https://github.com/cataerogong/keymap">🖥️</a>
 </div>
 </li>
-<li dcts=""><div><a>JPEGView</a><p>轻量图像浏览/看图</p></div>
+<li dcts=""><div><a>JarkViewer</a><p>轻量图像浏览/看图</p></div>
 <div class="dls">
-<a href="https://github.com/sylikc/jpegview">🖥️</a>
+<a href="https://github.com/jark006/JarkViewer">🖥️</a>
+<a href="https://github.com/sylikc/jpegview">💽</a>
 <a href="https://github.com/voidtools/voidImageViewer">💽</a>
-<a href="https://github.com/d2phap/ImageGlass">🖥️</a>
-<a href="https://github.com/jark006/jarkViewer">💽</a>
+<a href="https://github.com/d2phap/ImageGlass">💽</a>
 </div>
 </li>
 <li dcts="4C494331FEF1A5B8B2E1C6D5FEE93CBEA02054C8DED295D1C65823D6DE99D0A37D324F">
@@ -1944,7 +1891,6 @@ sh alias dw=&quot;dw --done 'o' --left '0' --current '>'&quot; # 设置别名以
 <a href="https://keepass.info">🖥️</a>
 <a href="https://keepassxc.org">💻</a>
 <a href="https://pwsafe.org">💽</a>
-<a href="https://zhuanlan.zhihu.com/p/35907865">📄</a>
 </div>
 </li>
 <li dcts=""><div><a>KeyFreeze</a><p>锁定键盘鼠标</p></div>
@@ -1962,11 +1908,6 @@ sh alias dw=&quot;dw --done 'o' --left '0' --current '>'&quot; # 设置别名以
 <div class="dls">
 <a href="https://github.com/troyeguo/koodo-reader">🖥️</a>
 <a href="https://readest.com">💽</a>
-</div>
-</li>
-<li dcts=""><div><a>快贴</a><p>剪贴板同步</p></div>
-<div class="dls">
-<a href="https://clipber.com">🖥️</a>
 </div>
 </li>
 <li dcts=""><div><a>Lanzou-CMD</a><p>蓝奏云客户端</p></div>
@@ -2176,63 +2117,12 @@ lk T:\dir # 浏览器指定目录</pre>移动光标：方向键或 h j k l<br>�
 <a href="https://github.com/antonmedv/walk">🖥️</a>
 </div>
 </li>
-<li dcts="<p>如果不喜欢命令行可以用图形客户端：<a href='https://github.com/arnoldhao/dreamcreator'>🕹️</a>、<a href='https://github.com/aandrew-me/ytDownloader'>🕹️</a>、<a href='https://github.com/sa23up/yt-dlp-GUI'>🕹️</a>、<a href='https://github.com/oleksis/youtube-dl-gui'>🕹️</a>、<a href='https://github.com/kannagi0303/yt-dlp-gui'>🕹️</a>、<a href='https://github.com/ErrorFlynn/ytdlp-interface'>🕹️</a>、<a href='https://github.com/NickvisionApps/TubeConverter'>🕹️</a>；Web-UI <a href='https://github.com/marcopiovanello/yt-dlp-web-ui'>🕹️</a> 、<a href='https://hub.docker.com/r/marcobaobao/yt-dlp-webui'>🕹️</a></p>配置文件<pre>## Save
---output T:/Downloads/%(title)s.%(ext)s # SMB路径 \\IP\dir\
-
-### 将不同配置指定为不同的 .conf 文件后，使用 --config-location 引入以多选
-## 720p
-# -f 22 # 仅视频
-# -f 136+bestaudio # 视频+最佳音频
-
-## 1080p
-# -f 137 # 仅视频
-# -f 137+bestaudio # 视频+最佳音频
-
-## sub
-# -f 137+bestaudio
-# --sub-langs zh-Hans # 同时下中文字幕
-# --convert-subs srt # 并将字幕文件格式转为 srt
-# --skip-download # 仅下字幕
-
-# Cookies an Proxy
-# --cookies-from-browser chrome:'T:\PortableApps\Chrlauncher\userdata\Default'
---cookies T:/Downloads/www.youtube.com_cookies.txt
---proxy socks5://192.168.10.1:18111
-
-# Video Format
-# --merge-output-format mp4
-# -x --audio-format mp3
-
-# Subtitle Options
-# --write-subs
-# --sub-langs zh-Hans
-# --embed-subs
-# --convert-subs srt
-# --skip-download
-
-# --ffmpeg-location D:/ffmpeg.exe # 指定 FFmpeg 路径</pre>
-<h3>Lux</h3><pre>lux URL # 直接下载
-lux -i URL # 查看可供下载的视频分辨率，也可以一次添加多个视频链接，空格分隔
-lux -f 64-7 URL # 从上面的结果中指定要下载的分辨率
-lux -F links.txt # 从文件中读取下载链接（先将链接写入 links.txt 文件）
-lux -o ~/Videos/ URL # -o 参数指定保存的路径
-lux -o ~/Videos/done.mp4 URL # 也可用指定保存的名字
-annie URL # 不仅可用下载视频，还可用是播放列表链接，图片链接
-annie -i ep12345 av12345 # B站可以用 av 和 ep 加数字下载
-
-# 选项
--p # 下载视频列表，还可用指定列表中的位置几
--start # 从视频列表的第几个开始下
--end # 下载到几个
--items # 指定要下载哪几个，比如 1,5,6,8-10
--eto # B站独有的参数，用于没有标题只有文件名的播放列表
--j # 输出 JSON 格式结果</pre>">
+<li dcts="<p>图形软件：<a href='https://github.com/arnoldhao/dreamcreator'>🕹️</a>、<a href='https://github.com/aandrew-me/ytDownloader'>🕹️</a>、<a href='https://github.com/sa23up/yt-dlp-GUI'>🕹️</a>、<a href='https://github.com/oleksis/youtube-dl-gui'>🕹️</a>、<a href='https://github.com/kannagi0303/yt-dlp-gui'>🕹️</a>、<a href='https://github.com/ErrorFlynn/ytdlp-interface'>🕹️</a>、<a href='https://github.com/NickvisionApps/TubeConverter'>🕹️</a><p>Web-UI <a href='https://github.com/marcopiovanello/yt-dlp-web-ui'>🕹️</a> 、<a href='https://hub.docker.com/r/marcobaobao/yt-dlp-webui'>🕹️</a></p>">
 <div><a href="">yt-dlp</a><p>国外视频下载</p></div>
 <div class="dls">
 <a href="https://github.com/yt-dlp/yt-dlp">✨</a>
 <a href="https://github.com/iawia002/lux">💽</a>
 <a href="https://github.com/guiyumin/vget">💽</a>
-<a href="https://you-get.org">💽</a>
 <a href="https://github.com/JunkFood02/Seal">📱</a>
 <a href="https://github.com/alexta69/metube">🐬</a>
 </div>
@@ -2312,15 +2202,6 @@ annie -i ep12345 av12345 # B站可以用 av 和 ep 加数字下载
 <a href="https://github.com/chenjiandongx/sniffer">🖥️</a>
 </div>
 </li>
-<li dcts="<pre>lsblk # 先确认U盘路径，例如 /dev/sdX
-sudo umount /dev/sda* # 卸载设备来确保未挂载该设备
-sudo woeusb --device Win11.iso /dev/sdX</pre>">
-<div><a href="">WoeUSB-ng</a><p>启动U盘制作</p></div>
-<div class="dls">
-<a href="https://github.com/WoeUSB/WoeUSB-ng">🐧</a>
-<a href="https://unetbootin.github.io">🐧</a>
-</div>
-</li>
 <li dcts=""><div><a>Cinebench</a><p>硬件测试跑分</p></div>
 <div class="dls">
 <a href="https://www.maxon.net/en/cinebench">🖥️</a>
@@ -2383,6 +2264,11 @@ sudo woeusb --device Win11.iso /dev/sdX</pre>">
 <li dcts=""><div><a>FileTypesMan</a><p>改文件类型图标</p></div>
 <div class="dls">
 <a href="https://www.nirsoft.net/utils/file_types_manager.html">🖥️</a>
+</div>
+</li>
+<li dcts=""><div><a>FluentCleaner</a><p>系统清理</p></div>
+<div class="dls">
+<a href="https://github.com/builtbybel/FluentCleaner">🪟</a>
 </div>
 </li>
 <li dcts=""><div><a>FurMark</a><p>显卡测试/显卡烤机</p></div>
@@ -2548,10 +2434,11 @@ http://127.0.0.1:24680 # 浏览器访问以可视化方式安装</pre>">
 <a href="https://apps.microsoft.com/detail/9mw90r826ht0">💻</a>
 </div>
 </li>
-<li dcts=""><div><a>Winutil</a><p>系统设置 系统调优</p></div>
+<li dcts=""><div><a>Winhance</a><p>系统优化调优</p></div>
 <div class="dls">
-<a href="https://github.com/ChrisTitusTech/winutil">🪟</a>
-<a href="https://github.com/memstechtips/Winhance">💽</a>
+<a href="https://github.com/memstechtips/Winhance">🪟</a>
+<a href="https://github.com/ChrisTitusTech/winutil">💽</a>
+<a href="https://github.com/itsfatduck/optimizerDuck">💽</a>
 <a href="https://apps.microsoft.com/detail/9P8LTPGCBZXD">💽</a>
 <a href="https://github.com/Sophia-Community/SophiApp">💽</a>
 <a href="https://github.com/rayenghanmi/RyTuneX">💽</a>
@@ -2595,11 +2482,6 @@ http://127.0.0.1:24680 # 浏览器访问以可视化方式安装</pre>">
 <a href="https://github.com/streetwriters/notesnook">💽</a>
 <a href="https://github.com/Daniele-rolli/Beaver-Notes">💽</a>
 <a href="https://notable.app">💽</a>
-</div>
-</li>
-<li dcts=""><div><a>Notepads</a><p>文本编辑器</p></div>
-<div class="dls">
-<a href="https://github.com/JasonStein/Notepads">🖥️</a>
 </div>
 </li>
 <li dcts=""><div><a>PDFgear</a><p>PDF工具箱</p></div>
@@ -2700,6 +2582,13 @@ for i in *.md ; do echo &quot;$i&quot; && pandoc -s $i -o $i.html ; done # ; 是
 <a href="https://pandoc.org">✨</a>
 <a href="https://tug.org/texlive">🧩</a>
 <a href="https://pandoc.org/try/">🔧</a>
+</div>
+</li>
+<li dcts=""><div><a>Files.md</a><p>轻量 Markdown 编辑器</p></div>
+<div class="dls">
+<a href="https://github.com/zakirullin/files.md">🌐</a>
+<a href="https://github.com/zhitongblog/solomd">🖥️</a>
+<a href="https://github.com/OlaProeis/Ferrite">💽</a>
 </div>
 </li>
 </ul>
@@ -2995,6 +2884,11 @@ tinifier compress -k 'API' -e png -e jpg -t 20 -r T:/dir # 以20线程递归压�
 <a href="https://www.blackmagicdesign.com/products/davinciresolve">🖥️</a>
 </div>
 </li>
+<li dcts=""><div><a>FFsubsync</a><p>自动同步字幕</p></div>
+<div class="dls">
+<a href="https://github.com/smacke/ffsubsync">🖥️</a>
+</div>
+</li>
 <li dcts=""><div><a>Fluent Screen Recorder</a><p>屏幕录制</p></div>
 <div class="dls">
 <a href="https://apps.microsoft.com/detail/9mwv79xlfqh7">🪟</a>
@@ -3190,11 +3084,11 @@ tinifier compress -k 'API' -e png -e jpg -t 20 -r T:/dir # 以20线程递归压�
 </div>
 </li>
 <li dcts="<h3>设置</h3><p>常规 - 输出文件夹：D:\Download</p><p>录像 - 录制：勾选显示鼠标、鼠标点击效果</p><p>录像 - 格式 - 预置：H264(NVENC，VBR，60帧，80品质)，音频AAC(129比特率，48000hz)</p><p>录像 - 录制 - 设置：鼠标（点击效果120%，高亮效果亮黄色）</p><p>录像 - 设置 - 水印：水印图（宽200），不透明40%，位置右上（左右边距3%，上下边距20%）</p><h3>快捷键</h3><p>Ctrl+Alt+D：屏幕画笔工具打开/关闭</p><p>Ctrl+Alt+1：光标（鼠标操作）</p><p>Ctrl+Alt+2：画笔</p><p>Ctrl+Alt+3：荧光笔</p><p>Ctrl+Alt+4：直线</p><p>Ctrl+Alt+5：箭头</p><p>Ctrl+Alt+6：方框</p><p>Ctrl+Alt+7：序号</p><p>Ctrl+Alt+8：文字</p><p>Ctrl+Alt+9：橡皮</p><p>Ctrl+Z：取消执行</p><p>Ctrl+Y：恢复执行</p>">
-<div><a href="">Bandicam</a><p>视频录制</p></div>
+<div><a href="">Bandicam</a><p>屏幕录制教程</p></div>
 <div class="dls">
-<a href="https://www.bandicam.cn">🖥️</a>
+<a href="https://www.bandicam.cn">🪟</a>
+<a href="https://recordly.dev">💽</a>
 <a href="https://linuxecke.volkoh.de/vokoscreen/vokoscreen.html">💽</a>
-<a href="https://www.ieway.cn/evcapture.html">💽</a>
 </div>
 </li>
 <li dcts="<a href='https://ffmpegbyexample.com'>实用示例</a>、<a href='https://github.com/jifengg/ffmpeg-script'>脚本集</a>、<a href='https://amiaopensource.github.io/ffmprovisr'>更好的学习手册</a><pre># 常用命令
@@ -3241,7 +3135,6 @@ scoop install icaros-np</pre>">
 <a href="https://www.softwareok.com/?seite=Freeware/FontViewOK">💽</a>
 </div>
 </li>
-<li dcts="标题栏左上角点击齿轮进入设置，设置输出文件夹，x/small<br>拖动或选择文件<br>选择功能：如 H.264 → 格式<br>右侧设定：比例、比特率<br>启动功能">
 <li dcts="它需要两个部分：Whisper GUI 和 ggml 模型（根据显存选择，例如最大的 ggml-large.bin），利用显卡计算，离线转换非常精确，视频教程：youtu.be/MP_tjvFq3m0">
 <div><a href="">Whisper</a><p>语音转文字</p></div>
 <div class="dls">
@@ -3266,6 +3159,11 @@ scoop install icaros-np</pre>">
 <li dcts=""><div><a>Angry IP Scanner</a><p>局域网设备扫描IP</p></div>
 <div class="dls">
 <a href="https://github.com/angryip/ipscan">🖥️</a>
+</div>
+</li>
+<li dcts=""><div><a>Flow</a><p>实时网络速度</p></div>
+<div class="dls">
+<a href="https://github.com/programmersd21/flow">✨</a>
 </div>
 </li>
 <li dcts=""><div><a>Gping</a><p>TUI ping命令</p></div>
@@ -3302,6 +3200,11 @@ scoop install icaros-np</pre>">
 <div class="dls">
 <a href="https://play.google.com">🏠</a>
 <a href="https://apkssl.com">💽</a>
+</div>
+</li>
+<li dcts=""><div><a>Universal Installer</a><p>APK安装器</p></div>
+<div class="dls">
+<a href="https://github.com/pass-with-high-score/universal-installer">🐧📺</a>
 </div>
 </li>
 <li dcts="<p>必备系列：QQ、微信、淘宝、支付宝、微博、高德地图、彩云小译、幕布、手机营业厅、小米运动</p><p>微软系列：Authenticator、To Do、Outlook、OneNote、OneDrive、Office、Remote、Translator、KissKMS</p><p>银行金融：工商银行、中国银行、京东金融、同花顺、腾讯自选股、I简记</p><p>媒体系列：哔哩哔哩、抖音、微视、订阅号助手</p>  ">
@@ -3579,7 +3482,7 @@ scoop install icaros-np</pre>">
 <a href="https://play.google.com/store/apps/details?id=com.vinson.shrinker">📱</a>
 </div>
 </li>
-<li dcts=""><div><a>Markor</a><p>Markdown</p></div>
+<li dcts=""><div><a>Markor</a><p>Markdown 编辑器</p></div>
 <div class="dls">
 <a href="https://play.google.com/store/apps/details?id=net.gsantner.markor">📱</a>
 <a href="https://play.google.com/store/apps/details?id=net.redsolver.noteless">💽</a>
@@ -3987,9 +3890,10 @@ notepad C:\Users\nanji\AppData\Roaming\cheat\conf.yml # 编辑配置文件
 </div>
 </li>
 <li dcts="<h4>设置</h4>主密码：General - MobaXterm passwords management - 点击 Master Password Settings<p>字体：Terminal - 点击 Default Terminal font settings - 选择字体（默认为 MobaFont）</p><p>设置右键快速复制粘贴：Terminal - 勾选 Paste using right-click</p><p>Display - 可以设置软件主界面</p><p>保持 SSH 连接：SSH - 勾选 SSH keepalive</p><p>设置代理：右键 Session - Edit Session - Network settings - 在下面填写代理信息</p><p>配置私钥：右键 Session - Edit Session - Terminal 标签 - Advanced SSH settings - 勾选 Use private key - 浏览你的私钥 id_rsa 文件</p><p>多台机器输入相同命令：顶部菜单 Termianl - Write commands on all termianl</p><h4>破解</h4>在线生成 <a href='https://moba.contrails.space'>①</a> <a href='https://github.com/zarfadev/MobaXterm-Keygen'>②</a> ，将 Custom.mxtpro 文件放到 MobaXterm 根目录">
-<div><a href="">Mobaxterm</a><p>加强型 SSH 终端</p></div>
+<div><a href="">Mobaxterm</a><p>加强型SSH终端</p></div>
 <div class="dls">
 <a href="https://mobaxterm.mobatek.net">🖥️</a>
+<a href="https://github.com/359956085/FsTTY">💽</a>
 <a href="https://github.com/kingToolbox/WindTerm">💽</a>
 <a href="https://www.hostbuf.com">💽</a>
 <a href="https://www.termora.app">💽</a>
@@ -4098,14 +4002,6 @@ notepad C:\Users\nanji\AppData\Roaming\cheat\conf.yml # 编辑配置文件
 <a href="https://pypa.github.io/pipx">🕹️</a>
 </div>
 </li>
-<li dcts=""><div><a>Scoop</a><p>软件包管理</p></div>
-<div class="dls">
-<a href="https://scoop.sh">🖥️</a>
-<a href="https://github.com/rasa/scoop-directory">⚓</a>
-<a href="https://gitee.com/squallliu/scoop">⚓</a>
-<a href="https://github.com/kkzzhizhou/scoop-apps">⚓</a>
-</div>
-</li>
 <li dcts=""><div><a>ValiDrive</a><p>U盘容量检测</p></div>
 <div class="dls">
 <a href="https://www.grc.com/validrive.htm">🖥️</a>
@@ -4149,7 +4045,7 @@ tssh 服务器别名 # 连接服务器
 <p>如果只是想使用 rz / sz 则只需在服务器上安装<a href='https://github.com/trzsz/lrzsz-win32'>lrzsz</a></p><pre>notepad C:\Users\nanji\.ssh\config # 编辑配置文件
 Host *
 #!! EnableZmodem Yes</pre>">
-<div><a href="">Tssh</a><p>轻量 SSH 终端</p></div>
+<div><a href="">Tssh</a><p>轻量SSH终端</p></div>
 <div class="dls">
 <a href="https://github.com/trzsz/trzsz-ssh">🖥️</a>
 <a href="https://github.com/trzsz/trzsz-go">⚓</a>
@@ -4176,7 +4072,7 @@ Host *
 
 <h2 id="browser-extensions" class="category-title">浏览器扩展</h2>
 <ul class="cat">
-<li dcts="<p>New Tab Changer、ZeroOmega、Bitwarden</p><p>沉浸式翻译、Trufflepiggy、uBlock Origin</p><p>Inoreader、linkding、Obsidian Web Clipper、Dark Reader</p><p>快捷扩展管理、篡改猴、Video Speed Controller、RSSHub Radar、v2ex plus</p><p>NeatDownloadManager、Search by Image、SmartCopy</p>"><div><a>谷歌扩展</a><p>官方商店</p></div>
+<li dcts="<p>New Tab Changer、ZeroOmega、Bitwarden</p><p>简约翻译、Trufflepiggy、uBlock Origin</p><p>Linkding、Obsidian Web Clipper、Dark Reader</p><p>篡改猴、Video Speed Controller、RSSHub Radar</p><p>NeatDownloadManager、Search by Image、v2ex plus</p>"><div><a>谷歌扩展</a><p>官方商店</p></div>
 <div class="dls">
 <a href="https://chrome.google.com/webstore/category/extensions">🏠</a>
 </div>
@@ -4207,11 +4103,6 @@ Host *
 <a href="https://chromewebstore.google.com/detail/dpacanjfikmhoddligfbehkpomnbgblf">🌐</a>
 </div>
 </li>
-<li dcts=""><div><a>AixDownloader</a><p>网页图片视频嗅探</p></div>
-<div class="dls">
-<a href="https://aixdownloader.com">🌐</a>
-</div>
-</li>
 <li dcts=""><div><a>Astar</a><p>VPN</p></div>
 <div class="dls">
 <a href="https://chromewebstore.google.com/detail/jajilbjjinjmgcibalaakngmkilboobh">🌐</a>
@@ -4236,6 +4127,7 @@ Host *
 <div class="dls">
 <a href="https://chromewebstore.google.com/detail/ponfpcnoihfmfllpaingbgckeeldkhle">🌐</a>
 <a href="https://chromewebstore.google.com/detail/bbeaicapbccfllodepmimpkgecanonai">🌐</a>
+<a href="https://chromewebstore.google.com/detail/bnomihfieiccainjcjblhegjgglakjdd">🌐</a>
 </div>
 </li>
 <li dcts=""><div><a>Burning Vocabulary</a><p>英文单词标记</p></div>
@@ -4286,16 +4178,6 @@ Host *
 <li dcts=""><div><a>ClearURLs</a><p>清除URL跟踪元素</p></div>
 <div class="dls">
 <a href="https://chromewebstore.google.com/detail/clearurls/lckanjgmijmafbedllaakclkaicjfmnk">🌐</a>
-</div>
-</li>
-<li dcts=""><div><a>沉浸式翻译</a><p>聚合划词一键翻译</p></div>
-<div class="dls">
-<a href="https://chromewebstore.google.com/detail/bpoadfkcbjbfhfodiogcnhhhpibjhbnh">🌐</a>
-<a href="https://chromewebstore.google.com/detail/modkelfkcfjpgbfmnbnllalkiogfofhb">💽</a>
-<a href="https://chromewebstore.google.com/detail/bdiifdefkgmcblbcghdlonllpjhhjgof">💽</a>
-<a href="https://chromewebstore.google.com/detail/djbfechcnkppbknmlhfcaoifgnicolin">💽</a>
-<a href="https://chromewebstore.google.com/detail/%E6%B5%81%E7%95%85%E9%98%85%E8%AF%BB/djnlaiohfaaifbibleebjggkghlmcpcj">💽</a>
-<a href="https://github.com/Bistutu/FluentRead">💽</a>
 </div>
 </li>
 <li dcts=""><div><a>Colorful QRCode</a><p>创建二维码</p></div>
@@ -4487,6 +4369,18 @@ Host *
 <a href="https://ihelpers.xyz">🌐</a>
 </div>
 </li>
+<li dcts=""><div><a>简约翻译</a><p>聚合划词翻译</p></div>
+<div class="dls">
+<a href="https://chromewebstore.google.com/detail/bdiifdefkgmcblbcghdlonllpjhhjgof">🌐</a>
+<a href="https://chromewebstore.google.com/detail/pjniaipnjcdiiglednmhgmjmpmllelke">💽</a>
+<a href="https://github.com/airhunter/OnlyTranslate">💽</a>
+<a href="https://chromewebstore.google.com/detail/modkelfkcfjpgbfmnbnllalkiogfofhb">💽</a>
+<a href="https://chromewebstore.google.com/detail/bpoadfkcbjbfhfodiogcnhhhpibjhbnh">💽</a>
+<a href="https://chromewebstore.google.com/detail/djbfechcnkppbknmlhfcaoifgnicolin">💽</a>
+<a href="https://chromewebstore.google.com/detail/%E6%B5%81%E7%95%85%E9%98%85%E8%AF%BB/djnlaiohfaaifbibleebjggkghlmcpcj">💽</a>
+<a href="https://github.com/Bistutu/FluentRead">💽</a>
+</div>
+</li>
 <li dcts=""><div><a>Language Reactor</a><p>在线视频翻译字幕</p></div>
 <div class="dls">
 <a href="https://chromewebstore.google.com/detail/hoombieeljmmljlkjmnheibnpciblicm">🌐</a>
@@ -4513,11 +4407,6 @@ Host *
 <li dcts=""><div><a>imgbed-for-github</a><p>图床工具</p></div>
 <div class="dls">
 <a href="https://chromewebstore.google.com/detail/mldkcehofbaoaihmolfkadijdkoefnpf">🌐</a>
-</div>
-</li>
-<li dcts=""><div><a>Improve YouTube</a><p>改进优化油管</p></div>
-<div class="dls">
-<a href="https://chromewebstore.google.com/detail/improve-youtube-%F0%9F%8E%A7-for-yo/bnomihfieiccainjcjblhegjgglakjdd">🌐</a>
 </div>
 </li>
 <li dcts=""><div><a>Instagram Downloader</a><p>Ins 下载</p></div>
@@ -4632,10 +4521,13 @@ sync C:/Mempad /Mempad # 将本地C盘的 Mempad 目录和网盘根目录中的 
 <a href="https://chromewebstore.google.com/detail/doagleaopbffngpffnmnajoiablpakfj">🌐</a>
 </div>
 </li>
-<li dcts=""><div><a>猫抓</a><p>网页视频下载嗅探</p></div>
+<li dcts=""><div><a>FlowPick</a><p>网页视频下载嗅探</p></div>
 <div class="dls">
+<a href="https://chromewebstore.google.com/detail/mfinfkkabangbkanlfhhbokgfekjklea">🌐</a>
 <a href="https://chromewebstore.google.com/detail/jfedfbgedapdagkghmgibemcoggfppbb">🌐</a>
+<a href="https://aixdownloader.com">🌐</a>
 <a href="https://o2bmm.gitbook.io/cat-catch">🖥️</a>
+<a href="https://flowpick.net/zh-Hans/">🖥️</a>
 </div>
 </li>
 <li dcts=""><div><a>Nimbus</a><p>截图和录屏</p></div>
@@ -4767,7 +4659,7 @@ document.onpaste = function(){ return true; }; // 开启粘贴</pre><p>F12 - 元
 <a href="https://github.com/zhaoolee/ChromeAppHeroes/tree/master/%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90">🌐</a>
 </div>
 </li>
-<li dcts=""><div><a>Secure Shell Ext</a><p>SSH 终端</p></div>
+<li dcts=""><div><a>Secure Shell Ext</a><p>SSH终端</p></div>
 <div class="dls">
 <a href="https://chromewebstore.google.com/detail/iodihamcpbpeioajjeobimgagajmlibd">🌐</a>
 </div>
@@ -4931,6 +4823,7 @@ document.onpaste = function(){ return true; }; // 开启粘贴</pre><p>F12 - 元
 <li dcts=""><div><a>uBlock Origin</a><p>广告屏蔽</p></div>
 <div class="dls">
 <a href="https://chromewebstore.google.com/detail/cjpalhdlnbpafiamejdnhcphjbkeiagm">🌐</a>
+<a href="https://chromewebstore.google.com/detail/ddkjiahejlhfcafbddmgiahcphecmpfh">🌐</a>
 <a href="https://github.com/gijsdev/ublock-hide-yt-shorts">⚓</a>
 </div>
 </li>
@@ -5216,9 +5109,9 @@ password: xxxxxx</pre>接着选择 LNMP，提高 PHP 版本后点“一键安装
 <a href="https://www.evoluted.net/thinktank/web-development/php-directory-listing-script">🖥️</a>
 </div>
 </li>
-<li dcts=""><div><a>Discourse</a><p>开源论坛</p></div>
+<li dcts=""><div><a>Discourse</a><p>开源论坛社区</p></div>
 <div class="dls">
-<a href="https://www.discourse.org">🖥️</a>
+<a href="https://github.com/discourse/discourse">🐬</a>
 <a href="https://flarum.org">💽</a>
 </div>
 </li>
@@ -5249,6 +5142,7 @@ password: xxxxxx</pre>接着选择 LNMP，提高 PHP 版本后点“一键安装
 <div class="dls">
 <a href="https://github.com/doocs/md">🖥️</a>
 <a href="https://hub.docker.com/r/doocs/md">🐬</a>
+<a href="https://github.com/zhouqm2015/markdown">🌐</a>
 <a href="https://github.com/tenngoxars/WeMD">💽</a>
 </div>
 </li>
@@ -5419,6 +5313,11 @@ http://域名/p/api/greader.php</pre>手机用 FeedME，登录用户名是 Fresh
 <a href="https://meet.jit.si">🐬</a>
 </div>
 </li>
+<li dcts=""><div><a>Jotty</a><p>轻量笔记检查清单</p></div>
+<div class="dls">
+<a href="https://github.com/fccview/jotty">🐬</a>
+</div>
+</li>
 <li dcts=""><div><a>Kanboard</a><p>看板</p></div>
 <div class="dls">
 <a href="https://hub.docker.com/r/kanboard/kanboard">🐬</a>
@@ -5481,11 +5380,6 @@ http://域名/p/api/greader.php</pre>手机用 FeedME，登录用户名是 Fresh
 <a href="https://lycheeorg.github.io">🖥️</a>
 </div>
 </li>
-<li dcts=""><div><a>Mattermost</a><p>聊天室</p></div>
-<div class="dls">
-<a href="https://mattermost.com">🖥️</a>
-</div>
-</li>
 <li dcts=""><div><a>Mazanoke</a><p>图像压缩</p></div>
 <div class="dls">
 <a href="https://github.com/civilblur/mazanoke">🐬</a>
@@ -5546,6 +5440,11 @@ http://域名/p/api/greader.php</pre>手机用 FeedME，登录用户名是 Fresh
 <a href="https://github.com/sunpma/MyMusic">🖥️</a>
 </div>
 </li>
+<li dcts=""><div><a>my-yt</a><p>YouTube前端</p></div>
+<div class="dls">
+<a href="https://github.com/christian-fei/my-yt">🐬</a>
+</div>
+</li>
 <li dcts=""><div><a>Navidrome</a><p>音乐服务器</p></div>
 <div class="dls">
 <a href="https://www.navidrome.org">🖥️</a>
@@ -5556,6 +5455,7 @@ http://域名/p/api/greader.php</pre>手机用 FeedME，登录用户名是 Fresh
 <li dcts=""><div><a>N8N</a><p>自动化工作流</p></div>
 <div class="dls">
 <a href="https://n8n.io">🐬</a>
+<a href="https://github.com/kestra-io/kestra">🐬</a>
 </div>
 </li>
 <li dcts=""><div><a>NeatChat</a><p>Web版本</p></div>
@@ -5582,6 +5482,11 @@ http://域名/p/api/greader.php</pre>手机用 FeedME，登录用户名是 Fresh
 <div class="dls">
 <a href="https://nextcloud.com">🖥️</a>
 <a href="https://www.seafile.com">💽</a>
+</div>
+</li>
+<li dcts=""><div><a>N.O.M.A.D</a><p>末日离线服务</p></div>
+<div class="dls">
+<a href="https://github.com/Crosstalk-Solutions/project-nomad">🐬</a>
 </div>
 </li>
 <li dcts=""><div><a>哪吒监控</a><p>轻量服务器监控</p></div>
@@ -5647,6 +5552,7 @@ http://域名/p/api/greader.php</pre>手机用 FeedME，登录用户名是 Fresh
 <li dcts=""><div><a>Pi-hole</a><p>DNS广告过滤</p></div>
 <div class="dls">
 <a href="https://github.com/pi-hole/pi-hole">🐬</a>
+<a href="https://technitium.com/dns">🐬</a>
 </div>
 </li>
 <li dcts=""><div><a>PicHome</a><p>开源相册图库</p></div>
@@ -5720,12 +5626,7 @@ http://域名/p/api/greader.php</pre>手机用 FeedME，登录用户名是 Fresh
 <a href="https://github.com/gwuhaolin/livego">💽</a>
 </div>
 </li>
-<li dcts=""><div><a>Rocket.Chat</a><p>聊天室服务</p></div>
-<div class="dls">
-<a href="https://rocket.chat">🖥️</a>
-</div>
-</li>
-<li dcts="<h3>常用</h3><p>进入UP频道主页，Ctrl+U 查看源码，搜索 rss+xml ，复制后面的链接# YouTube 频道</p><p>https://rsshub.app/smzdm/keyword/关键字 # 什么值得买</p><p>https://rsshub.app/telegram/channel/用户名 # TG 频道</p><p>https://rsshub.app/twitter/user/ID # Twitter 用户</p><p>https://www.reddit.com/r/关键字.rss # Reddit 关键字</p><p>https://rsshub.app/bilibili/user/video/用户ID # 哔哩哔哩UP主</p><p>https://www.v2ex.com/feed/节点名.xml # V2EX 的节点</p><p>https://rsshub.app/zhihu/people/answers/用户ID # 知乎回答</p><p>https://github.com/xxx/xxx/releases.atom # GitHub releases 更新</p><p>https://rsshub.app/xueqiu/stock_info/号/news # 雪球股票</p><h3>更多</h3><a href='https://github.com/JackyST0/awesome-rsshub-routes'>精选合集</a><p><a href='https://linuxdorss.longpink.com'>Linux Do</a> 第三方源<p><a href='https://github.com/weekend-project-space/top-rss-list'>top-rss-list</a> 中文优质源</p><p><a href='https://www.rsslookup.com'>RSS Lookup</a> 查看指定网址的RSS源</p><p><a href='https://www.rsstranslator.com'>RSS Translator</a> 自动翻译源</p><p><a href='https://www.buzzing.cc'>Buzzing</a> 很不错的英文翻译成中文的订阅</p><p><a href='https://politepol.com'>PolitePol</a> 抓取不支持RSS的网站并生成RSS</p><p><a href='https://github.com/zhaoolee/garss'>嘎!RSS</a> 收集了很多订阅源的合集</p><p><a href='https://www.ohmyrss.com'>Ohmyrss</a> 很多源可以参考</p><p><a href='https://webfollow.cc'>Webfollow</a> 是阅读器，也可以用于发现源</p><p><a href='https://github.com/timqian/chinese-independent-blogs'>中文独立博客合集</a></p><p>搜索与生成：<a href='https://feedsearch.dev'>Feedsearch</a>（搜索）；<a href='https://rss.diffbot.com'>Diffbot</a>、<a href='https://fetchrss.com'>FetchRSS</a>（生成）</p><p>订阅源合集：<a href='https://morerss.com/zh.php'>MoreRSS</a>、<a href='https://feedx.net'>FeedX</a>、<a href='https://rss-source.com'>RSS Source</a>、<a href='https://wheremylife.cn/home'>WhereMyLife</a></p><p>StreamSphere 的 APP 内置的 <a href='https://github.com/Martinviv/rss-sources'>700+订阅源</a></p><p><a href='https://rss.blogbomb.com'>发现博客的源分享</a></p><h3>软件更新</h3><a href='https://verssion.one'>Verssion</a> 以追踪 wiki 的方式<p><a href='https://versionfeeds.com'>Versionfeeds</a> 订阅 GitHub Release</p><h3>参数</h3>?filter_title=要包含的关键字<br>?filterout_title=不要包含的关键字">
+<li dcts="<h3>常用</h3><p>进入UP频道主页，Ctrl+U 查看源码，搜索 rss+xml ，复制后面的链接# YouTube 频道</p><p>https://rsshub.app/smzdm/keyword/关键字 # 什么值得买</p><p>https://rsshub.app/telegram/channel/用户名 # TG 频道</p><p>https://rsshub.app/twitter/user/ID # Twitter 用户</p><p>https://www.reddit.com/r/关键字.rss # Reddit 关键字</p><p>https://rsshub.app/bilibili/user/video/用户ID # 哔哩哔哩UP主</p><p>https://www.v2ex.com/feed/节点名.xml # V2EX 的节点</p><p>https://rsshub.app/zhihu/people/answers/用户ID # 知乎回答</p><p>https://github.com/xxx/xxx/releases.atom # GitHub releases 更新</p><p>https://rsshub.app/xueqiu/stock_info/号/news # 雪球股票</p><h3>更多</h3><a href='https://github.com/JackyST0/awesome-rsshub-routes'>精选合集</a><p><a href='https://linuxdorss.longpink.com'>Linux Do</a> 第三方源<p><a href='https://github.com/weekend-project-space/top-rss-list'>top-rss-list</a> 中文优质源</p><p><a href='https://www.rsslookup.com'>RSS Lookup</a> 查看指定网址的RSS源</p><p><a href='https://www.ifeed.cc'>ifeed</a> 在线浏览看看各种源</p><p><a href='https://www.rsstranslator.com'>RSS Translator</a> 自动翻译源</p><p><a href='https://www.buzzing.cc'>Buzzing</a> 很不错的英文翻译成中文的订阅</p><p><a href='https://politepol.com'>PolitePol</a> 抓取不支持RSS的网站并生成RSS</p><p><a href='https://github.com/zhaoolee/garss'>嘎!RSS</a> 收集了很多订阅源的合集</p><p><a href='https://www.ohmyrss.com'>Ohmyrss</a> 很多源可以参考</p><p><a href='https://webfollow.cc'>Webfollow</a> 是阅读器，也可以用于发现源</p><p><a href='https://github.com/timqian/chinese-independent-blogs'>中文独立博客合集</a></p><p>搜索与生成：<a href='https://feedsearch.dev'>Feedsearch</a>（搜索）；<a href='https://rss.diffbot.com'>Diffbot</a>、<a href='https://fetchrss.com'>FetchRSS</a>（生成）</p><p>订阅源合集：<a href='https://morerss.com/zh.php'>MoreRSS</a>、<a href='https://feedx.net'>FeedX</a>、<a href='https://rss-source.com'>RSS Source</a>、<a href='https://wheremylife.cn/home'>WhereMyLife</a></p><p>StreamSphere 的 APP 内置的 <a href='https://github.com/Martinviv/rss-sources'>700+订阅源</a></p><p><a href='https://rss.blogbomb.com'>发现博客的源分享</a></p><h3>软件更新</h3><a href='https://verssion.one'>Verssion</a> 以追踪 wiki 的方式<p><a href='https://versionfeeds.com'>Versionfeeds</a> 订阅 GitHub Release</p><h3>参数</h3>?filter_title=要包含的关键字<br>?filterout_title=不要包含的关键字">
 <div><a href="">RSSHub</a><p>RSS订阅生成</p></div>
 <div class="dls">
 <a href="https://docs.rsshub.app/zh">🖥️</a>
@@ -5916,8 +5817,10 @@ $exclude_items = array(
 <li dcts=""><div><a>VoceChat</a><p>聊天室服务</p></div>
 <div class="dls">
 <a href="https://voce.chat">🖥️</a>
-<a href="https://doc.voce.chat/zh-cn/">📑</a>
+<a href="https://github.com/chattocorp/chatto">💽</a>
 <a href="https://github.com/openconstruct/Peersuite">💽</a>
+<a href="https://mattermost.com">💽</a>
+<a href="https://rocket.chat">💽</a>
 </div>
 </li>
 <li dcts=""><div><a>Waline</a><p>安全评论系统</p></div>
@@ -5993,11 +5896,6 @@ description: 极限玩家快捷搜索集合
 <li dcts=""><div><a>为知笔记</a><p>笔记本</p></div>
 <div class="dls">
 <a href="https://www.wiz.cn/zh-cn/docker">🖥️</a>
-</div>
-</li>
-<li dcts=""><div><a>YouTunnel</a><p>油管视频下载</p></div>
-<div class="dls">
-<a href="https://github.com/Harry260/YouTunnel">🖥️</a>
 </div>
 </li>
 </ul>

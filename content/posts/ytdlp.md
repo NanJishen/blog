@@ -42,9 +42,7 @@ yt-dlp -f "bestvideo[height<=1080]+bestaudio" url # 指定 1080p + 最高质量�
 
 yt-dlp -f 22 url 或 vid # 下载编号 22 的视频
 yt-dlp -f 137+140 # 下载编号 137视频 140音频 并整合
-yt-dlp -f 137+140 url --merge-output-format mp4 # 将音视频合并下载为 MP4 文件（需要 ffmpeg）
-
-yt-dlp -f 22 url --proxy socks5://127.0.0.1:10808 # 使用代理
+yt-dlp -f 137+bestaudio url --merge-output-format mp4 # 下载编号137的视频和最佳音频，并合并为 MP4 文件（需要 ffmpeg）
 
 # 从多个播放列表下载 
 nano playlists.txt # 创建文本文件并添加想下载的 url，每行一个
@@ -58,8 +56,11 @@ yt-dlp -x --audio-format mp3 -i --batch-file='path/to/playlists.txt' # 然后引
 yt-dlp --download-archive downloaded.txt url # 会创建文件，记录已下载过的视频，之后再次运行将跳过它们
 
 # 参数
+--output T:/%(title)s-%(resolution)s.%(ext)s # 指定保存路径
+--proxy socks5://127.0.0.1:1080 # 使用代理 socks5
+--merge-output-format mp4 # 下载后合并为指定格式
+--downloader aria2c --downloader-args "aria2c:-x 16 -k 1M" # 调用外部下载软件多线程下载（-x 16 线程，-k 1M 每个线程块大小为1M）
 --limit-rate 1M # 限制下载速度为1M
-
 ```
 
 ### 常用实例
@@ -79,11 +80,12 @@ yt-dlp --write-subs --write-auto-subs --sub-format SRT --sub-langs en --write-th
 ### 音频
 
 ```bash
-yt-dlp -x --audio-format mp3 url # 指定下载 mp3 音频格式，如果要封面加上 --embed-thumbnail
-yt-dlp -x --audio-format flac # 如果有无损格式
-yt-dlp -f 140 url # 下载编号为 140 的音频
 yt-dlp -f bestaudio url # 下载最佳音频
+yt-dlp -x --audio-format mp3 url # 仅下载指定的音频格式，mp3 或 flac（无损）
+yt-dlp -f 140 url # 下载编号为 140 的音频
 
+# 参数
+--embed-thumbnail # 同时下载封面
 ```
 
 ### 字幕
@@ -103,58 +105,52 @@ yt-dlp -f 137+bestaudio url --embed-subs --sub-langs zh-Hans --merge-output-form
 ffmpeg -i 1.mp4 -vf 'subtitles=1.srt' -c:a copy output.mp4 # 如果要写入硬字幕
 ```
 
-### 下载需要登录的视频
+### 配置文件
+
+可将参数写在同目录中名为 `yt-dlp.conf` 配置文件中，每次执行程序默认都会调用该文件中的参数进行下载
 
 ```bash
-# Firefox
-yt-dlp --cookies-from-browser firefox:/Users/appinn/Library/Application\ Support/Firefox/Profiles/12345.default-release-12345/ https://www.bilibili.com/video/xxx
-# Edge，
-yt-dlp.exe --cookies-from-browser edge:"C:\Users\appinn\AppData\Local\Microsoft\Edge\User Data\Profile 1" -F https://www.bilibili.com/video/xxxx
-# Chrome
-yt-dlp.exe --cookies-from-browser chrome:"C:\Users\scavi\AppData\Local\Google\Chrome\User Data\Default" -F https://www.bilibili.com/video/xxxx
-```
+## 以下在不需要时注释掉，需要时取消注释即可
+## 保存路径
+--output T:/Downloads/%(title)s.%(ext)s # 绝对路径（Windows）
+--output \\IP\dir\ # SMB 路径（（Windows））
 
-### 参数与配置文件
+## 下载内容
+-f 137+bestaudio # 视频+最佳音频，编号137一般是1080p
+# -f 137 # 仅视频，如要时取消注释并注释掉上面的切换
 
-可将参数写在同目录中名为 `yt-dlp.conf` 的配置文件中，这样只需执行下载命令，便会根据配置文件中的参数进行下载
+## 指定格式
+# --merge-output-format mp4 # 合并为MP4
+# -x --audio-format mp3 # 仅下载音频 mp3
 
-```bash
-# 可以随时编辑配置文件调整，将不要的选项前加上 # 号注释掉
-# 格式：yt-dlp -f [编号] [代理配置] [视频链接] [合并语句] [外部下载器选择] [下载器参数]
-yt-dlp -f 137+bestaudio --proxy socks5://127.0.0.1:8080 url --merge-output-format mp4 --external-downloader aria2c --downloader-args aria2c:"-x 16 -k 1M" url
+## sub
+--sub-langs zh-Hans # 同时下中文字幕
+# --convert-subs srt # 并将字幕文件格式转为 srt
+# --skip-download # 仅下字幕
 
-# 说明
--f 137+bestaudio # 下载编号为137的视频和最佳音频 
---output T:/%(title)s-%(resolution)s.%(ext)s # 指定输出路径
---proxy socks5://192.168.1.1:0000 # socks5 代理配置
---merge-output-format mp4 # 下载后合并为mp4格式
--x --audio-format mp3 # 如果只要音频
---external-downloader aria2c # 下载器选择
---downloader-args [下载器名]:"[下载器配置]" # 如上 -x 16 为16线程 -k 1M 代表块大小为1M（youtube 不支持分块，此句可忽略）
+# Cookies an Proxy（代理）
+--cookies-from-browser chrome:'T:/Chromium/profile/Default'
+# --cookies T:/cookies.txt # 或指定提出出的 cookies 文件
+--proxy socks5://127.0.0.1:1080 # 指定代理
 
 # 字幕处理
 --write-subs # 下载字幕文件，如 .srt 
 --embed-subs # 或将字幕嵌入视频
 --sub-langs zh-Hans,en # 指定字幕语言
 --convert-subs srt # 转换成 srt
---skip-download # 只下载字幕
+--skip-download # 只下载字幕，不下载视频
 
 # 是否保存元数据
 --embed-thumbnail # 缩略图
 --embed-metadata # 元数据
 
-# Cookies 引入
---cookies-from-browser chrome:"T:\PortableApps\ungoogled-chromium\userdata\Default"
---cookies T:/www.youtube.com_cookies.txt
-
 # 指定 ffmpeg 路径
---ffmpeg-location D:/Qsync/Apps/MPV/ffmpeg.exe
+--ffmpeg-location D:/ffmpeg.exe
 ```
 
-### 调用不同的配置文件
+### 调用不同配置文件
 
-使用不同的配置文件来管理不同的下载设置能够提高效率
-
+使用 `--config-location` 切换不同的配置文件能提高效率
 ```bash
 yt-dlp --config-location /path/to/config/file.conf [URL] # 直接指定配置文件
 yt-dlp --ignore-config --config-location /path/to/config/file.conf [URL] # 忽略默认配置文件并指定配置文件
@@ -162,6 +158,12 @@ yt-dlp --ignore-config --config-location /path/to/config/file.conf [URL] # 忽�
 创建多个配置文件，按需使用
 ```bash
 # D:/MPV/default.conf (默认)
+--output T:/Downloads/%(title)s.%(ext)s
+# --output \\192.168.10.111\Downloads\dir\%(title)s.%(ext)s
+--proxy socks5://192.168.10.1:18111
+# --cookies T:/Downloads/www.youtube.com_cookies.txt
+# --cookies-from-browser "chrome:D:\Chromium\profile\Defaul
+
 # D:/MPV/hd.conf (高清视频)
 -f "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
 -o "%(title)s.%(ext)s"
@@ -176,5 +178,29 @@ yt-dlp --ignore-config --config-location /path/to/config/file.conf [URL] # 忽�
 
 ### 使用 Cookie 文件
 
-- 浏览器登录油管，点击 [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/cclelndahbckbenkjhflpdbgdldlbecc) 扩展 - Export ，下载 `cookies.txt` 文件
-- 使用命令引入 `yt-dlp -F url --cookies T:\cookies.txt`
+ 先用浏览器登录油管，点击 [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/cclelndahbckbenkjhflpdbgdldlbecc) 扩展 - Export ，下载 cookies.txt 文件
+```bash
+# Chrome 或 Firefox 或 Edge
+yt-dlp -F url --cookies-from-browser chrome:"D:\Chromium\profile\Default"
+```
+
+## 代替品
+
+[Lux](https://github.com/iawia002/lux) 可能会用到的备用选项
+```bash
+lux url # 下载，也可以一次添加多个视频链接，空格分隔
+lux -i url # 或先查看
+lux -f 64-7 url # 从上面的结果中指定
+lux -F links.txt # 从文件中读取下载链接（先将链接写入该文件）
+lux -o ~/Videos/ URL # -o 参数指定保存的路径
+annie URL # 不仅可用下载视频，还可用是播放列表链接，图片链接
+annie -i ep12345 av12345 # B站可以用 av 和 ep 加数字下载
+
+# 选项
+-p # 下载视频列表
+-start # 从视频列表的第几个开始下
+-end # 下载到几个
+-items # 指定要下载哪几个，比如 1,5,6,8-10
+-eto # B站独有参数，用于没有标题只有文件名的播放列表
+-j # 输出 JSON 格式结果
+```

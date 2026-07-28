@@ -1,5 +1,0 @@
-[module]
-[module.hugoVersion]
-extended = true
-min = "0.141.0"
-max = "0.160.0"

@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "5768e9c6a8db5e96",
+        "id": "688a520d15399ce7",
         "type": "tabs",
         "children": [
           {
-            "id": "2ec2c64313420151",
+            "id": "7380bcfce0707df6",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -125,21 +125,25 @@
       "switcher:打开快速切换": false,
       "templates:插入模板": false,
       "workspaces:管理工作区布局": false,
-      "markdown-importer:打开 Markdown 格式转换器": false
+      "markdown-importer:打开 Markdown 格式转换器": false,
+      "command-palette:打开命令面板": false
     }
   },
-  "active": "2ec2c64313420151",
+  "active": "7380bcfce0707df6",
   "lastOpenFiles": [
+    "posts/sayings.md",
+    "posts/googlesearch.md",
+    "posts/dokuwiki.md",
     "posts/_Drafts.md",
     "posts/mpv.md",
-    "posts/ytdlp.md",
-    "posts/dokuwiki.md",
     "posts/everything.md",
+    "posts/ytdlp.md",
+    "posts/copyq.md",
+    "posts/askquestion .md",
     "posts/ji-xiao-kuozan-xiaolv.md",
     "posts/Infoverload.md",
     "posts/godzilla-vs-kong.md",
     "posts/ffmpeg.md",
-    "posts/askquestion .md",
     "posts/youtubedl.md",
     "posts/ventoy.md",
     "posts/qnap-docker-transmission.md",
@@ -150,12 +154,9 @@
     "posts/qnap-docker-aria.md",
     "posts/pic-mirror-img.md",
     "posts/jsdelivrtogithub.md",
-    "posts/googlesearch.md",
     "posts/draft.md",
     "about.md",
     "posts/lanvideoplay.md",
-    "posts/logseq.md",
-    "posts/jiao-yan-wen-jian.md",
     "_Template"
   ]
 }
