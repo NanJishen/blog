@@ -719,21 +719,6 @@ portainer/portainer-ce:latest
 注意：威联通 NAS 挂载路径，例如 /share/Downloads ，端口指定 hsot</pre>
 浏览器访问 NAS-IP:9000 ，创建管理员账号后选择 Local 进行连接
 <p>一个 Portainer 端就可以远程管理多端，在其他端安装 portainer/agent 即可：在主机端 - 环境 Environments - 右上角 Add environments - 选 Docker Standalone - 底部 Start Wizard - Agent - 复制命令到被控制端安装，然后再底部填写被控制端的IP或域名端口后点 Connect 连接</p>
-<h4><a href="https://github.com/louislam/dockge">Dockge</a></h4>compose.yaml 图形部署工具
-<pre>mkdir -p /opt/stacks /opt/dockge # 创建目录
-services:
-  dockge:
-    image: louislam/dockge:1
-    restart: unless-stopped
-    ports:
-      - 9001:5001
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/dockge/data:/app/data
-      - /opt/dockge/stacks:/opt/stacks # 堆栈路径，日后备份该目录保存所有 compose.yaml
-    environment:
-      - DOCKGE_STACKS_DIR=/opt/stacks # 堆栈路径需和上面一致
-</pre>
 <a name="ddnsgo"></a><h4>DDNS-GO</h4>自动更新域名解析IP<pre>services:
   ddns-go:
     container_name: ddns-go
@@ -745,7 +730,7 @@ services:
     image: jeessy/ddns-go</pre>
 浏览器访问 NAS-IP:9876 ，配置 DNS 服务商，如 Cloudflare，填写 Token，在 IPv4/IPv6 - 勾选启用 - 填写域名 - 底部 Save
 <p> Cloudflare Token 获取方法：登陆 Cloudflare - 右上角头像 - 我的个人资料 - API 令牌 - 创建令牌 - 点击“编辑区域 DNS”右侧的“使用模板”，在“区域资源”中选择你的域名，或者选择所有区域 - 拉到最底下点击继续以显示摘要 - 复制令牌</p>
-<h4>Nginx-Proxy-Manager</h4>部署在软路由用于反代
+<h4>Nginx Proxy Manager</h4>部署在软路由用于反代
 <pre>services:
   nginxpm:
     image: 'jc21/nginx-proxy-manager:latest'
@@ -914,26 +899,16 @@ services:
       - 5005:5005
     volumes:
       - /path:/app</pre>
-<h4>Wallabag</h4>部署镜像 wallabag/wallabag：
-<pre># 名称自定义，点高级设置
-# 环境 - 新增：
-SYMFONY__ENV__DOMAIN_NAME:http://aaxyz.de:182
-# 网络 - 网络模式（NAT）- 端口转发 - 新增：
-182:80-TCP
-# 共享文件夹 - 挂载本机共享文件夹 - 新增：
-/share/Container/wallabag/data:/var/www/wallabag/data
-/share/Container/wallabag/images:/var/www/wallabag/web/assets/images
-</pre>
 <h4>Linkding</h4>Portainer - Stacks - Add Stacks<pre>services:
   linkding:
     container_name: linkding
+    image: sissbruecker/linkding:latest
     environment:
       - LD_CSRF_TRUSTED_ORIGINS=http://xxx.com:56
     ports:
         - 9090:9090
     volumes:
         - /share/Container/linkding:/etc/linkding/data
-    image: sissbruecker/linkding:latest
     network_mode: bridge
     restart: unless-stopped</pre>
 完成后点击 Container - Linkding - 进入终端，执行 python manage.py createsuperuser --username=your_name --email=xxx@qq.com，创建你的账户<p>配置反代：在 NPM 设置 - 高级，加入<pre>proxy_set_header Host $host;
@@ -958,8 +933,8 @@ img {
     border-style: none;
     display: none;
 }</pre>
-<h4>Transmission</h4>部署镜像 linuxserver/transmission：
-<pre># 名称自定义，点高级设置
+<h4>Transmission</h4><pre># 镜像：linuxserver/transmission
+# 名称自定义，点高级设置
 # 环境 - 新增：
 PGID:1000
 PUID:1000
@@ -973,15 +948,7 @@ TZ:Asia/Chita
 /share/Media:/downloads
 /share/Media/torrents:/watch
 </pre>
-安装中文 WebUI ：ContainerStation - 点击 transmission-1 运行中的镜像 - 输入 bin/sh - 然后执行命令：
-<pre>find / -name web # 查找 web 目录，结果为 /usr/share/transmission/web
-wget https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh # 下载脚本
-bash install-tr-control-cn.sh # 执行脚本
-选择6（指定安装目录），输入上面得到的 /usr/share/transmission 注意，这里不包含 web
-选择1（安装最新的发布版本（release）），安装完成，使用浏览器访问即可看到新的 WebUI
-</pre>
-<h4>Aria2</h4>
-<pre>version: "3"
+<h4>Aria2</h4><pre>
 services:
     aria2:
     image: p3terx/aria2-pro:test
@@ -1005,8 +972,8 @@ services:
     - /share/Downloads/alist:/downloads
     network_mode: bridge
 </pre>
-<h4>qbittorrent</h4>以 Portainer 部署 docker-compose 为例
-<pre>services:
+<h4>qbittorrent</h4><pre># docker-compose
+services:
     qbittorrent:
     image: linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -1036,29 +1003,6 @@ services:
 <p>添加分类：坐车导航中右键“未分类”- 添加分类，输入名称和路径，例如：SDL 和 /sexdl</p>
 <p>修改监控种子的目录：设置 - 下载 - 监控文件夹中输入路径，例如 /config/torrent</p>
 <p>如果用于 PT 下载：设置 - BitTorrent，将所有对勾都去掉</p>
-<h4>Alist</h4>网盘挂载（已淘汰）<pre>services:
-  alist:
-    image: xhofe/alist:latest
-    container_name: alist
-    volumes:
-        - /share/Container/alist:/opt/alist/data
-        - /share/Downloads/alist:/nasdl
-    ports:
-        - 1112:5244
-    environment:
-        - PUID=0
-        - PGID=0
-        - UMASK=022
-        - TZ=Asia/Shanghai
-    restart: unless-stopped</pre>
-浏览器访问 NAS-IP ，登陆后点击底部管理 - 用户，修改账号（备注：终端执行 docker exec -it alist ./alist admin 查看管理员信息，执行 docker exec -it alist ./alist admin set 设置密码）
-<p>挂载本机目录的方法：管理 - 存储 - 添加 - 本机，虚拟路径输入 / 根（表示显示在 Alias 列表第一层，你也可以加一层目录，例如 /NAS ），根目录路径输入 /nasdl（即上面挂载的 /share/Downloads/alist）</p>
-<h4>Talebook</h4>在线图书阅读系统，和上面一样操作，搜索 talebook/talebook 镜像
-<pre># 网络
-18097:80 - TCP
-# 共享文件夹
-/share/Media/Books:/data
-</pre>
 <h4>PicoShare</h4>创建容器 mtlynch/picoshare:latest
 <pre>285:3001（TCP）# 端口
 ~/picoshare:/data # 保存上传的文件的位置
@@ -1102,17 +1046,8 @@ storage 目录下保存了，本地储存策略的所有上传的图片<br>
 -p 5900:5900 - TCP # VNC 端口
 -v share/Container/ubuntu:/dev/shm
 </pre>
-<h4>NAS-Tool</h4>部署镜像 jxxghp/nas-tools
-<pre># 名称自定义，点高级设置
-# 网络 - 网络模式（NAT）- 端口转发 - 新增：
-待定:待定-TCP
-# 共享文件夹 - 挂载本机共享文件夹 - 新增：
-/share/Container/nastools:/config
-/share/Media:/video
-# 默认用户名 admin 密码 password
-</pre>
-<h4>Jackett</h4>部署镜像 linuxserver/jackett：
-<pre># 名称自定义，点高级设置
+<h4>Jackett</h4><pre># 镜像：linuxserver/jackett
+# 名称自定义，点高级设置
 # 环境 - 新增：
 TZ:Asia/Shanghai
 # 网络 - 网络模式（NAT）- 端口转发 - 新增：
@@ -1140,8 +1075,8 @@ LOG_LEVEL=info
 <p>设置 - 应用程序 - 点加号 - 选择 Radarr：同步级别仅添加和删除，Prowlarr 服务器地址填 http://192.168.10.111:9696，Radarr 服务器地址填写 http://192.168.10.111:7878</p>
 <p>ApiKey 的获取方法：Radarr - Settings - General</p>
 <p>添加成功后，返回 Radarr，在设置 - 索引器中即可看到 Zooqle (Prowlarr)</p>
-<h4>Piwigo</h4>部署镜像 linuxserver/piwigo：
-<pre># 环境 - 新增：
+<h4>Piwigo</h4><pre># 镜像：linuxserver/piwigo：
+# 环境 - 新增：
 TZ:Asia/Shanghai
 # 网络 - 网络模式（NAT）- 端口转发 - 新增：
 1114:80-TCP
@@ -1150,7 +1085,6 @@ TZ:Asia/Shanghai
 /share/Picture:/gallery
 </pre>
 浏览器访问 NAS-IP 进行安装，数据库使用 NAS 的数据库即可
-<h3>参考资料</h3><a href="https://zhiyou.smzdm.com/member/8910343290/zhuanlan/">很不错的 NAS 专栏</a>
 </section>
 <section id="section11">
 <h2>Google TV</h2>

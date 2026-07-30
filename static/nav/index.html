@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>极限导航</title>
+<link rel="icon" href="https://ttti.cc/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+<style>
+  :root{
+    --bg: #0a0c11;
+    --bg-soft: #0d1017;
+    --bg-elevated: #12151d;
+    --card: #12151d;
+    --card-hover: #191d29;
+    --border: rgba(255,255,255,0.07);
+    --border-strong: rgba(255,255,255,0.14);
+    --text: #e9ebf1;
+    --text-dim: #97a0b2;
+    --text-faint: #565f70;
+    --accent: #e2a23c;
+    --accent-dim: #c98f34;
+    --accent-soft: rgba(226,162,60,0.13);
+    --teal: #4bb3a4;
+    --teal-soft: rgba(75,179,164,0.13);
+    --rose: #c9707a;
+    --slate: #7d8fc4;
+    --radius: 10px;
+    --font-display: "Fraunces", serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(226,162,60,0.05), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(75,179,164,0.05), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{ background:var(--accent-soft); color:var(--accent); }
+  a{ color:inherit; text-decoration:none; }
+
+  .texture{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, black, transparent 75%);
+  }
+
+  /* ---------- STATE SCREENS ---------- */
+  #stateScreen{
+    position:fixed; inset:0; z-index:100;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--bg);
+    text-align:center; padding:24px;
+  }
+  #stateScreen .box{ max-width:520px; }
+  #stateScreen i.spin{
+    font-size:26px; color:var(--accent); animation:spin 1s linear infinite; margin-bottom:16px; display:inline-block;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  #stateScreen h2{ font-family:var(--font-display); font-size:20px; margin:0 0 10px; }
+  #stateScreen p{ color:var(--text-dim); font-size:13.5px; line-height:1.7; margin:0 0 16px; }
+  #stateScreen pre{
+    text-align:left; background:var(--bg-elevated); border:1px solid var(--border);
+    border-radius:8px; padding:14px 16px; font-family:var(--font-mono); font-size:12px;
+    color:var(--teal); overflow-x:auto; margin:0 0 10px;
+  }
+  #stateScreen .err-icon{ color:var(--rose); font-size:26px; margin-bottom:16px; }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(10,12,17,0.86);
+    backdrop-filter: blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .header-inner{
+    max-width:1440px; margin:0 auto;
+    display:flex; align-items:stretch;
+  }
+  .header-left{
+    width:266px; flex-shrink:0;
+    display:flex; align-items:center;
+    padding:16px 0 16px 28px;
+    border-right:1px solid var(--border);
+  }
+  .header-right{
+    flex:1; min-width:0;
+    display:flex; align-items:center; gap:12px;
+    padding:16px 28px;
+  }
+  .menu-btn{
+    display:none; flex-shrink:0;
+    width:38px; height:38px; align-items:center; justify-content:center;
+    background:var(--bg-elevated); border:1px solid var(--border); border-radius:8px;
+    color:var(--text-dim); font-size:15px; cursor:pointer;
+  }
+  .menu-btn:hover{ color:var(--accent); border-color:var(--accent-dim); }
+  .brand{ display:flex; align-items:center; gap:12px; flex-shrink:0; cursor:pointer; }
+  .brand:hover .wordmark{ filter:brightness(1.15); }
+  .wordmark{
+    font-family:var(--font-display); font-weight:600; font-size:21px;
+    letter-spacing:0.02em; color:var(--text);
+    background: linear-gradient(120deg, var(--accent), var(--teal));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    transition:filter .15s ease;
+  }
+
+  .search-wrap{ flex:1; position:relative; }
+  .search-wrap i.fa-magnifying-glass{
+    position:absolute; left:16px; top:50%; transform:translateY(-50%);
+    color:var(--text-faint); font-size:14px; pointer-events:none;
+  }
+  #searchInput{
+    width:100%;
+    background:var(--bg-elevated);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:11px 44px 11px 42px;
+    color:var(--text);
+    font-family:var(--font-body);
+    font-size:14px;
+    outline:none;
+    transition: border-color .18s ease, background .18s ease;
+  }
+  #searchInput::placeholder{ color:var(--text-faint); }
+  #searchInput:focus{ border-color:var(--accent-dim); background:var(--bg-soft); }
+  .search-kbd{
+    position:absolute; right:12px; top:50%; transform:translateY(-50%);
+    font-family:var(--font-mono); font-size:10px; color:var(--text-faint);
+    border:1px solid var(--border); border-radius:5px; padding:2px 6px;
+    pointer-events:none;
+  }
+  .clear-btn{
+    position:absolute; right:12px; top:50%; transform:translateY(-50%);
+    font-family:var(--font-mono); font-size:10px; color:var(--text-dim);
+    border:1px solid var(--border); border-radius:5px; padding:3px 7px;
+    background:var(--bg-soft); cursor:pointer; display:none;
+  }
+  .clear-btn:hover{ color:var(--text); border-color:var(--border-strong); }
+
+  /* ---------- LAYOUT ---------- */
+  .shell{ max-width:1440px; margin:0 auto; display:flex; position:relative; z-index:1; }
+
+  /* ---------- SIDEBAR (nested tree) ---------- */
+  aside{
+    width:266px; flex-shrink:0;
+    position:sticky; top:69px;
+    height:calc(100vh - 69px);
+    overflow-y:auto;
+    padding:24px 10px 40px 28px;
+    border-right:1px solid var(--border);
+    scrollbar-width:thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+  aside::-webkit-scrollbar{ width:6px; }
+  aside::-webkit-scrollbar-thumb{ background:var(--border-strong); border-radius:6px; }
+
+  .drawer-head{ display:none; }
+  .cat-block{ margin:2px 0; }
+  .cat-item{
+    display:flex; align-items:center; gap:9px;
+    padding:9px 8px 9px 6px; margin:1px 0;
+    border-radius:8px; cursor:pointer;
+    border-left:2px solid transparent;
+    color:var(--text-dim);
+    font-size:13.5px;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .cat-item .chevron{
+    width:14px; height:14px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    font-size:9px; color:var(--text-faint); transition:transform .15s ease;
+  }
+  .cat-item.no-children .chevron{ visibility:hidden; }
+  .cat-item.expanded .chevron{ transform:rotate(90deg); }
+  .cat-item i.fa-fw{ font-size:13px; width:16px; color:var(--text-faint); transition:color .15s ease; }
+  .cat-item .cat-name{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .cat-item .cat-count{ font-family:var(--font-mono); font-size:10.5px; color:var(--text-faint); }
+  .cat-item:hover{ background:var(--bg-elevated); color:var(--text); }
+  .cat-item:hover i.fa-fw{ color:var(--accent); }
+  .cat-item.active{ background:var(--accent-soft); color:var(--accent); border-left-color:var(--accent); }
+  .cat-item.active i.fa-fw{ color:var(--accent); }
+  .cat-item.active .cat-count{ color:var(--accent-dim); }
+  .cat-item.dim{ opacity:0.3; }
+
+  .term-list{
+    overflow:hidden; max-height:0; transition:max-height .22s ease;
+    padding-left:29px; border-left:1px solid var(--border); margin-left:15px;
+  }
+  .cat-block.expanded .term-list{ max-height:1200px; }
+  .term-item{
+    display:flex; align-items:center; gap:8px;
+    padding:6px 10px; border-radius:6px; cursor:pointer;
+    font-size:12.5px; color:var(--text-faint);
+    transition:background .12s ease, color .12s ease;
+  }
+  .term-item::before{ content:"·"; color:var(--text-faint); }
+  .term-item .term-count{ font-family:var(--font-mono); font-size:10px; color:var(--text-faint); margin-left:auto; }
+  .term-item:hover{ background:var(--bg-elevated); color:var(--text); }
+  .term-item.active{ color:var(--teal); }
+  .term-item.active::before{ color:var(--teal); }
+  .term-item.dim{ opacity:0.3; }
+
+  /* ---------- MOBILE DRAWER ---------- */
+  .drawer-backdrop{ display:none; }
+
+  /* ---------- MAIN ---------- */
+  main{ flex:1; min-width:0; padding:32px 28px 80px; }
+
+  .cat-section{ margin-bottom:52px; scroll-margin-top:84px; }
+  .cat-section-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:22px; }
+  .cat-section-head .num{ font-family:var(--font-mono); font-size:12px; color:var(--text-faint); }
+  .cat-section-head h2{ font-family:var(--font-display); font-weight:600; font-size:24px; margin:0; letter-spacing:0.01em; display:flex; align-items:center; gap:10px; }
+  .cat-section-head h2 i{ font-size:17px; color:var(--accent); }
+  .cat-section-head .count-tag{ font-family:var(--font-mono); font-size:11px; color:var(--text-faint); border:1px solid var(--border); border-radius:999px; padding:3px 10px; }
+
+  .term-group{ margin-bottom:28px; scroll-margin-top:84px; }
+  .term-label{ display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.08em; color:var(--teal); text-transform:uppercase; margin:0 0 14px; }
+  .term-label::after{ content:""; flex:1; height:1px; background:linear-gradient(90deg, var(--teal-soft), transparent); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(258px, 1fr)); gap:10px; }
+
+  .card{
+    display:block; background:var(--card); border:1px solid var(--border); border-left:2.5px solid var(--border-strong);
+    border-radius:var(--radius); padding:12px 14px;
+    transition:transform .14s ease, border-color .14s ease, background .14s ease;
+  }
+  .card:hover{ background:var(--card-hover); border-color:var(--border-strong); transform:translateY(-1px); }
+  .card-title{ font-size:13.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:4px; }
+  .card-desc{ font-size:12px; color:var(--text-dim); line-height:1.55; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  mark{ background:var(--accent-soft); color:var(--accent); border-radius:2px; padding:0 1px; }
+
+  .no-results{ display:none; text-align:center; padding:100px 20px; color:var(--text-faint); }
+  .no-results i{ font-size:30px; margin-bottom:14px; display:block; color:var(--text-faint); }
+  .no-results .q{ color:var(--accent); font-family:var(--font-mono); }
+
+  footer{ max-width:1440px; margin:0 auto; padding:30px 28px 60px; color:var(--text-faint); font-size:12px; border-top:1px solid var(--border); display:flex; justify-content:center; text-align:center; }
+  footer .fmono{ font-family:var(--font-mono); }
+  footer a:hover{ color:var(--accent); }
+
+  @media (max-width: 880px){
+    aside{
+      display:flex; flex-direction:column;
+      position:fixed; top:50%; left:50%; z-index:80;
+      width:88%; max-width:380px;
+      max-height:78vh; max-height:78dvh;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior:contain;
+      padding:18px 14px 20px 18px;
+      transform:translate(-50%,-50%) scale(0.94);
+      opacity:0; pointer-events:none;
+      transition:transform .18s ease, opacity .18s ease;
+      background:var(--bg-elevated);
+      border:1px solid var(--border-strong);
+      border-radius:16px;
+      box-shadow:0 30px 80px rgba(0,0,0,0.55);
+    }
+    aside.drawer-open{ transform:translate(-50%,-50%) scale(1); opacity:1; pointer-events:auto; }
+    .drawer-head{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 4px 12px; margin-bottom:10px; border-bottom:1px solid var(--border);
+      font-family:var(--font-mono); font-size:11px; letter-spacing:0.1em;
+      color:var(--text-faint); text-transform:uppercase;
+      position:sticky; top:0; background:var(--bg-elevated); z-index:1;
+    }
+    .drawer-head button{ background:none; border:none; color:var(--text-dim); font-size:16px; cursor:pointer; line-height:1; padding:4px; }
+    .drawer-head button:hover{ color:var(--accent); }
+    .drawer-backdrop{
+      display:block; position:fixed; inset:0; z-index:75;
+      background:rgba(4,5,8,0.6); backdrop-filter:blur(2px);
+      opacity:0; pointer-events:none; transition:opacity .2s ease;
+    }
+    .drawer-backdrop.show{ opacity:1; pointer-events:auto; }
+    body.drawer-locked{ overflow:hidden; }
+    .menu-btn{ display:flex; }
+    .header-inner{ flex-wrap:wrap; }
+    .header-left{ width:100%; border-right:none; padding:14px 16px 0; }
+    .header-right{ width:100%; padding:10px 16px 14px; }
+    main{ padding:22px 16px 60px; }
+    .grid{ grid-template-columns:1fr; }
+    .search-kbd{ display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="texture"></div>
+
+<div id="stateScreen">
+  <div class="box">
+    <i class="fa-solid fa-compass spin"></i>
+    <h2>正在加载 webstack.yml…</h2>
+    <p>正在读取并解析你的导航数据文件</p>
+  </div>
+</div>
+
+<header style="display:none" id="siteHeader">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="brand" id="brandReload" title="点击刷新页面" role="button" tabindex="0">
+        <span class="wordmark">极限导航</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="searchInput" type="text" placeholder="搜索站点名称、简介或域名…" autocomplete="off">
+        <span class="search-kbd" id="kbdHint">/</span>
+        <button class="clear-btn" id="clearBtn">清除</button>
+      </div>
+      <button class="menu-btn" id="menuBtn" title="分类菜单" aria-label="打开分类菜单"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="shell" id="shellWrap" style="display:none">
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside id="sidebar">
+    <div class="drawer-head">
+      <span>选择分类</span>
+      <button id="drawerClose" aria-label="关闭菜单"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="sideList"></div>
+  </aside>
+
+  <main>
+    <div id="content"></div>
+    <div class="no-results" id="noResults">
+      <i class="fa-solid fa-compass"></i>
+      没有找到与 <span class="q" id="noResultsQuery"></span> 匹配的站点
+    </div>
+  </main>
+</div>
+
+<footer id="siteFooter" style="display:none">
+  <span><span class="fmono" id="footerStat"></span> <a href="https://ttti.cc" target="_blank" rel="noopener noreferrer" style="color:inherit;">由极限玩家驱动</a></span>
+</footer>
+
+<script>
+const YML_PATH = './webstack.yml';
+const TILE_COLORS = ['#e2a23c', '#4bb3a4', '#c9707a', '#7d8fc4'];
+
+function hashColor(str){
+  let h = 0;
+  for (let i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) >>> 0; }
+  return TILE_COLORS[h % TILE_COLORS.length];
+}
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function highlight(text, q){
+  const esc = escapeHtml(text);
+  if(!q) return esc;
+  const qEsc = escapeHtml(q);
+  try{
+    const re = new RegExp('('+qEsc.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');
+    return esc.replace(re, '<mark>$1</mark>');
+  }catch(e){ return esc; }
+}
+function getDomain(url){
+  if(!url) return '';
+  url = String(url).trim();
+  const m = url.match(/https?:\/\/[^\s"'>]+/);
+  if(m) url = m[0];
+  const m2 = url.match(/^https?:\/\/([^\/]+)/);
+  if(m2) return m2[1].replace(/^www\./,'');
+  return url.slice(0,30);
+}
+function cleanUrl(url){
+  if(!url) return '#';
+  url = String(url);
+  const m = url.match(/https?:\/\/[^\s"'>]+/);
+  return m ? m[0] : url.trim();
+}
+
+// ---- transform raw parsed yaml into render-ready structure ----
+function transformData(raw){
+  return raw.map((cat, i)=>{
+    const slug = 'c'+i;
+    const groups = [];
+    if(Array.isArray(cat.links)){
+      groups.push({
+        term: null,
+        slug: slug+'-t0',
+        links: cat.links.map(l=>{
+          const u = cleanUrl(l.url);
+          return { t:String(l.title??'').trim(), u, d:String(l.description??''), h:getDomain(u) };
+        })
+      });
+    }
+    if(Array.isArray(cat.list)){
+      cat.list.forEach((term, j)=>{
+        groups.push({
+          term: String(term.term??'').trim(),
+          slug: slug+'-t'+j,
+          links: (term.links||[]).map(l=>{
+            const u = cleanUrl(l.url);
+            return { t:String(l.title??'').trim(), u, d:String(l.description??''), h:getDomain(u) };
+          })
+        });
+      });
+    }
+    const count = groups.reduce((s,g)=>s+g.links.length,0);
+    return { slug, name: cat.taxonomy, icon: cat.icon || 'fa-star', count, groups };
+  });
+}
+
+let DATA = [];
+
+async function loadData(){
+  const res = await fetch(YML_PATH, { cache: 'no-store' });
+  if(!res.ok) throw new Error('HTTP '+res.status);
+  const text = await res.text();
+  const raw = jsyaml.load(text, { json: true }); // json:true tolerates duplicate keys in the YAML
+  if(!Array.isArray(raw)) throw new Error('YAML 根节点不是数组');
+  DATA = transformData(raw);
+  renderAll();
+}
+
+function showError(err){
+  document.getElementById('stateScreen').innerHTML = `
+    <div class="box">
+      <i class="fa-solid fa-triangle-exclamation err-icon"></i>
+      <h2>无法加载 webstack.yml</h2>
+      <p>${escapeHtml(err.message || String(err))}</p>
+      <p>如果你是用双击打开 index.html（file:// 协议），浏览器会阻止读取本地文件。请在该文件夹下启动一个本地静态服务器后访问：</p>
+      <pre>python3 -m http.server 8080
+# 然后打开 http://localhost:8080
+
+# 或者，如果安装了 Node.js：
+npx serve .</pre>
+      <p>确认 <span style="font-family:var(--font-mono);color:var(--accent);">webstack.yml</span> 与 <span style="font-family:var(--font-mono);color:var(--accent);">index.html</span> 在同一目录下，然后刷新页面重试。</p>
+    </div>`;
+}
+
+function renderAll(){
+  document.getElementById('stateScreen').style.display = 'none';
+  document.getElementById('siteHeader').style.display = '';
+  document.getElementById('shellWrap').style.display = '';
+  document.getElementById('siteFooter').style.display = '';
+
+  const totalCount = DATA.reduce((s,c)=>s+c.count,0);
+  document.getElementById('footerStat').textContent = `共 ${DATA.length} 个分类 · ${totalCount} 条收录`;
+
+  renderSidebar();
+  renderContent();
+  setupObserver();
+  setupSearch();
+}
+
+// ---- sidebar (nested tree) ----
+function renderSidebar(){
+  const sideList = document.getElementById('sideList');
+  sideList.innerHTML = '';
+
+  DATA.forEach(cat=>{
+    const hasNamedTerms = cat.groups.length > 1 || (cat.groups[0] && cat.groups[0].term);
+    const block = document.createElement('div');
+    block.className = 'cat-block';
+    block.dataset.slug = cat.slug;
+
+    const item = document.createElement('div');
+    item.className = 'cat-item' + (hasNamedTerms ? '' : ' no-children');
+    item.dataset.slug = cat.slug;
+    item.innerHTML = `<span class="chevron"><i class="fa-solid fa-chevron-right"></i></span>
+      <i class="fa-solid ${cat.icon} fa-fw"></i>
+      <span class="cat-name">${escapeHtml(cat.name)}</span>
+      <span class="cat-count">${cat.count}</span>`;
+    item.addEventListener('click', ()=>{
+      if(hasNamedTerms){
+        toggleAccordion(cat.slug);
+      }else{
+        document.getElementById(cat.slug).scrollIntoView({behavior:'smooth', block:'start'});
+        closeDrawer();
+      }
+    });
+    block.appendChild(item);
+
+    if(hasNamedTerms){
+      const termList = document.createElement('div');
+      termList.className = 'term-list';
+      cat.groups.forEach(g=>{
+        const tItem = document.createElement('div');
+        tItem.className = 'term-item';
+        tItem.dataset.slug = g.slug;
+        tItem.dataset.parent = cat.slug;
+        tItem.innerHTML = `<span>${escapeHtml(g.term || '未分组')}</span><span class="term-count">${g.links.length}</span>`;
+        tItem.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          document.getElementById(g.slug).scrollIntoView({behavior:'smooth', block:'start'});
+          closeDrawer();
+        });
+        termList.appendChild(tItem);
+      });
+      block.appendChild(termList);
+    }
+    sideList.appendChild(block);
+  });
+}
+
+// only one category expanded at a time; clicking an expanded one collapses it, clicking a collapsed one expands it and closes the rest
+function toggleAccordion(slug){
+  const target = document.querySelector(`.cat-block[data-slug="${CSS.escape(slug)}"]`);
+  if(!target) return;
+  const wasExpanded = target.classList.contains('expanded');
+  document.querySelectorAll('.cat-block').forEach(b=>{
+    b.classList.remove('expanded');
+    const ci = b.querySelector('.cat-item');
+    if(ci) ci.classList.remove('expanded');
+  });
+  if(!wasExpanded){
+    target.classList.add('expanded');
+    const ci = target.querySelector('.cat-item');
+    if(ci) ci.classList.add('expanded');
+  }
+}
+
+// ---- main content ----
+function renderContent(){
+  const content = document.getElementById('content');
+  content.innerHTML = '';
+  DATA.forEach((cat, idx)=>{
+    const section = document.createElement('section');
+    section.className = 'cat-section';
+    section.id = cat.slug;
+
+    const head = document.createElement('div');
+    head.className = 'cat-section-head';
+    head.innerHTML = `<span class="num">${String(idx+1).padStart(2,'0')}</span>
+      <h2><i class="fa-solid ${cat.icon}"></i>${escapeHtml(cat.name)}</h2>
+      <span class="count-tag">${cat.count} 站</span>`;
+    section.appendChild(head);
+
+    cat.groups.forEach(g=>{
+      const gWrap = document.createElement('div');
+      gWrap.className = 'term-group';
+      gWrap.id = g.slug;
+      if(g.term){
+        const label = document.createElement('div');
+        label.className = 'term-label';
+        label.textContent = g.term;
+        gWrap.appendChild(label);
+      }
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+      g.links.forEach(l=>{
+        const card = document.createElement('a');
+        card.className = 'card';
+        card.href = l.u;
+        card.target = '_blank';
+        card.rel = 'noopener noreferrer';
+        card.dataset.search = (l.t+' '+l.d+' '+l.h).toLowerCase();
+        card.style.borderLeftColor = hashColor(l.t||l.u);
+        card.innerHTML = `
+          <div class="card-title" data-t="${escapeHtml(l.t)}">${escapeHtml(l.t)}</div>
+          <div class="card-desc" data-d="${escapeHtml(l.d)}">${escapeHtml(l.d)}</div>`;
+        grid.appendChild(card);
+      });
+      gWrap.appendChild(grid);
+      section.appendChild(gWrap);
+    });
+    content.appendChild(section);
+  });
+}
+
+// ---- active highlighting on scroll (category + term) ----
+function setupObserver(){
+  const catItems = [...document.querySelectorAll('.cat-item')];
+  const sections = [...document.querySelectorAll('.cat-section')];
+  const termGroups = [...document.querySelectorAll('.term-group')];
+
+  // which category section is currently in view -> highlight + accordion expand (collapsing all others)
+  const sectionObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const slug = entry.target.id;
+        catItems.forEach(i=>i.classList.toggle('active', i.dataset.slug===slug));
+        const hasChildren = !!document.querySelector(`.cat-block[data-slug="${CSS.escape(slug)}"] .term-list`);
+        if(hasChildren){
+          document.querySelectorAll('.cat-block').forEach(b=>{
+            const isMatch = b.dataset.slug === slug;
+            b.classList.toggle('expanded', isMatch);
+            const ci = b.querySelector('.cat-item');
+            if(ci) ci.classList.toggle('expanded', isMatch);
+          });
+        }
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  sections.forEach(s=>sectionObserver.observe(s));
+
+  // which term sub-group is in view -> highlight the matching sidebar sub-item
+  const termObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const slug = entry.target.id;
+        document.querySelectorAll('.term-item').forEach(t=>t.classList.toggle('active', t.dataset.slug===slug));
+      }
+    });
+  }, { rootMargin: '-15% 0px -65% 0px', threshold: 0 });
+  termGroups.forEach(g=>termObserver.observe(g));
+}
+
+// ---- search ----
+function setupSearch(){
+  const searchInput = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearBtn');
+  const noResults = document.getElementById('noResults');
+  const noResultsQuery = document.getElementById('noResultsQuery');
+  const kbdHint = document.getElementById('kbdHint');
+  const catItems = [...document.querySelectorAll('.cat-item')];
+  const termItems = [...document.querySelectorAll('.term-item')];
+
+  let debounceTimer;
+  function runSearch(){
+    const q = searchInput.value.trim().toLowerCase();
+    clearBtn.style.display = q ? 'block' : 'none';
+    kbdHint.style.display = q ? 'none' : 'block';
+
+    let anyVisible = false;
+    const catVisibleCount = {};
+    const termVisibleCount = {};
+
+    document.querySelectorAll('.card').forEach(card=>{
+      const match = !q || card.dataset.search.includes(q);
+      card.style.display = match ? '' : 'none';
+      if(match){
+        anyVisible = true;
+        const termSlug = card.closest('.term-group').id;
+        const catSlug = card.closest('.cat-section').id;
+        termVisibleCount[termSlug] = (termVisibleCount[termSlug]||0)+1;
+        catVisibleCount[catSlug] = (catVisibleCount[catSlug]||0)+1;
+      }
+      const titleEl = card.querySelector('.card-title');
+      const descEl = card.querySelector('.card-desc');
+      titleEl.innerHTML = highlight(titleEl.dataset.t, q);
+      descEl.innerHTML = highlight(descEl.dataset.d, q);
+    });
+
+    document.querySelectorAll('.term-group').forEach(g=>{
+      const count = termVisibleCount[g.id] || 0;
+      g.style.display = count ? '' : 'none';
+    });
+    document.querySelectorAll('.cat-section').forEach(sec=>{
+      const count = catVisibleCount[sec.id] || 0;
+      sec.style.display = (!q || count>0) ? '' : 'none';
+    });
+
+    catItems.forEach(item=>{
+      const count = catVisibleCount[item.dataset.slug] || 0;
+      item.classList.toggle('dim', !!q && count===0);
+      if(q && count>0){
+        const block = item.closest('.cat-block');
+        if(block) block.classList.add('expanded');
+      }
+    });
+    termItems.forEach(item=>{
+      const count = termVisibleCount[item.dataset.slug] || 0;
+      item.classList.toggle('dim', !!q && count===0);
+    });
+
+    noResults.style.display = (q && !anyVisible) ? 'block' : 'none';
+    noResultsQuery.textContent = q;
+  }
+
+  searchInput.addEventListener('input', ()=>{
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(runSearch, 90);
+  });
+  clearBtn.addEventListener('click', ()=>{ searchInput.value=''; runSearch(); searchInput.focus(); });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='/' && document.activeElement !== searchInput){ e.preventDefault(); searchInput.focus(); }
+    if(e.key==='Escape' && document.activeElement===searchInput){ searchInput.value=''; runSearch(); searchInput.blur(); }
+  });
+}
+
+function setupBrandReload(){
+  const brand = document.getElementById('brandReload');
+  brand.addEventListener('click', ()=> location.reload());
+  brand.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); location.reload(); }
+  });
+}
+setupBrandReload();
+
+// ---- mobile off-canvas category drawer ----
+function openDrawer(){
+  const aside = document.getElementById('sidebar');
+  aside.classList.add('drawer-open');
+  document.getElementById('drawerBackdrop').classList.add('show');
+  document.body.classList.add('drawer-locked');
+  aside.scrollTop = 0; // always start at the top of the list (常用置顶) when opening
+}
+function closeDrawer(){
+  document.getElementById('sidebar').classList.remove('drawer-open');
+  document.getElementById('drawerBackdrop').classList.remove('show');
+  document.body.classList.remove('drawer-locked');
+}
+function setupMobileDrawer(){
+  document.getElementById('menuBtn').addEventListener('click', openDrawer);
+  document.getElementById('drawerBackdrop').addEventListener('click', closeDrawer);
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='Escape') closeDrawer();
+  });
+}
+setupMobileDrawer();
+
+loadData().catch(showError);
+</script>
+</body>
+</html>
