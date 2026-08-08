@@ -1,7 +1,7 @@
 # -- Main Menu --
 # The main menu is displayed in the header at the top of the page.
 # Acceptable parameters are name, pageRef, page, url, title, weight.
-# 
+#
 # The simplest menu configuration is to provide:
 #   name = The name to be displayed for this menu link
 #   pageRef = The identifier of the page or section to link to
@@ -58,13 +58,13 @@
   weight = 40
 
 [[main]]
-  name = "极限搜索"
-  url  = "https://ttti.cc/so"
+  name = "极限导航"
+  url  = "https://nav.ttti.cc"
   weight = 50
 
 [[main]]
-  name = "极限导航"
-  url  = "https://nav.ttti.cc"
+  name = "程序导航"
+  url  = "https://app.ttti.cc"
   weight = 60
 
 [[main]]

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>极限玩家 Windows · 完全指南</title>
+<style>
+:root {
+  --bg: #0f0f12;
+  --bg2: #16161a;
+  --bg3: #1e1e24;
+  --bg4: #25252d;
+  --accent: #f0c674;
+  --accent2: #c9a84c;
+  --text: #e8e8ec;
+  --text2: #a0a0ac;
+  --text3: #6e6e7a;
+  --border: rgba(255,255,255,0.06);
+  --radius: 12px;
+  --sidebar: 220px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+
+/* Layout */
+.page{display:flex;justify-content:center}
+.app{display:flex;width:100%;max-width:1200px}
+
+/* Sidebar */
+.sidebar{width:var(--sidebar);background:var(--bg2);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;flex-shrink:0;display:flex;flex-direction:column}
+.sidebar-header{padding:24px 20px 12px}
+.sidebar-header h1{font-size:18px;color:var(--accent)}
+.sidebar-header p{font-size:11px;color:var(--text3);margin-top:4px}
+.search-box{padding:0 16px 12px}
+.search-box input{width:100%;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;outline:none}
+.search-box input:focus{border-color:var(--accent2)}
+.nav-menu{flex:1;overflow-y:auto;padding:8px 0;list-style:none}
+.nav-menu li{margin:2px 12px}
+.nav-menu a{display:block;padding:8px 12px;border-radius:6px;color:var(--text2);text-decoration:none;font-size:13px;transition:.2s}
+.nav-menu a:hover{background:var(--bg3);color:var(--text)}
+.nav-menu a.active{background:var(--bg3);color:var(--accent);border-left:2px solid var(--accent);margin-left:-2px}
+.sidebar-footer{padding:12px;font-size:11px;color:var(--text3);text-align:center;border-top:1px solid var(--border)}
+
+/* Mobile */
+.hamburger{display:none;position:fixed;top:12px;left:12px;z-index:200;width:36px;height:36px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.hamburger span{display:block;width:16px;height:2px;background:var(--accent);border-radius:1px;transition:.2s}
+.hamburger.active span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+/* Main */
+.main{flex:1;padding:32px;min-width:0}
+section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:24px;scroll-margin-top:20px}
+section.hidden{display:none}
+section h2{font-size:20px;color:var(--accent);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+section h3{font-size:16px;color:var(--accent);margin:22px 0 10px}
+section h4{font-size:14px;color:var(--accent2);margin:16px 0 6px}
+section img{max-width:100%;height:auto;display:block;border-radius:6px}
+section p{color:var(--text2);margin-bottom:10px;font-size:14px}
+section ul,section ol{margin:8px 0 8px 20px;color:var(--text2);font-size:14px}
+section li{margin:4px 0}
+section a{color:var(--accent);text-decoration:none}
+section a:hover{text-decoration:underline}
+
+/* Code */
+.code-block{position:relative;margin:14px 0;border-radius:8px;overflow:hidden;background:#111116;border:1px solid var(--border)}
+.code-header{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border)}
+.code-lang{font-size:11px;color:var(--text3);font-weight:600}
+.copy-btn{background:transparent;border:1px solid var(--border);color:var(--text3);padding:3px 10px;border-radius:4px;font-size:11px;cursor:pointer}
+.copy-btn:hover{border-color:var(--accent2);color:var(--accent)}
+.copy-btn.copied{color:#4ade80;border-color:#4ade80}
+.code-block pre{padding:14px 16px;font-family:"Consolas","JetBrains Mono",monospace;font-size:13px;line-height:1.6;color:#d4d4d4;overflow-x:auto}
+code{font-family:monospace;font-size:12px;background:var(--bg3);color:var(--accent);padding:2px 6px;border-radius:4px}
+
+/* Table */
+.table-wrap{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--bg3)}
+th{background:var(--bg4);color:var(--accent);font-weight:600;text-align:left;padding:10px 14px;border-bottom:1px solid var(--border)}
+td{padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text2)}
+tr:hover td{background:rgba(240,198,116,.04);color:var(--text)}
+
+/* Utilities */
+kbd{font-family:monospace;font-size:11px;background:var(--bg4);padding:2px 6px;border-radius:4px;border:1px solid var(--border);box-shadow:0 2px 0 var(--border)}
+.no-results{display:none;text-align:center;padding:40px;color:var(--text3);font-size:14px}
+.no-results.show{display:block}
+.back-to-top{position:fixed;bottom:24px;right:24px;width:40px;height:40px;background:var(--bg4);border:1px solid var(--border);border-radius:50%;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s;z-index:90}
+.back-to-top.visible{opacity:1}
+.back-to-top:hover{background:var(--accent);color:var(--bg)}
+.progress{position:fixed;top:0;left:var(--sidebar);right:0;height:2px;background:var(--bg3);z-index:99}
+.progress-bar{height:100%;background:var(--accent);width:0%}
+
+/* Responsive */
+@media(max-width:768px){
+  .hamburger{display:flex}
+  .sidebar{position:fixed;left:0;transform:translateX(-100%);transition:.3s;z-index:100;height:100vh}
+  .sidebar.open{transform:translateX(0)}
+  .main{padding:60px 16px 40px;margin-left:0}
+  .progress{left:0}
+  section{padding:20px}
+}
+@media print{
+  .sidebar,.hamburger,.back-to-top,.progress{display:none!important}
+  .main{padding:20px;margin:0}
+  section{border:1px solid #ddd;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="progress-bar" id="progress"></div></div>
+<button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+
+<div class="page">
+  <div class="app">
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h1>V2wiki</h1>
+        <p>魔法指南</p>
+      </div>
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Search" autocomplete="off">
+      </div>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#s1" class="active">Windows</a></li>
+        <li><a href="#s2">安卓</a></li>
+        <li><a href="#s3">Linux 和 MacOS</a></li>
+        <li><a href="#s4">小火箭</a></li>
+      </ul>
+      <div class="sidebar-footer">© 南极神</div>
+    </aside>
+
+    <main class="main" id="main">
+
+      <section id="s1" data-keywords="下载 安装 激活 镜像 引导 密钥 KMS Office">
+        <h2>Windows 电脑使用方法</h2>
+        <a href="http://duf.aaxyz.de:56/v2rayn/">&gt; 点此下载客户端</a>
+        <ul><li>解压后，启动其中的 <strong>V2ray.exe</strong> 然后如下图顺序操作 ↓</li></ul>
+        <p><img src="https://r2dl.ttti.cc/imgs/giteewik/v2xray/v2r1.webp" alt=""></p>
+        <ul><li>配置项 - 扫描二维码或导入链接（付款后问车主索要）↓</li></ul>
+        <p><img src="https://r2dl.ttti.cc/imgs/giteewik/v2xray/v2r2.webp" alt=""></p>
+        <ul><li>启动或关闭代理，以及日后更新软件与规则库 ↓</li><li>在底部选择“自动配置系统代理”表示开启代理，选择“清除系统代理”表示关闭代理 ↓</li></ul>
+        <p><img src="https://r2dl.ttti.cc/imgs/giteewik/v2xray/v2r3.webp" alt=""></p>
+      </section>
+
+      <section id="s2" data-keywords="驱动 环境 VC++ .NET DirectX HEVC 显卡 主板">
+        <h2>安卓手机使用方法</h2><a href="http://duf.aaxyz.de:56/v2rayn/">&gt; 点此下载客户端</a>
+        <ul><li>启动 v2rayNG ，点击右上角+号，扫描二维码或导入链接（问群主要），最后点击右下角启动</li></ul>
+        <p><img src="https://r2dl.ttti.cc/imgs/giteewik/v2xray/v2az1.webp" alt=""></p>
+        <ul><li>日后更新列表规则，点左上角菜单，选资源文件，点右上角云图标更新</li></ul>
+        <p><img src="https://r2dl.ttti.cc/imgs/giteewik/v2xray/v2az2.webp" alt=""></p>
+      </section>
+
+      <section id="s3" data-keywords="设置 优化 备份 服务 UAC 睡眠 休眠 软件">
+        <h2>苹果 MacOS 和 Linux 系统</h2>
+        <p><b><a href="http://duf.aaxyz.de:56/v2rayn/">&gt; 点此下载客户端</a></b></p><p></p><p><br></p>
+        <strong>Linux 和 MacOS 使用方法</strong>：解压并放到你指定的目录中，打开终端并执行命令
+<div class="code-block">
+    <div class="code-header">
+    <span class="code-lang">bash</span>
+    <button class="copy-btn">复制</button>
+    </div><pre># 赋予执行权限
+chmod +x v2rayN
+# 启动程序
+./v2rayN</pre>
+</div>注意：需 macOS 11+ 系统版本及以上<p></p><p></p>
+      </section>
+
+      <section id="s4" data-keywords="优化 注册表 右键 任务栏 图标 缓存 SMB 浏览器">
+        <h2>小火箭</h2>
+        <strong>先用美区账号登陆苹果商店，才可以下载 <a href="https://apps.apple.com/app/id932747118">Shadowrocket</a> 应用</strong>
+        <ul><li>启动 Shadowrocket 应用，点击右上角的 + 号</li></ul>
+        <p><img src="https://r2dl.ttti.cc/imgs/giteewik/shadowrocket/sket1.webp"></p>
+        <ul><li>类型选【Subscribe】，在 URL 栏中粘贴订阅地址（和群主要），在下方备注一个分组名，最后点击右上角的完成</li></ul>
+        <img src="https://r2dl.ttti.cc/imgs/giteewik/shadowrocket/sket2.webp">
+        <ul><li>回到 Shadowrocket 首页即可看到节点信息</li></ul>
+        <img src="https://r2dl.ttti.cc/imgs/giteewik/shadowrocket/sket3.webp">
+        <ul><li>进入配置选项页，选择默认配置文件即可</li></ul>
+        <img src="https://r2dl.ttti.cc/imgs/giteewik/shadowrocket/sket4.webp">
+        <ul><li>进入设置页，按照下图将订阅设置项的“打开时更新”和“自动后台更新”选项同时开启</li></ul>
+        <img src="https://r2dl.ttti.cc/imgs/giteewik/shadowrocket/sket5.webp">
+        <ul><li>回到首页点击上方全局路由可以更改代理模式<p></p></li></ul>
+      </section>
+
+      <div class="no-results" id="no-results">未找到匹配内容。</div>
+    </main>
+  </div>
+</div>
+
+<button class="back-to-top" id="top">↑</button>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const sidebar = $('sidebar'), hamburger = $('hamburger');
+  const navLinks = document.querySelectorAll('.nav-menu a');
+  const sections = document.querySelectorAll('section');
+  const search = $('search'), noResults = $('no-results');
+  const progress = $('progress'), topBtn = $('top');
+
+  hamburger.onclick = () => {
+    sidebar.classList.toggle('open');
+    hamburger.classList.toggle('active');
+  };
+
+  navLinks.forEach(link => {
+    link.onclick = e => {
+      e.preventDefault();
+      document.querySelector(link.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+      if(window.innerWidth <= 768){
+        sidebar.classList.remove('open');
+        hamburger.classList.remove('active');
+      }
+    };
+  });
+
+  function onScroll(){
+    let current = '';
+    sections.forEach(s => { if(s.getBoundingClientRect().top <= 120) current = s.id; });
+    navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#'+current));
+
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  topBtn.onclick = () => window.scrollTo({top:0, behavior:'smooth'});
+
+  search.oninput = () => {
+    const q = search.value.trim().toLowerCase();
+    let n = 0;
+    sections.forEach(s => {
+      const match = !q || s.textContent.toLowerCase().includes(q) || (s.dataset.keywords||'').toLowerCase().includes(q);
+      s.classList.toggle('hidden', !match);
+      if(match) n++;
+    });
+    noResults.classList.toggle('show', q && n === 0);
+  };
+
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.onclick = async () => {
+      const text = btn.closest('.code-block').querySelector('pre').textContent;
+      try{ await navigator.clipboard.writeText(text); }
+      catch(e){
+        const t = document.createElement('textarea'); t.value=text;
+        document.body.appendChild(t); t.select(); document.execCommand('copy');
+        document.body.removeChild(t);
+      }
+      btn.textContent = '已复制'; btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 1500);
+    };
+  });
+
+  document.onkeydown = e => {
+    if(e.key === 'Escape'){
+      sidebar.classList.remove('open');
+      hamburger.classList.remove('active');
+    }
+    if(e.key === '/' && document.activeElement !== search){
+      e.preventDefault(); search.focus();
+    }
+  };
+
+  onScroll();
+})();
+</script>
+
+</body>
+</html>

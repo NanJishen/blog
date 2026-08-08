@@ -8,10 +8,10 @@ title = "极限玩家"
   displayName = "zh-cn"
   isoCode = "zh-cn"
   rtl = false
-  dateFormat = "2006-2-January"
+  dateFormat = "2006年1月2日"
   # logo = "img/logo.png"
   # secondaryLogo = "img/secondary-logo.png"
-  # description = "My awesome website"
+  description = "极限玩家博客"
   # copyright = "Copy, _right?_ :thinking_face:"
 
  [params.author]
@@ -19,7 +19,7 @@ title = "极限玩家"
    email = "nanji_shen@qq.com"
    image = "https://avatars.githubusercontent.com/u/26486998?v=4"
    imageQuality = 96
-   headline = "极限玩家博客"
+   headline = "极限玩家主页"
    bio = "A little bit about you"
    links = [
      { email = "mailto:nanji_shen@qq.com" },

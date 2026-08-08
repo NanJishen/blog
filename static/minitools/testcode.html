@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" href="../favicon.ico">
+<title>Code Studio - 实时代码预览</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg-primary:#0d1117;--bg-secondary:#161b22;--bg-tertiary:#21262d;--border-color:#30363d;--text-primary:#c9d1d9;--text-secondary:#8b949e;--accent:#58a6ff;--accent-hover:#79b8ff;--success:#238636;--warning:#f0883e;--danger:#da3633;--html-color:#e34c26;--css-color:#264de4;--js-color:#f7df1e}body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-primary);color:var(--text-primary);height:100vh;overflow:hidden;display:flex;flex-direction:column}.toolbar{height:48px;background:var(--bg-secondary);border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0}.toolbar-left{display:flex;align-items:center;gap:12px}.toolbar-btn{background:var(--bg-tertiary);border:1px solid var(--border-color);color:var(--text-secondary);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;transition:all .2s}.toolbar-btn:hover{background:var(--border-color);color:var(--text-primary);border-color:var(--accent)}.toolbar-btn.primary{background:var(--success);border-color:var(--success);color:#fff}.toolbar-btn.primary:hover{background:#2ea043;border-color:#2ea043}.toolbar-right{display:flex;align-items:center;gap:8px}.status-dot{width:8px;height:8px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}.status-text{font-size:12px;color:var(--text-secondary)}.main{flex:1;display:flex;overflow:hidden;position:relative}.editor-panel{width:45%;min-width:300px;display:flex;flex-direction:column;background:var(--bg-primary);position:relative}.tabs{display:flex;background:var(--bg-secondary);border-bottom:1px solid var(--border-color);flex-shrink:0}.tab{padding:10px 20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-secondary);border-bottom:2px solid transparent;transition:all .2s;display:flex;align-items:center;gap:8px;user-select:none}.tab:hover{color:var(--text-primary);background:rgba(255,255,255,.03)}.tab.active{color:var(--text-primary);border-bottom-color:var(--accent);background:var(--bg-primary)}.tab-icon{font-size:14px;font-weight:bold}.tab-html .tab-icon{color:var(--html-color)}.tab-css .tab-icon{color:var(--css-color)}.tab-js .tab-icon{color:var(--js-color)}.editor-container{flex:1;position:relative;overflow:hidden}.editor-wrapper{position:absolute;inset:0;display:none;flex-direction:column}.editor-wrapper.active{display:flex}.editor-header{padding:6px 16px;background:var(--bg-secondary);border-bottom:1px solid var(--border-color);font-size:12px;color:var(--text-secondary);display:flex;justify-content:space-between;align-items:center}.editor-filename{font-family:'Courier New',monospace}.editor-stats{font-size:11px}.code-wrapper{flex:1;position:relative;overflow:hidden}.code-editor{width:100%;height:100%;background:var(--bg-primary);color:var(--text-primary);font-family:'JetBrains Mono','Fira Code','Courier New',monospace;font-size:14px;line-height:1.7;border:none;padding:16px 16px 16px 56px;resize:none;outline:none;white-space:pre;overflow:auto;tab-size:2}.code-editor::placeholder{color:#484f58}.line-numbers{position:absolute;left:0;top:0;bottom:0;width:48px;background:var(--bg-primary);border-right:1px solid var(--border-color);padding:16px 8px;font-family:'JetBrains Mono','Fira Code','Courier New',monospace;font-size:14px;line-height:1.7;color:#484f58;text-align:right;overflow:hidden;pointer-events:none;user-select:none}.resizer{width:6px;background:transparent;cursor:col-resize;position:relative;z-index:10;transition:background .2s}.resizer:hover,.resizer.dragging{background:var(--accent)}.preview-panel{flex:1;display:flex;flex-direction:column;background:#fff;min-width:300px}.preview-header{height:36px;background:var(--bg-secondary);border-bottom:1px solid var(--border-color);display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0}.preview-title{font-size:12px;color:var(--text-secondary);font-weight:500}.preview-url{flex:1;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:4px;padding:4px 10px;font-size:12px;color:var(--text-secondary);font-family:'Courier New',monospace;outline:none}.preview-frame{flex:1;border:none;width:100%;background:#fff}.console-panel{height:180px;min-height:100px;max-height:400px;background:var(--bg-secondary);border-top:1px solid var(--border-color);display:flex;flex-direction:column;flex-shrink:0}.console-header{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--border-color);cursor:ns-resize}.console-title{font-size:12px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px}.console-actions{display:flex;gap:8px}.console-action{background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:12px;padding:2px 6px;border-radius:4px;transition:all .2s}.console-action:hover{color:var(--text-primary);background:var(--bg-tertiary)}.console-body{flex:1;overflow:auto;padding:8px 16px;font-family:'JetBrains Mono','Fira Code','Courier New',monospace;font-size:13px;line-height:1.6}.console-empty{color:#484f58;font-style:italic;text-align:center;padding-top:40px}.console-log{padding:2px 0;border-bottom:1px solid rgba(48,54,61,.5);display:flex;gap:10px}.console-log:last-child{border-bottom:none}.console-time{color:#6e7681;font-size:11px;flex-shrink:0;padding-top:1px}.console-content{word-break:break-word}.console-log.log .console-content{color:var(--text-primary)}.console-log.error .console-content{color:#f85149}.console-log.warn .console-content{color:#d29922}.console-log.info .console-content{color:var(--accent)}.toast{position:fixed;bottom:24px;right:24px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:8px;padding:12px 20px;font-size:13px;color:var(--text-primary);box-shadow:0 8px 24px rgba(0,0,0,.4);transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);z-index:1000;display:flex;align-items:center;gap:8px}.toast.show{transform:translateY(0);opacity:1}.toast-icon{font-size:16px}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--bg-tertiary);border-radius:5px;border:2px solid var(--bg-primary)}::-webkit-scrollbar-thumb:hover{background:var(--border-color)}@media(max-width:768px){.editor-panel{width:100%!important}.preview-panel{display:none}.resizer{display:none}.main{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="toolbar"><div class="toolbar-left"><button class="toolbar-btn primary" onclick="runCode()">运行</button><button class="toolbar-btn" onclick="formatCode()">格式化</button><button class="toolbar-btn" onclick="clearAll()">清空</button></div><div class="toolbar-right"><span class="status-dot"></span><span class="status-text" id="statusText">就绪</span></div></div>
+<div class="main" id="mainArea"><div class="editor-panel" id="editorPanel"><div class="tabs"><div class="tab tab-html active" data-tab="html" onclick="switchTab('html')"><span class="tab-icon">&lt;/&gt;</span> HTML</div><div class="tab tab-css" data-tab="css" onclick="switchTab('css')"><span class="tab-icon">#</span> CSS</div><div class="tab tab-js" data-tab="js" onclick="switchTab('js')"><span class="tab-icon">JS</span> JavaScript</div></div><div class="editor-container"><div class="editor-wrapper active" id="wrapper-html"><div class="editor-header"><span class="editor-filename">index.html</span><span class="editor-stats" id="stats-html">0 行 | 0 字符</span></div><div class="code-wrapper"><div class="line-numbers" id="lines-html">1</div><textarea class="code-editor" id="html-editor" placeholder="<!-- 在此输入 HTML 代码 -->" spellcheck="false"></textarea></div></div><div class="editor-wrapper" id="wrapper-css"><div class="editor-header"><span class="editor-filename">style.css</span><span class="editor-stats" id="stats-css">0 行 | 0 字符</span></div><div class="code-wrapper"><div class="line-numbers" id="lines-css">1</div><textarea class="code-editor" id="css-editor" placeholder="/* 在此输入 CSS 代码 */" spellcheck="false"></textarea></div></div><div class="editor-wrapper" id="wrapper-js"><div class="editor-header"><span class="editor-filename">script.js</span><span class="editor-stats" id="stats-js">0 行 | 0 字符</span></div><div class="code-wrapper"><div class="line-numbers" id="lines-js">1</div><textarea class="code-editor" id="js-editor" placeholder="// 在此输入 JavaScript 代码" spellcheck="false"></textarea></div></div></div></div><div class="resizer" id="resizer"></div><div class="preview-panel" id="previewPanel"><div class="preview-header"><span class="preview-title">&#128421; 实时预览</span><input class="preview-url" value="about:srcdoc" readonly><button class="toolbar-btn" style="padding:4px 10px;font-size:12px" onclick="openNewWindow()">&#8599; 新窗口</button></div><iframe class="preview-frame" id="preview"></iframe></div></div>
+<div class="console-panel" id="consolePanel"><div class="console-header" id="consoleHeader"><span class="console-title">&#128223; 控制台</span><div class="console-actions"><button class="console-action" onclick="clearConsole()" title="清空控制台">&#128465;</button><button class="console-action" onclick="toggleConsole()" title="折叠/展开">&#9660;</button></div></div><div class="console-body" id="consoleBody"><div class="console-empty">控制台输出将显示在这里...</div></div></div>
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon">&#9989;</span><span id="toastMsg">操作成功</span></div>
+
+<script>const htmlEditor = document.getElementById('html-editor');
+const cssEditor = document.getElementById('css-editor');
+const jsEditor = document.getElementById('js-editor');
+const preview = document.getElementById('preview');
+const consoleBody = document.getElementById('consoleBody');
+const editors = { html: htmlEditor, css: cssEditor, js: jsEditor };
+const lines = { html: document.getElementById('lines-html'), css: document.getElementById('lines-css'), js: document.getElementById('lines-js') };
+const stats = { html: document.getElementById('stats-html'), css: document.getElementById('stats-css'), js: document.getElementById('stats-js') };
+let currentTab = 'html';
+let consoleCollapsed = false;
+let consoleHeight = 180;
+function init() {
+loadFromStorage();
+setupEditors();
+setupResizer();
+setupConsoleResize();
+updateAllLineNumbers();
+updateAllStats();
+runCode();
+showToast('Code Studio 已就绪', '&#10024;');
+}
+function setupEditors() {
+Object.values(editors).forEach(editor => {
+editor.addEventListener('keydown', ev => {
+if (ev.key === 'Tab') {
+ev.preventDefault();
+const start = editor.selectionStart;
+const end = editor.selectionEnd;
+const value = editor.value;
+if (start !== end) {
+const before = value.substring(0, start);
+const selected = value.substring(start, end);
+const after = value.substring(end);
+if (ev.shiftKey) {
+const newLines = selected.split('\n').map(line => line.startsWith('  ') ? line.slice(2) : line.startsWith(' ') ? line.slice(1) : line);
+const newSelected = newLines.join('\n');
+editor.value = before + newSelected + after;
+editor.selectionStart = start;
+editor.selectionEnd = start + newSelected.length;
+} else {
+const newSelected = selected.split('\n').map(line => '  ' + line).join('\n');
+editor.value = before + newSelected + after;
+editor.selectionStart = start;
+editor.selectionEnd = start + newSelected.length;
+}
+} else {
+editor.value = value.substring(0, start) + '    ' + value.substring(end);
+editor.selectionStart = editor.selectionEnd = start + 4;
+}
+updateLineNumbers(editor);
+updateStats(editor);
+autoSave();
+}
+if ((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter') {
+ev.preventDefault();
+runCode();
+}
+});
+editor.addEventListener('input', () => {
+updateLineNumbers(editor);
+updateStats(editor);
+autoSave();
+});
+editor.addEventListener('scroll', () => {
+const type = editor.id.replace('-editor', '');
+lines[type].scrollTop = editor.scrollTop;
+});
+editor.addEventListener('focus', () => {
+editor.parentElement.style.boxShadow = 'inset 0 0 0 1px var(--accent)';
+});
+editor.addEventListener('blur', () => {
+editor.parentElement.style.boxShadow = 'none';
+});
+});
+}
+function updateLineNumbers(editor) {
+const type = editor.id.replace('-editor', '');
+const lineCount = editor.value.split('\n').length;
+lines[type].textContent = Array.from({length: lineCount}, (_, i) => i + 1).join('\n');
+}
+function updateStats(editor) {
+const type = editor.id.replace('-editor', '');
+const lineCount = editor.value.split('\n').length;
+const charCount = editor.value.length;
+stats[type].textContent = lineCount + ' 行 | ' + charCount + ' 字符';
+}
+function updateAllLineNumbers() {
+Object.values(editors).forEach(updateLineNumbers);
+}
+function updateAllStats() {
+Object.values(editors).forEach(updateStats);
+}
+function switchTab(tab) {
+currentTab = tab;
+document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+document.querySelector('.tab[data-tab="' + tab + '"]').classList.add('active');
+document.querySelectorAll('.editor-wrapper').forEach(w => w.classList.remove('active'));
+document.getElementById('wrapper-' + tab).classList.add('active');
+editors[tab].focus();
+}
+function runCode() {
+const html = htmlEditor.value;
+const css = '<style>' + cssEditor.value + '</style>';
+const js = jsEditor.value;
+const consoleCapture = '<script>(function(){' +
+'const ol=console.log,oe=console.error,ow=console.warn,oi=console.info;' +
+'function sp(t,a){try{const m=a.map(x=>typeof x==="object"?JSON.stringify(x,null,2):String(x)).join(" ");window.parent.postMessage({type:"console",level:t,message:m},"*")}catch(e){}}' +
+'console.log=function(...a){sp("log",a);ol.apply(console,a)};' +
+'console.error=function(...a){sp("error",a);oe.apply(console,a)};' +
+'console.warn=function(...a){sp("warn",a);ow.apply(console,a)};' +
+'console.info=function(...a){sp("info",a);oi.apply(console,a)};' +
+'window.onerror=function(m,u,l){sp("error",[m+" (行 "+l+")"]);return false}' +
+'})()<\/script>';
+preview.srcdoc = html + css + consoleCapture + '<script>' + js + '<\/script>';
+document.getElementById('statusText').textContent = '已更新 ' + new Date().toLocaleTimeString();
+}
+window.addEventListener('message', e => {
+if (e.data && e.data.type === 'console') {
+addConsoleLog(e.data.level, e.data.message);
+}
+});
+function addConsoleLog(level, message) {
+const empty = consoleBody.querySelector('.console-empty');
+if (empty) empty.remove();
+const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+const div = document.createElement('div');
+div.className = 'console-log ' + level;
+div.innerHTML = '<span class="console-time">[' + time + ']</span><span class="console-content">' + escapeHtml(message) + '</span>';
+consoleBody.appendChild(div);
+consoleBody.scrollTop = consoleBody.scrollHeight;
+}
+function escapeHtml(text) {
+const div = document.createElement('div');
+div.textContent = text;
+return div.innerHTML;
+}
+function clearConsole() {
+consoleBody.innerHTML = '<div class="console-empty">控制台输出将显示在这里...</div>';
+}
+function toggleConsole() {
+const panel = document.getElementById('consolePanel');
+consoleCollapsed = !consoleCollapsed;
+if (consoleCollapsed) {
+panel.style.height = '32px';
+panel.style.minHeight = '32px';
+} else {
+panel.style.height = consoleHeight + 'px';
+panel.style.minHeight = '100px';
+}
+}
+function setupResizer() {
+const resizer = document.getElementById('resizer');
+const editorPanel = document.getElementById('editorPanel');
+const mainArea = document.getElementById('mainArea');
+let isResizing = false;
+resizer.addEventListener('mousedown', () => {
+isResizing = true;
+resizer.classList.add('dragging');
+document.body.style.cursor = 'col-resize';
+document.body.style.userSelect = 'none';
+});
+document.addEventListener('mousemove', e => {
+if (!isResizing) return;
+const rect = mainArea.getBoundingClientRect();
+const percent = ((e.clientX - rect.left) / rect.width) * 100;
+if (percent > 20 && percent < 80) {
+editorPanel.style.width = percent + '%';
+}
+});
+document.addEventListener('mouseup', () => {
+if (isResizing) {
+isResizing = false;
+resizer.classList.remove('dragging');
+document.body.style.cursor = '';
+document.body.style.userSelect = '';
+}
+});
+}
+function setupConsoleResize() {
+const header = document.getElementById('consoleHeader');
+const panel = document.getElementById('consolePanel');
+let isResizing = false;
+let startY, startHeight;
+header.addEventListener('mousedown', e => {
+if (e.target.closest('.console-actions')) return;
+isResizing = true;
+startY = e.clientY;
+startHeight = panel.offsetHeight;
+document.body.style.cursor = 'ns-resize';
+document.body.style.userSelect = 'none';
+});
+document.addEventListener('mousemove', e => {
+if (!isResizing) return;
+const newHeight = startHeight - (e.clientY - startY);
+if (newHeight > 100 && newHeight < 400) {
+consoleHeight = newHeight;
+panel.style.height = newHeight + 'px';
+panel.style.minHeight = '100px';
+consoleCollapsed = false;
+}
+});
+document.addEventListener('mouseup', () => {
+if (isResizing) {
+isResizing = false;
+document.body.style.cursor = '';
+document.body.style.userSelect = '';
+}
+});
+}
+function formatCode() {
+const editor = editors[currentTab];
+let code = editor.value;
+if (currentTab === 'html') {
+let indent = 0;
+const lines = code.split('\n');
+code = lines.map(line => {
+line = line.trim();
+if (!line) return '';
+if (line.match(/^<\//)) indent = Math.max(0, indent - 1);
+const result = '  '.repeat(indent) + line;
+if (line.match(/^<[^/][^>]*>[^<]*$/) && !line.match(/\/>/)) indent++;
+if (line.match(/^<\//)) indent = Math.max(0, indent - 1);
+return result;
+}).join('\n');
+} else if (currentTab === 'css') {
+code = code.replace(/\s*\{\s*/g, ' {\n  ')
+.replace(/;\s*/g, ';\n  ')
+.replace(/\s*\}\s*/g, '\n}\n')
+.replace(/\n\s*\n/g, '\n');
+} else if (currentTab === 'js') {
+code = code.replace(/;\s*/g, ';\n')
+.replace(/\{\s*/g, '{\n  ')
+.replace(/\}\s*/g, '\n}\n')
+.replace(/\n\s*\n/g, '\n');
+}
+editor.value = code;
+updateLineNumbers(editor);
+updateStats(editor);
+autoSave();
+showToast('代码已格式化', '&#10024;');
+}
+function clearAll() {
+if (!confirm('确定要清空所有代码吗？')) return;
+htmlEditor.value = '';
+cssEditor.value = '';
+jsEditor.value = '';
+updateAllLineNumbers();
+updateAllStats();
+autoSave();
+runCode();
+clearConsole();
+showToast('已清空所有代码', '&#128465;');
+}
+function openNewWindow() {
+const blob = new Blob([
+htmlEditor.value + '<style>' + cssEditor.value + '</style><script>' + jsEditor.value + '<\/script>'
+], { type: 'text/html' });
+window.open(URL.createObjectURL(blob), '_blank');
+}
+function autoSave() {
+localStorage.setItem('cs_h', htmlEditor.value);
+localStorage.setItem('cs_c', cssEditor.value);
+localStorage.setItem('cs_j', jsEditor.value);
+}
+function loadFromStorage() {
+htmlEditor.value = localStorage.getItem('cs_h') || '';
+cssEditor.value = localStorage.getItem('cs_c') || '';
+jsEditor.value = localStorage.getItem('cs_j') || '';
+}
+function showToast(msg, icon) {
+const toast = document.getElementById('toast');
+document.getElementById('toastIcon').innerHTML = icon || '&#9989;';
+document.getElementById('toastMsg').innerHTML = msg;
+toast.classList.add('show');
+setTimeout(() => toast.classList.remove('show'), 2500);
+}
+init();</script>
+</body>
+</html>

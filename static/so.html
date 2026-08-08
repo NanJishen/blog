@@ -1,281 +1,576 @@
-<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="Author" content="南极神"><meta name="Keywords" content="极限搜索,极限玩家"><meta name="Description" content="极限搜索,极限玩家"><title>极限搜索</title>
-<link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="shortcut icon" href="favicon.ico">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="manifest" href="site.webmanifest">
-<style>:root{--primary-color:#222;--secondary-color:#0d0d0d;--background:#1a1a1a;--text-color:#f8c073;--border-radius:10px;--shadow:0 4px 6px -1px #00000080;--font-family:'Microsoft YaHei',-apple-system,Roboto,sans-serif}*{margin:0;padding:0;box-sizing:border-box}a{color:inherit;text-decoration:none}body{font-family:var(--font-family);background:var(--background);color:var(--text-color);display:flex;flex-direction:column}header{background:linear-gradient(135deg,var(--primary-color),var(--secondary-color));color:#ffaa32;padding:2rem;text-align:center;box-shadow:var(--shadow)}.search-container{max-width:800px;margin:2rem auto;padding:0 1rem}#searchInput{width:100%;padding:1rem;border:2px solid #333;border-radius:var(--border-radius);font-size:1rem;margin-bottom:1rem;transition:all 0.2s ease;background:#262626;color:var(--text-color)}#searchInput:focus{outline:none;border-color:var(--primary-color);box-shadow:0 0 0 1px #ec8a00}.search-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:1rem}.dropdown > button{width:100%}button{background:#252525;border:1px solid #444;border-radius:var(--border-radius);padding:0.75rem 1rem;font-size:0.9rem;cursor:pointer;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;color:var(--text-color)}button:hover{color:#ffaa00;background:var(--primary-color);box-shadow:var(--shadow)}.dropdown{position:relative}.dropdown-content{position:absolute;top:100%;left:0;right:0;background:#252525;border-radius:var(--border-radius);box-shadow:var(--shadow);display:none;z-index:10}.dropdown-content.show{display:grid;grid-template-columns:1fr}#sidebar{position:fixed;top:0;right:-220px;width:220px;height:100vh;background:#252525;box-shadow:var(--shadow);transition:right 0.3s ease;padding:1rem;z-index:1000}#sidebar.active{right:0}#sidebar-toggle{position:fixed;top:20px;right:20px;width:40px;height:40px;color:#f8c073;border:none;border-radius:var(--border-radius);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;box-shadow:var(--shadow);z-index:1001}#sidebar button{background:none;border:none;color:var(--text-color);text-align:left;width:100%;padding:0.5rem;cursor:pointer;font-size:1rem;display:block;border-radius:8px;transition:background 0.2s ease}#sidebar ul{list-style:none;padding-left:0}#sidebar > ul > li{margin:0.5rem 0;position:relative}#sidebar a{color:var(--text-color);text-decoration:none;display:block;padding:0.5rem;border-radius:8px;transition:background 0.2s ease}#sidebar a:hover{background:var(--background)}#sidebar ul ul{padding-left:1rem;display:none}#sidebar ul ul.show{display:block}#sidebar ul ul li{margin:0.25rem 0}#sidebar li.has-submenu > a::after{content:"▸";float:right;transition:transform 0.2s ease}#sidebar li.has-submenu.open > a::after{transform:rotate(90deg)}#sidebar li.has-submenu.open > ul{display:block}#donationModal{position:fixed;top:0;left:0;right:0;bottom:0;display:none;justify-content:center;align-items:center;z-index:1002}#donationModal img{max-width:300px;border-radius:var(--border-radius);box-shadow:var(--shadow)}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000000b3;justify-content:center;align-items:center;z-index:1000}.modal-content{background:var(--background);padding:2rem;border-radius:var(--border-radius);box-shadow:var(--shadow);max-width:90%;position:relative;color:var(--text-color)}.modal-content .close{position:absolute;top:0.5rem;right:1rem;font-size:1.5rem;cursor:pointer;color:var(--text-color)}.modal-content .close:hover{color:var(--primary-color)}.modal-content img{max-width:100%;border-radius:var(--border-radius)}#helpContent{line-height:2em;color:#ffaa32}</style>
-</head><body ontouchstart><header><h1><a href="so.html">极限搜索</a></h1></header>
-  <main>
-    <div class="search-container">
-      <input type="text" id="searchInput" placeholder="Search"
-             onblur="executeCommand()"
-             onkeydown="if(event.keyCode === 13) document.getElementById('defaultSearch').click()">
-      <div class="search-options">
-        <div class="dropdown">
-          <button onclick="toggleDropdown(this)">AI</button>
-          <div class="dropdown-content">
-            <button id="defaultSearch" onclick="search('GPT')">ChatGPT</button>
-            <button onclick="search('Copilot')">Copilot</button>
-          </div>
-        </div>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="Author" content="南极神">
+<meta name="Keywords" content="极限搜索,极限玩家">
+<meta name="Description" content="极限搜索,极限玩家">
+<title>极限搜索</title>
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+<link rel="manifest" href="./site.webmanifest">
+<style>
+  :root{
+    /* ---- token system ---- */
+    --bg:               #0a0a0c;
+    --bg-elevated:      #131317;
+    --surface:          #19191d;
+    --surface-hover:    #212126;
+    --border:           #2a2a30;
+    --border-soft:      #232328;
+    --accent:           #f0a940;
+    --accent-strong:    #ffc36b;
+    --accent-soft:      rgba(240,169,64,.10);
+    --accent-soft-2:    rgba(240,169,64,.22);
+    --text:             #e9dfc9;
+    --text-dim:         #9a9488;
+    --text-faint:       #5f5b53;
+    --radius:           10px;
+    --radius-sm:        7px;
+    --shadow:           0 8px 24px -8px rgba(0,0,0,.6);
+    --font-display:     ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, "PingFang SC", "Microsoft YaHei", monospace;
+    --font-body:        -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Roboto, sans-serif;
+  }
 
-        <button onclick="search('百度')">百度</button>
-        <button onclick="search('谷歌')">谷歌</button>
-        <button onclick="search('必应')">必应</button>
-        <button onclick="search('维基')">维基</button>
-        <button onclick="search('知乎')">知乎</button>
+  *{margin:0;padding:0;box-sizing:border-box}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--accent-soft-2);color:var(--accent-strong)}
 
-        <div class="dropdown">
-          <button onclick="toggleDropdown(this)">翻译</button>
-          <div class="dropdown-content">
-            <button onclick="search('Bingfy')">Bing</button>
-            <button onclick="search('欧路')">欧路</button>
-          </div>
-        </div>
+  body{
+    font-family:var(--font-body);
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;flex-direction:column;
+    position:relative;
+    overflow-x:hidden;
+  }
 
-        <button onclick="search('图片')">图片</button>
-        <button onclick="search('油管')">油管</button>
-        <button onclick="search('哔哩')">哔哩</button>
-        <button onclick="search('微博')">微博</button>
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;
+  }
 
-        <div class="dropdown">
-          <button onclick="toggleDropdown(this)">购物</button>
-          <div class="dropdown-content">
-            <button onclick="search('值得买')">值买</button>
-            <button onclick="search('淘宝')">淘宝</button>
-            <button onclick="search('京东')">京东</button>
-          </div>
-        </div>
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
 
-        <div class="dropdown">
-          <button onclick="toggleDropdown(this)">影视</button>
-          <div class="dropdown-content">
-            <button onclick="search('豆瓣')">豆瓣</button>
-            <button onclick="search('番茄')">番茄</button>
-            <button onclick="search('字幕')">字幕</button>
-          </div>
-        </div>
+  /* faint ambient scanline texture, purely atmospheric */
+  .scanline-overlay{
+    position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,.012) 0px,rgba(255,255,255,.012) 1px,transparent 1px,transparent 3px),
+               radial-gradient(ellipse at 50% -10%,rgba(240,169,64,.06),transparent 60%);
+  }
 
-        <div class="dropdown">
-          <button onclick="toggleDropdown(this)">程序</button>
-          <div class="dropdown-content">
-            <button onclick="search('容器')">容器</button>
-            <button onclick="search('应用')">应用</button>
-            <button onclick="search('扩展')">扩展</button>
-            <button onclick="search('油猴')">油猴</button>
-          </div>
-        </div>
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:relative;z-index:2;
+    padding:1.4rem 1.2rem 0.6rem;
+  }
+  .topbar-inner{
+    max-width:900px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{
+    font-family:var(--font-display);
+    font-size:1.4rem;letter-spacing:.02em;color:var(--text-dim);
+    display:flex;align-items:baseline;gap:2px;
+  }
+  .brand b{color:var(--accent);font-weight:600}
+  .clock{
+    font-family:var(--font-display);font-size:.85rem;color:var(--text-faint);
+    letter-spacing:.03em;
+  }
 
-        <div class="dropdown">
-          <button onclick="toggleDropdown(this)">网络</button>
-          <div class="dropdown-content">
-            <button onclick="search('CheckIP')">Check</button>
-            <button onclick="search('Whios')">Whios</button>
-            <button onclick="search('ping0')">Ping0</button>
-            <button onclick="search('Ping')">Ping</button>
-          </div>
-        </div>
+  @keyframes blink{50%{opacity:0}}
+  @media (prefers-reduced-motion: reduce){
+    .prompt-caret{animation:none}
+  }
 
-        <div class="dropdown">
-          <button onclick="toggleDropdown(this)">更多</button>
-          <div class="dropdown-content">
-            <button onclick="search('股票')">股票</button>
-            <button onclick="search('QR')">QR</button>
-            <button onclick="search('Cheat')">Cheat</button>
-            <button onclick="search('Linuxcmd')">LinuxCMD</button>
-          </div>
+  /* ---------- console / hero ---------- */
+  main{position:relative;z-index:1;flex:1;padding:0 1.2rem 3rem}
+  .console{max-width:900px;margin:0 auto;padding-top:2.2rem}
+
+  .input-row{
+    display:flex;align-items:center;gap:.7rem;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid #ff9800;
+    border-radius:0;
+    padding:0 .3rem 0 1.1rem;
+  }
+  .prompt-caret{
+    font-family:var(--font-display);color:var(--accent);font-size:1.1rem;
+    animation:blink 1.1s steps(1) infinite;
+  }
+  #searchInput{
+    flex:1;border:0;background:transparent;color:var(--text);
+    font-family:var(--font-body);font-size:1.05rem;
+    padding:1rem .2rem;
+  }
+  #searchInput::placeholder{color:var(--text-faint)}
+  #searchInput:focus{outline:none}
+
+  @keyframes shake{
+    10%,90%{transform:translateX(-1px)}
+    20%,80%{transform:translateX(2px)}
+    30%,50%,70%{transform:translateX(-4px)}
+    40%,60%{transform:translateX(4px)}
+  }
+  .input-row.shake{animation:shake .4s ease}
+  @media (prefers-reduced-motion: reduce){
+    .input-row.shake{animation:none;border-color:var(--accent)}
+  }
+
+  /* ---------- category cards ---------- */
+  .categories{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:.9rem;
+    margin-top:1.8rem;
+  }
+  .category{
+    background:var(--bg-elevated);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+    padding:.9rem .9rem 1rem;
+  }
+  .category-title{
+    display:flex;align-items:center;gap:.45rem;
+    font-family:var(--font-display);
+    font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--text-dim);font-weight:600;
+    margin-bottom:.7rem;
+    padding-left:.55rem;
+    border-left:2px solid var(--accent-soft-2);
+  }
+  .category-title .icon{width:14px;height:14px;flex-shrink:0;color:var(--accent)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:.45rem}
+  .chip{
+    display:inline-flex;align-items:center;gap:.35rem;
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--text);
+    font-size:.86rem;
+    padding:.5rem .8rem;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .15s ease, border-color .15s ease, color .15s ease, transform .1s ease;
+  }
+  .chip:hover{background:var(--surface-hover);border-color:var(--accent-soft-2);color:var(--accent-strong)}
+  .chip:active{transform:scale(.96)}
+
+  /* ---------- sidebar toggle ---------- */
+  #sidebar-toggle{
+    position:fixed;top:18px;right:18px;width:40px;height:40px;
+    background:var(--surface);border:1px solid var(--border);color:var(--text);
+    border-radius:var(--radius-sm);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+    box-shadow:var(--shadow);z-index:1001;
+    transition:background .15s ease, color .15s ease;
+  }
+  #sidebar-toggle:hover{background:var(--surface-hover);color:var(--accent)}
+
+  /* ---------- sidebar ---------- */
+  #sidebar{
+    position:fixed;top:0;right:-260px;width:260px;height:100vh;
+    background:var(--bg-elevated);border-left:1px solid var(--border-soft);
+    box-shadow:var(--shadow);transition:right .25s ease;
+    padding:4.2rem 1rem 1rem;z-index:1000;overflow-y:auto;
+  }
+  #sidebar.active{right:0}
+  #sidebar ul{list-style:none}
+  #sidebar > ul > li{margin:.15rem 0}
+  #sidebar a{
+    color:var(--text-dim);display:flex;align-items:center;justify-content:flex-start;
+    padding:.65rem .7rem;border-radius:var(--radius-sm);font-size:.92rem;
+    transition:background .15s ease,color .15s ease;
+  }
+  #sidebar a:hover{background:var(--surface);color:var(--accent-strong)}
+  #sidebar ul ul{padding-left:.9rem;max-height:0;overflow:hidden;transition:max-height .2s ease}
+  #sidebar ul ul.show{max-height:400px}
+  #sidebar li.has-submenu > a::after{
+    content:"▸";font-size:.75rem;color:var(--text-faint);
+    transition:transform .2s ease;
+  }
+  #sidebar li.has-submenu.open > a::after{transform:rotate(90deg);color:var(--accent)}
+  #sidebar-divider{height:1px;background:var(--border-soft);margin:.6rem .5rem}
+
+  /* ---------- modals ---------- */
+  .modal{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);
+    justify-content:center;align-items:center;z-index:1002;padding:1rem;
+  }
+  .modal-content{
+    background:var(--bg-elevated);border:1px solid var(--border-soft);
+    padding:1.6rem;border-radius:var(--radius);box-shadow:var(--shadow);
+    max-width:min(90vw,380px);position:relative;color:var(--text);
+  }
+  .modal-content h3{
+    font-family:var(--font-display);font-size:.95rem;letter-spacing:.03em;
+    color:var(--accent);margin-bottom:1rem;
+  }
+  .modal-content .close{
+    position:absolute;top:.6rem;right:.9rem;font-size:1.4rem;line-height:1;
+    cursor:pointer;color:var(--text-faint);
+  }
+  .modal-content .close:hover{color:var(--accent)}
+  .modal-content img{max-width:100%;border-radius:var(--radius-sm);display:block;margin:0 auto}
+
+  #helpContent table{width:100%;border-collapse:collapse;font-size:.88rem}
+  #helpContent td{padding:.45rem .3rem;border-bottom:1px solid var(--border-soft)}
+  #helpContent td:first-child{
+    font-family:var(--font-display);color:var(--accent);width:70px;
+  }
+  #helpContent td:last-child{color:var(--text-dim)}
+
+  @media (max-width:520px){
+    .topbar{padding:1.1rem 1.1rem .4rem}
+    .console{padding-top:1.4rem}
+    .categories{grid-template-columns:1fr 1fr;gap:.6rem}
+    .category{padding:.75rem .7rem .85rem}
+  }
+  @media (max-width:360px){
+    .categories{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="scanline-overlay" aria-hidden="true"></div>
+
+<!-- icon sprite -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <symbol id="icon-ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M9 3v4M15 3v4M8 12h.01M16 12h.01M9 16h6"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+    <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18"/></symbol>
+    <symbol id="icon-media" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="15" rx="2"/><circle cx="8.5" cy="9.5" r="1.4"/><path d="M21 15l-5-5-9 9"/></symbol>
+    <symbol id="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.2"/><circle cx="18" cy="20" r="1.2"/><path d="M2.5 3h2l2.6 12.2a2 2 0 0 0 2 1.6h8a2 2 0 0 0 2-1.5L21 8H6"/></symbol>
+    <symbol id="icon-film" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M3 15h18M8 4v4M8 15v5M16 4v4M16 15v5"/></symbol>
+    <symbol id="icon-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></symbol>
+    <symbol id="icon-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5a16 16 0 0 1 20 0M5.5 12.5a11 11 0 0 1 13 0M9 16.5a6 6 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></symbol>
+    <symbol id="icon-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"/></symbol>
+    <symbol id="icon-tools" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3-3z"/></symbol>
+    <symbol id="icon-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.5-4.6-10-9.3C0.3 8 2 4.5 5.6 4c2-.3 3.8.7 6.4 3.2C14.6 4.7 16.4 3.7 18.4 4c3.6.5 5.3 4 3.6 7.7C19.5 16.4 12 21 12 21z"/></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></symbol>
+  </defs>
+</svg>
+
+<button id="sidebar-toggle" onclick="toggleSidebar()" aria-label="打开导航菜单" aria-controls="sidebar" aria-expanded="false">☰</button>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="so.html"><b>极限搜索</b></a>
+    <div id="clock" class="clock"></div>
+  </div>
+</header>
+
+<main>
+  <section class="console" aria-label="搜索控制台">
+    <label for="searchInput" class="visually-hidden">搜索内容</label>
+    <div class="input-row">
+      <span class="prompt-caret" aria-hidden="true">&gt;</span>
+      <input type="text" id="searchInput" autocomplete="off" spellcheck="false"
+             onkeydown="handleKeydown(event)">
+    </div>
+
+    <div class="categories">
+
+      <div class="category">
+        <h2 class="category-title"><svg class="icon"><use href="#icon-search"></use></svg>搜索引擎</h2>
+        <div class="chips">
+          <button class="chip" id="defaultSearch" data-engine="谷歌">谷歌</button>
+          <button class="chip" data-engine="百度">百度</button>
+          <button class="chip" data-engine="必应">必应</button>
+          <button class="chip" data-engine="维基">维基</button>
         </div>
       </div>
+
+      <div class="category">
+        <h2 class="category-title"><svg class="icon"><use href="#icon-ai"></use></svg>AI 助手</h2>
+        <div class="chips">
+          <button class="chip" data-engine="GPT">ChatGPT</button>
+          <button class="chip" data-engine="Gemini">Gemini</button>
+          <button class="chip" data-engine="Claude">Claude</button>
+          <button class="chip" data-engine="DeepSeek">DeepSeek</button>
+          <button class="chip" data-engine="Copilot">Copilot</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h2 class="category-title"><svg class="icon"><use href="#icon-globe"></use></svg>翻译词典</h2>
+        <div class="chips">
+          <button class="chip" data-engine="Bingfy">Bing 词典</button>
+          <button class="chip" data-engine="欧路">欧路词典</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h2 class="category-title"><svg class="icon"><use href="#icon-media"></use></svg>社交媒体</h2>
+        <div class="chips">
+          <button class="chip" data-engine="知乎">知乎</button>
+          <button class="chip" data-engine="油管">油管</button>
+          <button class="chip" data-engine="哔哩">哔哩</button>
+          <button class="chip" data-engine="微博">微博</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h2 class="category-title"><svg class="icon"><use href="#icon-cart"></use></svg>购物比价</h2>
+        <div class="chips">
+          <button class="chip" data-engine="值得买">值得买</button>
+          <button class="chip" data-engine="淘宝">淘宝</button>
+          <button class="chip" data-engine="京东">京东</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h2 class="category-title"><svg class="icon"><use href="#icon-film"></use></svg>影视资源</h2>
+        <div class="chips">
+          <button class="chip" data-engine="豆瓣">豆瓣</button>
+          <button class="chip" data-engine="番茄">番茄</button>
+          <button class="chip" data-engine="字幕">字幕</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h2 class="category-title"><svg class="icon"><use href="#icon-package"></use></svg>程序应用</h2>
+        <div class="chips">
+          <button class="chip" data-engine="容器">容器</button>
+          <button class="chip" data-engine="应用">应用</button>
+          <button class="chip" data-engine="扩展">扩展</button>
+          <button class="chip" data-engine="油猴">油猴</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h2 class="category-title"><svg class="icon"><use href="#icon-wifi"></use></svg>网络工具</h2>
+        <div class="chips">
+          <button class="chip" data-engine="CheckIP">CheckIP</button>
+          <button class="chip" data-engine="Whios">Whios</button>
+          <button class="chip" data-engine="ping0">ping0</button>
+          <button class="chip" data-engine="Ping">Ping</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h2 class="category-title"><svg class="icon"><use href="#icon-grid"></use></svg>更多</h2>
+        <div class="chips">
+          <button class="chip" data-engine="股票">股票</button>
+          <button class="chip" data-engine="QR">QR</button>
+          <button class="chip" data-engine="Cheat">Cheat</button>
+          <button class="chip" data-engine="Linuxcmd">LinuxCMD</button>
+        </div>
+      </div>
+
     </div>
-  </main>
+  </section>
+</main>
 
-  <button id="sidebar-toggle" onclick="toggleSidebar()">☰</button>
-
-  <aside id="sidebar">
-    <ul>
-      <li><a href="https://nav.ttti.cc">极限导航</a></li>
-      <li><a href="https://ttti.cc">极限博客</a></li>
-      <li><a href="app.html">软件推荐</a></li>
-      <li><a href="win.html">操作系统</a></li>
-      <li class="has-submenu">
-        <a href="javascript:void(0)" onclick="toggleDropdown(this)">在线工具</a>
-        <ul>
-          <li><a href="minitools/textedit.html">文本处理</a></li>
-          <li><a href="minitools/stitching.html">截图拼接</a></li>
-          <li><a href="minitools/calcdate.html">日期计算</a></li>
-          <li><a href="minitools/Palette/palette.html">颜色编码</a></li>
-          <li><a href="minitools/todolist.html">要事第一</a></li>
-        </ul>
-      </li>
-      <li><a href="#" onclick="showDonation()">赞赏支持</a>
-      </li>
-      <li><a href="minitools/about.html">关于我的</a></li>
-    </ul>
-  </aside>
+<aside id="sidebar" aria-label="站点导航">
+  <ul>
+    <li><a href="https://ttti.cc"><span>极限博客</span></a></li>
+    <li><a href="https://nav.ttti.cc"><span>极限导航</span></a></li>
+    <li><a href="./app/index.html"><span>系统与软件</span></a></li>
+    <li class="has-submenu">
+      <a href="javascript:void(0)" onclick="toggleSubmenu(this.parentElement)"><span>在线工具</span></a>
+      <ul>
+        <li><a href="minitools/notepad.html">记事本</a></li>
+        <li><a href="minitools/calc.html">计算器</a></li>
+        <li><a href="minitools/textedit.html">快捷便笺</a></li>
+        <li><a href="minitools/stitching.html">截图拼接</a></li>
+        <li><a href="minitools/todolist.html">要事第一</a></li>
+        <li><a href="minitools/stickynote.html">浮动看板</a></li>
+        <li><a href="minitools/palette.html">调色板</a></li>
+        <li><a href="minitools/watermark.html">加水印</a></li>
+      </ul>
+    </li>
+    <li id="sidebar-divider"></li>
+    <li><a href="#" onclick="showDonation();return false;"><span>赞赏支持</span></a></li>
+    <li><a href="about.html"><span>关于我的</span></a></li>
+  </ul>
+</aside>
 
 <!-- 赞赏支持模态框 -->
 <div id="donationModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="hideDonation()">&times;</span>
-    <h3>感谢你的支持</h3><br>
-    <img src="assets/pay.jpg" alt="赞赏二维码">
+    <h3>感谢你的支持</h3>
+    <img src="pay.jpg" alt="赞赏二维码">
   </div>
 </div>
-  <div id="helpModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="hideHelp()">&times;</span>
-      <div id="helpContent"></div>
-    </div>
+
+<!-- 帮助模态框 -->
+<div id="helpModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="hideHelp()">&times;</span>
+    <h3>快捷指令</h3>
+    <div id="helpContent"></div>
   </div>
+</div>
 
-  <script>
-    // 初始化聚焦搜索框
-    document.getElementById('searchInput').focus();
+<script>
+  const searchInput = document.getElementById('searchInput');
+  searchInput.focus();
 
-    // 搜索功能
-    const searchEngines = {
-      'GPT': 'https://chatgpt.com/?q=',
-      'Copilot': 'https://www.bing.com/search?showconv=1&sendquery=1&q=',
-      '百度': 'https://www.baidu.com/s?wd=',
-      '谷歌': 'https://www.google.com/search?q=',
-      '必应': 'https://cn.bing.com/search?q=',
-      '维基': 'https://zh.wikipedia.org/wiki/',
-      '知乎': 'https://www.zhihu.com/search?type=content&q=',
-      'Bingfy': 'https://cn.bing.com/dict/search?q=',
-      '欧路': 'https://dict.eudic.net/dicts/en/',
-      '图片': 'https://yandex.com/images/search?text=',
-      '油管': 'https://www.youtube.com/hashtag/',
-      '哔哩': 'https://search.bilibili.com/all?keyword=',
-      '值得买': 'https://search.smzdm.com/?s=',
-      '淘宝': 'https://s.taobao.com/search?q=',
-      '京东': 'https://search.jd.com/Search?keyword=',
-      '微博': 'https://s.weibo.com/weibo/',
-      '豆瓣': 'https://www.douban.com/search?q=',
-      '番茄': 'https://www.rottentomatoes.com/search?search=',
-      '字幕': 'https://subhd.tv/search/',
-      '容器': 'https://hub.docker.com/search?q=',
-      'CheckIP': 'https://check-host.net/ip-info?host=',
-      'Whios': 'https://w.is/',
-      'ping0': 'https://ping0.cc/ip/',
-      'Ping': 'https://ping.pe/',
-      '应用': 'https://play.google.com/store/search?q=',
-      '扩展': 'https://chrome.google.com/webstore/search/',
-      '油猴': 'https://greasyfork.org/zh-CN/scripts?q=',
-      '股票': 'https://xueqiu.com/k?q=',
-      'QR': 'https://my.tv.sohu.com/user/a/wvideo/getQRCode.do?text=',
-      'Linuxcmd': 'https://www.linuxcool.com/',
-      'Cheat': 'https://cheat.sh/'
-    };
+  // ---- 实时时钟（终端风格装饰，兼具实用性）----
+  function tickClock(){
+    const d = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('clock').textContent =
+      `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
 
-    function search(engine) {
-      const query = document.getElementById('searchInput').value;
-      if (query) {
-        window.open(searchEngines[engine] + encodeURIComponent(query));
-      }
+  // ---- 搜索引擎映射（保持原有全部条目与地址）----
+  const searchEngines = {
+    'GPT': 'https://chatgpt.com/?q=',
+    'Gemini': 'https://gemini.google.com/app?q=',
+    'Claude': 'https://claude.ai/new?q=',
+    'DeepSeek': 'https://chat.deepseek.com/?q=',
+    'Copilot': 'https://www.bing.com/search?showconv=1&sendquery=1&q=',
+    '百度': 'https://www.baidu.com/s?wd=',
+    '谷歌': 'https://www.google.com/search?q=',
+    '必应': 'https://cn.bing.com/search?q=',
+    '维基': 'https://zh.wikipedia.org/wiki/',
+    '知乎': 'https://www.zhihu.com/search?type=content&q=',
+    'Bingfy': 'https://cn.bing.com/dict/search?q=',
+    '欧路': 'https://dict.eudic.net/dicts/en/',
+    '油管': 'https://www.youtube.com/hashtag/',
+    '哔哩': 'https://search.bilibili.com/all?keyword=',
+    '值得买': 'https://search.smzdm.com/?s=',
+    '淘宝': 'https://s.taobao.com/search?q=',
+    '京东': 'https://search.jd.com/Search?keyword=',
+    '微博': 'https://s.weibo.com/weibo/',
+    '豆瓣': 'https://www.douban.com/search?q=',
+    '番茄': 'https://www.rottentomatoes.com/search?search=',
+    '字幕': 'https://subhd.tv/search/',
+    '容器': 'https://hub.docker.com/search?q=',
+    'CheckIP': 'https://check-host.net/ip-info?host=',
+    'Whios': 'https://w.is/',
+    'ping0': 'https://ping0.cc/ip/',
+    'Ping': 'https://ping.pe/',
+    '应用': 'https://play.google.com/store/search?q=',
+    '扩展': 'https://chrome.google.com/webstore/search/',
+    '油猴': 'https://greasyfork.org/zh-CN/scripts?q=',
+    '股票': 'https://xueqiu.com/k?q=',
+    'QR': 'https://my.tv.sohu.com/user/a/wvideo/getQRCode.do?text=',
+    'Linuxcmd': 'https://www.linuxcool.com/',
+    'Cheat': 'https://cheat.sh/'
+  };
+
+  function openSearch(engine, query){
+    const template = searchEngines[engine];
+    if (!template) return;
+    const url = template.includes('{q}')
+      ? template.replace('{q}', encodeURIComponent(query))
+      : template + encodeURIComponent(query);
+    // noopener/noreferrer: prevents the third-party page from getting a
+    // handle back to this tab (window.opener) — avoids reverse-tabnabbing.
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  function search(engine){
+    const query = searchInput.value.trim();
+    if (!query){
+      const row = document.querySelector('.input-row');
+      row.classList.remove('shake'); void row.offsetWidth; // restart animation
+      row.classList.add('shake');
+      searchInput.focus();
+      return;
     }
+    openSearch(engine, query);
+  }
 
-    // 快捷命令
-    const shortcuts = {
-      '?': showHelp,
-      '？': showHelp,
-      'a': () => window.location.href = "xyz.html",
-      'aria': () => window.location.href = "file:///C:/Users/nanji/OneDrive/Apps/Aria2/AriaNg.html",
-      'cheat': () => window.location.href = "cheatsheets/index.html",
-      'oml': () => window.location.href = "https://outlook.live.com",
-      'gml': () => window.location.href = "https://mail.google.com",
-      'gh': () => window.location.href = "https://github.com",
-      'gm': () => window.location.href = "https://gitmind.cn/app",
-      'hc': () => window.location.href = "https://hack.chat?extplayer",
-      'ip': () => window.location.href = "https://ipcheck.ing/",
-      'mb': () => window.location.href = "https://mubu.com",
-      'mp': () => window.location.href = "https://mp.weixin.qq.com",
-      'r2': () => window.location.href = "https://theoldreader.com",
-      'rt': () => window.location.href = "http://192.168.10.1",
-      'rt2': () => window.location.href = "http://192.168.1.1",
-      'ss': () => window.location.href = "https://ss.giki.app",
-      'tb': () => window.location.href = "https://login.taobao.com",
-      'tm': () => window.location.href = "https://time.is",
-      'tq': () => window.location.href = "http://www.weather.com.cn/weather1dn/101070501.shtml",
-      'tr': () => window.location.href = "https://cn.bing.com/translator",
-      'xyz': () => window.location.href = "https://a.aaxyz.de/"
-    };
+  // 事件委托：所有带 data-engine 的按钮统一在这里处理，不用逐个写 onclick
+  document.querySelector('.categories').addEventListener('click', function(e){
+    const btn = e.target.closest('[data-engine]');
+    if (!btn) return;
+    search(btn.dataset.engine);
+  });
 
-    function executeCommand() {
-      const cmd = document.getElementById('searchInput').value.trim();
-      if (cmd in shortcuts) {
-        shortcuts[cmd]();
-        document.getElementById('searchInput').value = '';
-      }
+  // ---- 快捷指令（保持原有全部条目与地址）----
+  const shortcuts = {
+    '?': showHelp,
+    '？': showHelp,
+    'oml': () => window.location.href = "https://outlook.live.com",
+    'gml': () => window.location.href = "https://mail.google.com",
+    'ip':  () => window.location.href = "https://ipcheck.ing",
+    'tm':  () => window.location.href = "https://datetime.app/zh-hans",
+    'tq':  () => window.location.href = "http://www.weather.com.cn/weather1dn/101070501.shtml",
+    'tr':  () => window.location.href = "https://cn.bing.com/translator",
+    'xyz': () => window.location.href = "https://a.aaxyz.de/"
+  };
+
+  // 回车：先匹配指令，未命中则用当前默认搜索引擎（谷歌，标了 ↵ 的那个）
+  function handleKeydown(e){
+    if (e.key !== 'Enter') return;
+    const cmd = searchInput.value.trim();
+    if (cmd in shortcuts){
+      shortcuts[cmd]();
+      searchInput.value = '';
+      return;
     }
+    const defaultChip = document.getElementById('defaultSearch');
+    if (defaultChip) search(defaultChip.dataset.engine);
+  }
 
-    // 侧边栏功能
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('active');
+  // ---- 侧边栏 ----
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+
+  function toggleSidebar(){
+    const open = sidebar.classList.toggle('active');
+    sidebarToggle.setAttribute('aria-expanded', open);
+  }
+
+  document.addEventListener('click', function(event){
+    if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)){
+      sidebar.classList.remove('active');
+      sidebarToggle.setAttribute('aria-expanded', 'false');
     }
+  });
 
-    // 点击页面其他区域关闭侧边栏
-    document.addEventListener('click', function(event) {
-      const sidebar = document.getElementById('sidebar');
-      const sidebarToggle = document.getElementById('sidebar-toggle');
+  function toggleSubmenu(li){
+    li.classList.toggle('open');
+    li.querySelector('ul').classList.toggle('show');
+  }
 
-      // 如果点击的不是侧边栏或汉堡菜单按钮，则关闭侧边栏
-      if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
-        sidebar.classList.remove('active');
-      }
-    });
+  // ---- 赞赏支持模态框 ----
+  function showDonation(){ document.getElementById('donationModal').style.display = 'flex'; }
+  function hideDonation(){ document.getElementById('donationModal').style.display = 'none'; }
 
-    // 子菜单功能
-    function toggleDropdown(button) {
-      // 关闭所有其他已经打开的子菜单
-      const dropdowns = document.querySelectorAll('.dropdown-content, #sidebar ul ul');
-      dropdowns.forEach(dropdown => {
-        if (dropdown !== button.nextElementSibling && dropdown !== button.parentElement.querySelector('ul')) {
-          dropdown.classList.remove('show');
-        }
-      });
+  // ---- 帮助模态框 ----
+  function showHelp(){
+    document.getElementById('helpContent').innerHTML = `
+      <table>
+        <tr><td>oml</td><td>打开 Outlook</td></tr>
+        <tr><td>gml</td><td>打开 Gmail</td></tr>
+        <tr><td>ip</td><td>查看本机 IP</td></tr>
+        <tr><td>tm</td><td>查看当前时间</td></tr>
+        <tr><td>tq</td><td>查看天气</td></tr>
+        <tr><td>tr</td><td>打开必应翻译</td></tr>
+        <tr><td>xyz</td><td>打开导航中转</td></tr>
+        <tr><td>?</td><td>显示本帮助</td></tr>
+      </table>`;
+    document.getElementById('helpModal').style.display = 'flex';
+    searchInput.value = '';
+  }
+  function hideHelp(){ document.getElementById('helpModal').style.display = 'none'; }
 
-      // 切换当前点击的子菜单
-      if (button.nextElementSibling) {
-        button.nextElementSibling.classList.toggle('show');
-      } else if (button.parentElement.querySelector('ul')) {
-        button.parentElement.querySelector('ul').classList.toggle('show');
-      }
+  // ---- Esc 关闭弹层 ----
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    hideDonation();
+    hideHelp();
+    if (sidebar.classList.contains('active')){
+      sidebar.classList.remove('active');
+      sidebarToggle.setAttribute('aria-expanded', 'false');
     }
-
-    // 关闭所有下拉菜单
-    document.addEventListener('click', function(event) {
-      if (!event.target.matches('.dropdown button, #sidebar .has-submenu > a')) {
-        const dropdowns = document.querySelectorAll('.dropdown-content, #sidebar ul ul');
-        dropdowns.forEach(dropdown => {
-          dropdown.classList.remove('show');
-        });
-      }
-    });
-
-    // 显示赞赏支持模态框
-    function showDonation() {
-      document.getElementById('donationModal').style.display = 'flex';
-    }
-
-    // 隐藏赞赏支持模态框
-    function hideDonation() {
-      document.getElementById('donationModal').style.display = 'none';
-    }
-
-    // 帮助信息
-    function showHelp() {
-      const helpContent = `
-        <h3>快捷命令</h3><br><table style="width:300px"><tr><th></th><th></th></tr><tr><td>a</td><td>导航页</td></tr><tr><td>oml</td><td>Outlook</td></tr><tr><td>gml</td><td>Gmail</td></tr><tr><td>gh</td><td>GitHub</td></tr><tr><td>gm</td><td>GitMind</td></tr><tr><td>ip</td><td>本机IP</td></tr><tr><td>mp</td><td>公众号</td></tr><tr><td>tm</td><td>时间</td></tr><tr><td>tq</td><td>天气</td></tr><tr><td>tr</td><td>翻译</td></tr><tr><td>cheat</td><td>命令备忘单</td></tr></table>`;
-      document.getElementById('helpContent').innerHTML = helpContent;
-      document.getElementById('helpModal').style.display = 'flex';
-      document.getElementById('searchInput').value = '';
-    }
-
-    function hideHelp() {
-      document.getElementById('helpModal').style.display = 'none';
-    }
-  </script>
+  });
+</script>
 </body>
 </html>

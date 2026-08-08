@@ -42,7 +42,7 @@
           url: https://www.baidu.com
           description: 国内最大的搜索引擎
         - title: Google
-          url: https://www.google.com
+          url: https://www.google.com/ncr
           description: 全球最好的搜索引擎
         - title: Bing
           url: https://www.bing.com
@@ -53,27 +53,15 @@
         - title: Yandex
           url: https://yandex.com
           description: 俄罗斯最大的搜索引擎
-        - title: F搜
-          url: https://fsoufsou.com
-          description: 不错的搜索引擎
-        - title: Neeva
-          url: https://neeva.com
-          description: 无广告的纯净搜索
-        - title: SOU.BEST
-          url: https://sou.best
-          description: 同时搜索19个平台的话题
         - title: Searx
           url: https://searx.space
           description: 基于Searx保护隐私的搜索引擎
-        - title: Surfok
-          url: http://www.surfok.de
-          description: 来自德国的搜索引擎
         - title: Tineye
           url: https://www.tineye.com
           description: 图像搜索引擎
         - title: ImgOps
           url: https://www.imgops.com
-          description: 多搜索引擎搜索图像
+          description: 图像搜索引擎
         - title: Img Downloader
           url: https://imgdownloader.com
           description: 从网站下载图像工具
@@ -86,8 +74,6 @@
         - title: Google 翻译
           url: https://translate.google.cn
           description: 谷歌出品全球最好的翻译
-        - title: Kagi Translate
-          url: https://translate.kagi.com
         - title: Deepl 翻译
           url: https://www.deepl.com/translator
           description: 不错的自然语义翻译
@@ -587,7 +573,7 @@
     - term: 软件推荐
       links:
         - title: 极限玩家软件中心
-          url: https://ttti.cc/app.html
+          url: https://ttti.cc/app
           description: 极限玩家的软件推荐
         - title: 小众软件
           url: http://www.appinn.com
@@ -1788,7 +1774,7 @@
           description: 国外知名的文档列表
         - title: GitMind
           url: https://gitmind.cn
-          description: 国内非常好的免费脑图
+          description: 非常好的免费思维导图
         - title: AmyMind
           url: https://amymind.com
           description: 即开即用的思维导图和流程图
@@ -1813,6 +1799,9 @@
         - title: Whimsical
           url: https://whimsical.com
           description: 多种文档类型的脑图
+        - title: Mapify
+          url: https://mapify.so/cn
+          description: 基于AI的思维导图
         - title: Dynalist
           url: https://dynalist.io
           description: 很好的文档列表
@@ -1951,6 +1940,9 @@
         - title: Video Converter
           url: https://www.videoconverter.com/zh/
           description: 在线视频格式转换
+        - title: Video Converter
+          url: https://compressmp4.org
+          description: 浏览器本地视频压缩
         - title: All to Alll
           url: http://www.alltoall.net
           description: 200+格式的文件转换
@@ -2086,11 +2078,11 @@
         - title: Speechlogger
           url: https://speechlogger.appspot.com/zh/
           description: 自动语音识别和即时翻译软件
+        - title: Turboscribe
+          url: https://turboscribe.ai/zh-CN/
+          description: 录音转文字
         - title: 悦录
           url: http://www.voiceclub.cn
-          description: 录音转文字
-        - title: Whisper JAX
-          url: https://huggingface.co/spaces/sanchit-gandhi/whisper-jax
           description: 录音转文字
         - title: TTSMaker
           url: https://ttsmaker.com/zh-cn
@@ -2564,14 +2556,8 @@
           url: https://readmd.itsvg.in
           description: 自述文件快速生成
         - title: gh.ttti
-          url: https://gh.ttti.workers.dev
-          description: GitHub文件加速下载
-        - title: toolwa
-          url: http://toolwa.com/github
-          description: GitHub文件加速下载
-        - title: GitClone
-          url: https://gitclone.com
-          description: GitHub缓存加速网站
+          url: https://ghdl.ttti.cc
+          description: GitHub加速下载文件
         - title: Coding
           url: https://coding.net
           description: 团队项目合作代码托管
@@ -2856,7 +2842,7 @@
           description: CSS按钮链接动画
         - title: Favicon
           url: https://favicon.io
-          description: 好用的站点图标生成
+          description: 好用的网站图标生成
         - title: Geticon
           url: https://geticon.cn
           description: 上传图像生成图标下载
@@ -3670,15 +3656,21 @@
         - title: 码力全开
           url: https://design.maliquankai.com
           description: 汇集高质量设计资源
-        - title: 手绘白板
+        - title: Excalidraw
           url: https://excalidraw.com
-          description: 手绘效果的在线画板
+          description: 手绘白板在线画板
+        - title: Koboyo
+          url: https://koboyo.com
+          description: 手绘白板在线画板
         - title: Tldraw
           url: https://www.tldraw.com
-          description: 流畅的简单白板
+          description: 流畅的白板
+        - title: Drawnixw
+          url: https://drawnix.com
+          description: 白板带思维导图
         - title: Vectr
           url: https://vectr.com
-          description: 流畅的简单白板
+          description: 矢量图编辑和logo制作
         - title: IME
           url: https://www.google.com/intl/zh-CN/inputtools/try/
           description: 谷歌在线输入法
@@ -3842,11 +3834,11 @@
           url: https://photokit.com
           description: AI一键处理图像
         - title: LunaPic
-          url: https://www11.lunapic.com/editor/
+          url: https://lunapic.com/editor
           description: 有一些图像编辑
-        - title: Sagrafix
-          url: https://sagrafix.co/Editors/GrafixEditor
-          description: 在线图像编辑
+        - title: Photo Watermark
+          url: https://cuijianzhuang.github.io/photo-watermark
+          description: 离线图像加水印
         - title: Placeit
           url: https://placeit.net
           description: 提供很多OBS模板
@@ -4057,6 +4049,9 @@
         - title: imgtools
           url: https://www.imgtools.co/face-privacy
           description: 隐藏你的脸部打码
+        - title: 软件快捷键
+          url: https://shortcuts.design
+          description: 设计师软件快捷键
 
     - term: Mockup
       links:
@@ -5728,6 +5723,9 @@
         - title: 键盘测试
           url: https://keyboard.afjs.dev
           description: 键盘测试工具
+        - title: MouseTester
+          url: https://mousetester.io
+          description: 鼠标测试工具
         - title: 打字俱乐部
           url: https://www.typingclub.com/da-zi
           description: 学习打字练习

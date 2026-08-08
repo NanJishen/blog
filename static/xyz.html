@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>极限导航</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="https://ttti.cc/favicon.ico">
+<link rel="icon" href="favicon.ico">
 <style>
 :root{
   --bg:#0a0a0b;
@@ -249,7 +249,6 @@ button{font-family:inherit;cursor:pointer}
   font-family:var(--mono);font-size:20px;color:var(--text-bright);
   margin:0 0 4px;
 }
-#navhide .hint{font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-bottom:20px}
 .drawer-group{margin-top:18px}
 .drawer-group h3{
   font-family:var(--mono);font-size:11px;letter-spacing:.12em;
@@ -276,7 +275,11 @@ button{font-family:inherit;cursor:pointer}
       <select id="s-menu" onchange="searchGo()">
         <option value="baidu">百度</option>
         <option value="google">谷歌</option>
+        <option value="bing">必应</option>
+        <option value="duckduckgo">鸭搜</option>
+        <option value="yandex">Ydex</option>
         <option value="chatgpt">GPT</option>
+        <option value="wikipedia">维基</option>
         <option value="douban">豆瓣</option>
         <option value="zhihu">知乎</option>
         <option value="zimu">字幕</option>
@@ -297,12 +300,11 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://ttti.cc">Home</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="app.html">Apps</a>
-<a href="win.html">Win</a>
+    <span class="chip-group"><a class="chip" href="https://ttti.cc">Home</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="./app/index.html">Apps</a>
 <a href="https://bkey.aaxyz.de:55">Key</a>
 <a href="https://nav.ttti.cc">Nav</a>
 <a href="https://xyz.556660.xyz/wiki">Wiki</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://192.168.10.1/cgi-bin/luci/admin/services/passwall2/acl">Router</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://192.168.10.1:8123">HAssistant</a>
+<span class="chip-group"><a class="chip" href="http://192.168.10.1/cgi-bin/luci/admin/services/passwall2/acl">Router</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://192.168.10.1:8123">HAssistant</a>
 <a href="https://192.168.10.1:9443">Portainer</a>
 <a href="http://192.168.10.111:5000">NAS</a>
 <a href="http://192.168.10.1:299">Uptime</a>
@@ -311,16 +313,15 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://192.168.10.213">MiWifi</a>
 <a href="http://192.168.10.158">Awtrix</a>
 <a href="http://192.168.10.1:9090/ui">Nikki</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://aria2.aaxyz.de:56/ariang">AriaNg</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://192.168.10.111:9092">qBittorrent</a>
+<span class="chip-group"><a class="chip" href="http://aria2.aaxyz.de:56/ariang">AriaNg</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://192.168.10.111:9092">qBittorrent</a>
 <a href="http://duf.aaxyz.de:56">Dufs</a>
 <a href="http://192.168.10.111:5000/filestation">NASFM</a>
-<a href="https://aaxyz.de:281">Nextcloud</a>
 <a href="https://photo.aaxyz.de:55">Immich</a>
 <a href="http://nf.aaxyz.de:56">Jellyfin</a>
 <a href="http://192.168.10.111:7878">Radarr</a>
 <a href="http://192.168.10.111:8989">Sonarr</a>
 <a href="http://192.168.10.111:9696">Prowlarr</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://frss.aaxyz.de:56">FreshRSS</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://app.folo.is">Folo</a>
+<span class="chip-group"><a class="chip" href="http://frss.aaxyz.de:56">FreshRSS</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://app.folo.is">Folo</a>
 <a href="https://theoldreader.com">OldReader</a>
 <a href="https://www.inoreader.com">Inoreader</a>
 <a href="https://feedly.com">Feedly</a>
@@ -329,57 +330,39 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://cakereader.com/tour">Cake</a>
 <a href="https://vore.website">Vore</a>
 <a href="https://fraidyc.at">Fraidycat</a>
-<a href="http://car1vtworay.556660.xyz:1200">myRSShub</a>
 <a href="#" onclick="generateRSS()">ytupRSS</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://linkd.aaxyz.de:56/bookmarks/new">Linkding</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://app.clearlyreader.com">Clearly</a>
+<span class="chip-group"><a class="chip" href="http://linkd.aaxyz.de:56/bookmarks/new">Linkding</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner">
 <a href="https://tagpacker.com">Tagpacker</a>
 <a href="https://start.me">Start.me</a>
 <a href="https://hypothes.is">Hypothesis</a>
 <a href="https://app.raindrop.io">Raindrop</a>
 <a href="https://notado.app">Notado</a>
 <a href="https://mirror.xyz">Mirror</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://member.bilibili.com/platform/upload-manager">Bilibili</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://mp.weixin.qq.com">公众号</a>
-<a href="https://weibo.com/nanjishen/home">微博</a>
-<a href="https://tieba.baidu.com/f?kw=%E7%AC%AC%E4%B8%80%E5%90%8E%E8%A3%94">百度贴吧</a>
-<a href="https://channels.weixin.qq.com">视频号</a>
-<a href="https://douyin.com">抖音</a>
-<a href="https://xiaohongshu.com">小红书</a>
-<a href="https://studio.ixigua.com">西瓜</a>
-<a href="https://mp.douyu.com/live/main">斗鱼</a>
-<a href="https://i.huya.com/index.php?m=ProfileSetting#ktylts">虎牙</a>
-<a href="https://work.weixin.qq.com">企业微信</a>
-<a href="https://baijiahao.baidu.com">百家号</a>
-<a href="https://substack.com">Substack</a>
-<a href="https://www.lofter.com">Lofter</a>
-<a href="https://geekplayer.discourse.group/">Discourse</a>
-<a href="https://mediatrack.cn">分秒帧</a></span></span></span>
-<span class="chip-group"><a class="chip" href="minitools/stitching.html">Stitching</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://marked.cc">Marked</a>
-<a href="https://liuguangka.com/zh">流光卡片</a>
+<span class="chip-group"><a class="chip" href="minitools/stitching.html">Stitching</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://marked.cc">Marked</a>
+<a href="https://fireflycard.shushiai.com/zh">流光卡片</a>
 <a href="https://oneimgai.com">OneIMG</a>
-<a href="https://geekcard.app">GeekCard</a>
 <a href="https://www.memonotepad.com">Memo</a>
 <a href="https://doocs.github.io/md/">mdEdit</a>
 <a href="https://md2card.cn">mdCard</a>
 <a href="https://card.3min.top">Card3</a>
-<a href="https://cardify.godsbee.com">Cardify</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://app.files.md">Files.md</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://coder.aaxyz.de:55">VSCode</a>
+<a href="https://cardify.aivaded.com">Cardify</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://app.files.md">Files.md</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://coder.aaxyz.de:55">VSCode</a>
 <a href="http://car4vtworay.556660.xyz:2820">Drawio</a>
 <a href="https://itool.car4vtworay.556660.xyz">IT-Tools</a>
 <a href="https://refe.car4vtworay.556660.xyz">Reference</a>
 <a href="http://192.168.10.1:284">PDFtool</a></span></span></span>
-<span class="chip-group"><a class="chip" href="minitools/calculator.html">Calculator</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="minitools/textedit.html">文本处理</a>
-<a href="minitools/calcdate.html">日期计算</a>
-<a href="minitools/calcdeposit.html">存款利息计算</a>
-<a href="minitools/wmtiao/index.html">图像打水印条</a>
-<a href="minitools/Palette/palette.html">颜色编码</a>
-<a href="cheatsheets/index.html">命令备忘单</a>
-<a href="minitools/stickynote.html">浮动便笺</a>
+<span class="chip-group"><a class="chip" href="minitools/notepad.html">Notepad</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner">
+<a href="minitools/calc.html">计算器</a>
+<a href="minitools/textedit.html">便笺</a>
+<a href="minitools/watermark.html">加水印</a>
+<a href="minitools/palette.html">调色板</a>
+<a href="minitools/stickynote.html">浮动看板</a>
 <a href="minitools/todolist.html">代办列表</a>
-<a href="minitools/htmlcode.html">测试html</a>
-<a href="minitools/draw.html">画图</a></span></span></span>
+<a href="minitools/testcode.html">测试前端</a>
+</span></span></span>
+<a class="chip chip--plain" href="https://www.mchose.com.cn/#/connectDevice">Mchose</a>
   </div>
 </section>
-
 <section class="module">
   <header class="module__head">
     <div class="module__titles">
@@ -387,18 +370,27 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://www.google.com/ncr">Google</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.bing.com/copilotsearch">Copilot</a>
-<a href="https://labs.kagi.com/fastgpt">FastGPT</a>
-<a href="https://duckduckgo.com">DuckGo</a>
-<a href="https://www.bing.com">Bing</a>
-<a href="https://yandex.com">Yandex</a>
-<a href="https://www.wikipedia.org">Wikipedia</a>
-<a href="https://fsoufsou.com">F搜</a>
-<a href="https://neeva.com">Neeva</a>
-<a href="https://sou.best">Sou.best</a>
-<a href="http://www.surfok.de">Surfok</a>
-<a href="https://peekier.com">Peekier</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.youtube.com/playlist?list=WL">YouTube</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://x.com">X</a>
+<span class="chip-group"><a class="chip" href="http://grok.com">Grok</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://chatgpt.com">ChatGPT</a>
+<a href="https://gemini.google.com">Gemini</a>
+<a href="https://claude.ai">Claude</a>
+<a href="https://duck.ai">DuckGoAI</a>
+<a href="https://www.perplexity.ai">Perplexity</a>
+<a href="https://copilot.microsoft.com">Copilot</a>
+<a href="https://character.ai">Character</a>
+<a href="https://huggingface.co/chat">Hugging</a>
+<a href="https://groq.com">Groq</a>
+<a href="https://ai.azure.com">Azure</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://chat.deepseek.com">Deepseek</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.kimi.com">Kimi</a>
+<a href="https://www.doubao.com">豆包</a>
+<a href="https://yuanbao.tencent.com">元宝</a>
+<a href="https://chat.baidu.com">百度AI</a>
+<a href="https://chat.qwen.ai">Qwen</a>
+<a href="https://www.tongyi.com">通义</a>
+<a href="https://www.volcengine.com">火山引擎</a>
+<a href="https://yiyan.baidu.com">文心一言</a>
+<a href="https://metaso.cn">秘塔AI</a>
+<a href="https://xiaoyi.huawei.com">小艺</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://www.youtube.com/playlist?list=WL">YouTube</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://x.com">X</a>
 <a href="https://www.tiktok.com">TikTok</a>
 <a href="https://bsky.app">Bluesky</a>
 <a href="https://lemmy.ml">Lemmy</a>
@@ -416,72 +408,44 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://9gag.com">9GAG</a>
 <a href="https://onlyfans.com">Onlyfans</a>
 <a href="https://telegra.ph">Telegraph</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.tineye.com">TinEye</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.imgops.com">ImgOps</a>
-<a href="https://imgdownloader.com">imgdl</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.chongbuluo.com">虫部落</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.similarsites.com">SimilarSite</a>
-<a href="http://xiaoso.net">小不点</a>
-<a href="https://tgnav.github.io">TGNav</a>
-<a href="https://tgdriver.com">TGdriver</a>
-<a href="https://meow.tg">TG猫</a>
-<a href="http://www.sssoou.com">TG中文搜索</a>
-<a href="https://tg.qianfan.app">TG千帆搜索</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.taobao.com">淘宝</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.jd.com">京东</a>
+<span class="chip-group"><a class="chip" href="https://member.bilibili.com/platform/upload-manager">Bilibili</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://mp.weixin.qq.com">公众号</a>
+<a href="https://weibo.com/nanjishen/home">微博</a>
+<a href="https://tieba.baidu.com/f?kw=%E7%AC%AC%E4%B8%80%E5%90%8E%E8%A3%94">百度贴吧</a>
+<a href="https://channels.weixin.qq.com">视频号</a>
+<a href="https://douyin.com">抖音</a>
+<a href="https://xiaohongshu.com">小红书</a>
+<a href="https://studio.ixigua.com">西瓜</a>
+<a href="https://mp.douyu.com/live/main">斗鱼</a>
+<a href="https://i.huya.com/index.php?m=ProfileSetting#ktylts">虎牙</a>
+<a href="https://baijiahao.baidu.com">百家号</a>
+<a href="https://substack.com">Substack</a>
+<a href="https://www.lofter.com">Lofter</a>
+<a href="https://geekplayer.discourse.group/">Discourse</a>
+<a href="https://mediatrack.cn">分秒帧</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://www.taobao.com">淘宝</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.jd.com">京东</a>
+<a href="https://www.smzdm.com">值得买</a>
 <a href="https://www.goofish.com">闲鱼</a>
-<a href="https://www.suning.com">苏宁易购</a>
-<a href="https://www.vip.com">唯品会</a>
+<a href="https://www.suning.com">苏宁</a>
+<a href="http://www.meituan.com">美团</a>
 <a href="https://www.mi.com">小米</a>
-<a href="http://www.meituan.com">美团网</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.amazon.com">美亚</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.paypal.com">PayPal</a>
-<a href="https://www.uszcn.com">转中转运</a>
-<a href="https://www.zhonghuanus.com">中环转运</a>
-<a href="https://www.mxhaitao.com">铭宣海淘</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.smzdm.com">值得买</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.manmanbuy.com">慢慢买</a>
+<a href="http://www.manmanbuy.com">慢慢买</a>
 <a href="https://www.zhizhizhi.com">值值值</a>
 <a href="https://www.gwdang.com">购物党</a>
 <a href="https://www.miaomiaozhe.com">喵喵折</a>
-<a href="https://tao.henduonian.com">优惠券</a></span></span></span>
-  </div>
-</section>
-
-<section class="module">
-  <header class="module__head">
-    <div class="module__titles">
-      <h2 class="module__title-en">ChatAI</h2>
-    </div>
-  </header>
-  <div class="links">
-    <span class="chip-group"><a class="chip" href="http://grok.com">Grok</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://chatgpt.com">ChatGPT</a>
-<a href="https://gemini.google.com">Gemini</a>
-<a href="https://claude.ai">Claude</a>
-<a href="https://duckduckgo.com/aichat">DuckGoAI</a>
-<a href="https://www.perplexity.ai">Perplexity</a>
-<a href="https://copilot.microsoft.com">Copilot</a>
-<a href="https://beta.character.ai">Character</a>
-<a href="https://huggingface.co/chat">Hugging</a>
-<a href="https://groq.com">Groq</a>
-<a href="https://ai.azure.com">Azure</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://chat.deepseek.com">Deepseek</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.kimi.com">Kimi</a>
-<a href="https://www.doubao.com">豆包</a>
-<a href="https://yuanbao.tencent.com">元宝</a>
-<a href="https://chat.baidu.com">百度AI</a>
-<a href="https://chat.qwen.ai">Qwen</a>
-<a href="https://www.tongyi.com">通义</a>
-<a href="https://www.volcengine.com">火山引擎</a>
-<a href="https://yiyan.baidu.com">文心一言</a>
-<a href="https://metaso.cn">秘塔AI</a>
-<a href="https://xiaoyi.huawei.com">小艺</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://github.com/marketplace/models">Models</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://openrouter.ai">OpenRouter</a>
-<a href="https://huggingface.co/models">HuggingFace</a>
-<a href="https://siliconflow.cn">硅基流动</a>
-<a href="https://bailian.console.aliyun.com">阿里百炼</a>
-<a href="https://modelscope.cn">魔搭社区</a>
-<a href="https://github.com/deepseek-ai/DeepSeek-R1">DeepSeek-R1</a>
-<a href="https://github.com/chatchat-space/Langchain-Chatchat">LangChain</a></span></span></span>
-<a class="chip chip--plain" href="https://turboscribe.ai/zh-CN">Turboscribe</a>
-<span class="chip-group"><a class="chip" href="https://mapify.so/cn">Mapify</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://openl.io">OpenL</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://codex.packycode.com">Packycode</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://chutes.ai">Chutes</a>
-<a href="https://poe.com">POE</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.bing.com/images/create">Bing img</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://raphael.app/zh">Raphael</a>
+<a href="https://www.amazon.com">美亚</a>
+<a href="https://www.paypal.com">PayPal</a>
+<a href="https://www.uszcn.com">转中转运</a>
+<a href="https://www.zhonghuanus.com">中环转运</a>
+<a href="https://www.mxhaitao.com">铭宣海淘</a></span></span></span>
+<span class="chip-group"><a class="chip" href="http://www.chongbuluo.com">虫部落</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.similarsites.com">SimilarSite</a>
+<a href="https://www.tineye.com">TinEye</a>
+<a href="https://www.imgops.com">ImgOps</a>
+<a href="https://imgdownloader.com">imgdl</a>
+<a href="http://xiaoso.net">小不点</a>
+<a href="https://tgnav.github.io">TGNav</a>
+<a href="https://tgdriver.com">TGdriver</a>
+<a href="https://meow.tg">TG猫</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://www.bing.com/images/create">Bing img</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://raphael.app/zh">Raphael</a>
 <a href="https://www.domoai.app/zh-Hant">DomoAI</a>
 <a href="https://app.pixverse.ai">PixVerse</a>
 <a href="https://hailuoai.video">Hailuo</a>
@@ -504,24 +468,17 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://art.elbo.ai">Elbo</a>
 <a href="https://crypko.ai/cn">Crypko</a>
 <a href="https://ghibliphotos.com/zh/ghibli">吉卜力风格</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://foundr.ai/chatgpt-prompts">Foundr</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner">
-<a href="https://academy.openai.com">Prompt Pack</a>
-<a href="https://pollo.ai">Pollo</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://github.com/xx025/carrot">Carrot</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.aiznx.com">AI智能箱</a>
+<span class="chip-group"><a class="chip" href="https://foundr.ai">Foundr</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner">
+<a href="https://github.com/xx025/carrot">Carrot</a>
+<a href="https://www.aiznx.com">AI智能箱</a>
 <a href="https://github.com/yzfly/awesome-chatgpt-zh">中文指南</a>
 <a href="https://www.learnprompt.pro">提示工程</a>
 <a href="https://www.aiyjs.com">AI研究所</a>
-<a href="https://blog.frytea.com/archives/757/">AIGC合集</a>
 <a href="https://www.aiagc.com">AIAGC</a>
 <a href="https://ai-bot.cn">AI工具集</a>
 <a href="https://www.gptdemo.net/cn">发现AI工具</a>
-<a href="http://wanrenmi8.com">万人迷吧</a>
 <a href="https://www.toolai.io">ToolAI</a>
 <a href="https://www.aitoolhub.net/cn">AiToolHub</a>
-<a href="https://www.jailbreakchat.com">Jailbreak</a>
-<a href="https://aiol.club">Aiol</a>
-<a href="https://chatgpt-sites.com">gpt-sites</a>
-<a href="https://www.gptcases.com">Gptcases</a>
 <a href="https://learningprompt.wiki">Learning</a></span></span></span>
   </div>
 </section>
@@ -533,24 +490,26 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://www.yuque.com">Yuque</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://docs.qq.com">Tencent</a>
+    <span class="chip-group"><a class="chip" href="https://www.yuque.com">Yuque</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://docs.qq.com">Tencent</a>
 <a href="https://shimo.im">ShiMo</a>
 <a href="https://loop.microsoft.com">Loop</a>
 <a href="https://www.notion.so">Notion</a>
 <a href="https://www.baklib.com">Baklib</a>
 <a href="https://app.yinxiang.com/client/web">Yinxiang</a>
 <a href="https://www.teambition.com">Teambition</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://mubu.com">Mubu</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.workflowy.com">Workflowy</a>
+<span class="chip-group"><a class="chip" href="https://mubu.com">Mubu</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.workflowy.com">Workflowy</a>
 <a href="https://dynalist.io">Dynalist</a>
 <a href="https://www.manifest.app">Manifest</a>
 <a href="https://miro.com ">Miro</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://gitmind.cn/app/my">GitMind</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://amymind.com">AmyMind</a>
+<span class="chip-group"><a class="chip" href="https://gitmind.cn/app/my">GitMind</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://amymind.com">AmyMind</a>
 <a href="https://processon.com">ProcessOn</a>
 <a href="https://naotu.baidu.com">NaoTu</a>
 <a href="https://www.zhixi.com">Zhixi</a>
 <a href="https://coggle.it">Coggle</a>
-<a href="https://whimsical.com">Whimsical</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://stackedit.io">StackEdit</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://defuddle.md">Defuddle</a>
+<a href="https://whimsical.com">Whimsical</a>
+<a href="https://mapify.so/cn">Mapify</a>
+</span></span></span>
+<span class="chip-group"><a class="chip" href="https://stackedit.io">StackEdit</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://defuddle.md">Defuddle</a>
 <a href="https://markdown.new">MdNew</a>
 <a href="https://markdown.lovejade.cn">Arya</a>
 <a href="https://hackmd.io">Hackmd</a>
@@ -561,29 +520,23 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.zybuluo.com">作业部落</a>
 <a href="http://xiaoshujiang.com">小书匠</a>
 <a href="https://crossnote.app">交叉笔记</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://md.doocs.org">mdNice</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://mihoyonb.com">原牛</a>
+<span class="chip-group"><a class="chip" href="https://md.doocs.org">mdNice</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://mihoyonb.com">原牛</a>
 <a href="https://xiezuocat.com">写作猫</a>
-<a href="https://www.writingo.net/document">火山写作</a>
 <a href="https://wucuozi.com">无错字</a>
-<a href="https://effidit.qq.com">Effidit</a>
 <a href="https://markdown.com.cn/editor">mdEditor</a>
 <a href="https://lab.lyric.im/wxformat">WeFormat</a>
-<a href="https://md.qikqiak.com">Qikqiak</a>
 <a href="https://md.openwrite.cn">OpenWrite</a>
 <a href="https://md.aclickall.com">Md2All</a>
 <a href="https://knb.im/mp">可能吧</a>
 <a href="https://yiban.io">壹伴</a>
 <a href="https://ad.weixin.qq.com">微信广告</a>
 <a href="http://www.wxmarkdown.com">公众号辅助</a>
-<a href="https://doc.supernice.cn">附件无忧</a>
 <a href="https://ip.ntrqq.net">IP签名档</a>
 <a href="http://wechat2pdf.com">Wechat2pdf</a>
-<a href="https://mianbaoduo.com">面包多</a>
-<a href="https://www.chongya.com">冲呀</a>
 <a href="https://wejizan.com">微信集赞</a>
 <a href="https://picprose.pixpark.net">Pixpark</a>
 <a href="https://www.kaolamedia.com">考拉自媒体导航</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://wentu.io">文图</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://makegraph.app">Make Graph</a>
+<span class="chip-group"><a class="chip" href="http://wentu.io">文图</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://makegraph.app">Make Graph</a>
 <a href="https://aigraphmaker.net/zh-hans">AI GMaker</a>
 <a href="https://tiermaker.com">Tier List</a>
 <a href="https://graphy.app">Graphy</a>
@@ -602,9 +555,9 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://chartsfactory.com">Chart Factory</a>
 <a href="https://flourish.studio">Flourish</a></span></span></span>
 <a class="chip chip--plain" href="https://seatable.cn">SeaTable</a>
-<span class="chip-group"><a class="chip" href="http://asciiflow.com">Asciiflow</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://tree.nathanfriend.io">TreeMD</a>
+<span class="chip-group"><a class="chip" href="http://asciiflow.com">Asciiflow</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://tree.nathanfriend.io">TreeMD</a>
 <a href="https://textkool.com">TextKool</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.diagrams.net">Diagrams</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.liuchengtu.com">Xunjie</a>
+<span class="chip-group"><a class="chip" href="https://www.diagrams.net">Diagrams</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.liuchengtu.com">Xunjie</a>
 <a href="https://wireflow.co">Wireflow</a></span></span></span>
   </div>
 </section>
@@ -616,7 +569,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-<span class="chip-group"><a class="chip" href="https://pan.baidu.com">百度网盘</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pan.baidu.com/youth/pan/main">青春版</a>
+<span class="chip-group"><a class="chip" href="https://pan.baidu.com">百度网盘</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pan.baidu.com/youth/pan/main">青春版</a>
 <a href="https://www.aliyundrive.com/drive">AliYunPan</a>
 <a href="https://www.weiyun.com">WeiYun</a>
 <a href="https://cloud.189.cn">Cloud189</a>
@@ -634,7 +587,9 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://firefile.cc">Firefile</a>
 <a href="https://www.multcloud.com">MultCloud</a></span></span></span>
 <a class="chip chip--plain" href="https://www.dashengpan.com">大圣盘</a>
-<span class="chip-group"><a class="chip" href="https://www.upyunso.com">UP云搜</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pansou.jkai.de">盘搜</a>
+<span class="chip-group"><a class="chip" href="https://www.upyunso.com">UP云搜</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner">
+<a href="https://tg.qianfan.app">千帆搜索</a>
+<a href="https://pansou.jkai.de">盘搜</a>
 <a href="https://panku8.com">盘库吧</a>
 <a href="https://www.yunso.net">小云盘搜</a>
 <a href="https://ssgo.app">SSGo</a>
@@ -651,7 +606,7 @@ button{font-family:inherit;cursor:pointer}
 <a class="chip chip--plain" href="https://www.xiaobaipan.com">小白盘</a>
 <a class="chip chip--plain" href="http://www.pansoso.com">盘搜</a>
 <a class="chip chip--plain" href="http://megasearch.co">Mega</a>
-<span class="chip-group"><a class="chip" href="https://cn.torrentkitty.tv/search">Torrents</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://tellme.pw/btsow">BTsow</a>
+<span class="chip-group"><a class="chip" href="https://cn.torrentkitty.tv/search">Torrents</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://tellme.pw/btsow">BTsow</a>
 <a href="https://downloadtorrentfile.com">DLfile</a>
 <a href="https://katcr.to">Kickass</a>
 <a href="https://www.aiosearch.com">Aiosearch</a>
@@ -675,12 +630,12 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://www.producthunt.com">Product</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://nicelinks.site">倾城之链</a>
+    <span class="chip-group"><a class="chip" href="https://www.producthunt.com">Product</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://nicelinks.site">倾城之链</a>
 <a href="https://xinquji.com">新趣集</a>
 <a href="https://creatorsdaily.com">创造者日报</a>
 <a href="https://fancycrave.com">Fancycrave</a>
 <a href="https://www.uneed.best">Uneed</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://fmhy.net">FMHY</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.slant.co">Slant</a>
+<span class="chip-group"><a class="chip" href="https://fmhy.net">FMHY</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.slant.co">Slant</a>
 <a href="https://trend.quickso.cn">开软软件趋势</a>
 <a href="https://github.com/Axorax/awesome-free-apps">自由软件合集</a>
 <a href="https://github.com/coracoo/awesome_docker_cn">Docker合集带教程</a>
@@ -705,17 +660,17 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.fileeagle.com/software/zh-CN">文件鹰软件推荐</a>
 <a href="https://www.coolist.net">酷软清单</a>
 <a href="https://github.com/flygon2018/All-Defense-Tool">攻防武器项目</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://free.com.tw">Free</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.landiannews.com">蓝点网</a>
+<span class="chip-group"><a class="chip" href="https://free.com.tw">Free</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.landiannews.com">蓝点网</a>
 <a href="https://www.ithome.com">IT之家</a>
 <a href="https://www.xitmi.com">系统迷</a>
 <a href="https://readhub.cn">Readhub</a>
 <a href="https://minapp.com">知晓</a>
 <a href="https://zhutix.com">致美化</a>
 <a href="https://itnext.cn">元宇宙</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://alternativeto.net">Alternative</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://openalternative.co">OpenAlternative</a>
+<span class="chip-group"><a class="chip" href="https://alternativeto.net">Alternative</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://openalternative.co">OpenAlternative</a>
 <a href="https://opensource.builders">Builders</a>
 <a href="https://switching.software">Switching</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.ghxi.com">果核剥壳</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.gndown.com">绿软小站</a>
+<span class="chip-group"><a class="chip" href="https://www.ghxi.com">果核剥壳</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.gndown.com">绿软小站</a>
 <a href="https://uultd.com/zh/">uultd</a>
 <a href="https://www.52pojie.cn">吾爱破解</a>
 <a href="https://www.aichunjing.com/soft/">爱纯净</a>
@@ -728,13 +683,13 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://ldqk.xyz">懒得勤快</a>
 <a href="https://www.fuzhugou.com">西部落</a>
 <a href="https://www.yutu.cn">羽兔网</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.appinn.com">小众软件</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://sspai.com">少数派</a>
+<span class="chip-group"><a class="chip" href="http://www.appinn.com">小众软件</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://sspai.com">少数派</a>
 <a href="http://www.iplaysoft.com">异次元软件</a>
 <a href="https://www.v1tx.com">V1TX</a>
 <a href="https://www.playpcesor.com">电脑玩物</a>
 <a href="https://www.aihao.cc">爱好论坛</a>
 <a href="https://www.jokerps.com">鹏少资源网</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://github.com/xlucn/oh-my-foss-android">安卓软件</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.yxssp.com">异星软件</a>
+<span class="chip-group"><a class="chip" href="https://github.com/xlucn/oh-my-foss-android">安卓软件</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.yxssp.com">异星软件</a>
 <a href="https://findappweb.com">找应用</a>
 <a href="https://coolapk.com/apk/">酷安市场</a>
 <a href="http://zuimeia.com/">最美应用</a>
@@ -745,12 +700,12 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.apkmirror.com">APKMirror</a>
 <a href="http://apps.evozi.com/apk-downloader">Evozi-Apk</a>
 <a href="https://apk-dl.com">APK-DL</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.linuxcool.com">LinuxCool</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://git.io/linux">Linux-cmd</a>
+<span class="chip-group"><a class="chip" href="https://www.linuxcool.com">LinuxCool</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://git.io/linux">Linux-cmd</a>
 <a href="https://www.myfreax.com">Linux 爱好者</a>
 <a href="https://explainshell.com">Explainshell</a>
 <a href="https://crontab.guru">Crontab.guru</a>
 <a href="https://cmdhelp.com">CMDhelp</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://portableapps.com">Portable</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://portableappk.com">Portablek</a>
+<span class="chip-group"><a class="chip" href="https://portableapps.com">Portable</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://portableappk.com">Portablek</a>
 <a href="https://www.softonic.com">Softonic</a>
 <a href="https://www.fosshub.com">FossHub</a>
 <a href="http://www.softwareok.com">Softwareok</a>
@@ -773,20 +728,20 @@ button{font-family:inherit;cursor:pointer}
 <a class="chip chip--plain" href="http://www.expreview.com">超能网</a>
 <a class="chip chip--plain" href="https://www.chiphell.com">Chiphell</a>
 <a class="chip chip--plain" href="http://www.weistang.com">外设堂</a>
-<span class="chip-group"><a class="chip" href="http://topic.expreview.com/GPU/">天梯榜</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.socpk.com">移动端</a>
+<span class="chip-group"><a class="chip" href="http://topic.expreview.com/GPU/">天梯榜</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.socpk.com">移动端</a>
 <a href="https://www.userbenchmark.com">Ubenchmark</a>
 <a href="https://versus.com/cn">Versus</a>
 <a href="https://testufo.com">TestUfo</a>
 <a href="http://dieshot.com">Dieshot</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.right.com.cn">恩山无线</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.acwifi.net">AcWifi</a>
+<span class="chip-group"><a class="chip" href="http://www.right.com.cn">恩山无线</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.acwifi.net">AcWifi</a>
 <a href="https://www.koolcenter.com">Koolcenter</a>
 <a href="http://www.gebi1.com">隔壁网</a>
 <a href="http://bbs.gfan.com">机锋论坛</a>
 <a href="https://bbs.hassbian.com">瀚思彼岸</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://zj.zol.com.cn">模拟装机</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://zhuanlan.zhihu.com/p/217881116">Gyusang</a>
+<span class="chip-group"><a class="chip" href="http://zj.zol.com.cn">模拟装机</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://zhuanlan.zhihu.com/p/217881116">Gyusang</a>
 <a href="https://whatsabyte.com/P1/byteconverter.htm">容量计算</a></span></span></span>
 <a class="chip chip--plain" href="https://www.guru3d.com">Guru3D</a>
-<span class="chip-group"><a class="chip" href="https://ldt.pc.wiki">LDTools</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner">
+<span class="chip-group"><a class="chip" href="https://ldt.pc.wiki">LDTools</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner">
 <a href="https://key-test.com/cn/">Key-test</a>
 <a href="https://hardwaretester.com/gamepad">Gamepad</a>
 <a href="https://controllertest.io">ContTest</a>
@@ -797,11 +752,11 @@ button{font-family:inherit;cursor:pointer}
 <section class="module">
   <header class="module__head">
     <div class="module__titles">
-      <h2 class="module__title-en">music,film</h2>
+      <h2 class="module__title-en">Media</h2>
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://music.creasource.app">Music</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.fangpi.net">Fangpi</a>
+    <span class="chip-group"><a class="chip" href="https://music.creasource.app">Music</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.fangpi.net">Fangpi</a>
 <a href="http://tool.liumingye.cn">MyFree</a>
 <a href="https://xiageba.com">下歌吧</a>
 <a href="https://spotifymate.com">SpotifyMate</a>
@@ -824,14 +779,14 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://github.com/yueyericardo/Netease-to-Youtube-or-Spotify">提取歌单</a>
 <a href="https://www.tunemymusic.com/zh-cn/">TunemyMusic</a>
 <a href="https://tool.sacdr.net">音乐解锁</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://movie.douban.com">豆瓣电影</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://neodb.social">NeoDB</a>
+<span class="chip-group"><a class="chip" href="https://movie.douban.com">豆瓣电影</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://neodb.social">NeoDB</a>
 <a href="http://www.imdb.com">IMDb</a>
 <a href="https://www.themoviedb.org">TMDB</a>
 <a href="https://thetvdb.com">TVDB</a>
 <a href="https://www.rottentomatoes.com">烂番茄</a>
 <a href="https://www.metacritic.com">Metacritic</a>
 <a href="http://www.mtime.com">时光网</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://rargb.to">RARBG</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://uindex.org">Uindex</a>
+<span class="chip-group"><a class="chip" href="https://rargb.to">RARBG</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://uindex.org">Uindex</a>
 <a href="https://therarbg.com">TheRarbg</a>
 <a href="https://www.mini4k.com">迷客电影</a>
 <a href="http://gaoqing.la">高清网</a>
@@ -863,11 +818,11 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://rlsbb.cc">Rlsbb</a>
 <a href="https://kickasstorrents.pw">Kickasstorrents</a>
 <a href="https://kickass.torrentbay.net">Torrentbay</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.iqiyi.com">爱奇艺</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://v.qq.com">腾讯</a>
+<span class="chip-group"><a class="chip" href="https://www.iqiyi.com">爱奇艺</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://v.qq.com">腾讯</a>
 <a href="http://www.youku.com">优酷</a>
 <a href="https://www.iq.com">爱奇艺海外</a>
 <a href="https://wetv.vip">腾讯海外</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.seedhub.cc">SeedHub</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.btdx8.com">比特大雄</a>
+<span class="chip-group"><a class="chip" href="https://www.seedhub.cc">SeedHub</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.btdx8.com">比特大雄</a>
 <a href="https://www.cnwml.com">好片网</a>
 <a href="http://www.hao6v.com">6V电影</a>
 <a href="https://www.uump4.net">悠悠Mp4</a>
@@ -879,7 +834,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.dianying.co">新电影</a>
 <a href="https://www.dytt89.com">电影天堂</a>
 <a href="https://www.piaohua.com">飘花电影</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://ddys.io">低端影视</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.laodifang.tv">老地方影院</a>
+<span class="chip-group"><a class="chip" href="https://ddys.io">低端影视</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.laodifang.tv">老地方影院</a>
 <a href="https://www.poxiao.com">破晓电影</a>
 <a href="https://kpkuang.com">看片狂人</a>
 <a href="https://www.ncat22.com">网飞猫</a>
@@ -893,8 +848,8 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://www.pdoro.com">PDORO</a>
 <a href="https://www.hdmoli.com">HDmoli</a>
 <a href="https://gaze.run">注视影视</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://t-rex.tzfile.com">团长资源</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.meijumi.net">美剧迷</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://subhd.tv">SubHD</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://zimuku.org">字幕库</a>
+<span class="chip-group"><a class="chip" href="https://t-rex.tzfile.com">团长资源</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.meijumi.net">美剧迷</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://subhd.tv">SubHD</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://zimuku.org">字幕库</a>
 <a href="http://zmk.pw">字幕库新</a>
 <a href="https://www.a4k.net">A4k字幕网</a>
 <a href="https://assrt.net">伪射手</a>
@@ -902,7 +857,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://www.ddzimu.com">点点字幕</a>
 <a href="https://www.subtitlecat.com">Subtitlecat</a>
 <a href="https://translatesubtitles.co">Translate Sub</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://neets.cc">Neets</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://tv.garden">tv.garden</a>
+<span class="chip-group"><a class="chip" href="https://neets.cc">Neets</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://tv.garden">tv.garden</a>
 <a href="https://cupfox.love">茶杯狐</a>
 <a href="https://trace.moe">Trace</a>
 <a href="https://z1.m1907.cn">m1907</a>
@@ -922,12 +877,12 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://itty.bitty.site">Itty bitty</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://parseurlonline.com">ParseUrl</a>
+    <span class="chip-group"><a class="chip" href="https://itty.bitty.site">Itty bitty</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://parseurlonline.com">ParseUrl</a>
 <a href="https://github.com/rutikwankhade/CoverView">CoverView</a>
 <a href="https://bubble.ilioslabs.dev">Bubble</a>
 <a href="https://notepin.co">Notepin</a>
 <a href="https://www.publishthis.email/zh/">P-email</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://qr.io">QR.io</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.qrcode-monkey.com">QRMonkey</a>
+<span class="chip-group"><a class="chip" href="https://qr.io">QR.io</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.qrcode-monkey.com">QRMonkey</a>
 <a href="https://qrframe.kylezhe.ng">Qrframe</a>
 <a href="https://app.y.gy">Y.GY</a>
 <a href="http://cli.im">草料二维码</a>
@@ -941,7 +896,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.logaster.com/qr-code-generator">Logaster</a>
 <a href="https://www.mywifisign.com">WifiSign</a>
 <a href="https://wificard.io">WiFiCard</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.screenshotmaster.com">网页截屏</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://screen.guru">Screen Guru</a>
+<span class="chip-group"><a class="chip" href="https://www.screenshotmaster.com">网页截屏</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://screen.guru">Screen Guru</a>
 <a href="https://web-capture.net">Web-Capture</a>
 <a href="https://fullpagescreencapture.com">FullpageSC</a>
 <a href="https://www.screenshotmachine.com">Screenshot</a>
@@ -954,7 +909,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://scrnrcrd.com">Scrnrcrd</a>
 <a href="https://recordit.co">Recordit</a>
 <a href="https://www.recordcast.com">RecordCast</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://10minutemail.com">10m-Email</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://temp-mail.org/zh/">Temp-Mail</a>
+<span class="chip-group"><a class="chip" href="https://10minutemail.com">10m-Email</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://temp-mail.org/zh/">Temp-Mail</a>
 <a href="https://temp-mail.to">Temp-mailto</a>
 <a href="https://www.snapmail.cc">SnapMail</a>
 <a href="http://www.yopmail.com/zh/">Yopmail</a>
@@ -968,7 +923,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.mailinator.com">Mailnator</a>
 <a href="https://www.throwawaymail.com">Throwaway</a>
 <a href="https://linshiyouxiang.net">临时邮箱</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://sms-man.com/cn">SMS-Man</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://hero-sms.com">HeroSMS</a>
+<span class="chip-group"><a class="chip" href="https://sms-man.com/cn">SMS-Man</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://hero-sms.com">HeroSMS</a>
 <a href="https://sms-activate.ru">SMS-active</a>
 <a href="https://grizzlysms.com">Grizzly</a>
 <a href="https://anonymsms.com">AnonymSMS</a>
@@ -993,8 +948,8 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://sms-online.co/receive-free-sms">ReSMSolfree</a>
 <a href="https://us-phone-number.com">ReSMSFree</a>
 <a href="https://tempsmss.com">TempSMSS</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.imageextraction.com">Img Ext</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://extract.pics">ImgExtor</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.newocr.com">FreeOCR</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pearocr.com">PearOCR</a>
+<span class="chip-group"><a class="chip" href="https://www.imageextraction.com">Img Ext</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://extract.pics">ImgExtor</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://www.newocr.com">FreeOCR</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pearocr.com">PearOCR</a>
 <a href="https://deepseekocr.app">DSOCR</a>
 <a href="https://github.com/plantree/ocr-pwa">离线OCR</a>
 <a href="https://ocrify.com">OCRify</a>
@@ -1006,8 +961,8 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.onlineocr.net/zh_hans">OnlineOCR</a>
 <a href="https://duguang.aliyun.com/experience">DuGuang</a>
 <a href="https://ocr.wdku.net">TextConv</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.virustotal.com">Virustotal</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://virusscan.jotti.org">Jotti</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://rthsoftware.cn">RTHTool</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://toolight.cn">偷懒工具</a>
+<span class="chip-group"><a class="chip" href="https://www.virustotal.com">Virustotal</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://virusscan.jotti.org">Jotti</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://rthsoftware.cn">RTHTool</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://toolight.cn">偷懒工具</a>
 <a href="https://www.67tool.com">67tool</a>
 <a href="https://tools.miku.ac">MikuTools</a>
 <a href="http://www.atoolbox.net">AtoolBox</a>
@@ -1036,19 +991,19 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://www.fakepersongenerator.com">Generator</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://addressgenerator.top/zh">多国身份生成器</a>
+    <span class="chip-group"><a class="chip" href="https://www.fakepersongenerator.com">Generator</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://addressgenerator.top/zh">多国身份生成器</a>
 <a href="https://www.meiguodizhi.com">Meiguodz</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.namegenerator.co/fantasy/roman-name-generator">R-Name</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://randomwordgenerator.com">R-Words</a>
+<span class="chip-group"><a class="chip" href="https://www.namegenerator.co/fantasy/roman-name-generator">R-Name</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://randomwordgenerator.com">R-Words</a>
 <a href="https://www.usaddrgen.com">美国地址生成器</a>
 <a href="https://toolfig.com/fake-name-generator">美国身份生成器</a>
 <a href="https://www.dute.org/fake-name-generator">美国身份生成器</a>
 <a href="https://www.addresscopy.com">各国地址生成器</a>
 <a href="https://www.qmsjmfb.com">网名生成器</a>
 <a href="https://www.lastpass.com/features/username-generator">用户名生成器</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://passwrd.in">Passwrd</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.dashlane.com/features/password-generator">dashlane</a>
+<span class="chip-group"><a class="chip" href="https://passwrd.in">Passwrd</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.dashlane.com/features/password-generator">dashlane</a>
 <a href="https://www.strongpasswordgenerator.org">Strongpsd</a>
 <a href="https://www.lastpass.com/password-generator">Lastpass</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://savebilibili.com/zh-CN">SaveBili</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner">
+<span class="chip-group"><a class="chip" href="https://savebilibili.com/zh-CN">SaveBili</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner">
 <a href="https://v.mtotech.com">微信视频号</a>
 <a href="https://savexr.com">SaveXR</a>
 <a href="https://www.easydown.org/zh">Easydown</a>
@@ -1107,7 +1062,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://ytsmp3.com">YTSmp3</a>
 <a href="https://bilibili.iiilab.com">iiitab</a>
 <a href="https://video.ciding.cc">蜜蜂去水印</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://twittervideodownloader.com">Twitter-dl</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://twdown.net">TWDown</a>
+<span class="chip-group"><a class="chip" href="http://twittervideodownloader.com">Twitter-dl</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://twdown.net">TWDown</a>
 <a href="https://tweeload.com">Tweeload</a>
 <a href="https://xdownload.top/zh-cn">XDownload</a>
 <a href="https://www.twitterdown.com/zh">TwitterDown</a>
@@ -1119,17 +1074,17 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://savetik.co">SaveTik</a>
 <a href="https://qload.info/zh/">Qload</a>
 <a href="https://proxitok.pabloferreiro.es">Proxitok</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://downsub.com">Downsub</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://aiyoutubetranscript.com">AiTranscript</a>
+<span class="chip-group"><a class="chip" href="https://downsub.com">Downsub</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://aiyoutubetranscript.com">AiTranscript</a>
 <a href="https://savesubs.com">Savesubs</a>
 <a href="https://www.downloadyoutubesubtitles.com">Dlytsub</a>
 <a href="https://ytbcomments.com">YouTubeCS</a>
 <a href="https://transcriptgenerator.org/zh-TW">YTG</a>
 <a href="https://tools.newzone.top/zh/subtitle-translator">字幕翻译</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://github.com/lazy-guy/tomodoro">Tomodoro</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pomofocus.io">Pomofocus</a>
+<span class="chip-group"><a class="chip" href="https://github.com/lazy-guy/tomodoro">Tomodoro</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pomofocus.io">Pomofocus</a>
 <a href="https://pomotimer.com">Pomotimer</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.littlediffer.com">Littlediffer</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.diffchecker.com">Diffchecker</a>
+<span class="chip-group"><a class="chip" href="https://www.littlediffer.com">Littlediffer</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.diffchecker.com">Diffchecker</a>
 <a href="https://diffsuite.com">Diffsuite</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://sqliteonline.com">SQL OLC</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://sqlook.com">SQLook</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://sqliteonline.com">SQL OLC</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://sqlook.com">SQLook</a></span></span></span>
   </div>
 </section>
 
@@ -1140,7 +1095,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="http://www.officeplus.cn">OfficePlus</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://csv.ink">CSVInk</a>
+    <span class="chip-group"><a class="chip" href="http://www.officeplus.cn">OfficePlus</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://csv.ink">CSVInk</a>
 <a href="https://www.excelhome.net">Excelhome</a>
 <a href="https://www.1ppt.com">第1PPT</a>
 <a href="http://www.tretars.com">比格PPT</a>
@@ -1150,13 +1105,13 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://hiwenku.com">嗨文库</a>
 <a href="https://www.bangongziyuan.com">办公资源网</a>
 <a href="https://www.xiangdang.net">香当网</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://vert.sh">VERT</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://convertio.co/zh">ConvertIO</a>
+<span class="chip-group"><a class="chip" href="https://vert.sh">VERT</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://convertio.co/zh">ConvertIO</a>
 <a href="https://www.fileconverto.com">FileConverto</a>
 <a href="https://cn.office-converter.com">OfficeCver</a>
 <a href="https://word.to">Word.to</a>
 <a href="https://markitdown.pro">MarkItDown</a>
 <a href="https://doc2x.noedgeai.com/markdownEdit">Doc2X</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://smallpdf.com/cn">SmallPDF</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://quicklypdf.com/zh">quicklypdf</a>
+<span class="chip-group"><a class="chip" href="https://smallpdf.com/cn">SmallPDF</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://quicklypdf.com/zh">quicklypdf</a>
 <a href="https://avepdf.com/zh">AvePDF</a>
 <a href="https://pdf.to">Pdf.to</a>
 <a href="https://www.cleverpdf.com/cn">CleverPDF</a>
@@ -1174,7 +1129,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.pdfescape.com">PDFescape</a>
 <a href="https://www.sejda.com/pdf-editor">Sejda PDF</a>
 <a href="https://oakpdf.com">OakPDF</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.aconvert.com/cn/">Aconvert</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://converttool.org/zh-cn/">ConvertTool</a>
+<span class="chip-group"><a class="chip" href="https://www.aconvert.com/cn/">Aconvert</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://converttool.org/zh-cn/">ConvertTool</a>
 <a href="https://www.online-convert.com">OL-Convert</a>
 <a href="https://convertr.org">Convertr</a>
 <a href="https://cloudconvert.com">CloudCnv</a>
@@ -1183,14 +1138,14 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.zamzar.com">Zamzar</a>
 <a href="https://anyconv.com">AnyConv</a>
 <a href="https://www.filezigzag.com/online-converter">FileZigZag</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://extract.me/cn/">Archive Ext</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://cn.fileunzip.com">FileUNZIP</a>
+<span class="chip-group"><a class="chip" href="https://extract.me/cn/">Archive Ext</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://cn.fileunzip.com">FileUNZIP</a>
 <a href="https://www.ezyzip.com/cn.html">EzyZip</a>
 <a href="https://online.b1.org/online">b1</a>
 <a href="https://www.youcompress.com/zh-cn/">YouCompress</a>
 <a href="https://web.archive.org">WebArchive</a>
 <a href="https://www.archiveforever.xyz">Archive Forever</a>
 <a href="https://github.com/JasonGrass/rename">Rename</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://wavvy.app">Wavvy</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ringer.org">Ringer</a>
+<span class="chip-group"><a class="chip" href="https://wavvy.app">Wavvy</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ringer.org">Ringer</a>
 <a href="https://clideo.com/cut-audio">Audio Cutter</a>
 <a href="https://audiocutter.online">Audio Cutter</a>
 <a href="https://cutmp3.net">Cut Mp3 ol</a>
@@ -1204,8 +1159,8 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.mycassette.app">Mycassette</a>
 <a href="https://audiomass.co">Audiomass</a>
 <a href="https://jianwai.youdao.com">网易见外</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://azure.microsoft.com/zh-cn/services/cognitive-services/text-to-speech/">文本转语音</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.voiceclub.cn">悦录</a>
-<a href="https://huggingface.co/spaces/sanchit-gandhi/whisper-jax">语音转文字</a>
+<span class="chip-group"><a class="chip" href="https://turboscribe.ai/zh-CN/">Turboscribe</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner">
+<a href="http://www.voiceclub.cn">悦录</a>
 <a href="https://ttsmaker.com/zh-cn">TTSMaker</a>
 <a href="https://notevibes.com">Notevibes</a>
 <a href="https://speechlogger.appspot.com/zh/">Speechlogger</a>
@@ -1214,6 +1169,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://vocaroo.com">Vocaroo</a>
 <a href="https://www.mygoodtape.com">Good Tape</a></span></span></span>
 <a class="chip chip--plain" href="https://www.videoconverter.com/zh/">VideoConv</a>
+<a class="chip chip--plain" href="https://compressmp4.org">CpsMP4</a>
   </div>
 </section>
 
@@ -1224,7 +1180,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://drop.space">Drop</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://quwenjian.cc">取文件</a>
+    <span class="chip-group"><a class="chip" href="https://drop.space">Drop</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://quwenjian.cc">取文件</a>
 <a href="https://biji.ci">笔记词</a>
 <a href="https://box.zjuqsc.com ">潮云U盘</a>
 <a href="https://www.wenshushu.cn">文叔叔</a>
@@ -1232,7 +1188,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://app.tmp.link">钛盘</a>
 <a href="https://deershare.com/send">小鹿快传</a>
 <a href="https://quqi.com">曲奇云盘</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://ufile.io">Ufile</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://transfer.it">Transfer</a>
+<span class="chip-group"><a class="chip" href="https://ufile.io">Ufile</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://transfer.it">Transfer</a>
 <a href="https://filebin.net">Filebin</a>
 <a href="https://dash.cecily.eu.org">Tg-Imge</a>
 <a href="https://www.grosfichiers.com/zh/">GrosFichiers</a>
@@ -1260,7 +1216,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.transferbigfiles.com">TrBigFiles</a>
 <a href="https://streamtape.com">Streamtape</a>
 <a href="https://new.space">New.Space</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.sharedrop.io">ShareDrop</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://snapdrop.net">Snapdrop</a>
+<span class="chip-group"><a class="chip" href="https://www.sharedrop.io">ShareDrop</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://snapdrop.net">Snapdrop</a>
 <a href="https://pin.gl">Pin.gl</a>
 <a href="https://drop.lol">Drop-lol</a>
 <a href="https://airportal.cn">AirPortal</a>
@@ -1270,16 +1226,16 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://filehelper.weixin.qq.com">WeFile</a>
 <a href="http://transfer.zip">Transfer</a>
 <a href="https://rdrop.link">rDrop</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.ppzhilian.com">PPlink</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://blaze.now.sh">Blaze</a>
+<span class="chip-group"><a class="chip" href="https://www.ppzhilian.com">PPlink</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://blaze.now.sh">Blaze</a>
 <a href="https://file.pizza">FilePizza</a>
 <a href="https://blymp.io">Blymp</a>
 <a href="https://toffeeshare.com">ToffeeShare</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://hack.chat">HackChat</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://volafile.org">Volafile</a>
+<span class="chip-group"><a class="chip" href="https://hack.chat">HackChat</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://volafile.org">Volafile</a>
 <a href="https://fileroom.io">FileRoom</a>
 <a href="https://saladroom.net">SaladRoom</a>
 <a href="https://quicksync.me">QSyncme</a>
 <a href="https://safer.chat">Safer.chat</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://imgkr.com">图壳</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.ossking.com">OSS King</a>
+<span class="chip-group"><a class="chip" href="https://imgkr.com">图壳</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.ossking.com">OSS King</a>
 <a href="https://freeimage.host">Freeimage</a>
 <a href="https://im.ge">IM.GE</a>
 <a href="https://imgtu.com">路过</a>
@@ -1295,7 +1251,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://riyugo.com">薄荷</a>
 <a href="https://kjava.com">酷Java</a>
 <a href="https://ipfs.xkx.me">IPFS</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://sm.ms">SM.SM</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://snappable.media">Snappable</a>
+<span class="chip-group"><a class="chip" href="https://sm.ms">SM.SM</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://snappable.media">Snappable</a>
 <a href="https://imgbee.com">imgBee</a>
 <a href="https://postimages.org">Postimg</a>
 <a href="https://pasteboard.co">Pasteboard</a>
@@ -1310,7 +1266,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://imgur.com">Imgur</a>
 <a href="https://folio.ink">Folio.ink</a>
 <a href="https://pixhost.to">PiXhost</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.verybin.com">Verybin</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://cmd.im">鸡毛信</a>
+<span class="chip-group"><a class="chip" href="https://www.verybin.com">Verybin</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://cmd.im">鸡毛信</a>
 <a href="http://pasted.co">ControlC</a>
 <a href="https://safenote.co">SafeNote</a>
 <a href="http://www.vua.sh">vua.sh</a>
@@ -1319,7 +1275,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://getnote.cf">Getnote</a>
 <a href="https://note.ms/nanji">Note.ms</a>
 <a href="https://note.mk">Note.mk</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://tny.im">tyn.im</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://bitly.com">Bitly</a>
+<span class="chip-group"><a class="chip" href="http://tny.im">tyn.im</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://bitly.com">Bitly</a>
 <a href="https://urlify.cn">Urlify</a>
 <a href="https://mergeurl.com">MergeURL</a>
 <a href="https://mork.ro">Mork</a>
@@ -1336,11 +1292,11 @@ button{font-family:inherit;cursor:pointer}
 <section class="module">
   <header class="module__head">
     <div class="module__titles">
-      <h2 class="module__title-en">Development</h2>
+      <h2 class="module__title-en">Dev</h2>
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://github.com/NanJishen">GitHub</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://github.com/nassets">Nassets</a>
+    <span class="chip-group"><a class="chip" href="https://github.com/NanJishen">GitHub</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://github.com/nassets">Nassets</a>
 <a href="https://gitee.com">Gitee</a>
 <a href="https://gitlab.com">GitLab</a>
 <a href="https://coding.net">Coding</a>
@@ -1349,10 +1305,9 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://codeup.aliyun.com">阿里云效</a>
 <a href="https://mytemplate.xyz">DevBuilder</a>
 <a href="https://readmd.itsvg.in">readMD</a>
-<a href="https://gitclone.com">gitclone</a>
 <a href="https://ghdl.ttti.cc">gh.ttti</a>
 <a href="https://xiake.pro">虾壳</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://1024tools.com">Devtool</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://onesapk.com/zh">OnesAPK</a>
+<span class="chip-group"><a class="chip" href="https://1024tools.com">Devtool</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://onesapk.com/zh">OnesAPK</a>
 <a href="https://coding.tools/cn">Coding.Tools</a>
 <a href="https://tab.tools">Tab.tools</a>
 <a href="https://bar.ssstab.com">ssstab</a>
@@ -1377,14 +1332,14 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://cheet.dev">Cheet</a>
 <a href="https://it-tools.tech">IT Tools</a>
 <a href="https://free.tools">Free Tools</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.thiscodeworks.com">Thiscodes</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://codeset.io ">Codeset</a>
+<span class="chip-group"><a class="chip" href="https://www.thiscodeworks.com">Thiscodes</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://codeset.io ">Codeset</a>
 <a href="https://devhints.io">Devhints</a>
 <a href="https://explainshell.com">Explainshell</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://jsonhero.io">JSON Hero</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://jsoncrack.com">JSON Crack</a>
+<span class="chip-group"><a class="chip" href="https://jsonhero.io">JSON Hero</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://jsoncrack.com">JSON Crack</a>
 <a href="http://www.jsons.cn">jsons</a>
 <a href="https://www.sojson.com">sojson</a>
 <a href="http://www.kjson.com">kjson</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.v2ex.com">V2EX</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://linux.do">Linux.do</a>
+<span class="chip-group"><a class="chip" href="https://www.v2ex.com">V2EX</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://linux.do">Linux.do</a>
 <a href="https://www.nodeseek.com">Nodeseek</a>
 <a href="https://geekhub.com">Geekhub</a>
 <a href="https://idcflare.com">IDC Flare</a>
@@ -1394,13 +1349,13 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.csdn.net">CSDN</a>
 <a href="https://hackershare.dev">极客分享</a>
 <a href="https://www.xqxz.cn">兴趣小组</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://juejin.im">掘金</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.chinaz.com">站长之家</a>
+<span class="chip-group"><a class="chip" href="https://juejin.im">掘金</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.chinaz.com">站长之家</a>
 <a href="https://segmentfault.com">思否</a>
 <a href="https://www.helloworld.net">HelloWorld</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.qikegu.com">奇客谷</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.oschina.net">开源中国</a>
+<span class="chip-group"><a class="chip" href="https://www.qikegu.com">奇客谷</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.oschina.net">开源中国</a>
 <a href="https://www.heikewan.com">黑客新闻</a>
 <a href="https://www.infoq.cn">InfoQ</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://carbon.now.sh">Carbon</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://app.codeimage.dev">Codeimage</a>
+<span class="chip-group"><a class="chip" href="https://carbon.now.sh">Carbon</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://app.codeimage.dev">Codeimage</a>
 <a href="https://ray.so">Ray.so</a>
 <a href="https://chalk.ist">Chalk.ist</a>
 <a href="https://codeimg.io">Codeimg</a>
@@ -1412,7 +1367,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://10015.io">10015</a>
 <a href="https://shields.io">Shields</a>
 <a href="https://purple-photo.web.app/code-editor">Purple PhotoE:</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.jb51.net">脚本之家</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.php.cn">php中文网</a>
+<span class="chip-group"><a class="chip" href="http://www.jb51.net">脚本之家</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.php.cn">php中文网</a>
 <a href="https://integrately.com">Integrately</a></span></span></span>
   </div>
 </section>
@@ -1424,13 +1379,13 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://codepen.io">CodePen</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://glitch.com">Glitch</a>
+    <span class="chip-group"><a class="chip" href="https://codepen.io">CodePen</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://glitch.com">Glitch</a>
 <a href="https://codesandbox.io">Sendbox</a>
 <a href="https://next.plnkr.co">Plunker</a>
 <a href="https://jsbin.com">JSBin</a>
 <a href="https://jsrun.net">JSRun</a>
 <a href="https://riju.codes">Riju</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.htmlwasher.com">HtmlWash</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://html.cafe">Html</a>
+<span class="chip-group"><a class="chip" href="https://www.htmlwasher.com">HtmlWash</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://html.cafe">Html</a>
 <a href="https://textcleaner.net">Text Cleaner</a>
 <a href="https://markdowndown.vercel.app">Markdowndl</a>
 <a href="https://kangax.github.io/html-minifier">Html Minifier</a>
@@ -1446,7 +1401,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://www.tablesgenerator.com">Tables Gen</a>
 <a href="https://tableconvert.com/zh-CN/">TableConvert</a>
 <a href="http://www.mergely.com">Mergely</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://techbrood.com">踏得网</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.yourware.so">Yourware</a>
+<span class="chip-group"><a class="chip" href="http://techbrood.com">踏得网</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.yourware.so">Yourware</a>
 <a href="https://devtooly.com">Web-tools</a>
 <a href="https://griddy.io">Griddy</a>
 <a href="https://markodenic.com/tools/buttons-generator">Buttons</a>
@@ -1472,7 +1427,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://www.17sucai.com">17素材</a>
 <a href="https://echarts.apache.org">Echart</a>
 <a href="https://fffuel.co">Fffuel</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.visiwig.com">Visiwig</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://neumorphism.io">Soft-UI</a>
+<span class="chip-group"><a class="chip" href="https://www.visiwig.com">Visiwig</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://neumorphism.io">Soft-UI</a>
 <a href="https://shadows.brumm.af">SShadow</a>
 <a href="https://9elements.github.io/fancy-border-radius/">9elements</a>
 <a href="https://larsenwork.com/easing-gradients/">Easing</a>
@@ -1483,7 +1438,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://getwaves.io">Waves</a>
 <a href="https://bennettfeely.com/clippy">Clip-path</a>
 <a href="https://observablehq.com/@d3/color-schemes">Color-se</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://coolbackgrounds.io">Cool BG</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://haikei.app">Haikei</a>
+<span class="chip-group"><a class="chip" href="https://coolbackgrounds.io">Cool BG</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://haikei.app">Haikei</a>
 <a href="https://uigradients.com">Uigradient</a>
 <a href="https://www.color-morph.com">Color-Morph</a>
 <a href="https://www.grabient.com">Grabient</a>
@@ -1504,7 +1459,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.noiseandgradient.com">Noisegt</a>
 <a href="https://www.designgradients.com">Design Gradients</a>
 <a href="https://www.shadergradient.co">Shader Gradient</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.iconfont.cn">Iconfont</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.freeicons.org">FreeIcons</a>
+<span class="chip-group"><a class="chip" href="http://www.iconfont.cn">Iconfont</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.freeicons.org">FreeIcons</a>
 <a href="https://lucide.dev">Lucide</a>
 <a href="https://css.gg">css.gg</a>
 <a href="https://yesicon.app">Yesicon</a>
@@ -1527,10 +1482,10 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://simpleicons.org">Simpleicons</a>
 <a href="https://iconer.app">Iconer</a>
 <a href="https://boxicons.com">Boxicons</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://gtmetrix.com">Gtmetrix</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.webpagetest.org">Webptest</a>
+<span class="chip-group"><a class="chip" href="https://gtmetrix.com">Gtmetrix</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.webpagetest.org">Webptest</a>
 <a href="https://tools.pingdom.com ">Pingdom</a>
 <a href="https://www.webtoolhub.com/tn561353-website-speed-test.aspx">Webtoolhub</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://cdn.bytedance.com">Bytedance</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://getquick.link ">Quicklink</a>
+<span class="chip-group"><a class="chip" href="https://cdn.bytedance.com">Bytedance</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://getquick.link ">Quicklink</a>
 <a href="https://cdn.baomitu.com">75CDN</a>
 <a href="https://staticfile.org">Staticfile</a>
 <a href="http://www.bootcdn.cn">BootCDN</a>
@@ -1538,7 +1493,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://cdnjs.com">CDNJS</a>
 <a href="http://ecomfe.github.io/fontmin">Fontmin</a>
 <a href="https://www.webfont.com">有字库</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://gallery.manypixels.co">Manypixels</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.reshot.com">Reshot</a>
+<span class="chip-group"><a class="chip" href="https://gallery.manypixels.co">Manypixels</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.reshot.com">Reshot</a>
 <a href="https://www.drawkit.io">DrawKit</a>
 <a href="https://blush.design">Blush</a>
 <a href="https://www.pixiv.net">Pixiv</a>
@@ -1554,7 +1509,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://instantlogosearch.com">Logosearch</a>
 <a href="https://weareskribbl.com">Weareskribbl</a>
 <a href="https://passionhacks.com/gradient-isometric-illustrations">PassionHacks</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://nav.web-hub.cn">前端导航</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.frontendjs.com">前站导航</a>
+<span class="chip-group"><a class="chip" href="http://nav.web-hub.cn">前端导航</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.frontendjs.com">前站导航</a>
 <a href="https://www.similarweb.com/top-websites">网站排名</a>
 <a href="https://www.iowen.cn">一为亿</a>
 <a href="https://downforeveryoneorjustme.com">Downfor</a>
@@ -1579,9 +1534,9 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://dribbble.com">Dribbble</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.bigbigwork.com">大作</a>
+    <span class="chip-group"><a class="chip" href="https://dribbble.com">Dribbble</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.bigbigwork.com">大作</a>
 <a href="https://design.maliquankai.com">码力全开</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://color.adobe.com">A-Color</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://kolr-app.vercel.app">Kolr</a>
+<span class="chip-group"><a class="chip" href="https://color.adobe.com">A-Color</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://kolr-app.vercel.app">Kolr</a>
 <a href="https://kigen.design/color">Kigen Color</a>
 <a href="https://aicolors.co">AI Colors</a>
 <a href="https://pigmentsapp.com">Pigments</a>
@@ -1608,7 +1563,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://colorie.web.app">Colorie</a>
 <a href="https://color.dumogu.top">毒蘑菇</a>
 <a href="https://alwane.io">Alwane</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.photopea.com">Photopea</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://revizepic.toolooz.com">RevizePic</a>
+<span class="chip-group"><a class="chip" href="https://www.photopea.com">Photopea</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://revizepic.toolooz.com">RevizePic</a>
 <a href="https://www.vectorpea.com">Vectorpea</a>
 <a href="https://tugaigai.com">图改改</a>
 <a href="https://studio.creativefabrica.com/studio">CFStudio</a>
@@ -1630,9 +1585,9 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://photoeditor.polarr.com">泼辣修图</a>
 <a href="https://www.gaitubao.com">改图宝</a>
 <a href="https://photokit.com">Photokit</a>
-<a href="https://www11.lunapic.com/editor/">LunaPic</a>
-<a href="https://sagrafix.co/Editors/GrafixEditor">Sagrafix</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://clipchamp.com/zh-hans/">Clipchamp</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.freecut.net">FreeCut</a>
+<a href="https://lunapic.com/editor/">LunaPic</a>
+<a href="https://cuijianzhuang.github.io/photo-watermark">Photo Watermark</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://clipchamp.com/zh-hans/">Clipchamp</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.freecut.net">FreeCut</a>
 <a href="https://zh.pickfrom.net">Pickfrom</a>
 <a href="https://videocandy.com">Video Candy</a>
 <a href="https://www.kapwing.com">Kapwing</a>
@@ -1645,7 +1600,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.mu-yan.net">文本配音</a>
 <a href="http://www.peiyinwa.com">配音娃</a>
 <a href="https://www.text-to-speech.online">文字转语音</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://mockup.photos">Mockup</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://smartmockups.com">Smartmockup</a>
+<span class="chip-group"><a class="chip" href="https://mockup.photos">Mockup</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://smartmockups.com">Smartmockup</a>
 <a href="https://epic.ai/mockdown">Mockdown</a>
 <a href="https://deviceshots.com">Deviceshot</a>
 <a href="https://screenshot.rocks">Screenshot</a>
@@ -1653,7 +1608,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.mockmagic.com">Mockmagic</a>
 <a href="https://magicmockups.com">Magicmockup</a>
 <a href="https://mockups.pixeltrue.com">Pixeltrue</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.canva.cn">可画</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://github.com/gezhaoyou/picprose">PicProse</a>
+<span class="chip-group"><a class="chip" href="https://www.canva.cn">可画</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://github.com/gezhaoyou/picprose">PicProse</a>
 <a href="https://ps.wondershare.com">PixStudio</a>
 <a href="https://www.gaoding.com">稿定设计</a>
 <a href="https://www.figma.com">Figma</a>
@@ -1664,7 +1619,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.designcap.com">Designcap</a>
 <a href="https://github.com/rutikwankhade/CoverView">Coverview</a>
 <a href="https://www.motionelements.com/zh-hant/banner">广告横幅生成</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://wordart.com">WordArt</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.word2art.com">Word2Art</a>
+<span class="chip-group"><a class="chip" href="https://wordart.com">WordArt</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.word2art.com">Word2Art</a>
 <a href="https://www.wordclouds.com">WordClouds</a>
 <a href="https://www.logoly.pro">Logoly</a>
 <a href="https://www.moage.cn">美寄</a>
@@ -1672,7 +1627,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://yciyun.com">易词云</a>
 <a href="https://zh-cn.cooltext.com">Cooltext</a>
 <a href="http://www.makepic.com">Makepic</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://hao.shejidaren.com">设计导航</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://uiset.com">UISET</a>
+<span class="chip-group"><a class="chip" href="http://hao.shejidaren.com">设计导航</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://uiset.com">UISET</a>
 <a href="https://www.vlogquan.com">视频创作</a>
 <a href="https://www.shejidaren.com">设计达人</a>
 <a href="https://hao.uisdc.com">优设导航</a>
@@ -1681,7 +1636,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://so.uigreat.com">UI设计师</a>
 <a href="http://www.bossdesign.cn/designnav/">Boss设计</a>
 <a href="https://www.seeseed.com">Seeseed</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.yoo.la">Yoo</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ps.keepmot.com/zh/">Keepmot</a>
+<span class="chip-group"><a class="chip" href="https://www.yoo.la">Yoo</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ps.keepmot.com/zh/">Keepmot</a>
 <a href="https://img.ops-coffee.com/photo/">免费拼图</a>
 <a href="https://www.collaigo.com/zh/collage-maker">Collage</a>
 <a href="https://collage87.com/zh-CN">Collage87</a>
@@ -1701,7 +1656,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="http://tinypng.com">TinyPng</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.icompressimg.com/zh-CN">ICImg</a>
+    <span class="chip-group"><a class="chip" href="http://tinypng.com">TinyPng</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.icompressimg.com/zh-CN">ICImg</a>
 <a href="https://www.zippic.cn/zh">Zippic</a>
 <a href="https://github.com/joye61/pic-smaller">Pic Smaller</a>
 <a href="https://imgsmall.com">imgsmall</a>
@@ -1723,7 +1678,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://imagecompresiosor.com/zh/">Optimizilla</a>
 <a href="https://bench.tanpok.com">Bench</a>
 <a href="https://www.shrink.media">Shrink.media</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://tiomg.org">太美工具</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://imagestool.com">ImagesTool</a>
+<span class="chip-group"><a class="chip" href="https://tiomg.org">太美工具</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://imagestool.com">ImagesTool</a>
 <a href="https://omnifile.co/zh-cn/">Omnifile</a>
 <a href="https://imageonline.co/cn/">Imageol</a>
 <a href="https://www.iloveimg.com/zh-cn">iLoveIMG</a>
@@ -1746,7 +1701,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://id.zhengzhaopai.com">智能证件照</a>
 <a href="https://github.com/zhbhun/idify">Idify</a>
 <a href="https://onlineexifviewer.com">EXIF Viewer</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.remove.bg">Remove.bg</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://remove.pictures">Remove.pic</a>
+<span class="chip-group"><a class="chip" href="https://www.remove.bg">Remove.bg</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://remove.pictures">Remove.pic</a>
 <a href="https://remove.photos/zh-cn/">Remove.photos</a>
 <a href="https://remaker.ai/cn/ai-tools">BG Remaker</a>
 <a href="https://www.removebg.dev">RemoveBG</a>
@@ -1787,7 +1742,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://clipdrop.co/remove-background">ClipDrop</a>
 <a href="https://jpgrm.com">jpgRM</a>
 <a href="https://kaze.ai/watermark-removal">Kaze.ai</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://bigjpg.com">BigJpg</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://image-upscaling.net">Img-Upscaling</a>
+<span class="chip-group"><a class="chip" href="http://bigjpg.com">BigJpg</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://image-upscaling.net">Img-Upscaling</a>
 <a href="https://qingtu.cn">清图</a>
 <a href="https://imgupscaler.com">AIImgUpscaler</a>
 <a href="https://bigmp4.com">BigMp4</a>
@@ -1806,7 +1761,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://upscaler.stockphotos.com">Upscaler</a>
 <a href="https://vanceai.com/image-enlarger">V-AIEnlarge</a>
 <a href="https://clipdrop.co/image-upscaler">Clipdro</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.photoresizer.com">Photo Resizer</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://easyresizer.com/zh-cn">EasyResizer</a>
+<span class="chip-group"><a class="chip" href="https://www.photoresizer.com">Photo Resizer</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://easyresizer.com/zh-cn">EasyResizer</a>
 <a href="https://imagesplitter.pro">imgsplitter</a>
 <a href="https://4in1crop.com">4in1crop</a>
 <a href="https://imageresizer.com">ImageResizer</a>
@@ -1823,10 +1778,10 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.onlineimageresize.com">OnlineImgR</a>
 <a href="https://imagator.co">Imagator</a>
 <a href="https://www.internetmarketingninjas.com/seo-tools/favicon-generator-crop-images/">SIRT</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://redacted.app">Redacted</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://redact.photo">Redact.photo</a>
+<span class="chip-group"><a class="chip" href="https://redacted.app">Redacted</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://redact.photo">Redact.photo</a>
 <a href="https://watermarkly.com">Watermarkly</a>
 <a href="https://www.imgtools.co/face-privacy">imgtools</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://makeup.pho.to/zh">pho.to</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://create.pixelcut.ai">Image Recolor</a>
+<span class="chip-group"><a class="chip" href="https://makeup.pho.to/zh">pho.to</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://create.pixelcut.ai">Image Recolor</a>
 <a href="https://productshot.app">Productshot</a>
 <a href="https://photolab.me">Photolab</a>
 <a href="http://www.easymoza.com">EasyMoza</a>
@@ -1846,7 +1801,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.myheritage.cn">Myheritage</a>
 <a href="https://wangyasai.github.io/designtools.html">Wangyasai</a>
 <a href="http://geektyper.com">Geektyper</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://pika.style">Pika</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pixzens.com/zh">Pixzens</a>
+<span class="chip-group"><a class="chip" href="https://pika.style">Pika</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pixzens.com/zh">Pixzens</a>
 <a href="https://shotzio.com">Shotzio</a>
 <a href="https://pretty-snap.iwhy.dev">Shot Sleek</a>
 <a href="https://www.photor.fun/editor">Photor</a>
@@ -1857,7 +1812,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://xxbiji.gitee.io/logo-frame-web">xxbiji</a>
 <a href="https://github.com/kangabru/pretty-snap">Pretty-snap</a>
 <a href="https://www.blurmatic.com">Blurmatic</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://ezgif.com">EzGif</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://gifsuper.com">Gifsuper</a>
+<span class="chip-group"><a class="chip" href="https://ezgif.com">EzGif</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://gifsuper.com">Gifsuper</a>
 <a href="http://www.weshineapp.com">闪萌</a>
 <a href="https://www.soogif.com">SooGIF</a>
 <a href="https://www.sosogif.com/tool">SosoGIF</a>
@@ -1869,7 +1824,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.youcompress.com">YouCompress</a>
 <a href="http://gifgifs.com">GIFGIFS</a>
 <a href="http://www.gifreducer.com">Reducer</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.designevo.com/cn/">Designevo</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.logoko.com.cn">标点狗</a>
+<span class="chip-group"><a class="chip" href="https://www.designevo.com/cn/">Designevo</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.logoko.com.cn">标点狗</a>
 <a href="https://www.logosc.cn">标小志</a>
 <a href="http://bingoicon.com">Bingolcon</a>
 <a href="https://www.ucraft.com/free-logo-maker">Ucraft</a>
@@ -1895,7 +1850,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://alpha.wallhaven.cc">Wallhaven</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ultrawidewallpapers.net">超宽壁纸</a>
+    <span class="chip-group"><a class="chip" href="https://alpha.wallhaven.cc">Wallhaven</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ultrawidewallpapers.net">超宽壁纸</a>
 <a href="https://www.pixground.com">Pixground</a>
 <a href="https://www.desktophut.com">Desktophut</a>
 <a href="https://wallpaperstudio10.com">Wallpaper</a>
@@ -1930,7 +1885,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://haowallpaper.com">哲风壁纸</a>
 <a href="https://alphacoders.com">Alpha Coders</a>
 <a href="https://iui.su/3298/">不死鸟壁纸</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://unsplash.com">Unsplash</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://unsplash.dogedoge.com">Unsplash镜像</a>
+<span class="chip-group"><a class="chip" href="https://unsplash.com">Unsplash</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://unsplash.dogedoge.com">Unsplash镜像</a>
 <a href="http://www.pexels.com">Pexels</a>
 <a href="https://pixabay.com">Pixabay</a>
 <a href="https://unrealimages.com">Unreal Images</a>
@@ -1960,19 +1915,19 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://skuawk.com">Skuawk</a>
 <a href="https://www.hippopx.com">Hippopx</a>
 <a href="https://www.rgbstock.com">Rgbstock</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://ccsearch.creativecommons.org">CC Search</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pixelmob.co">Pixel Mob</a>
+<span class="chip-group"><a class="chip" href="https://ccsearch.creativecommons.org">CC Search</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://pixelmob.co">Pixel Mob</a>
 <a href="https://www.canva.com/photos/free">CanvaImg</a>
 <a href="https://visualhunt.com">Visual Hunt</a>
 <a href="https://imagecyseborg.com">ImgCyborg</a>
 <a href="https://www.logosc.cn/so/">Logosc</a>
 <a href="https://www.91sotu.com">搜图导航</a>
 <a href="http://duososo.com">多搜搜</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.dreamstime.com/free-photos">Dreamtime</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://picjumbo.com">Picjumbo</a>
+<span class="chip-group"><a class="chip" href="https://www.dreamstime.com/free-photos">Dreamtime</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://picjumbo.com">Picjumbo</a>
 <a href="http://www.designerspics.com">DesignSpics</a>
 <a href="https://www.reshot.com">Reshot</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.ssyer.com">沙沙野</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.gaoimg.com">高图网</a>
+<span class="chip-group"><a class="chip" href="https://www.ssyer.com">沙沙野</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.gaoimg.com">高图网</a>
 <a href="https://footagecrate.com">FootageCrate</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://mixkit.co">Mixkit</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.motionelements.com/zh-hans">MotionE</a>
+<span class="chip-group"><a class="chip" href="https://mixkit.co">Mixkit</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.motionelements.com/zh-hans">MotionE</a>
 <a href="https://free-stock.video">FS.video</a>
 <a href="https://coverr.co">Coverr</a>
 <a href="https://www.videvo.net ">Videvo</a>
@@ -1984,15 +1939,15 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.pond5.com">pond5</a>
 <a href="https://www.ignitemotion.com">IgniteMotion</a>
 <a href="https://www.vecteezy.com/free-videos">Vecteezy</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.zuoshipin.com">做视频网</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.newcger.com">新CG儿</a>
+<span class="chip-group"><a class="chip" href="https://www.zuoshipin.com">做视频网</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.newcger.com">新CG儿</a>
 <a href="https://www.2amok.com">凌晨亮点</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://thestocks.im">TheStocks</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.lummi.ai">Lummi.ai</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://colorhub.me">ColorHub</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://gratisography.com">Gratisography</a>
+<span class="chip-group"><a class="chip" href="http://thestocks.im">TheStocks</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.lummi.ai">Lummi.ai</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://colorhub.me">ColorHub</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://gratisography.com">Gratisography</a>
 <a href="https://morguefile.com">Morguefile</a>
 <a href="https://www.pakutaso.com">Pakutaso</a>
 <a href="https://magdeleine.co">Magdeleine</a>
 <a href="https://freebies.bypeople.com">Freebies</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://travelcoffeebook.com">Travel</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://foodiesfeed.com">Foodies</a>
+<span class="chip-group"><a class="chip" href="http://travelcoffeebook.com">Travel</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://foodiesfeed.com">Foodies</a>
 <a href="http://www.houzz.com">Houzz</a>
 <a href="https://233.fi">LALA</a>
 <a href="http://www.xiuren.org">XiuRen</a>
@@ -2008,7 +1963,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://elements.envato.com">Envato</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.pinterest.com">Pinterest</a>
+    <span class="chip-group"><a class="chip" href="https://elements.envato.com">Envato</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.pinterest.com">Pinterest</a>
 <a href="http://huaban.com">花瓣网</a>
 <a href="http://www.zcool.com.cn">ZCOOL</a>
 <a href="https://ibaotu.com">包图网</a>
@@ -2018,7 +1973,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://www.nipic.com">昵图网</a>
 <a href="http://699pic.com">摄图网</a>
 <a href="https://www.hellorf.com">站酷海洛</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.easyicon.cc">Easyicon</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ico.bytecook.io">Icons</a>
+<span class="chip-group"><a class="chip" href="https://www.easyicon.cc">Easyicon</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ico.bytecook.io">Icons</a>
 <a href="https://icon.kitchen">IconKitchen</a>
 <a href="http://www.findicons.com">Findicons</a>
 <a href="http://www.iconarchive.com">IconArchive</a>
@@ -2049,7 +2004,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://gitee.com/heizicao/my-icon">NasIcon</a>
 <a href="https://vectorwiki.com">VectorWiki</a>
 <a href="https://ahaicon.com/zh">AhaIcon</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://copychar.cc">CopyChar</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.emojiall.com/zh-hans">EmojiAll</a>
+<span class="chip-group"><a class="chip" href="http://copychar.cc">CopyChar</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.emojiall.com/zh-hans">EmojiAll</a>
 <a href="https://www.getemoji.com">GetEmoji</a>
 <a href="https://emojipedia.org/zh">Emojipedia</a>
 <a href="https://coolsymbol.com">Cool Symbol</a>
@@ -2059,7 +2014,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.hotsymbol.com">Hotsymbol</a>
 <a href="https://emoji.aranja.com">EmojiPNG</a>
 <a href="https://alohe.github.io/emojicloud">EmojiSVG</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://getavataaars.com">AvatarGen</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://avamake.com">Ava Maker</a>
+<span class="chip-group"><a class="chip" href="https://getavataaars.com">AvatarGen</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://avamake.com">Ava Maker</a>
 <a href="https://artbreeder.com">Artbreeder</a>
 <a href="https://thehashavatars.com">HashAvatar</a>
 <a href="https://pfpmaker.com">PFPMaker</a>
@@ -2072,14 +2027,14 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://thuscn.com/lab/">Thus</a>
 <a href="https://small-upup.upuptoyou.com">举牌小人</a>
 <a href="https://www.jiuwa.net/jupai">举牌小人</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://pngimg.com">Pngimg</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.pngdirs.com">PNGDirs</a>
+<span class="chip-group"><a class="chip" href="http://pngimg.com">Pngimg</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.pngdirs.com">PNGDirs</a>
 <a href="https://imgbin.com">ImgBin</a>
 <a href="https://kcaps.app">Kcaps</a>
 <a href="https://shotki.app">Shotki</a>
 <a href="https://www.cleanpng.com">Cleanpng</a>
 <a href="https://github.com/hampusborgos/country-flags">国旗图</a>
 <a href="https://flmg.guychienll.dev">Line</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.fontshow.com/zh">FontShow</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.fontke.com">字客网</a>
+<span class="chip-group"><a class="chip" href="https://www.fontshow.com/zh">FontShow</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.fontke.com">字客网</a>
 <a href="https://www.100font.com">100font</a>
 <a href="https://github.com/wordshub/free-font">免费商用字体</a>
 <a href="https://ziyouziti.com">自由字体</a>
@@ -2096,7 +2051,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.fontspace.com">FontSpace</a>
 <a href="https://www.fontshare.com">Fontshare</a>
 <a href=" https://uncut.wtf">uncut</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.aigei.com/sound">爱给音效</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.tosound.com">淘声网</a>
+<span class="chip-group"><a class="chip" href="https://www.aigei.com/sound">爱给音效</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.tosound.com">淘声网</a>
 <a href="https://freepd.com">FreePD</a>
 <a href="https://www.ear0.com">耳聆网</a>
 <a href="https://audiotrimmer.com/cn/royalty-free-music">Audio Trimmer</a>
@@ -2122,9 +2077,9 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.streemtunes.com">StreemTunes</a>
 <a href="https://www.chanmama.com/musicRank">蝉妈妈</a>
 <a href="https://whyp.it">Whyp</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.hituyu.com">图鱼纹理</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.textures.com">Textures</a>
+<span class="chip-group"><a class="chip" href="http://www.hituyu.com">图鱼纹理</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.textures.com">Textures</a>
 <a href="https://ambientcg.com">AmbientCG</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://flowcv.io">Flowcv</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.500d.me">五百丁</a>
+<span class="chip-group"><a class="chip" href="https://flowcv.io">Flowcv</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.500d.me">五百丁</a>
 <a href="https://www.polebrief.com">极简简历</a>
 <a href="https://www.cakeresume.com/zh-CN">CakeResume</a>
 <a href="https://enhancv.com">Enhancv</a>
@@ -2138,7 +2093,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://onepage.czl.net/tools/seal_generation">印章生成</a>
 <a href="https://www.mygraphpaper.com">GraphPaper</a>
 <a href="http://gridzzly.com">Gridzzly</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.meihua.info">梅花网</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.topys.cn">TOPYS</a>
+<span class="chip-group"><a class="chip" href="https://www.meihua.info">梅花网</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.topys.cn">TOPYS</a>
 <a href="https://www.yxgapp.com">译学馆</a>
 <a href="https://www.yizhuan5.com">易撰</a>
 <a href="http://www.wenangou.com">文案狗</a>
@@ -2153,7 +2108,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://store.steampowered.com">Steam</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.epicgames.com">Epic</a>
+    <span class="chip-group"><a class="chip" href="https://store.steampowered.com">Steam</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.epicgames.com">Epic</a>
 <a href="https://zh-cn.ubisoft.com">Uplay</a>
 <a href="https://www.xbox.com">Xbox</a>
 <a href="https://www.gog.com">GOG</a>
@@ -2164,10 +2119,10 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.greenmangaming.com/zh">GMG</a>
 <a href="https://www.fhyx.com">凤凰游戏</a>
 <a href="https://www.sonkwo.com">杉果游戏</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://xboxfan.com">盒心光环</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://psnine.com">PSN中文站</a>
+<span class="chip-group"><a class="chip" href="https://xboxfan.com">盒心光环</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://psnine.com">PSN中文站</a>
 <a href="https://store.playstation.com">PlayStation</a>
 <a href="https://www.a9vg.com">A9VG</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.gamersky.com">游民星空</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.3dmgame.com">3dmGame</a>
+<span class="chip-group"><a class="chip" href="http://www.gamersky.com">游民星空</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.3dmgame.com">3dmGame</a>
 <a href="https://www.ali213.net">游侠网</a>
 <a href="http://www.vgtime.com">游戏时光</a>
 <a href="https://fsx.org.cn">飞行宝</a>
@@ -2179,7 +2134,7 @@ button{font-family:inherit;cursor:pointer}
 <a class="chip chip--plain" href="https://www.gcores.com">机核</a>
 <a class="chip chip--plain" href="https://www.17173.com">17173</a>
 <a class="chip chip--plain" href="https://www.tgbus.com">电玩巴士</a>
-<span class="chip-group"><a class="chip" href="https://www.huijiwiki.com">灰机Wiki</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://steamcommunity.com/app/2074920">第一后裔人数</a>
+<span class="chip-group"><a class="chip" href="https://www.huijiwiki.com">灰机Wiki</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://steamcommunity.com/app/2074920">第一后裔人数</a>
 <a href="https://steamdb.info">SteamDB</a>
 <a href="https://steamcharts.com">SteamCharts</a>
 <a href="https://www.op.gg/champions">op.gg</a>
@@ -2195,22 +2150,22 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://zh.z-library.sk">ZLibrary</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://clibrary.cn">Clibrary</a>
+    <span class="chip-group"><a class="chip" href="https://zh.z-library.sk">ZLibrary</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://clibrary.cn">Clibrary</a>
 <a href="https://zh.annas-archive.org">安娜的档案</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://jiumodiary.com">鸠摩搜书</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://book.tstrs.me">SaltyLeo</a>
+<span class="chip-group"><a class="chip" href="http://jiumodiary.com">鸠摩搜书</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://book.tstrs.me">SaltyLeo</a>
 <a href="https://yibook.org">易书</a>
 <a href="https://ebook.huzerui.com">熊猫搜书</a>
 <a href="https://24hbook.com">24H搜书</a>
 <a href="https://bks.thefuture.top">TheFuture</a>
 <a href="https://www.toplinks.cc">淘链客</a>
 <a href="https://www.tianlangbooks.com">天浪书屋</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.neat-reader.cn/webapp">Neat Reader</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://github.com/pacexy/flow">Flowoss</a>
+<span class="chip-group"><a class="chip" href="https://www.neat-reader.cn/webapp">Neat Reader</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://github.com/pacexy/flow">Flowoss</a>
 <a href="https://app.lotareader.com">Lota</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.shenmezhidedu.com">什么值得读</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://yidanshu.com">一单书</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://gen.lib.rus.ec">Library Gens</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.getfreeebooks.com">GetFreeBooks</a></span></span></span>
+<span class="chip-group"><a class="chip" href="http://www.shenmezhidedu.com">什么值得读</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://yidanshu.com">一单书</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://gen.lib.rus.ec">Library Gens</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.getfreeebooks.com">GetFreeBooks</a></span></span></span>
 <a class="chip chip--plain" href="https://bookfere.com">书伴</a>
-<span class="chip-group"><a class="chip" href="https://kgbook.com">苦瓜书盘</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://xxskvip.ctfile.com/dir/4015388-26932121-b2aa31">小小书库</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://bestcbooks.com">计算机书籍</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ebookfoundation.github.io/free-programming-books/">Programming</a>
+<span class="chip-group"><a class="chip" href="https://kgbook.com">苦瓜书盘</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://xxskvip.ctfile.com/dir/4015388-26932121-b2aa31">小小书库</a></span></span></span>
+<span class="chip-group"><a class="chip" href="http://bestcbooks.com">计算机书籍</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ebookfoundation.github.io/free-programming-books/">Programming</a>
 <a href="http://freecomputerbooks.com">FreeC books</a></span></span></span>
 <a class="chip chip--plain" href="http://zoudupai.com">走读派导航</a>
   </div>
@@ -2223,11 +2178,11 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://www.zhihu.com">知乎</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.jianshu.com">简书</a>
+    <span class="chip-group"><a class="chip" href="https://www.zhihu.com">知乎</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.jianshu.com">简书</a>
 <a href="http://zh.wikihow.com">WikiHow</a>
 <a href="https://topbook.cc">Topbook</a>
 <a href="https://www.cn-ki.net">仿知网</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.imooc.com">慕课网</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://developer.mozilla.org/zh-CN">MDN Web</a>
+<span class="chip-group"><a class="chip" href="http://www.imooc.com">慕课网</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://developer.mozilla.org/zh-CN">MDN Web</a>
 <a href="https://www.jiuzhang.com">九章算法</a>
 <a href="https://zh.javascript.info">现代JS教程</a>
 <a href="https://www.w3schools.com">W3School</a>
@@ -2236,14 +2191,14 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://www.qdfuns.com">前端网</a>
 <a href="http://www.w3cplus.com">w3cplus</a>
 <a href="https://www.axihe.com">阿西河</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://uiiiuiii.com">优优教程网</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.jikexueyuan.com">极客学院</a>
+<span class="chip-group"><a class="chip" href="https://uiiiuiii.com">优优教程网</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.jikexueyuan.com">极客学院</a>
 <a href="https://www.doyoudo.com">Doyoudo</a></span></span></span>
 <a class="chip chip--plain" href="http://xuetangx.com">学堂在线</a>
 <a class="chip chip--plain" href="https://www.lanqiao.cn">蓝桥云课</a>
 <a class="chip chip--plain" href="http://cn.udacity.com">优达学城</a>
-<span class="chip-group"><a class="chip" href="http://study.163.com">网易云课堂</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://open.163.com">网易公开课</a></span></span></span>
+<span class="chip-group"><a class="chip" href="http://study.163.com">网易云课堂</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://open.163.com">网易公开课</a></span></span></span>
 <a class="chip chip--plain" href="http://wiki.mbalib.com/">MBAlib</a>
-<span class="chip-group"><a class="chip" href="http://www.51zxw.net">51自学网</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.myenglishpages.com">MyEnglish</a>
+<span class="chip-group"><a class="chip" href="http://www.51zxw.net">51自学网</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.myenglishpages.com">MyEnglish</a>
 <a href="https://www.ted.com">TED</a>
 <a href="https://wordforest.cn">单词森林</a>
 <a href="https://github.com/cuixueshe/earthworm">Earthworm</a>
@@ -2258,7 +2213,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://bandwagonhost.com">搬瓦工</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://vmcheap.com">白菜服务器比价</a>
+    <span class="chip-group"><a class="chip" href="https://bandwagonhost.com">搬瓦工</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://vmcheap.com">白菜服务器比价</a>
 <a href="https://www.cloudcone.com">CloudCone</a>
 <a href="https://www.dmit.io/cart.php?a=confproduct&amp;i=0&amp;language=chinese">DMIT</a>
 <a href="https://www.vmrack.net/zh-CN">VMRack</a>
@@ -2275,24 +2230,24 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://hosteons.com">Hosteons</a>
 <a href="https://digital-vm.com">DigitalVM</a>
 <a href="https://greencloudvps.com">Greencloud</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://vm.dogyun.com/server/list">极限拼车</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://racknerd.com">RackNerd</a>
+<span class="chip-group"><a class="chip" href="https://vm.dogyun.com/server/list">极限拼车</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://racknerd.com">RackNerd</a>
 <a href="https://justhost.ru">Justhost</a>
 <a href="https://www.lcayun.com">莱卡云</a>
 <a href="https://virmach.com">VirMach</a>
 <a href="https://lowendaff.com">lowendaff</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.qiniu.com">七牛云</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.cfhost.cn">咖啡主机</a>
+<span class="chip-group"><a class="chip" href="http://www.qiniu.com">七牛云</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.cfhost.cn">咖啡主机</a>
 <a href="https://www.ucloud.cn">UCloud</a>
 <a href="http://www.80vps.com">80VPS</a>
 <a href="https://www.qingcloud.com">青云</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://vps.apponfly.com">AppOnFly</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.onworks.net">Onworks</a>
+<span class="chip-group"><a class="chip" href="https://vps.apponfly.com">AppOnFly</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.onworks.net">Onworks</a>
 <a href="https://hyperbeam.com">Hyperbeam</a>
 <a href="https://distrosea.com">Distrosea</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.fanqiangzhe.com">FQZ</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://free-ss.site">Free-SS</a>
+<span class="chip-group"><a class="chip" href="https://www.fanqiangzhe.com">FQZ</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://free-ss.site">Free-SS</a>
 <a href="https://fanqiangdang.com">FQD</a>
 <a href="https://freefq.com">FreeFQ</a>
 <a href="https://lncn.org">lncn.org</a>
 <a href="https://github.com/Alvin9999/new-pac/wiki/v2ray免费账号">v2raymf</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.expressvpn.com">Express</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.urban-vpn.com">Urban</a>
+<span class="chip-group"><a class="chip" href="https://www.expressvpn.com">Express</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.urban-vpn.com">Urban</a>
 <a href="https://surfshark.com">Surfshark</a>
 <a href="https://protonvpn.com">ProtonVPN</a>
 <a href="https://nordvpn.com/zh/">Nordvpn</a>
@@ -2300,7 +2255,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://justmysocks.net">justmysocks</a>
 <a href="https://www.flyvpn.com">FlyVPN</a>
 <a href="https://www.vyprvpn.com">VyprVPN</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://ipcheck.ing">MyIP</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ip.im">IP.im</a>
+<span class="chip-group"><a class="chip" href="https://ipcheck.ing">MyIP</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ip.im">IP.im</a>
 <a href="https://ip.me">IP.me</a>
 <a href="https://ip.network">IP.network</a>
 <a href="https://www.ipaddress.com">IPAddress</a>
@@ -2319,7 +2274,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://ipleak.net">ipleak</a>
 <a href="https://whoer.net/zh">Whoer</a>
 <a href="https://www.opengps.cn">openGPS</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://ping.pe">Ping.pe</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ping0.cc">Ping0</a>
+<span class="chip-group"><a class="chip" href="https://ping.pe">Ping.pe</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ping0.cc">Ping0</a>
 <a href="https://check-host.net">Checkhost</a>
 <a href="https://ipinfo.cv">IPinfo.CV</a>
 <a href="https://www.yougetsignal.com">yougetsignal</a>
@@ -2330,7 +2285,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://ping.sx">Ping.sx</a>
 <a href="https://www.itdog.cn">ITDog</a>
 <a href="https://ipcheck.alice.ws">AliceNoc</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://www.speedtest.net">Speedtest</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://fast.com">Fast</a>
+<span class="chip-group"><a class="chip" href="http://www.speedtest.net">Speedtest</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://fast.com">Fast</a>
 <a href="https://flyingttfb.com">Flying</a>
 <a href="https://www.speedtest.cn">测速网</a>
 <a href="https://www.speedcheck.org">Speedcheck</a>
@@ -2346,7 +2301,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="https://dash.cloudflare.com">Cloudflare</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.namesilo.com">Namesilo</a>
+    <span class="chip-group"><a class="chip" href="https://dash.cloudflare.com">Cloudflare</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.namesilo.com">Namesilo</a>
 <a href="https://www.netcup.com">Netcup</a>
 <a href="https://squarespace.com">Squarespace</a>
 <a href="https://spaceship.com">Spaceship</a>
@@ -2359,7 +2314,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.lookssl.com">Lookssl</a>
 <a href="https://namebeta.com">Namebeta</a>
 <a href="https://improvmx.com">Improvmx</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://edgeone.ai/products/pages">EdgeOne</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.netlify.com">Netlify</a>
+<span class="chip-group"><a class="chip" href="https://edgeone.ai/products/pages">EdgeOne</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.netlify.com">Netlify</a>
 <a href="https://vercel.com">Vercel</a>
 <a href="https://sevalla.com/static-site-hosting">Sevalla</a>
 <a href="https://www.freehostia.com">Freehostia</a>
@@ -2371,13 +2326,13 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.wulihub.com.cn">Wulihub</a>
 <a href="https://www.sxl.cn">Sxl</a>
 <a href="https://www.brizy.cloud">Brizy</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://blog.naibabiji.com/step">奶爸建站</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://wzfou.com">挖站否</a>
+<span class="chip-group"><a class="chip" href="https://blog.naibabiji.com/step">奶爸建站</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://wzfou.com">挖站否</a>
 <a href="https://railway.app">Railway</a>
 <a href="https://www.pikapods.com">Pikapods</a>
 <a href="https://render.com">Render</a>
 <a href="https://fly.io">Fly.io</a></span></span></span>
 <a class="chip chip--plain" href="http://coolaf.com">Coolaf</a>
-<span class="chip-group"><a class="chip" href="https://dns.ip.cn">DNS.ip</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.opennic.org">OpenNIC</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://dns.ip.cn">DNS.ip</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.opennic.org">OpenNIC</a></span></span></span>
 <a class="chip chip--plain" href="https://hopjs.bunny.net">Hop.js</a>
   </div>
 </section>
@@ -2389,7 +2344,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-    <span class="chip-group"><a class="chip" href="#">服务号码</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="tel:95598">国家电网</a>
+    <span class="chip-group"><a class="chip" href="#">服务号码</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="tel:95598">国家电网</a>
 <a href="tel:96219">辽东水务</a>
 <a href="tel:43852344">自来水务</a>
 <a href="tel:44525016">新明社区</a>
@@ -2403,7 +2358,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="tel:44525147">明山区综执局</a>
 <a href="tel:44599679">新明派出所</a>
 <a href="tel:44389453">明山城管局</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.kuaidi100.com">快递100</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.sf-express.com">顺丰</a>
+<span class="chip-group"><a class="chip" href="https://www.kuaidi100.com">快递100</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.sf-express.com">顺丰</a>
 <a href="http://www.jdl.cn">京东</a>
 <a href="http://www.sto.cn">申通</a>
 <a href="http://www.yto.net.cn">圆通</a>
@@ -2415,21 +2370,21 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://www.fwx-network.com">丰网</a>
 <a href="https://www.yimidida.com">壹米滴答</a></span></span></span>
 <a class="chip chip--plain" href="http://www.xiachufang.com">下厨房</a>
-<span class="chip-group"><a class="chip" href="https://dxy.com">丁香医生</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ask.nocode.com">就诊问问</a>
+<span class="chip-group"><a class="chip" href="https://dxy.com">丁香医生</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://ask.nocode.com">就诊问问</a>
 <a href="https://www.120ask.com">120ask</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://upsort.com">UpSort</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.hexun.com">和讯</a>
+<span class="chip-group"><a class="chip" href="https://upsort.com">UpSort</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.hexun.com">和讯</a>
 <a href="http://www.eastmoney.com">东方财富</a>
 <a href="http://cn.morningstar.com">晨星网</a>
 <a href="http://www.macd.cn">MACD</a>
 <a href="http://lib.guhai66.com">古道观海</a>
 <a href="https://www.taoguba.com.cn">淘股吧</a>
 <a href="https://www.jisilu.cn">集思录</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.icbc.com.cn">工商银行</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.boc.cn">中国银行</a>
+<span class="chip-group"><a class="chip" href="https://www.icbc.com.cn">工商银行</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.boc.cn">中国银行</a>
 <a href="https://www.abchina.com/cn/">农业银行</a>
 <a href="http://www.ccb.com">建设银行</a>
 <a href="https://www.cmbchina.com">招商银行</a>
 <a href="https://fc.frytea.com">理财计算器</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.bybit.com">Bybit</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.huobi.com">火币网</a>
+<span class="chip-group"><a class="chip" href="https://www.bybit.com">Bybit</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.huobi.com">火币网</a>
 <a href="https://www.okx.com">欧易</a>
 <a href="https://localbitcoins.com">L-bitcoins</a>
 <a href="https://www.coinbase.com">Coinbase</a>
@@ -2443,7 +2398,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.aicoin.cn">AICoin</a>
 <a href="https://www.feixiaohao.com">非小号</a>
 <a href="https://www.coingecko.com">CoinGecko</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.ctrip.com">携程旅行</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.mafengwo.cn">马蜂窝</a>
+<span class="chip-group"><a class="chip" href="https://www.ctrip.com">携程旅行</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.mafengwo.cn">马蜂窝</a>
 <a href="https://www.qyer.com">穷游</a>
 <a href="https://www.tripadvisor.cn">猫途鹰</a>
 <a href="https://www.booking.com">缤客</a>
@@ -2451,7 +2406,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://zh.airbnb.com">Airbnb</a>
 <a href="http://www.dianping.com">大众点评</a>
 <a href="https://www.fliggy.com">飞猪</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://si.12333.gov.cn">社保服务</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.12315.cn">315</a>
+<span class="chip-group"><a class="chip" href="http://si.12333.gov.cn">社保服务</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.12315.cn">315</a>
 <a href="https://www.miit.gov.cn">工信部</a>
 <a href="https://www.tianyancha.com">天眼查</a>
 <a href="https://www.qcc.com">企查查</a>
@@ -2467,7 +2422,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </header>
   <div class="links">
-<span class="chip-group"><a class="chip" href="https://www.tree.fm">Tree.fm</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://earth.fm">Earth.fm</a>
+<span class="chip-group"><a class="chip" href="https://www.tree.fm">Tree.fm</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://earth.fm">Earth.fm</a>
 <a href="https://lofi.co">Lofi</a>
 <a href="https://lofifm.vercel.app">Lofi FM</a>
 <a href="http://coffeesalon.com">咖啡沙龙</a>
@@ -2479,14 +2434,15 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://yun.kujiale.com">酷乐家</a>
 <a href="https://www.homestyler.com">Homestyler</a></span></span></span>
 <a class="chip chip--plain" href="https://www.abbreviations.com">缩略短语</a>
-<span class="chip-group"><a class="chip" href="https://www.jinjugu.com">金句谷</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.shuoshuodaitupian.com">好句子迷</a>
+<span class="chip-group"><a class="chip" href="https://www.jinjugu.com">金句谷</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="http://www.shuoshuodaitupian.com">好句子迷</a>
 <a href="https://www.mingyantong.com">名言通</a>
 <a href="https://www.jinrishici.com">今日诗词</a>
 <a href="https://wantwords.net">反向词典</a>
 <a href="https://www.brainyquote.com">Brainyquote</a>
 <a href="https://www.gushici.com">古诗词网</a></span></span></span>
 <a class="chip chip--plain" href="https://www.best-teleprompter.com/zh">提词器</a>
-<span class="chip-group"><a class="chip" href="https://keyboard.afjs.dev">键盘测试</a><button type="button" class="care-btn" aria-label="展开子菜单" onclick="toggleFlyout(this)"><i class="care">⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://www.typingclub.com/da-zi">打字俱乐部</a>
+<span class="chip-group"><a class="chip" href="https://keyboard.afjs.dev">键盘测试</a><button type="button" class="care-btn" onclick="toggleFlyout(this)"><i>⌄</i></button><span class="flyout"><span class="flyout-inner"><a href="https://mousetester.io">MouseTester</a>
+<a href="https://www.typingclub.com/da-zi">打字俱乐部</a>
 <a href="https://www.eletypes.com">Ele types</a>
 <a href="https://qwerty.kaiyi.cool">Qwerty Learner</a>
 <a href="https://www.autopiano.cn">自由钢琴</a>
@@ -2517,144 +2473,80 @@ button{font-family:inherit;cursor:pointer}
 </section>
 
 <ul class="dock">
-<li class="dock-item"><button type="button" aria-label="menu"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></button><span class="flyout dock-flyout"><span class="flyout-inner"><a href="./minitools/wallclock.html" id="ctime">时间</a><a href="./minitools/wclock.html">周时钟</a><a href="https://minutetimers.net">计时器</a><a href="https://justpomodoro.com">番茄钟</a><a href="https://pomodor.app">Pomodor</a><a href="https://datetime.app/zh-hans">全球时间</a></span></span></li>
+<li class="dock-item"><button type="button" aria-label="menu"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></button><span class="flyout dock-flyout"><span class="flyout-inner"><a href="./minitools/wallclock.html" id="ctime">时间</a><a href="./minitools/wclock.html">周时钟</a><a href="https://minutetimers.net">计时器</a><a href="https://justpomodoro.com">番茄钟</a><a href="https://datetime.app/zh-hans">世界时</a></span></span></li>
 <li class="dock-item"><a href="http://www.weather.com.cn/weather1dn/101070501.shtml"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></a></li>
 <li class="dock-item"><a href="https://www.baidu.com/s?wd=%E6%97%A5%E5%8E%86"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></a></li>
 <li class="dock-item"><button type="button" aria-label="menu"><svg viewBox="0 0 24 24"><path d="M12 22s7-7.4 7-12.5A7 7 0 0 0 5 9.5C5 14.6 12 22 12 22z"/><circle cx="12" cy="9.5" r="2.4"/></svg></button><span class="flyout dock-flyout"><span class="flyout-inner"><a href="https://map.baidu.com">百度地图</a><a href="https://maps.google.com">谷歌地图</a><a href="https://earth.google.com">谷歌地球</a><a href="https://www.amap.com">高德地图</a><a href="https://www.openstreetmap.org">OSM</a></span></span></li>
-<li class="dock-item"><button type="button" aria-label="menu"><svg viewBox="0 0 24 24"><path d="M4 20l1-4.5L15.5 5 19 8.5 8.5 19 4 20z"/><path d="M13.5 6.5L17.5 10.5"/></svg></button><span class="flyout dock-flyout"><span class="flyout-inner"><a href="https://xyz.556660.xyz/nanji">Notepad</a><a href="https://viliusle.github.io/miniPaint">Paint</a><a href="https://xyz.556660.xyz/pb/">PrivateBin</a><a href="https://leaflet.pub">Leaflet</a><a href="https://nute.app">Nute</a><a href="https://notepadtab.com">Notetab</a><a href="https://drawnix.com">Drawnix</a><a href="https://www.tldraw.com">Tldraw</a><a href="https://excalidraw.com">Exdraw</a><a href="https://vectr.com">Vectr</a><a href="https://www.google.com/intl/zh-CN/inputtools/try/">IME</a></span></span></li>
+<li class="dock-item"><button type="button" aria-label="menu"><svg viewBox="0 0 24 24"><path d="M4 20l1-4.5L15.5 5 19 8.5 8.5 19 4 20z"/><path d="M13.5 6.5L17.5 10.5"/></svg></button><span class="flyout dock-flyout"><span class="flyout-inner"><a href="https://xyz.556660.xyz/nanji">Notetrn</a><a href="https://viliusle.github.io/miniPaint">Paint</a><a href="https://xyz.556660.xyz/pb/">PrivateBin</a><a href="https://leaflet.pub">Leaflet</a><a href="https://notepadtab.com">Notetab</a><a href="https://drawnix.com">Drawnix</a><a href="https://koboyo.com">Koboyo</a><a href="https://www.tldraw.com">Tldraw</a><a href="https://www.google.com/intl/zh-CN/inputtools/try/">IME</a></span></span></li>
 <li class="dock-item"><button type="button" aria-label="menu"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16"/><path d="M7 15l4-4 3 3 5-6"/></svg></button><span class="flyout dock-flyout"><span class="flyout-inner"><a href="https://xueqiu.com">Stock</a><a href="https://cn.tradingview.com">Tview</a><a href="https://www.google.com/search?q=%E7%BE%8E%E5%85%83+%E4%BA%BA%E6%B0%91%E5%B8%81">Currency</a><a href="https://www.xe.com/zh-CN/currencyconverter/convert/?Amount=1&amp;From=USD&amp;To=CNY">Xe-Cnv</a></span></span></li>
 <li class="dock-item"><button type="button" aria-label="menu"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3 3-2-2 3-3z"/></svg></button><span class="flyout dock-flyout"><span class="flyout-inner"><a href="https://www.the-qrcode-generator.com">QRcode</a><a href="https://memotalk.hamsterbase.com">记事本</a><a href="https://www.metric-converter.com/zh-CN">单位转换</a><a href="https://www.keepscreenon.com">屏幕常亮</a><a href="https://flipclocker.com">屏保时钟</a><a href="https://flipclock.tk">屏保时钟</a><a href="https://ssh.mtab.cc">WebSSH</a></span></span></li>
-<li class="dock-item"><button type="button" aria-label="menu"><svg viewBox="0 0 24 24"><path d="M4 5h9M8 3v2M6.5 5c0 4 2 7 5.5 9M11.5 5c-.7 4-3 7.5-7 9.5"/><path d="M14 21l4-9 4 9M15.3 18h5.4"/></svg></button><span class="flyout dock-flyout"><span class="flyout-inner"><a href="http://mtrans.aaxyz.de:56">Mtrans</a><a href="https://my.eudic.net/studyList">欧路</a><a href="https://miraitranslate.com/en/trial">日语</a><a href="https://zhconvert.org">繁化姬</a><a href="https://www.chineseconverter.com/zh-cn">中文转换</a><a href="minitools/etr.html">更多</a></span></span></li>
+<li class="dock-item"><button type="button" aria-label="menu"><svg viewBox="0 0 24 24"><path d="M4 5h9M8 3v2M6.5 5c0 4 2 7 5.5 9M11.5 5c-.7 4-3 7.5-7 9.5"/><path d="M14 21l4-9 4 9M15.3 18h5.4"/></svg></button><span class="flyout dock-flyout"><span class="flyout-inner"><a href="minitools/translator.html">实时翻译</a><a href="http://mtrans.aaxyz.de:56">本地模型</a><a href="https://my.eudic.net/studyList">欧路词典</a><a href="https://miraitranslate.com/en/trial">日语</a><a href="https://zhconvert.org">繁化姬</a><a href="https://www.chineseconverter.com/zh-cn">中文转换</a></span></span></li>
 <li class="dock-item"><button type="button" aria-label="menu"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></svg></button><span class="flyout dock-flyout"><span class="flyout-inner"><a href="https://mail.proton.me">Proton</a><a href="https://outlook.com/mail">Outlook</a><a href="https://mail.google.com">Gmail</a><a href="https://mail.yandex.com">Yandex</a><a href="https://mail.qq.com">QQ</a><a href="https://mail.163.com">163</a><a href="https://www.88.com">88</a></span></span></li>
 <li class="dock-item"><a href="#top"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></a></li>
 <li class="dock-item"><a href="#bar"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></a></li>
 </ul>
 
-<div id="navhide" onclick="xnavhide()">
-  <div class="drawer" onclick="event.stopPropagation()">
-    <h2>更多导航</h2>
-    <p class="hint">// 在搜索框输入 n 后失焦即可唤出 · 点击空白处关闭</p>
-<div class="drawer-group"><h3>导航</h3><div class="drawer-chips"><a href="https://quickso.cn">快点搜</a>
+<div id="navhide" onclick="xnavhide()"><div class="drawer" onclick="event.stopPropagation()">
+<h2>更多导航</h2>
+<div class="drawer-group"><h3>导航</h3><div class="drawer-chips">
+<a href="https://quickso.cn">快点搜</a>
 <a href="http://guozhivip.com">果汁</a>
-<a href="https://video.bqrdh.com">不求人</a>
-<a href="https://www.ziyuantu.com">资源兔</a>
-<a href="https://www.bookmarkearth.com">书签地球</a>
-<a href="http://www.xiacoo.com">虾库</a>
-<a href="https://nav.sbkko.com">SBKKO</a>
-<a href="https://www.bidianer.com">笔点导航</a>
-<a href="https://www.jikedaohang.com">极客导航</a>
-<a href="https://www.a.cool">阿酷导航</a>
-<a href="https://nav.hzwdd.cn">西瓜导航</a>
-<a href="https://daohangwan.com">导航湾</a>
-<a href="http://wanyouw.com">万有导航</a>
-<a href="http://ilxdh.com">龙轩导航</a>
-<a href="http://b.lackk.com">兰客导航</a>
-<a href="https://www.chaidu.com">柴都导航</a>
-<a href="http://www.gitnavi.com">GitNavi</a>
-<a href="http://www.haoyonghaowan.com">好用好玩</a>
-<a href="http://www.waysto.work">沃客导航</a>
+<a href="https://www.bidianer.com">笔点</a>
+<a href="https://a.cool">阿酷</a>
+<a href="http://ilxdh.com">龙轩</a>
+<a href="http://b.lackk.com">兰客</a>
 <a href="https://anee.cc">安逸影视</a>
-<a href="https://adzhp.cn">爱达杂货铺</a>
-<a href="https://gate.ofo.moe">随机去网站</a>
-<a href="https://site.sciping.com">科塔学术</a>
-<a href="https://www.wechatrss.com">微信导航</a>
+<a href="https://adzhp.cc">爱达杂货铺</a>
 <a href="http://hao.199it.com">大数据</a>
-<a href="https://wht.im">W.万花筒</a>
-<a href="http://www.jianfast.com">简法搜索</a>
-<a href="https://xydh.fun">炫猿</a>
-<a href="http://search.coderschool.cn">Justsoit</a>
 <a href="http://guozhivip.com/lab/">有点意思</a>
-<a href="https://www.miguyu.com">咪咕鱼</a>
-<a href="https://www.zkcee.com">知客导航</a>
-<a href="https://axutongxue.com">阿虚储物间</a>
-<a href="https://www.24kdh.com">24K</a>
-<a href="https://www.ixsdh.com">爱学术</a>
-<a href="https://404l.com">迷鹿</a></div></div>
-<div class="drawer-group"><h3>资源</h3><div class="drawer-chips"><a href="https://dalao.ru">不死鸟大佬分享</a>
-<a href="https://www.rdonly.com">只读</a>
-<a href="https://mo.fish">鱼塘热榜</a>
+</div></div>
+<div class="drawer-group"><h3>资源</h3>
+<div class="drawer-chips"><a href="https://oe.do">不死鸟资源</a>
 <a href="https://rebang.today">今日热榜</a>
 <a href="https://tophub.today">今日热榜</a>
-<a href="https://the.top">拓扑排行榜</a>
-<a href="https://www.heji.ltd">合集网</a>
-<a href="https://super-nb.com">小牛导航</a>
-<a href="https://jike.info">Jike</a>
-<a href="https://zzzmh.cn">zzzmh</a>
-<a href="https://www.zmki.cn">钻芒博客</a>
-<a href="https://imyshare.com">精品资源</a>
-<a href="http://lcoc.top">蓝调</a>
-<a href="https://www.8ziyuan.com">8资源</a>
-<a href="https://aleikeji.github.io">阿雷</a>
-<a href="http://www.qyun.vip">Q云资源</a>
-<a href="https://fuliba-1251744788.file.myqcloud.com">福利吧</a>
-<a href="https://iao.su/909/">不死鸟资源合集</a></div></div>
-<div class="drawer-group"><h3>个人</h3><div class="drawer-chips"><a href="https://a.maorx.cn">青柠起始页</a>
-<a href="http://www.xiaoshesoso.com">小蛇搜搜</a>
-<a href="https://hufangyun.com">小猿大圣</a>
-<a href="https://baideye.com">白的夜</a>
-<a href="https://hoxis.github.io">Hoxis</a>
-<a href="https://www.quchao.net">Mark</a>
-<a href="https://www.emin.ink">Emin</a>
-<a href="https://zoomyale.com">Zoomyale</a>
-<a href="https://mkblog.cn">孟坤博客</a>
+<a href="https://www.limestart.cn">青柠起始页</a>
 <a href="https://www.daniao.org">大鸟博客</a>
-<a href="https://www.vediotalk.com">VedioTalk</a>
-<a href="https://www.liangzl.com">梁钟霖</a>
-<a href="https://hellodk.cn">AllenHua</a>
-<a href="https://cayzlh.github.io">CAYZLH</a>
-<a href="http://jeffjade.com">晚晴幽草轩</a>
 <a href="https://www.moewah.com">喵斯基部落</a>
-<a href="https://tstrs.me">Tstrs</a>
-<a href="https://www.xjisme.com">小俊博客</a>
-<a href="https://haoduck.com">好鸭</a>
-<a href="https://www.cyanhall.com/cn/">CyanHall</a>
-<a href="https://www.flyzy2005.com">flyzy小站</a>
+<a href="https://tstrs.me">SaltyLeo的书架</a>
 <a href="https://www.laozuo.org">老左博客</a>
-<a href="https://rawchen.com/links.html">友链</a>
 <a href="https://blogwe.com">博客大全</a>
-<a href="https://0x3.com">0x3</a></div></div>
-<div class="drawer-group"><h3>柠檬</h3><div class="drawer-chips"><a href="https://jable.tv">Jable</a>
-<a href="https://missav.live">Missav</a>
-<a href="https://missavtv.com">Missav</a>
-<a href="https://rou.pub/dizhi">Rou</a>
-<a href="https://123av.com/zh">123av</a>
+</div></div>
+<div class="drawer-group"><h3>柠檬</h3><div class="drawer-chips">
 <a href="https://theporndude.com/zh">PornDude</a>
-<a href="https://www.pornhub.com">PornHub</a>
-<a href="https://www.sehuatang.org">SHtang</a>
-<a href="https://twitter-ero-video-ranking.com/zh-CN">X-video</a>
-<a href="http://xp1024.com">Bt7086</a>
-<a href="http://t66y.com">CaoLiu</a>
+<a href="https://jable.tv">Jable</a>
+<a href="https://missav.live">Missav</a>
+<a href="https://rou.pub/dizhi">Rou</a>
+<a href="https://123av.com/cn">123av</a>
+<a href="https://pornhub.com">PornHub</a>
+<a href="https://www.sehuatang.org">98堂</a>
+<a href="https://9k1024.com">Bt7086</a>
+<a href="https://t66y.com">CaoLiu</a>
 <a href="https://www.javbus.com">JavBus</a>
 <a href="https://www.eporner.com">Eporner</a>
-<a href="http://www.xvideos.com">Xvideos</a>
-<a href="http://javcc.com">Javcc</a>
-<a href="https://www.iwank.pro">Iwank</a>
+<a href="https://www.xvideos.com">Xvideos</a>
+<a href="https://javcc.com">Javcc</a>
+<a href="https://iwank.tv">Iwank</a>
 <a href="http://www.youporn.com">YouPorn</a>
-<a href="https://xhamster.com">Xhamster</a>
-<a href="https://chaturbate.com">Chaturbate</a>
-<a href="https://bongacams.com">Bongacams</a>
 <a href="https://www.redtube.com">RedTube</a>
-<a href="https://app.swag.live">Swag</a>
+<a href="https://swag.live">Swag</a>
 <a href="https://x18r.com">JaponX</a>
 <a href="https://avhd101.com">AvHD101</a>
 <a href="http://tokyotosho.info">Toshokan</a>
-<a href="https://www.acgbox.org">ACG盒子</a>
-<a href="https://github.com/gentlemansolo/JavbuslibraryRealse">番号库</a>
 <a href="https://xslist.org/zh">识脸</a>
 <a href="https://www.javlibrary.com">Javlibrary</a>
 <a href="https://www.javdatabase.com">Javdatabase</a>
-<a href="https://www.sehuatang.net/forum-38-1.html">欧美无码</a>
-<a href="https://www.sehuatang.net/forum-36-1.html">亚洲无码</a>
-<a href="https://www.sehuatang.net/forum-103-1.html">高清中文</a></div></div>
-<div class="drawer-group"><h3>工具</h3><div class="drawer-chips"><a href="https://www.xarchiver.tk">查压缩包密码</a>
+</div></div>
+<div class="drawer-group"><h3>工具</h3><div class="drawer-chips">
 <a href="https://segmentfault.com/a/1190000021847172">m3u8视频提取</a>
-<a href="https://www.dbbqb.com">表情包搜索</a>
 <a href="https://link.gimhoy.com">OneDrive直链</a>
-<a href="http://189.ly93.cc">天翼云盘解析</a>
 <a href="https://www.ihezu.cn">奈飞小铺</a>
 <a href="https://nf.video">银河录像局</a>
-<a href="https://pkeytools.azurewebsites.net/ShareKeys">微软密钥</a>
-<a href="https://lab.5ime.cn/video/">短视频去水印</a></div></div>
+</div></div>
+<div class="drawer-group"><h3>SHT</h3><div class="drawer-chips">
+<a href="https://www.sehuatang.net/forum-38-1.html">欧美无码</a>
+<a href="https://www.sehuatang.net/forum-36-1.html">亚洲无码</a>
+<a href="https://www.sehuatang.net/forum-103-1.html">高清中文</a>
+</div></div>
   </div>
 </div>
 
@@ -2666,6 +2558,10 @@ const searchGo = () => {
   const engines = {
     baidu: 'https://www.baidu.com/s?wd=',
     google: 'https://www.google.com/search?q=',
+    bing: 'https://www.bing.com/search?q=',
+    duckduckgo: 'https://duckduckgo.com/?q=',
+    yandex: 'https://yandex.com/search/?text=',
+    wikipedia: 'https://zh.wikipedia.org/wiki/',
     chatgpt: 'https://chatgpt.com/?q=',
     douban: 'https://www.douban.com/search?q=',
     zhihu: 'https://www.zhihu.com/search?type=content&q=',

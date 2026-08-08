@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="南极神">
+<meta name="keywords" content="极限玩家,操作系统,软件中心">
+<meta name="description" content="极限玩家软件推荐导航">
+<title>极限玩家系统与软件</title>
+<link rel="icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --bg:            #05070c;
+  --bg-alt:        #090d16;
+  --panel:         #0b101a;
+  --card:          #0a0f19;
+  --cyan:          #00f0ff;
+  --cyan-dim:      rgba(0,240,255,.14);
+  --magenta:       #ff2d78;
+  --magenta-dim:   rgba(255,45,120,.16);
+  --amber:         #e8ff5b;
+  --text:          #cfe9f3;
+  --text-dim:      #5c7a90;
+  --border:        #16212f;
+  --font-display:  'Orbitron', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono:     'JetBrains Mono', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', ui-monospace, 'SF Mono', Consolas, monospace;
+  --font-cjk:      'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+*{box-sizing:border-box}
+::selection{background:var(--magenta);color:#000}
+
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--cyan) transparent}
+html::-webkit-scrollbar{width:9px}
+html::-webkit-scrollbar-track{background:var(--bg)}
+html::-webkit-scrollbar-thumb{background:linear-gradient(var(--cyan),var(--magenta));border-radius:5px}
+html::-webkit-scrollbar-thumb:hover{background:var(--cyan)}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-mono);
+  position:relative;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+
+/* ambient grid + vignette */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(0,240,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,240,255,.05) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,#000 40%,transparent 100%);
+  pointer-events:none;
+  z-index:0;
+}
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(255,45,120,.10),transparent 60%),
+             radial-gradient(ellipse 60% 50% at 100% 100%,rgba(0,240,255,.08),transparent 60%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* scanline sweep */
+.scanlines{
+  position:fixed;inset:0;
+  z-index:900;
+  pointer-events:none;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.025) 0px,
+    rgba(255,255,255,.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity:.5;
+}
+.scan-beam{
+  position:fixed;left:0;right:0;height:120px;
+  background:linear-gradient(to bottom,transparent,rgba(0,240,255,.05),transparent);
+  z-index:901;pointer-events:none;
+  animation:scanmove 7s linear infinite;
+}
+@keyframes scanmove{0%{top:-120px}100%{top:100vh}}
+
+@media (prefers-reduced-motion:reduce){
+  .scan-beam{animation:none;display:none}
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+}
+
+/* ============================================================
+   BOOT SEQUENCE
+   ============================================================ */
+#boot{
+  position:fixed;inset:0;z-index:2000;
+  background:#05070c;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+#boot.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#boot pre{
+  font-family:var(--font-mono);
+  color:var(--cyan);
+  font-size:clamp(12px,2vw,15px);
+  line-height:1.8;
+  white-space:pre-wrap;
+  min-width:min(560px,90vw);
+}
+#boot .cursor{display:inline-block;background:var(--cyan);width:8px;height:1em;vertical-align:text-bottom;animation:blink 1s steps(1) infinite}
+#boot .err{color:var(--magenta)}
+#boot .ok{color:var(--amber)}
+@keyframes blink{50%{opacity:0}}
+
+/* ============================================================
+   PAGE LAYOUT (Flexbox) — fills up to a 1920px-wide viewport
+   ============================================================ */
+.page{
+  position:relative;z-index:1;
+  width:100%;
+  max-width:1920px;
+  margin:0 auto;
+  display:flex;
+  align-items:flex-start;
+  min-height:100vh;
+}
+
+/* ============================================================
+   SIDEBAR / NAV
+   ============================================================ */
+.navbar{
+  z-index:1000;
+  display:flex;flex-direction:column;
+  background:linear-gradient(180deg,var(--panel),var(--bg-alt));
+  border-right:1px solid var(--border);
+  position:relative;
+}
+.navbar::after{
+  content:'';position:absolute;top:0;right:-1px;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,var(--cyan),transparent);
+  opacity:.6;
+}
+.brand{
+  display:block;
+  padding:22px 14px 18px 34px;
+  font-family:var(--font-display);
+  font-weight:900;
+  font-size:5.7em;
+  line-height:1.05;
+  letter-spacing:.02em;
+  color:var(--text);
+  text-decoration:none;
+  position:relative;
+  overflow-wrap:break-word;
+}
+.brand:hover .glitch{filter:brightness(1.3)}
+.glitch{position:relative;display:inline-block;color:var(--amber)}
+.glitch::before,.glitch::after{
+  content:attr(data-text);
+  position:absolute;left:0;top:0;width:100%;
+  overflow:hidden;background:transparent;
+}
+.glitch::before{text-shadow:2px 0 var(--magenta);clip-path:inset(0 0 65% 0);animation:glitch1 4s infinite linear alternate-reverse}
+.glitch::after{text-shadow:-2px 0 var(--cyan);clip-path:inset(65% 0 0 0);animation:glitch2 3s infinite linear alternate-reverse}
+@keyframes glitch1{0%,88%,100%{transform:translate(0,0)}90%{transform:translate(-2px,0)}94%{transform:translate(2px,0)}}
+@keyframes glitch2{0%,92%,100%{transform:translate(0,0)}94%{transform:translate(2px,0)}97%{transform:translate(-2px,0)}}
+
+.mobile-actions{display:none}
+.icon-btn{
+  width:38px;height:38px;flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid var(--border);color:var(--text-dim);
+  font-size:1.05em;cursor:pointer;line-height:1;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.icon-btn:hover,.icon-btn.active{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+
+.nav-links{flex:1 1 auto;min-height:0;padding:4px 0px 20px;overflow-y:auto}
+.navbar a{
+  display:flex;align-items:center;gap:8px;
+  color:var(--text-dim);text-decoration:none;
+  font-size:1em;letter-spacing:.02em;
+  padding:10px 3em 10px 2em;margin:1px 0;
+  border-left:2px solid transparent;
+  transition:color .2s,border-color .2s,background .2s;
+  white-space:normal;
+  word-break:break-word;
+}
+.navbar a:hover{color:var(--cyan);border-left-color:var(--cyan);background:var(--cyan-dim)}
+.navbar a.guide{color:var(--magenta);cursor:pointer;margin-top:10px;border-top:1px dashed var(--border);padding-top:14px}
+.navbar a.guide:hover{border-left-color:var(--magenta);background:var(--magenta-dim)}
+.navbar a.active{color:var(--magenta);border-left-color:var(--magenta);background:var(--magenta-dim)}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.container{flex:1 1 auto;min-width:0;padding:var(--brand-h,26px) 30px 80px}
+
+.search-box{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(180deg,var(--bg) 78%,transparent);
+  padding:14px 0 20px;
+}
+.search-row{display:flex;align-items:center;gap:10px}
+.search-box input{
+  flex:1;background:var(--panel);color:var(--text);
+  border:1px solid var(--border);
+  padding:12px 14px;font-family:var(--font-mono);font-size:.95em;
+  caret-color:var(--magenta);outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.search-box input::placeholder{color:var(--text-dim)}
+.search-box input:focus{border-color:var(--magenta);box-shadow:0 0 0 1px var(--magenta-dim)}
+
+.cat-block{margin-bottom:38px}
+.category-title{
+  font-family:var(--font-display);font-weight:700;
+  font-size:1.5em;color:var(--text);margin:0 0 16px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+  display:flex;align-items:baseline;gap:10px;
+  scroll-margin-top:96px;
+}
+.category-title::after{
+  content:'';position:absolute;left:0;bottom:-1px;height:1px;width:120px;max-width:100%;
+  background:linear-gradient(90deg,var(--cyan),transparent);
+}
+.category-title .arrow{color:var(--cyan);font-size:.8em}
+.category-title .count{
+  font-family:var(--font-mono);font-size:.42em;color:var(--text-dim);
+  font-weight:400;letter-spacing:.05em;
+}
+
+.cat{
+  list-style:none;padding:0;margin:0;display:grid;gap:14px;
+  grid-template-columns:repeat(auto-fill,minmax(max(280px,(100% - 28px) / 3),1fr));
+}
+
+.cat li{
+  position:relative;
+  background:var(--card);
+  border:1px solid var(--border);
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+  padding:14px 16px;
+  display:flex;flex-direction:column;gap:10px;
+  transition:transform .2s,border-color .2s,background .2s;
+}
+.cat li:hover{transform:translateY(-3px);border-color:var(--cyan);background:linear-gradient(160deg,var(--card),#0d1726)}
+.cat li::before,.cat li::after{
+  content:'';position:absolute;width:14px;height:14px;opacity:0;transition:opacity .2s;
+}
+.cat li::before{top:-1px;left:-1px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.cat li::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan)}
+.cat li:hover::before,.cat li:hover::after{opacity:1}
+
+.item-main{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.cat li a.item-name{
+  text-decoration:none;color:var(--text);font-weight:700;font-size:1.22em;
+  cursor:pointer;font-family:var(--font-mono);letter-spacing:.01em;
+  transition:color .2s,text-shadow .2s;
+}
+.cat li:hover a.item-name{color:var(--amber);text-shadow:0 0 10px rgba(232,255,91,.35)}
+.cat li p{margin:4px 0 0;color:var(--text-dim);font-size:1.02em;line-height:1.4;transition:color .2s}
+.cat li:hover p{color:var(--magenta)}
+
+.dls{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px;margin-left:auto}
+.dls a{
+  text-decoration:none;color:var(--cyan);font-size:.85em;
+  padding:2px 6px;border:1px solid var(--cyan);line-height:1.5;
+  transition:background .2s,color .2s;
+}
+.dls a:hover{background:var(--cyan);color:#000}
+
+.loading,.error,.empty{padding:60px 20px;text-align:center;color:var(--text-dim);font-family:var(--font-mono)}
+.error{color:var(--magenta)}
+.error code{background:var(--panel);padding:2px 6px;border:1px solid var(--border);color:var(--cyan)}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(2,4,8,.75);backdrop-filter:blur(2px);z-index:999}
+.modal{
+  display:none;flex-direction:column;
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:90%;max-width:900px;max-height:80vh;
+  background:linear-gradient(160deg,var(--panel),#0d1626);
+  border:1px solid var(--magenta);
+  box-shadow:0 0 0 1px rgba(255,45,120,.15),0 0 40px rgba(255,45,120,.18);
+  z-index:1000;overflow:hidden;
+}
+.modal::before,.modal::after{content:'';position:absolute;width:18px;height:18px;z-index:2;pointer-events:none}
+.modal::before{top:-1px;left:-1px;border-top:2px solid var(--magenta);border-left:2px solid var(--magenta)}
+.modal::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--magenta);border-right:2px solid var(--magenta)}
+
+.modal-head{
+  flex:0 0 auto;display:flex;align-items:center;gap:14px;
+  padding:20px 22px 16px;border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(255,45,120,.06),transparent);
+}
+.modal-header{
+  flex:1;min-width:0;
+  font-family:var(--font-display);font-size:1.3em;font-weight:700;color:var(--cyan);
+  display:flex;align-items:center;gap:10px;
+  overflow-wrap:break-word;word-break:break-word;
+}
+.modal-header::before{content:'//';color:var(--magenta);flex:0 0 auto}
+.modal-close-btn{
+  flex:0 0 auto;
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid var(--border);color:var(--text-dim);
+  cursor:pointer;font-family:var(--font-mono);font-size:1em;line-height:1;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.modal-close-btn:hover{border-color:var(--magenta);color:var(--magenta);background:var(--magenta-dim)}
+
+.modal-body{
+  flex:1 1 auto;min-height:0;overflow-y:auto;
+  padding:20px 22px 26px;color:var(--text-dim);line-height:1.7;
+}
+/* custom scrollbar — themed, thin, no native chrome */
+.modal-body,.nav-links{scrollbar-width:thin;scrollbar-color:var(--cyan) transparent}
+.modal-body::-webkit-scrollbar,.nav-links::-webkit-scrollbar{width:7px}
+.modal-body::-webkit-scrollbar-track,.nav-links::-webkit-scrollbar-track{background:transparent}
+.modal-body::-webkit-scrollbar-thumb,.nav-links::-webkit-scrollbar-thumb{
+  background:linear-gradient(var(--cyan),var(--magenta));
+  border-radius:4px;
+}
+.modal-body::-webkit-scrollbar-thumb:hover{background:var(--cyan)}
+
+.modal-content pre{
+  position:relative;
+  font-size:.95em;
+  margin:18px 0;
+  padding:36px 18px 18px;
+  border:1px solid var(--border);
+  background:#0d1626;
+  color:#ff00e0;
+  overflow-x:auto;white-space:pre-wrap;word-wrap:break-word;
+  line-height:1.7;letter-spacing:.02em;
+  font-family:var(--font-mono);
+}
+.modal-content pre::before{
+  content:'root@极限玩家:~#';
+  position:absolute;top:0;left:0;right:0;height:28px;
+  display:flex;align-items:center;
+  padding:0 60px 0 14px;
+  background:rgba(20,30,45,.4);
+  backdrop-filter:blur(8px) saturate(140%);
+  -webkit-backdrop-filter:blur(8px) saturate(140%);
+  border-bottom:1px solid var(--border);
+  color:var(--text-dim);font-size:.7em;letter-spacing:.04em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.modal-content pre .cmt{color:var(--text-dim)}
+.modal-content pre .copy-btn{
+  position:absolute;top:0;right:0;height:28px;z-index:2;
+  display:flex;align-items:center;
+  padding:0 12px;
+  background:transparent;border:none;border-left:1px solid var(--border);
+  color:var(--cyan);font-family:var(--font-mono);font-size:.68em;letter-spacing:.08em;
+  cursor:pointer;transition:color .2s,background .2s;
+}
+.modal-content pre .copy-btn:hover{color:#000;background:var(--cyan)}
+.modal-content pre .copy-btn.copied{color:var(--amber)}
+.modal-content h1,.modal-content h2,.modal-content h3,.modal-content h4{color:var(--cyan);margin:16px 0 10px;font-family:var(--font-display)}
+.modal-content h1{font-size:1.6em}
+.modal-content h2{font-size:1.4em}
+.modal-content h3{font-size:1.2em}
+.modal-content h4{font-size:1.05em}
+.modal-content a{color:var(--amber);text-decoration:underline;font-weight:700}
+.modal-content a:hover{color:var(--cyan)}
+.modal-content p:first-child{margin-top:0}
+.modal-content ul,.modal-content ol{margin:10px 0;padding-left:1.4em}
+.modal-content li{margin:6px 0;color:var(--text-dim);line-height:1.6}
+.modal-content li::marker{color:var(--cyan)}
+.modal-content table{
+  width:100%;border-collapse:collapse;margin:14px 0;
+  font-family:var(--font-mono);font-size:.92em;
+}
+.modal-content th,.modal-content td{
+  border:1px solid var(--border);padding:8px 12px;text-align:left;
+  color:var(--text-dim);
+}
+.modal-content thead th{
+  color:var(--cyan);font-family:var(--font-display);font-weight:700;
+  background:var(--cyan-dim);letter-spacing:.03em;
+}
+.modal-content tbody tr:nth-child(odd){background:rgba(255,255,255,.02)}
+.modal-content tbody tr:hover{background:var(--magenta-dim)}
+.modal-content tbody td:first-child{color:var(--amber);font-weight:700}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:767px){
+  .page{display:block}
+  .navbar{position:fixed;top:0;left:0;width:100%;padding:0;flex-direction:row;align-items:center;z-index:1000;border-right:none;border-bottom:1px solid var(--border)}
+  .navbar::after{display:none}
+  .brand{padding:12px 14px;font-size:1em;flex:1}
+  .mobile-actions{display:flex;gap:8px;padding:0 14px 0 0}
+  .nav-links{display:none}
+  .navbar.nav-open .nav-links{
+    display:block;position:fixed;top:56px;left:0;right:0;
+    max-height:65vh;overflow-y:auto;background:var(--panel);
+    border-bottom:1px solid var(--border);padding:8px 10px;z-index:1001;
+  }
+  .search-box{display:none}
+  .search-box.mobile-open{
+    display:block;position:fixed;top:56px;left:0;right:0;
+    background:var(--bg);border-bottom:1px solid var(--border);
+    padding:14px;z-index:1001;
+  }
+  .container{margin-top:64px;padding-top:14px}
+}
+@media (min-width:768px){
+  .navbar{position:sticky;top:0;flex:0 0 auto;width:max-content;min-width:190px;max-width:260px;height:100vh;align-self:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div class="scanlines"></div>
+<div class="scan-beam"></div>
+
+<div id="boot"><pre id="bootText"></pre></div>
+
+<div class="page">
+<div class="navbar" id="navbar">
+  <a class="brand" id="brandLink" href="#"><span class="glitch" data-text="极限玩家">极限玩家</span></a>
+  <div class="mobile-actions">
+    <button type="button" class="icon-btn" id="mobileSearchBtn" aria-label="搜索">🔍</button>
+    <button type="button" class="icon-btn" id="mobileNavBtn" aria-label="快速跳转">☰</button>
+  </div>
+  <div class="nav-links" id="navLinks"></div>
+</div>
+
+<div class="container">
+  <div class="search-box" id="searchBox">
+    <div class="search-row">
+      <input type="text" id="searchInput" aria-label="搜索软件" placeholder="&gt; Search">
+    </div>
+  </div>
+  <div id="content"><div class="loading">// 等待数据流...</div></div>
+</div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal" id="modal">
+  <div class="modal-head">
+    <div class="modal-header" id="modalHeader"></div>
+    <button type="button" class="modal-close-btn" id="modalClose" aria-label="关闭">✕</button>
+  </div>
+  <div class="modal-body modal-content" id="modalContent"></div>
+</div>
+
+<script src="app.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  const state = { data: null };
+
+  const navbarEl   = document.getElementById('navbar');
+  const navLinks   = document.getElementById('navLinks');
+  const brandLink  = document.getElementById('brandLink');
+  const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+  const mobileNavBtn    = document.getElementById('mobileNavBtn');
+  const searchBox   = document.getElementById('searchBox');
+  const content    = document.getElementById('content');
+  const modal      = document.getElementById('modal');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalHeader  = document.getElementById('modalHeader');
+  const modalContent = document.getElementById('modalContent');
+  const modalClose   = document.getElementById('modalClose');
+  const searchInput  = document.getElementById('searchInput');
+  const bootEl       = document.getElementById('boot');
+  const bootText     = document.getElementById('bootText');
+
+  function escapeHtml(str){
+    return (str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  /* ---------------- boot sequence ---------------- */
+  function typeLine(text, className, speed){
+    return new Promise(resolve => {
+      const span = document.createElement('span');
+      if (className) span.className = className;
+      bootText.appendChild(span);
+      let i = 0;
+      const timer = setInterval(() => {
+        span.textContent += text[i];
+        i++;
+        if (i >= text.length){
+          clearInterval(timer);
+          bootText.appendChild(document.createTextNode('\n'));
+          resolve();
+        }
+      }, speed || 14);
+    });
+  }
+
+  async function runBoot(dataPromise){
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor';
+
+    await typeLine('> 正在初始化终端...', null, 10);
+    await typeLine('> 连接极限玩家数据库...', null, 10);
+    await typeLine('> 校验访问权限... 已授予', null, 10);
+
+    let result;
+    try{
+      result = await dataPromise;
+      const total = result.categories.reduce((n,c)=>n+c.items.length,0);
+      await typeLine('> 已加载 ' + result.categories.length + ' 个分类 / ' + total + ' 个软件条目', 'ok', 6);
+      await typeLine('> 渲染界面...', null, 8);
+    }catch(err){
+      await typeLine('> 错误: 数据加载失败 — ' + err.message, 'err', 8);
+      bootText.appendChild(document.createTextNode('\n'));
+      const hint = document.createElement('span');
+      hint.className = 'err';
+      hint.textContent = '> 请确认 app.js 文件存在，且与 index.html 位于同一目录。';
+      bootText.appendChild(hint);
+      bootText.appendChild(cursor);
+      throw err;
+    }
+
+    bootText.appendChild(cursor);
+    await new Promise(r => setTimeout(r, 350));
+    return result;
+  }
+
+  /* ---------------- modal ---------------- */
+  // Wrap "# ..." comments inside <pre> blocks in a gray span, operating on the
+  // raw HTML string (not textContent) so any nested tags (<br>, <code>, links)
+  // inside a code block survive untouched. Matches both full-line comments and
+  // inline trailing comments ("command  # explanation"), stopping at the next
+  // tag or newline so it never crosses into markup.
+  function highlightCodeComments(html){
+    return html.replace(/<pre>([\s\S]*?)<\/pre>/g, (whole, inner) => {
+      const marked = inner.replace(/#[^\n<]*/g, m => '<span class="cmt">' + m + '</span>');
+      return '<pre>' + marked + '</pre>';
+    });
+  }
+
+  function addCopyButtons(root){
+    root.querySelectorAll('pre').forEach(pre => {
+      const code = pre.textContent; // captured before the button itself is inserted
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      let resetTimer;
+      btn.addEventListener('click', () => {
+        copyText(code).then(ok => {
+          btn.textContent = ok ? 'Copied!' : 'Failed';
+          btn.classList.toggle('copied', ok);
+          clearTimeout(resetTimer);
+          resetTimer = setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.classList.remove('copied');
+          }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  function copyText(text){
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(() => true).catch(() => fallbackCopy(text));
+    }
+    return Promise.resolve(fallbackCopy(text));
+  }
+
+  function fallbackCopy(text){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function openModal(name, detailHtml){
+    modalHeader.textContent = name;
+    modalContent.innerHTML = highlightCodeComments(detailHtml || '<p>暂无详情</p>');
+    addCopyButtons(modalContent);
+    modal.style.display = 'flex';
+    modalOverlay.style.display = 'block';
+  }
+  function closeModal(){
+    modal.style.display = 'none';
+    modalOverlay.style.display = 'none';
+  }
+  modalClose.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  /* ---------------- nav ---------------- */
+  function renderNav(meta, categories){
+    brandLink.href = meta.homeUrl || '#';
+
+    categories.forEach((cat) => {
+      const a = document.createElement('a');
+      a.href = '#' + cat.id;
+      a.innerHTML = '<span>' + escapeHtml(cat.title) + '</span>';
+      a.addEventListener('click', () => closeMobileNav());
+      navLinks.appendChild(a);
+    });
+
+    if (meta.usageGuide) {
+      const guide = document.createElement('a');
+      guide.className = 'guide';
+      guide.href = '';
+      guide.innerHTML = '<span>使用说明</span>';
+      guide.addEventListener('click', e => {
+        e.preventDefault();
+        closeMobileNav();
+        openModal('使用说明', meta.usageGuide);
+      });
+      navLinks.appendChild(guide);
+    }
+  }
+
+  /* ---------------- mobile top-bar toggles ---------------- */
+  function closeMobileNav(){
+    navbarEl.classList.remove('nav-open');
+    mobileNavBtn.classList.remove('active');
+  }
+  function closeMobileSearch(){
+    searchBox.classList.remove('mobile-open');
+    mobileSearchBtn.classList.remove('active');
+  }
+
+  mobileNavBtn.addEventListener('click', () => {
+    const opening = !navbarEl.classList.contains('nav-open');
+    closeMobileSearch();
+    navbarEl.classList.toggle('nav-open', opening);
+    mobileNavBtn.classList.toggle('active', opening);
+  });
+
+  mobileSearchBtn.addEventListener('click', () => {
+    const opening = !searchBox.classList.contains('mobile-open');
+    closeMobileNav();
+    searchBox.classList.toggle('mobile-open', opening);
+    mobileSearchBtn.classList.toggle('active', opening);
+    if (opening) searchInput.focus();
+  });
+
+  /* ---------------- content ---------------- */
+  function itemMatches(item, q){
+    if (!q) return true;
+    const ql = q.toLowerCase();
+    if (item.name && item.name.toLowerCase().includes(ql)) return true;
+    if (item.desc && item.desc.toLowerCase().includes(ql)) return true;
+    // also search the URLs behind each emoji icon link, not the emoji glyph itself
+    if (item.links && item.links.some(link => link.href && link.href.toLowerCase().includes(ql))) return true;
+    return false;
+  }
+
+  function renderContent(categories, query){
+    content.innerHTML = '';
+    let totalShown = 0;
+
+    categories.forEach((cat) => {
+      const items = cat.items.filter(it => itemMatches(it, query));
+      if (items.length === 0) return;
+      totalShown += items.length;
+
+      const block = document.createElement('div');
+      block.className = 'cat-block';
+
+      const h2 = document.createElement('h2');
+      h2.id = cat.id;
+      h2.className = 'category-title';
+      h2.innerHTML = '<span class="arrow">▸</span><span>' + escapeHtml(cat.title) +
+        '</span><span class="count">[' + items.length + (query ? ' / ' + cat.items.length : '') + ']</span>';
+      block.appendChild(h2);
+
+      const ul = document.createElement('ul');
+      ul.className = 'cat';
+
+      items.forEach(it => {
+        const li = document.createElement('li');
+
+        const main = document.createElement('div');
+        main.className = 'item-main';
+
+        const left = document.createElement('div');
+        const a = document.createElement('a');
+        a.className = 'item-name';
+        a.textContent = it.name;
+        a.href = '';
+        a.addEventListener('click', e => {
+          e.preventDefault();
+          openModal(it.name, it.detail);
+        });
+        const p = document.createElement('p');
+        p.textContent = it.desc || '';
+        left.appendChild(a);
+        left.appendChild(p);
+        main.appendChild(left);
+        li.appendChild(main);
+
+        if (it.links && it.links.length){
+          const dls = document.createElement('div');
+          dls.className = 'dls';
+          it.links.forEach(link => {
+            const la = document.createElement('a');
+            la.textContent = link.emoji;
+            la.href = link.href || '';
+            if (!link.href) {
+              // no href supplied: emoji acts as a button that opens this item's own modal
+              la.addEventListener('click', e => {
+                e.preventDefault();
+                openModal(it.name, it.detail);
+              });
+            } else {
+              la.target = '_blank';
+              la.rel = 'noopener noreferrer';
+            }
+            dls.appendChild(la);
+          });
+          li.appendChild(dls);
+        }
+
+        ul.appendChild(li);
+      });
+
+      block.appendChild(ul);
+      content.appendChild(block);
+    });
+
+    if (totalShown === 0) {
+      content.innerHTML = '<div class="empty">// 未找到匹配结果 — 尝试其他关键词</div>';
+    }
+
+    updateActiveNav();
+  }
+
+  /* ---------------- scrollspy: highlight current category in sidebar ---------------- */
+  let navAnchors = [];
+  function updateActiveNav(){
+    navAnchors = Array.from(navLinks.querySelectorAll('a[href^="#"]'));
+    const titles = Array.from(document.querySelectorAll('.category-title'));
+    if (!titles.length || !navAnchors.length) return;
+    const offset = 108;
+    let currentId = titles[0].id;
+    for (const t of titles){
+      if (t.getBoundingClientRect().top - offset <= 0) currentId = t.id;
+      else break;
+    }
+    navAnchors.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
+    });
+  }
+  let spyTicking = false;
+  window.addEventListener('scroll', () => {
+    if (spyTicking) return;
+    spyTicking = true;
+    requestAnimationFrame(() => { updateActiveNav(); spyTicking = false; });
+  }, { passive: true });
+
+  searchInput.addEventListener('input', () => {
+    if (!state.data) return;
+    renderContent(state.data.categories, searchInput.value.trim());
+  });
+
+  /* ---------------- boot ---------------- */
+  const dataPromise = new Promise((resolve, reject) => {
+    if (window.APP_DATA && window.APP_DATA.categories) {
+      resolve(window.APP_DATA);
+    } else {
+      reject(new Error('app.js 未加载或未定义 APP_DATA'));
+    }
+  });
+
+  /* ---------------- align content top with sidebar's nav-links top ----------------
+     the logo's rendered height varies (font wraps differently at different widths),
+     so it's measured live and pushed into a CSS var the container's top padding uses. */
+  function syncBrandHeight(){
+    if (window.matchMedia('(min-width:768px)').matches) {
+      const h = Math.round(brandLink.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--brand-h', h + 'px');
+    }
+  }
+  let brandResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(brandResizeTimer);
+    brandResizeTimer = setTimeout(syncBrandHeight, 120);
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncBrandHeight);
+
+  runBoot(dataPromise).then(data => {
+    state.data = data;
+    document.title = data.meta.title || document.title;
+    renderNav(data.meta, data.categories);
+    renderContent(data.categories, '');
+    bootEl.classList.add('hidden');
+    syncBrandHeight();
+  }).catch(() => {
+    // boot overlay already shows the error; also surface it in main content
+    content.innerHTML = '<div class="error">加载 app.js 失败，请确认 <code>app.js</code> 与本页面在同一目录下并已正确引入。</div>';
+  });
+
+  bootEl.addEventListener('click', () => {
+    if (state.data) bootEl.classList.add('hidden');
+  });
+})();
+</script>
+</body>
+</html>

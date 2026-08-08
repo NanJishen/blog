@@ -9,4 +9,3 @@ draft: false
 - Email：njs.xyz@gmail.com
 - QQ：81489060
 - [Telegram](https://t.me/q8886)
-- [More ...](https://ttti.cc/minitools/about.html)
