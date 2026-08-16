@@ -128,12 +128,12 @@ body::after{
 @keyframes blink{50%{opacity:0}}
 
 /* ============================================================
-   PAGE LAYOUT (Flexbox) — fills up to a 1920px-wide viewport
+   PAGE LAYOUT (Flexbox) — fills up to a 1500px-wide viewport
    ============================================================ */
 .page{
   position:relative;z-index:1;
   width:100%;
-  max-width:1920px;
+  max-width:1500px;
   margin:0 auto;
   display:flex;
   align-items:flex-start;
@@ -202,8 +202,6 @@ body::after{
   word-break:break-word;
 }
 .navbar a:hover{color:var(--cyan);border-left-color:var(--cyan);background:var(--cyan-dim)}
-.navbar a.guide{color:var(--magenta);cursor:pointer;margin-top:10px;border-top:1px dashed var(--border);padding-top:14px}
-.navbar a.guide:hover{border-left-color:var(--magenta);background:var(--magenta-dim)}
 .navbar a.active{color:var(--magenta);border-left-color:var(--magenta);background:var(--magenta-dim)}
 
 /* ============================================================
@@ -216,15 +214,33 @@ body::after{
   background:linear-gradient(180deg,var(--bg) 78%,transparent);
   padding:14px 0 20px;
 }
-.search-row{display:flex;align-items:center;gap:10px}
+.search-row{display:flex;align-items:stretch;gap:10px}
+.search-input-wrap{position:relative;flex:1;min-width:0}
 .search-box input{
-  flex:1;background:var(--panel);color:var(--text);
+  width:100%;background:var(--panel);color:var(--text);
   border:1px solid var(--border);
-  padding:12px 14px;font-family:var(--font-mono);font-size:.95em;
+  padding:12px 44px 12px 14px;font-family:var(--font-mono);font-size:.95em;
   caret-color:var(--magenta);outline:none;transition:border-color .2s,box-shadow .2s;
 }
 .search-box input::placeholder{color:var(--text-dim)}
 .search-box input:focus{border-color:var(--magenta);box-shadow:0 0 0 1px var(--magenta-dim)}
+.search-key-hint{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:22px;height:22px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border);color:var(--text-dim);
+  font-family:var(--font-mono);font-size:.8em;
+  pointer-events:none;transition:opacity .15s;
+}
+.search-input-wrap:focus-within .search-key-hint,
+.search-input-wrap.has-value .search-key-hint{opacity:0}
+.help-btn{
+  flex:0 0 auto;width:44px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--panel);border:1px solid var(--border);
+  color:var(--text-dim);font-family:var(--font-mono);font-size:1em;font-weight:700;
+  cursor:pointer;transition:border-color .2s,color .2s,box-shadow .2s;
+}
+.help-btn:hover{border-color:var(--magenta);color:var(--magenta);box-shadow:0 0 0 1px var(--magenta-dim)}
 
 .cat-block{margin-bottom:38px}
 .category-title{
@@ -412,21 +428,39 @@ body::after{
   .page{display:block}
   .navbar{position:fixed;top:0;left:0;width:100%;padding:0;flex-direction:row;align-items:center;z-index:1000;border-right:none;border-bottom:1px solid var(--border)}
   .navbar::after{display:none}
-  .brand{padding:12px 14px;font-size:1em;flex:1}
+  .brand{padding:12px 14px;font-size:1.1em;flex:1}
   .mobile-actions{display:flex;gap:8px;padding:0 14px 0 0}
+  .icon-btn{width:44px;height:44px}
+
+  /* dropdown panels hang off the fixed navbar itself (position:fixed establishes
+     the containing block), so no hardcoded pixel offset is needed to place them */
   .nav-links{display:none}
   .navbar.nav-open .nav-links{
-    display:block;position:fixed;top:56px;left:0;right:0;
-    max-height:65vh;overflow-y:auto;background:var(--panel);
-    border-bottom:1px solid var(--border);padding:8px 10px;z-index:1001;
+    display:grid;grid-template-columns:1fr 1fr;gap:4px;
+    position:absolute;top:100%;left:0;right:0;
+    max-height:70vh;overflow-y:auto;background:var(--panel);
+    border-bottom:1px solid var(--border);padding:10px;z-index:1001;
   }
+  .navbar.nav-open .nav-links a{
+    padding:12px 10px;margin:0;font-size:.92em;
+    border-left:none;border-radius:2px;
+    justify-content:flex-start;
+  }
+  .navbar.nav-open .nav-links a:hover{background:var(--cyan-dim)}
+  .navbar.nav-open .nav-links a.active{background:var(--magenta-dim)}
+
+  /* content top offset and the search-box's own dropdown still need a real
+     pixel value since search-box isn't a descendant of .navbar; JS keeps
+     --mobile-nav-h in sync with the navbar's actual rendered height */
+  .search-key-hint{display:none}
+  .search-box input{padding-right:14px}
   .search-box{display:none}
   .search-box.mobile-open{
-    display:block;position:fixed;top:56px;left:0;right:0;
+    display:block;position:fixed;top:var(--mobile-nav-h,56px);left:0;right:0;
     background:var(--bg);border-bottom:1px solid var(--border);
     padding:14px;z-index:1001;
   }
-  .container{margin-top:64px;padding-top:14px}
+  .container{margin-top:var(--mobile-nav-h,64px);padding-top:14px}
 }
 @media (min-width:768px){
   .navbar{position:sticky;top:0;flex:0 0 auto;width:max-content;min-width:190px;max-width:260px;height:100vh;align-self:flex-start}
@@ -453,7 +487,11 @@ body::after{
 <div class="container">
   <div class="search-box" id="searchBox">
     <div class="search-row">
-      <input type="text" id="searchInput" aria-label="搜索软件" placeholder="&gt; Search">
+      <div class="search-input-wrap">
+        <input type="text" id="searchInput" aria-label="搜索软件" placeholder="&gt; Search">
+        <span class="search-key-hint" aria-hidden="true">/</span>
+      </div>
+      <button type="button" class="help-btn" id="helpBtn" aria-label="使用说明">?</button>
     </div>
   </div>
   <div id="content"><div class="loading">// 等待数据流...</div></div>
@@ -617,6 +655,21 @@ body::after{
   modalOverlay.addEventListener('click', closeModal);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+  // press "/" to jump straight into the search box (unless already typing somewhere)
+  document.addEventListener('keydown', e => {
+    if (e.key !== '/') return;
+    const tag = (e.target.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
+    if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+    e.preventDefault();
+    if (window.matchMedia('(max-width:767px)').matches) {
+      searchBox.classList.add('mobile-open');
+      mobileSearchBtn.classList.add('active');
+      closeMobileNav();
+    }
+    searchInput.focus();
+  });
+
   /* ---------------- nav ---------------- */
   function renderNav(meta, categories){
     brandLink.href = meta.homeUrl || '#';
@@ -628,20 +681,14 @@ body::after{
       a.addEventListener('click', () => closeMobileNav());
       navLinks.appendChild(a);
     });
-
-    if (meta.usageGuide) {
-      const guide = document.createElement('a');
-      guide.className = 'guide';
-      guide.href = '';
-      guide.innerHTML = '<span>使用说明</span>';
-      guide.addEventListener('click', e => {
-        e.preventDefault();
-        closeMobileNav();
-        openModal('使用说明', meta.usageGuide);
-      });
-      navLinks.appendChild(guide);
-    }
   }
+
+  const helpBtn = document.getElementById('helpBtn');
+  helpBtn.addEventListener('click', () => {
+    if (state.data && state.data.meta.usageGuide) {
+      openModal('使用说明', state.data.meta.usageGuide);
+    }
+  });
 
   /* ---------------- mobile top-bar toggles ---------------- */
   function closeMobileNav(){
@@ -783,6 +830,7 @@ body::after{
   }, { passive: true });
 
   searchInput.addEventListener('input', () => {
+    searchInput.closest('.search-input-wrap').classList.toggle('has-value', searchInput.value.length > 0);
     if (!state.data) return;
     renderContent(state.data.categories, searchInput.value.trim());
   });
@@ -805,12 +853,28 @@ body::after{
       document.documentElement.style.setProperty('--brand-h', h + 'px');
     }
   }
+
+  /* ---------------- mobile: keep dropdowns flush with the fixed top bar ----------------
+     the top bar's own height can vary (logo wrapping, font loading), so it's measured
+     live rather than hardcoded, and used by the search-box dropdown + content offset. */
+  function syncMobileNavHeight(){
+    if (window.matchMedia('(max-width:767px)').matches) {
+      const h = Math.round(navbarEl.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--mobile-nav-h', h + 'px');
+    }
+  }
+
+  function syncLayoutHeights(){
+    syncBrandHeight();
+    syncMobileNavHeight();
+  }
+
   let brandResizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(brandResizeTimer);
-    brandResizeTimer = setTimeout(syncBrandHeight, 120);
+    brandResizeTimer = setTimeout(syncLayoutHeights, 120);
   });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncBrandHeight);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncLayoutHeights);
 
   runBoot(dataPromise).then(data => {
     state.data = data;
@@ -818,7 +882,7 @@ body::after{
     renderNav(data.meta, data.categories);
     renderContent(data.categories, '');
     bootEl.classList.add('hidden');
-    syncBrandHeight();
+    syncLayoutHeights();
   }).catch(() => {
     // boot overlay already shows the error; also surface it in main content
     content.innerHTML = '<div class="error">加载 app.js 失败，请确认 <code>app.js</code> 与本页面在同一目录下并已正确引入。</div>';

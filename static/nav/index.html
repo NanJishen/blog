@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>极限导航</title>
-<link rel="icon" href="https://ttti.cc/favicon.ico">
+<link rel="icon" href="../favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+<script src="./nav.js"></script>
 <style>
   :root{
     --bg: #0a0c11;
@@ -303,8 +303,8 @@
 <div id="stateScreen">
   <div class="box">
     <i class="fa-solid fa-compass spin"></i>
-    <h2>正在加载 webstack.yml…</h2>
-    <p>正在读取并解析你的导航数据文件</p>
+    <h2>正在加载导航数据…</h2>
+    <p>正在读取 nav.js 中的站点数据</p>
   </div>
 </div>
 
@@ -351,7 +351,6 @@
 </footer>
 
 <script>
-const YML_PATH = './webstack.yml';
 const TILE_COLORS = ['#e2a23c', '#4bb3a4', '#c9707a', '#7d8fc4'];
 
 function hashColor(str){
@@ -398,7 +397,7 @@ function transformData(raw){
         slug: slug+'-t0',
         links: cat.links.map(l=>{
           const u = cleanUrl(l.url);
-          return { t:String(l.title??'').trim(), u, d:String(l.description??''), h:getDomain(u) };
+          return { t:String(l.name??'').trim(), u, d:String(l.desc??''), h:getDomain(u) };
         })
       });
     }
@@ -409,7 +408,7 @@ function transformData(raw){
           slug: slug+'-t'+j,
           links: (term.links||[]).map(l=>{
             const u = cleanUrl(l.url);
-            return { t:String(l.title??'').trim(), u, d:String(l.description??''), h:getDomain(u) };
+            return { t:String(l.name??'').trim(), u, d:String(l.desc??''), h:getDomain(u) };
           })
         });
       });
@@ -421,13 +420,11 @@ function transformData(raw){
 
 let DATA = [];
 
-async function loadData(){
-  const res = await fetch(YML_PATH, { cache: 'no-store' });
-  if(!res.ok) throw new Error('HTTP '+res.status);
-  const text = await res.text();
-  const raw = jsyaml.load(text, { json: true }); // json:true tolerates duplicate keys in the YAML
-  if(!Array.isArray(raw)) throw new Error('YAML 根节点不是数组');
-  DATA = transformData(raw);
+function loadData(){
+  if(typeof NAV_DATA === 'undefined' || !Array.isArray(NAV_DATA)){
+    throw new Error('未找到 NAV_DATA，请确认 nav.js 已正确加载且未报错');
+  }
+  DATA = transformData(NAV_DATA);
   renderAll();
 }
 
@@ -435,15 +432,9 @@ function showError(err){
   document.getElementById('stateScreen').innerHTML = `
     <div class="box">
       <i class="fa-solid fa-triangle-exclamation err-icon"></i>
-      <h2>无法加载 webstack.yml</h2>
+      <h2>无法加载导航数据</h2>
       <p>${escapeHtml(err.message || String(err))}</p>
-      <p>如果你是用双击打开 index.html（file:// 协议），浏览器会阻止读取本地文件。请在该文件夹下启动一个本地静态服务器后访问：</p>
-      <pre>python3 -m http.server 8080
-# 然后打开 http://localhost:8080
-
-# 或者，如果安装了 Node.js：
-npx serve .</pre>
-      <p>确认 <span style="font-family:var(--font-mono);color:var(--accent);">webstack.yml</span> 与 <span style="font-family:var(--font-mono);color:var(--accent);">index.html</span> 在同一目录下，然后刷新页面重试。</p>
+      <p>请确认 <span style="font-family:var(--font-mono);color:var(--accent);">nav.js</span> 与 <span style="font-family:var(--font-mono);color:var(--accent);">index.html</span> 在同一目录下，且 <span style="font-family:var(--font-mono);color:var(--accent);">nav.js</span> 中没有语法错误（可打开浏览器控制台查看详细报错），然后刷新页面重试。</p>
     </div>`;
 }
 
@@ -720,7 +711,7 @@ function setupMobileDrawer(){
 }
 setupMobileDrawer();
 
-loadData().catch(showError);
+try{ loadData(); }catch(err){ showError(err); }
 </script>
 </body>
 </html>

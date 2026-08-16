@@ -262,7 +262,7 @@
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="so.html"><b>极限搜索</b></a>
+    <a class="brand" href="index.html"><b>极限搜索</b></a>
     <div id="clock" class="clock"></div>
   </div>
 </header>
@@ -389,7 +389,7 @@
     </li>
     <li id="sidebar-divider"></li>
     <li><a href="#" onclick="showDonation();return false;"><span>赞赏支持</span></a></li>
-    <li><a href="about.html"><span>关于我的</span></a></li>
+    <li><a href="../about/"><span>关于我的</span></a></li>
   </ul>
 </aside>
 
@@ -501,8 +501,7 @@
     'ip':  () => window.location.href = "https://ipcheck.ing",
     'tm':  () => window.location.href = "https://datetime.app/zh-hans",
     'tq':  () => window.location.href = "http://www.weather.com.cn/weather1dn/101070501.shtml",
-    'tr':  () => window.location.href = "https://cn.bing.com/translator",
-    'xyz': () => window.location.href = "https://a.aaxyz.de/"
+    'tr':  () => window.location.href = "https://cn.bing.com/translator"
   };
 
   // 回车：先匹配指令，未命中则用当前默认搜索引擎（谷歌，标了 ↵ 的那个）
@@ -553,7 +552,6 @@
         <tr><td>tm</td><td>查看当前时间</td></tr>
         <tr><td>tq</td><td>查看天气</td></tr>
         <tr><td>tr</td><td>打开必应翻译</td></tr>
-        <tr><td>xyz</td><td>打开导航中转</td></tr>
         <tr><td>?</td><td>显示本帮助</td></tr>
       </table>`;
     document.getElementById('helpModal').style.display = 'flex';
