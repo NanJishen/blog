@@ -962,6 +962,11 @@ const NAV_DATA = [
             "name": "小不点",
             "url": "http://xiaoso.net",
             "desc": "极简资源分享论坛"
+          },
+          {
+            "name": "Substack",
+            "url": "https://substack.com",
+            "desc": "Newsletter 发布订阅平台"
           }
         ]
       },
@@ -2157,6 +2162,11 @@ const NAV_DATA = [
             "desc": "文字匿名分享"
           },
           {
+            "name": "Binthere",
+            "url": "https://binthere.gaury.dev",
+            "desc": "阅后即焚轻量可自托管"
+          },
+          {
             "name": "Verybin",
             "url": "https://www.verybin.com",
             "desc": "阅后即焚支持多种文本格式"
@@ -2164,22 +2174,17 @@ const NAV_DATA = [
           {
             "name": "ControlC",
             "url": "http://pasted.co",
-            "desc": "加密码后分享文本"
+            "desc": "阅后即焚文件或文本"
           },
           {
             "name": "SafeNote",
             "url": "https://safenote.co",
-            "desc": "加密可设置时间的阅后即焚"
+            "desc": "阅后即焚可设置时间"
           },
           {
             "name": "vua.sh",
             "url": "http://www.vua.sh",
             "desc": "有链接的人才能打开"
-          },
-          {
-            "name": "阅后即焚",
-            "url": "https://yhjf.cc",
-            "desc": "阅后即焚服务"
           },
           {
             "name": "Privnote",
@@ -2627,6 +2632,11 @@ const NAV_DATA = [
         "term": "OCR识别",
         "links": [
           {
+            "name": "ImgPeel",
+            "url": "http://imgpeel.toolooz.com",
+            "desc": "ORC 识别图像"
+          },
+          {
             "name": "FreeOCR",
             "url": "https://www.newocr.com",
             "desc": "ORC 识别图像"
@@ -2900,6 +2910,11 @@ const NAV_DATA = [
             "name": "Flipclocker",
             "url": "https://flipclocker.com",
             "desc": "屏保时钟"
+          },
+          {
+            "name": "Webscreen",
+            "url": "https://webscreen.net/zh",
+            "desc": "多款在线屏保"
           }
         ]
       },
@@ -3406,7 +3421,7 @@ const NAV_DATA = [
     ]
   },
   {
-    "taxonomy": "办公文档",
+    "taxonomy": "文档画板",
     "icon": "fa-briefcase",
     "list": [
       {
@@ -3416,6 +3431,11 @@ const NAV_DATA = [
             "name": "Excalidraw",
             "url": "https://excalidraw.com",
             "desc": "手绘白板在线画板"
+          },
+          {
+            "name": "1nx",
+            "url": "https://1nx.net",
+            "desc": "在线多功能白板画板"
           },
           {
             "name": "Koboyo",

@@ -12,9 +12,9 @@ categories: ["软件"]
 
 可以说 FFmpeg 是音视频处理界的神器，然而对于小白来说看起来非常难，导致上手困难，但其实操作并没有那么复杂，为了帮助小白打开这扇门，于是就有了这篇文章... 不点个赞吗？
 
-## FFmpeg 的安装
+## 安装
 
-首先就是去[官网下载](http://ffmpeg.org)了，在下面选择 Windows 已经构建好的版本，下载后将压缩包解压，其中 bin 文件夹中的程序就是我们要的。
+在[官网](http://ffmpeg.org)选择 Windows 已经构建好的版本下载，解压缩包中的 bin 文件夹中的程序就是我们要的。
 
 我个人通常会将 bin 文件夹重命名为 FFmpeg，然后将其移动到个人的软件目录中，我的个人软件目录 `C:\Users\nanji\OneDrive\Apps\FFmpeg`，当然你也可以放到任意目录。
 
@@ -23,7 +23,13 @@ categories: ["软件"]
 ffmpeg 或 ffmpeg -version # 查看版本，以确认否安装成功
 ```
 
-## FFmpeg 的使用
+可选安装 [Icaros](https://github.com/Xanashi/Icaros)，适用于 Windows 文件管理器支持视频缩略图
+```bash
+scoop bucket add nonportable
+scoop install icaros-np
+```
+
+## 使用
 
 这里说说简单的日常使用，如果你是更专业的用户，可以参考官方帮助，了解更高级的用法，不过一般来说，这些对普通用户就足够了~
 
@@ -31,21 +37,21 @@ ffmpeg 或 ffmpeg -version # 查看版本，以确认否安装成功
 
 ```bash
 ffmpeg -i video.avi # 查看本地视频信息
-ffmpeg -i http://..file1.mp4 # 查看远程 Web 网络视频信息
+ffmpeg -i http://..file1.mp4 # 查看网络视频信息，可追加 -hide_banner 更简洁
 ffmpeg -i "video.mkv" 2>&1 | sed -n "s/.*, \(.*\) tbr.*/\1/p" # 查看视频帧率
 ffprobe -v 0 -of compact=p=0 -select_streams 0 -show_entries stream=r_frame_rate "video.mkv" # 查看视频帧率
 ```
 
 ### 格式转换
 
-最常用的就是一个文件的格式转换成另一个：
 ```bash
-ffmpeg -i filename.flv filename.mp4
-# 反之
-ffmpeg -i filename.mp4 filename.flv
+# 转成另一个格式
+ffmpeg -i input.flv output.mp4
+ffmpeg -i input.mp4 -c copy output.webm # 编码不变的转换
+ffmpeg -i input.mov -c:v libvpx-vp9 -crf 31 -b:v 1M -c:a libvorbis output.webm
 
 # 拷贝转换，即保持原样的编码不变，只转换格式
-ffmpeg -i filename.ts -vcodec copy -acodec copy filename.mp4
+ffmpeg -i input.ts -vcodec copy -acodec copy output.mp4
 
 # 中文名音乐转换
 ffmpeg -i '.\下辈子不一定遇见.m4a' -f mp3 '.\下辈子不一定遇见.mp3'
@@ -54,9 +60,9 @@ ffmpeg -i '.\下辈子不一定遇见.m4a' -f mp3 '.\下辈子不一定遇见.mp
 ffmpeg -i a.wav -vn -ar 48000 -ac 2 -b:a 256 output-b.mp3
 
 # ppt 导出的 webm 转 mp4
-ffmpeg -fflags +genpts -i in.webm -r 24 out.mp4
+ffmpeg -fflags +genpts -i in.webm -r 24 output.mp4
 # mpg 转 mp4
-ffmpeg -i in.mpg -c:v libx264 -c:a aac -crf 20 -preset:v veryslow out.mp4
+ffmpeg -i in.mpg -c:v libx264 -c:a aac -crf 20 -preset:v veryslow output.mp4
 
 # 选项
 -i # 输入的视频
@@ -67,12 +73,12 @@ ffmpeg -i in.mpg -c:v libx264 -c:a aac -crf 20 -preset:v veryslow out.mp4
 -b:a # 设置每秒的音频比特率，千位越高，音质越高
 ```
 
-### 编码并转换格式
+### 转换格式编码
 
-用 `-vcodec` 参数来手动指定格式：
+用 `-vcodec` 参数来手动指定格式
 ```bash
 ffmpeg -i filename.wmv -vcodec h264 filename.mp4
-ffmpeg -i filename.mp4 -vcodec wmv1 filename.wmv
+ffmpeg -i input.mp4 -vcodec wmv1 filename.wmv
 
 ffmpeg -i filename.wmv -s 640x480 -b 500k -vcodec h264 -r 30 -acodec libfaac -ab 48k -ac 2 filename.mp4 # 设定更多选项，说明如下
 
@@ -119,23 +125,36 @@ exiftool -tagsFromFile "{}" -overwrite_original "/data/record/DJI_001_av1/{}"
 
 ```bash
 # 降低fps和音频码率以减少大小，同时视频清晰度不变
-ffmpeg -i filename.mp4 -r 10 -b:a 32k filename.mp4
+ffmpeg -i input.mp4 -r 10 -b:a 32k filename.mp4
 
-# 采用H.264算法压缩视频，并指定10fps，以AAC算法压缩音频，码率32k
-ffmpeg -i filename.mp4 -vcodec libx264 -crf 20 filename.mp4 #
+# 采用 H.264 算法压缩视频，并指定 10fps，以AAC 算法压缩音频，码率32k
+ffmpeg -i input.mp4 -vcodec libx264 -crf 20 filename.mp4
+
+# 调整码率最小为964K，最大为3856K，缓冲区大小为2000K
+ffmpeg -i input.mp4 -minrate 964K -maxrate 3856K -bufsize 2000K output.mp4
+
+# 改变分辨率为720P
+ffmpeg -i input.mp4 -vf scale=720:-1 output.mp4 
 
 # 再比如
-ffmpeg -i filename.mp4 -crf 30 filename.mp4
+ffmpeg -i input.mp4 -c:v libx264 output.mp4 # 转成 H.264/5 编码
+ffmpeg -i input.mp4 -crf 30 filename.mp4
 ffmpeg -i 480p.mp4 480p.webm
+```
+
+### 压缩图像
+
+```bash
+ffmpeg -i input.png -vf scale=w=iw/2:h=ih/2 -c:v mjpeg out.jpg # 压缩图片并缩小分辨率
 ```
 
 ### 转成 GIF 动图
 
-可以将视频转成 Gif 动图：
+可以将视频转成 Gif 动图
 
 ```bash
 # 将视频前 30 帧转成 Gif 动图
-ffmpeg -i filename.mp4 -vframes 30 -y -f gif filename.gif
+ffmpeg -i input.mp4 -vframes 30 -y -f gif filename.gif
 
 # 转换为 GIF
 ffmpeg -i input.mov -vf " scale=960:-1, fps=16, split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse " -loop 0 output.gif
@@ -149,7 +168,7 @@ ffmpeg -ss 00:00:00.000 -i filename.mp4 -pix_fmt rgb24 -r 10 -s 320x240 -t 00:00
 -t 指定了时间长度
 
 # 将视频转为 gif，用 -pix_fmt 指定编码
-ffmpeg -i filename.mp4 -ss 0:0:30 -t 10 -s 320x240 -pix_fmt rgb24 filename.gif
+ffmpeg -i input.mp4 -ss 0:0:30 -t 10 -s 320x240 -pix_fmt rgb24 filename.gif
 ```
 
 ### 选项与参数
@@ -166,23 +185,25 @@ ffmpeg -i filename.mp4 -ss 0:0:30 -t 10 -s 320x240 -pix_fmt rgb24 filename.gif
 ```
 注：-crt 会直接影响到输出视频的码率，之后再设置－b 指定码率将不会生效；-preset 例如 x264 编码的预设值可以通过该参数指定。它主要影响编码的速度，并不会很大的影响编码出来的结果的质量。
 
-### 合并 MP4 视频
-
-将多个视频合并：
+### 合并视频
 
 ```bash
 # mp4 最好是先转成无损的 ts 后再进行合并
 ffmpeg -i file1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb file1.ts
 ffmpeg -i file2.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb file2.ts
 ffmpeg -i "concat:file1.ts|file2.ts" -acodec copy -vcodec copy -absf aac_adtstoasc filename.mp4
+
+# 合并音频视频
+ffmpeg -i input.aac -i input.mp4 output.mp4
+ffmpeg -i input.m4a -i input.mp4 -vcodec copy -acodec copy output.mp4
 ```
 
 ### 更改分辨率大小
 
 ```bash
-ffmpeg -i filename.mp4 -filter:v scale=1280:720 -c:a copy filename.mp4
+ffmpeg -i input.mp4 -filter:v scale=1280:720 -c:a copy filename.mp4
 # 又或者
-ffmpeg -i filename.mp4 -s 1280x720 -c:a copy filename.mp4
+ffmpeg -i input.mp4 -s 1280x720 -c:a copy filename.mp4
 # 将宽度调整为 1920 保持源比率
 ffmpeg -i input.mov -vf "scale=1920:-1" output.mp4
 ```
@@ -190,20 +211,23 @@ ffmpeg -i input.mov -vf "scale=1920:-1" output.mp4
 也可以调整视频的宽高比：
 
 ```bash
-ffmpeg -i filename.mp4 -aspect 16:9 filename.mp4
+ffmpeg -i input.mp4 -aspect 16:9 filename.mp4
 ```
 
 ### 转换视频码率
 
 ```bash
 # 将视频转换成 3 Mbps 码率的视频
-ffmpeg -i filename.mp4 -b:v 3000k filename.mp4
+ffmpeg -i input.mp4 -b:v 3000k filename.mp4
 
 # 官方建议用 -b:v 时，应同时加上 -bufsize 用于设置码率控制缓冲器大小
-ffmpeg -i filename.mp4 -b:v 3000k -bufsize 3000k filename.mp4
+ffmpeg -i input.mp4 -b:v 3000k -bufsize 3000k filename.mp4
 
 # 指定码率阈值，-minrate（别低于）和 -maxrate（别高于）
-ffmpeg -i filename.mp4 -b:v 3000k -bufsize 3000k -maxrate 3500k filename.mp4
+ffmpeg -i input.mp4 -b:v 3000k -bufsize 3000k -maxrate 3500k filename.mp4
+
+# 调整 FPS 帧数，这里调整为每秒1帧（幻灯片）
+ffmpeg -i in.mp4 -filter:v fps=1 out.mp4
 ```
 
 ### 剪辑视频
@@ -216,7 +240,7 @@ ffmpeg -i filename.mov -ss 00:00:21 -t 00:00:10 -acodec aac -vcodec h264 -strict
 ffmpeg -ss 0:1:30 -t 0:0:20 -i filename.avi -vcodec copy -acodec copy filename.avi
 
 # 从 10秒 开始剪辑，持续15秒（比上面更简洁）
-ffmpeg -i filename.mp4 -ss 10 -t 15 -codec copy filename.mp4
+ffmpeg -i input.mp4 -ss 10 -t 15 -codec copy filename.mp4
 ffmpeg -ss 10 -t 15 -i filename.mp4 -codec copy filename.mp4 #（相比上面解决第一帧黑屏问题）
 
 # 裁剪参数 crop=width:height:x:y 说明：
@@ -224,63 +248,70 @@ ffmpeg -ss 10 -t 15 -i filename.mp4 -codec copy filename.mp4 #（相比上面解
 # x:y 表示裁剪区域的左上角坐标
 
 # 截取视频局部
-ffmpeg -i filename.mp4 -filter:v "crop=width:height:x:y" filename.mp4
+ffmpeg -i input.mp4 -filter:v "crop=width:height:x:y" filename.mp4
 
 # 将竖向的视频 1080 x 1920，保留中间 1080×1080 部分
-ffmpeg -i filename.mp4 -strict -2 -vf crop=1080:1080:0:420 filename.mp4
+ffmpeg -i input.mp4 -strict -2 -vf crop=1080:1080:0:420 filename.mp4
 
 # 截取部分视频，从[80,60]的位置开始，截取宽200，高100的视频
-ffmpeg -i filename.mp4 -filter:v "crop=80:60:200:100" -c:a copy filename.mp4
+ffmpeg -i input.mp4 -filter:v "crop=80:60:200:100" -c:a copy filename.mp4
 
 # 截取右下角的四分之一
-ffmpeg -i filename.mp4 -filter:v "crop=in_w/2:in_h/2:in_w/2:in_h/2" -c:a copy filename.mp4
+ffmpeg -i input.mp4 -filter:v "crop=in_w/2:in_h/2:in_w/2:in_h/2" -c:a copy filename.mp4
 
 # 截去底部40像素高度
-ffmpeg -i filename.mp4 -filter:v "crop=in_w:in_h-40" -c:a copy filename.mp4
+ffmpeg -i input.mp4 -filter:v "crop=in_w:in_h-40" -c:a copy filename.mp4
+
+# 剪切片段为新视频。可以指定开始时间（start）和持续时间（duration），也可以指定结束时间（end）
+ffmpeg -i input.mov -ss 00:05:00 -t 12 -c copy output.mp4 # 从5分钟开始持续12秒（5分12秒）
+ffmpeg -ss 2.5 -i [input] -to 10 -c copy [output] # 无损剪切
+
+
+
 ```
 
 ### 视频旋转
 
 ```bash
 # 旋转 90 度
-ffmpeg -i filename.mp4 -metadata:s:v rotate="90" -codec copy filename.mp4
+ffmpeg -i input.mp4 -metadata:s:v rotate="90" -codec copy filename.mp4
 
 # 顺时针旋转 90 度
-ffmpeg -i filename.mp4 -vf "transpose=1" filename.mp4
+ffmpeg -i input.mp4 -vf "transpose=1" filename.mp4
 
 # 逆时针旋转 90 度
-ffmpeg -i filename.mp4 -vf "transpose=2" filename.mp4
+ffmpeg -i input.mp4 -vf "transpose=2" filename.mp4
 
 # 顺时针旋转 90 度后再水平翻转
-ffmpeg -i filename.mp4 -vf "transpose=3" filename.mp4
+ffmpeg -i input.mp4 -vf "transpose=3" filename.mp4
 
 # 逆时针旋转 90 度后再水平翻转
-ffmpeg -i filename.mp4 -vf "transpose=0" filename.mp4
+ffmpeg -i input.mp4 -vf "transpose=0" filename.mp4
 
 # 水平翻转视频
-ffmpeg -i filename.mp4 -vf hflip filename.mp4
+ffmpeg -i input.mp4 -vf hflip filename.mp4
 
 # 垂直翻转视频
-ffmpeg -i filename.mp4 -vf vflip filename.mp4
+ffmpeg -i input.mp4 -vf vflip filename.mp4
 ```
 
 ### 播放速度与倒放
 
 ```bash
 # 视频倒放：无音频
-ffmpeg -i filename.mp4 -filter_complex [0:v]reverse[v] -map [v] -preset superfast filename.mp4
+ffmpeg -i input.mp4 -filter_complex [0:v]reverse[v] -map [v] -preset superfast filename.mp4
 
 # 视频倒放：音频不变
-ffmpeg -i filename.mp4 -vf reverse filename.mp4
+ffmpeg -i input.mp4 -vf reverse filename.mp4
 
 # 音频倒放：视频不变
-ffmpeg -i filename.mp4 -map 0 -c:v copy -af "areverse" reversed_audio.mp4
+ffmpeg -i input.mp4 -map 0 -c:v copy -af "areverse" reversed_audio.mp4
 
 # 音视频同时倒放
-ffmpeg -i filename.mp4 -vf reverse -af areverse -preset superfast filename.mp4
+ffmpeg -i input.mp4 -vf reverse -af areverse -preset superfast filename.mp4
 
 # 视频加速：帧速率变为 2 倍，调整倍速范围（0.25，4）
-ffmpeg -i filename.mp4 -vf setpts=PTS/2 -af atempo=2 filename.mp4
+ffmpeg -i input.mp4 -vf setpts=PTS/2 -af atempo=2 filename.mp4
 ffmpeg -i input.mov -vf "setpts=PTS/2" -af "asetpts=PTS/2" output.mp4 # 播放速度为2倍
 ffmpeg -i input.mov -vf "setpts=PTS/.5" -af "asetpts=PTS/.5" output.mp4 # 播放速度 1/2x
 
@@ -295,15 +326,15 @@ ffmpeg -i filename.mkv -an -filter:v "setpts=0.5*PTS" filename.mkv
 ffmpeg -f image2 -i image%d.jpg filename.mp4
 
 # 将视频分解成图片序列
-ffmpeg -i filename.mp4 image%d.jpg
+ffmpeg -i input.mp4 image%d.jpg
 ffmpeg –i test.avi –r 1 –f image2 image-%3d.jpeg # -r 表示频率，-ss 开始时间，-t 持续时间
 
 # 将视频的 8.01 秒处截取 800*600 的缩略图
-ffmpeg -i filename.mp4 -y -f image2 -ss 08.010 -t 0.001 -s 800x600 jt.jpg
+ffmpeg -i input.mp4 -y -f image2 -ss 08.010 -t 0.001 -s 800x600 jt.jpg
 ffmpeg -r 0.5 -i c:/tmp/image%04d.jpg -i c:/time.mp3 -vcodec mpeg4 c:/filename.mp4
 
 # 添加图片水印
-ffmpeg -i filename.mp4 -i logo.png -filter_complex overlay filename.mp4
+ffmpeg -i input.mp4 -i logo.png -filter_complex overlay filename.mp4
 
 # 添加 GIF 文件
 ffmpeg -y -i filename.mp4 -ignore_loop 0 -i filename.gif -filter_complex overlay=0:H-h filename.mp4
@@ -312,14 +343,14 @@ ffmpeg -y -i filename.mp4 -ignore_loop 0 -i filename.gif -filter_complex overlay
 ### 分离与合并音视频
 
 ```bash
-ffmpeg -i filename.mp4 -vn filename.mp3 # 从视频分离出音频
-ffmpeg -i filename.mp4 -an output-mute.mp4 # 从视频分离出视频
+ffmpeg -i input.mp4 -vn filename.mp3 # 从视频分离出音频
+ffmpeg -i input.mp4 -an output-mute.mp4 # 从视频分离出视频
 
 # 从视频中去除音频，使用 -an 参数去掉音频，使用 -vcodec copy 表示拷贝视频原样
-ffmpeg -i filename.mp4 -vcodec copy -an filename.mp4
+ffmpeg -i input.mp4 -vcodec copy -an filename.mp4
 
 # 提取视频中的音频，使用 -vn 参数去掉视频，-acodec copy 表示拷贝音频原样
-ffmpeg -i filename.mp4 -acodec copy -vn filename.mp3
+ffmpeg -i input.mp4 -acodec copy -vn filename.mp3
 
 # 音频与视频合成，使用 -y 参数表示覆盖输出文件
 ffmpeg -y –i filename.mp4 –i filename.mp3 –vcodec copy –acodec copy filename.mp4
@@ -339,6 +370,12 @@ ffmpeg -ss 0:2:50 -t 0:0:20 -i filename.mp4 -vcodec copy -acodec copy filename.m
 # 视频截图，-s 设置分辨率; -f 强迫采用格式 fmt
 ffmpeg –i filename.mp4 –f image2 -t 0.001 -s 320x240 image-%3d.jpg
 
+# 从指定时间开始连续对1秒钟的视频进行截图
+ffmpeg -y -i input.mp4 -ss 00:01:24 -t 00:00:01 output_%3d.jpg
+
+# vframes 1 指定只截取一帧（即一张图），-q:v 2 表示图片质量（1-5，1为质量最高）
+ffmpeg -ss 01:23:45 -i input -vframes 1 -q:v 2 output.jpg
+
 # 视频分解为图片，-r 指定截屏频率
 ffmpeg –i filename.mp4 –r 1 –f image2 image-%3d.jpg
 
@@ -346,19 +383,19 @@ ffmpeg –i filename.mp4 –r 1 –f image2 image-%3d.jpg
 ffmpeg -f concat -i filelist.txt -c copy filename.mp4
 
 # 旋转视频
-ffmpeg -i filename.mp4 -vf rotate=PI/2 filename.mp4
+ffmpeg -i input.mp4 -vf rotate=PI/2 filename.mp4
 
 # 缩放视频，iw 表示输入的宽度，iw/2 就是一半; -1 为保持宽高比
-ffmpeg -i filename.mp4 -vf scale=iw/2:-1 filename.mp4
+ffmpeg -i input.mp4 -vf scale=iw/2:-1 filename.mp4
 
 # 视频变速
-ffmpeg -i filename.mp4 -filter:v setpts=0.5*PTS filename.mp4
+ffmpeg -i input.mp4 -filter:v setpts=0.5*PTS filename.mp4
 
 # 音频变速
 ffmpeg -i filename.mp3 -filter:a atempo=2.0 filename.mp3
 
 # 音视频同时变速，但音视频为互倒关系
-ffmpeg -i filename.mp4 -filter_complex "[0:v]setpts=0.5*PTS[v];[0:a]atempo=2.0[a]" -map "[v]" -map "[a]" filename.mp4
+ffmpeg -i input.mp4 -filter_complex "[0:v]setpts=0.5*PTS[v];[0:a]atempo=2.0[a]" -map "[v]" -map "[a]" filename.mp4
 ```
 
 ### 合并图片为视频
@@ -377,13 +414,23 @@ ffmpeg -f image2 -i img%d.jpg filename.mp4
 
 ```bash
 # 视频添加水印，main_w-overlay_w-10 表示视频的宽度-水印的宽度-水印边距
-ffmpeg -i filename.mp4 -i logo.jpg -filter_complex [0:v][1:v]overlay=main_w-overlay_w-10:main_h-overlay_h-10[out] -map [out] -map 0:a -codec:a copy filename.mp4
+ffmpeg -i input.mp4 -i logo.jpg -filter_complex [0:v][1:v]overlay=main_w-overlay_w-10:main_h-overlay_h-10[out] -map [out] -map 0:a -codec:a copy filename.mp4
 
 # 添加文本水印
 ffmpeg -i filename.flv -vf "drawtext=fontfile=simhei.ttf: text='文本':x=100:y=10:fontsize=24:fontcolor=yellow:shadowy=2" filename.mp4
 ```
 
 **FFmpeg** 这个神器非常值得学习，因为视频在今天来说是很主流的内容载体，虽然对小白来来说，看起来很复杂，但其实只要掌握几个基本命令就足够了，同时它在 Windows 和 Linux 上都可以使用。
+
+### 音频处理
+
+```bash
+ffmpeg -i input.mp4 -vn -c:a copy output.aac # 提取视频中的音频
+ffmpeg -i input.mov -c:v copy -an output.mp4 # 移除音频
+
+# 为音频添加封面，以视频格式上传
+ffmpeg -loop 1 -i cover.jpg -i input.mp3 -c:v libx264 -c:a aac -b:a 192k -shortest output.mp4 # -loop 1 表示图片无限循 cover.jpg，input.mp3，-shortest 表示音频文件结束，输出视频就结束
+```
 
 ### 字幕处理
 
@@ -397,9 +444,16 @@ for i in {0..N}; do ffmpeg -i input.mkv -map 0:s:$i subtitle_$i.srt; done
 
 # 如果字幕是 .ass 等文本格式格式字幕，可以提取并转换为 .srt 格式（不支持非文本格式字幕）
 ffmpeg -i input.mkv -map 0:s:0 -c:s srt subtitle.srt
+
+# 以文本形式添加字幕
+ffmpeg -i input.mp4 -i file.srt -c:s mov_text -c:v copy -c:a copy output.mp4
+
+# 添加 ass 字幕
+ffmpeg -i input.mkv -vf subtitles=text.ass 01_output.mkv
 ```
 
 ## 更多参考
-[在 Linux 上用 FFmpeg 命令进行音频和视频处理](https://www.linuxmi.com/linux-ffmpeg.html)
 
-![](https://testingcf.jsdelivr.net/gh/nanjishen/nanjishen/img/gzh-end.png)
+- [更好的学习手册](https://amiaopensource.github.io/ffmprovisr)
+- [在 Linux 上用 FFmpeg 命令进行音频和视频处理](https://www.linuxmi.com/linux-ffmpeg.html)
+- [实用示例](https://ffmpegbyexample.com)、[脚本集](https://github.com/jifengg/ffmpeg-script)、

@@ -12,6 +12,7 @@ tags: ["Windows"]
 
 - 关闭系统还原：右键开始 - 系统 - 系统保护 - 配置 - 删除并禁用
 - 更新系统：右键开始 - 设置 - Windows 更新 - 检查更新
+- 激活系统：下载并以管理员运行[极限激活](https://nanji.lanzouu.com/i48Cw2zvwych)，
 - 关闭 UAC：开始 - UAC - 更改用户账户控制设置 - 拉到最底“从不通知”
 - 关闭索引和软件预加载服务：运行 `services.msc` - 找到 Windows Search 和 SysMain - 停止并禁用
 - 设置免密登陆：运行 `netplwiz` - 去勾“要使用本计算机，用户必须输入密码”
@@ -22,7 +23,7 @@ tags: ["Windows"]
 - 关闭通信时降低音量：右键托盘声音 - 声音设置 - 更多声音设置 - 通信 - 不执行任何操作
 - 麦克风增强：右键托盘声音 - 声音设置 - 麦克风 - 增强音频“高级” - 级别
 - 关闭休眠与快速启动：powercfg -h off
-- 登录 OneDrive ；更改下载/文档/图片/视频的默认位置
+- 登录 OneDrive ；更改文档、图片、视频、下载的默认目录路径
 - 避免系统更新厂商驱动：systempropertiesadvanced.exe（系统属性-高级）- 硬件 - 设备安装设置 - 选否
 - 添加 ICC 配置文件：右键桌面 - 显示设置 - 高级显示器设置 - 颜色管理 - 添加并浏览文件
 - 隐私和安全性 - 不用的都关闭
@@ -32,23 +33,19 @@ tags: ["Windows"]
 
 ## 可选优化
 
-**Win11 启用不安全 SMB 访问**：运行 `gpedit.msc` - 计算机配置 - 管理模板 - 网络 - Lanman 工作站 - 右侧“启用不安全的来宾登录” 改为“已启用”
+**Win11 启用不安全 SMB 访问**：运行 `gpedit.msc` - 计算机配置 - 管理模板 - 网络 - Lanman 工作站 - 右侧“启用不安全的来宾登录”改为“已启用”
 
-**访问另一台电脑共享目录的方法**：文件管理器 - 右键此电脑 - 添加一个网络位置，输入地址：`\\192.168.1.1\downloads`（IP地址为另一台机器的IP，downloads 为另一台机器共享的目录名）
+**访问 SMB 共享目录**：文件管理器 - 右键此电脑 - 添加一个网络位置，输入地址：`\\192.168.1.1\downloads`（IP指定另一台机器，downloads 指定共享的目录）
 
 **自动关机计划**：创建计划任务→启动程序：`"C:\Windows\System32\shutdown.exe"`并在下面的参数中输入`"-s -t 60"`
 
-**UWP 文件管理快捷方式**：`explorer shell:AppsFolder\c5e2524a-ea46-4f67-841f-6a9465d9d515_cw5n1h2txyewy!App`
-
 **滑动关机快捷方式**：`%windir%\System32\SlideToShutDown.exe`
 
-**重建图标缓存**：运行 ie4uinit -show
+**重建图标缓存**：运行 `ie4uinit -show`
 
 **清除开始菜单图标缓存**：Win+R - 输入 `%localappdata%` - 删除隐藏文件 `Iconcache.db` - 注销
 
-**右键添加记事本打开**：`HKEY_LOCAL_MACHINE\SOFTWARE\Classes\*\shell`（没有就建立），新建 项，名为 NotePad，在右侧把默认项的值改成：用记事本打开，再在右侧建立 字符串值]命名为 Icon，值 `C:\windows\system32\notepad.exe`，再在 notepad 主键下新建 [项] 命名为 command，把默认项的值改成：`notepad %1`
-
-**导入注册表快速添加**：以 Notepad++ 为例，将以下的内容保存为 .reg 文件后双击后导入
+**右键添加 Notepad++ 打开**，将以下内容保存为 `.reg` 后双击后导入
 
 ```bash
 Windows Registry Editor Version 5.00
@@ -105,7 +102,7 @@ msinfo32 # 查看下方“基于虚拟化的安全性”
 
 关闭内存完整性：开始 - 输入 Core Isolation（内核隔离）- 关闭“内存完整性”后重启
 
-## Windows HDR
+## HDR 设置
 
 SDR 使用 sRGB 模式：设置 - 系统 - 屏幕 - 高级显示器设置 - 显示器 1 的显示适配器属性 - 颜色管理 - 设备下拉选择显示器 - 设为 sRGB 2.1 配置文件
 
@@ -117,4 +114,4 @@ Potplayer 播放视频能自动根据视频类型开关 HDR，选项 - 视频 - 
 
 ## 外设设置
 
-《极限竞速：地平线5》设置 - 高级控制 - 勾选反转力反馈；抬头显示器与游戏 - 数据输出：127.0.0.1:20779 为方向盘输出油表
+《极限竞速：地平线5》设置 - 高级控制 - 勾选反转力反馈；抬头显示器与游戏 - 数据输出 `127.0.0.1:20779` 为方向盘输出油表

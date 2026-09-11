@@ -7,10 +7,7 @@
 <meta name="Keywords" content="极限搜索,极限玩家">
 <meta name="Description" content="极限搜索,极限玩家">
 <title>极限搜索</title>
-<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
-<link rel="manifest" href="./site.webmanifest">
+<link rel="icon" href="../favicon.ico">
 <style>
   :root{
     /* ---- token system ---- */
@@ -262,7 +259,7 @@
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="index.html"><b>极限搜索</b></a>
+    <a class="brand" href="so.html"><b>极限搜索</b></a>
     <div id="clock" class="clock"></div>
   </div>
 </header>
@@ -289,7 +286,7 @@
       </div>
 
       <div class="category">
-        <h2 class="category-title"><svg class="icon"><use href="#icon-ai"></use></svg>AI 助手</h2>
+        <h2 class="category-title"><svg class="icon"><use href="#icon-ai"></use></svg>AI助手</h2>
         <div class="chips">
           <button class="chip" data-engine="GPT">ChatGPT</button>
           <button class="chip" data-engine="Gemini">Gemini</button>
@@ -361,7 +358,6 @@
           <button class="chip" data-engine="股票">股票</button>
           <button class="chip" data-engine="QR">QR</button>
           <button class="chip" data-engine="Cheat">Cheat</button>
-          <button class="chip" data-engine="Linuxcmd">LinuxCMD</button>
         </div>
       </div>
 
@@ -373,23 +369,22 @@
   <ul>
     <li><a href="https://ttti.cc"><span>极限博客</span></a></li>
     <li><a href="https://nav.ttti.cc"><span>极限导航</span></a></li>
-    <li><a href="./app/index.html"><span>系统与软件</span></a></li>
+    <li><a href="https://app.ttti.cc"><span>软件导航</span></a></li>
     <li class="has-submenu">
       <a href="javascript:void(0)" onclick="toggleSubmenu(this.parentElement)"><span>在线工具</span></a>
       <ul>
-        <li><a href="minitools/notepad.html">记事本</a></li>
-        <li><a href="minitools/calc.html">计算器</a></li>
-        <li><a href="minitools/textedit.html">快捷便笺</a></li>
-        <li><a href="minitools/stitching.html">截图拼接</a></li>
-        <li><a href="minitools/todolist.html">要事第一</a></li>
-        <li><a href="minitools/stickynote.html">浮动看板</a></li>
-        <li><a href="minitools/palette.html">调色板</a></li>
-        <li><a href="minitools/watermark.html">加水印</a></li>
+        <li><a href="../minitools/notepad.html">记事本</a></li>
+        <li><a href="../minitools/calc.html">计算器</a></li>
+        <li><a href="../minitools/textedit.html">快捷便笺</a></li>
+        <li><a href="../minitools/stitching.html">截图拼接</a></li>
+        <li><a href="../minitools/todolist.html">要事第一</a></li>
+        <li><a href="../minitools/stickynote.html">浮动看板</a></li>
+        <li><a href="../minitools/palette.html">调色板</a></li>
+        <li><a href="../minitools/watermark.html">加水印</a></li>
       </ul>
     </li>
     <li id="sidebar-divider"></li>
     <li><a href="#" onclick="showDonation();return false;"><span>赞赏支持</span></a></li>
-    <li><a href="../about/"><span>关于我的</span></a></li>
   </ul>
 </aside>
 
@@ -398,7 +393,7 @@
   <div class="modal-content">
     <span class="close" onclick="hideDonation()">&times;</span>
     <h3>感谢你的支持</h3>
-    <img src="pay.jpg" alt="赞赏二维码">
+    <img src="../pay.jpg" alt="赞赏二维码">
   </div>
 </div>
 
@@ -458,7 +453,6 @@
     '油猴': 'https://greasyfork.org/zh-CN/scripts?q=',
     '股票': 'https://xueqiu.com/k?q=',
     'QR': 'https://my.tv.sohu.com/user/a/wvideo/getQRCode.do?text=',
-    'Linuxcmd': 'https://www.linuxcool.com/',
     'Cheat': 'https://cheat.sh/'
   };
 
@@ -501,7 +495,8 @@
     'ip':  () => window.location.href = "https://ipcheck.ing",
     'tm':  () => window.location.href = "https://datetime.app/zh-hans",
     'tq':  () => window.location.href = "http://www.weather.com.cn/weather1dn/101070501.shtml",
-    'tr':  () => window.location.href = "https://cn.bing.com/translator"
+    'tr':  () => window.location.href = "https://cn.bing.com/translator",
+    'xyz': () => window.location.href = "https://a.aaxyz.de/"
   };
 
   // 回车：先匹配指令，未命中则用当前默认搜索引擎（谷歌，标了 ↵ 的那个）
@@ -552,6 +547,7 @@
         <tr><td>tm</td><td>查看当前时间</td></tr>
         <tr><td>tq</td><td>查看天气</td></tr>
         <tr><td>tr</td><td>打开必应翻译</td></tr>
+        <tr><td>xyz</td><td>打开导航中转</td></tr>
         <tr><td>?</td><td>显示本帮助</td></tr>
       </table>`;
     document.getElementById('helpModal').style.display = 'flex';

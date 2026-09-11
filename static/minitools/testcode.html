@@ -5,8 +5,8 @@
 </head>
 <body>
 <div class="toolbar"><div class="toolbar-left"><button class="toolbar-btn primary" onclick="runCode()">运行</button><button class="toolbar-btn" onclick="formatCode()">格式化</button><button class="toolbar-btn" onclick="clearAll()">清空</button></div><div class="toolbar-right"><span class="status-dot"></span><span class="status-text" id="statusText">就绪</span></div></div>
-<div class="main" id="mainArea"><div class="editor-panel" id="editorPanel"><div class="tabs"><div class="tab tab-html active" data-tab="html" onclick="switchTab('html')"><span class="tab-icon">&lt;/&gt;</span> HTML</div><div class="tab tab-css" data-tab="css" onclick="switchTab('css')"><span class="tab-icon">#</span> CSS</div><div class="tab tab-js" data-tab="js" onclick="switchTab('js')"><span class="tab-icon">JS</span> JavaScript</div></div><div class="editor-container"><div class="editor-wrapper active" id="wrapper-html"><div class="editor-header"><span class="editor-filename">index.html</span><span class="editor-stats" id="stats-html">0 行 | 0 字符</span></div><div class="code-wrapper"><div class="line-numbers" id="lines-html">1</div><textarea class="code-editor" id="html-editor" placeholder="<!-- 在此输入 HTML 代码 -->" spellcheck="false"></textarea></div></div><div class="editor-wrapper" id="wrapper-css"><div class="editor-header"><span class="editor-filename">style.css</span><span class="editor-stats" id="stats-css">0 行 | 0 字符</span></div><div class="code-wrapper"><div class="line-numbers" id="lines-css">1</div><textarea class="code-editor" id="css-editor" placeholder="/* 在此输入 CSS 代码 */" spellcheck="false"></textarea></div></div><div class="editor-wrapper" id="wrapper-js"><div class="editor-header"><span class="editor-filename">script.js</span><span class="editor-stats" id="stats-js">0 行 | 0 字符</span></div><div class="code-wrapper"><div class="line-numbers" id="lines-js">1</div><textarea class="code-editor" id="js-editor" placeholder="// 在此输入 JavaScript 代码" spellcheck="false"></textarea></div></div></div></div><div class="resizer" id="resizer"></div><div class="preview-panel" id="previewPanel"><div class="preview-header"><span class="preview-title">&#128421; 实时预览</span><input class="preview-url" value="about:srcdoc" readonly><button class="toolbar-btn" style="padding:4px 10px;font-size:12px" onclick="openNewWindow()">&#8599; 新窗口</button></div><iframe class="preview-frame" id="preview"></iframe></div></div>
-<div class="console-panel" id="consolePanel"><div class="console-header" id="consoleHeader"><span class="console-title">&#128223; 控制台</span><div class="console-actions"><button class="console-action" onclick="clearConsole()" title="清空控制台">&#128465;</button><button class="console-action" onclick="toggleConsole()" title="折叠/展开">&#9660;</button></div></div><div class="console-body" id="consoleBody"><div class="console-empty">控制台输出将显示在这里...</div></div></div>
+<div class="main" id="mainArea"><div class="editor-panel" id="editorPanel"><div class="tabs"><div class="tab tab-html active" data-tab="html" onclick="switchTab('html')"><span class="tab-icon">&lt;/&gt;</span> HTML</div><div class="tab tab-css" data-tab="css" onclick="switchTab('css')"><span class="tab-icon">#</span> CSS</div><div class="tab tab-js" data-tab="js" onclick="switchTab('js')"><span class="tab-icon">JS</span> JavaScript</div></div><div class="editor-container"><div class="editor-wrapper active" id="wrapper-html"><div class="editor-header"><span class="editor-filename">index.html</span><span class="editor-stats" id="stats-html">0 行 | 0 字符</span></div><div class="code-wrapper"><div class="line-numbers" id="lines-html">1</div><textarea class="code-editor" id="html-editor" placeholder="<!-- 在此输入 HTML 代码 -->" spellcheck="false"></textarea></div></div><div class="editor-wrapper" id="wrapper-css"><div class="editor-header"><span class="editor-filename">style.css</span><span class="editor-stats" id="stats-css">0 行 | 0 字符</span></div><div class="code-wrapper"><div class="line-numbers" id="lines-css">1</div><textarea class="code-editor" id="css-editor" placeholder="/* 在此输入 CSS 代码 */" spellcheck="false"></textarea></div></div><div class="editor-wrapper" id="wrapper-js"><div class="editor-header"><span class="editor-filename">script.js</span><span class="editor-stats" id="stats-js">0 行 | 0 字符</span></div><div class="code-wrapper"><div class="line-numbers" id="lines-js">1</div><textarea class="code-editor" id="js-editor" placeholder="// 在此输入 JavaScript 代码" spellcheck="false"></textarea></div></div></div></div><div class="resizer" id="resizer"></div><div class="preview-panel" id="previewPanel"><div class="preview-header"><span class="preview-title">&#128421; 实时预览</span><input class="preview-url" value="about:srcdoc" readonly><button class="toolbar-btn" style="padding:4px 10px;font-size:12px" onclick="openNewWindow()">&#8599; 新窗口</button></div><iframe class="preview-frame" id="preview" title="实时预览" sandbox="allow-scripts allow-forms allow-modals allow-popups"></iframe></div></div>
+<div class="console-panel" id="consolePanel"><div class="console-header" id="consoleHeader"><span class="console-title">&#128223; 控制台</span><div class="console-actions"><button class="console-action" onclick="clearConsole()" title="清空控制台" aria-label="清空控制台">&#128465;</button><button class="console-action" onclick="toggleConsole()" title="折叠/展开" aria-label="折叠或展开控制台">&#9660;</button></div></div><div class="console-body" id="consoleBody"><div class="console-empty">控制台输出将显示在这里...</div></div></div>
 <div class="toast" id="toast"><span class="toast-icon" id="toastIcon">&#9989;</span><span id="toastMsg">操作成功</span></div>
 
 <script>const htmlEditor = document.getElementById('html-editor');
@@ -20,6 +20,14 @@ const stats = { html: document.getElementById('stats-html'), css: document.getEl
 let currentTab = 'html';
 let consoleCollapsed = false;
 let consoleHeight = 180;
+function debounce(fn, delay) {
+let timer = null;
+return function(...args) {
+clearTimeout(timer);
+timer = setTimeout(() => fn.apply(this, args), delay);
+};
+}
+const debouncedAutoSave = debounce(autoSave, 400);
 function init() {
 loadFromStorage();
 setupEditors();
@@ -55,12 +63,12 @@ editor.selectionStart = start;
 editor.selectionEnd = start + newSelected.length;
 }
 } else {
-editor.value = value.substring(0, start) + '    ' + value.substring(end);
-editor.selectionStart = editor.selectionEnd = start + 4;
+editor.value = value.substring(0, start) + '  ' + value.substring(end);
+editor.selectionStart = editor.selectionEnd = start + 2;
 }
 updateLineNumbers(editor);
 updateStats(editor);
-autoSave();
+debouncedAutoSave();
 }
 if ((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter') {
 ev.preventDefault();
@@ -70,7 +78,7 @@ runCode();
 editor.addEventListener('input', () => {
 updateLineNumbers(editor);
 updateStats(editor);
-autoSave();
+debouncedAutoSave();
 });
 editor.addEventListener('scroll', () => {
 const type = editor.id.replace('-editor', '');
@@ -126,6 +134,7 @@ preview.srcdoc = html + css + consoleCapture + '<script>' + js + '<\/script>';
 document.getElementById('statusText').textContent = '已更新 ' + new Date().toLocaleTimeString();
 }
 window.addEventListener('message', e => {
+if (e.source !== preview.contentWindow) return;
 if (e.data && e.data.type === 'console') {
 addConsoleLog(e.data.level, e.data.message);
 }
@@ -263,20 +272,32 @@ clearConsole();
 showToast('已清空所有代码', '&#128465;');
 }
 function openNewWindow() {
-const blob = new Blob([
-htmlEditor.value + '<style>' + cssEditor.value + '</style><script>' + jsEditor.value + '<\/script>'
-], { type: 'text/html' });
-window.open(URL.createObjectURL(blob), '_blank');
+const fullHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8">'
++ '<style>' + cssEditor.value + '</style></head><body>'
++ htmlEditor.value
++ '<script>' + jsEditor.value + '<\/script></body></html>';
+const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+const url = URL.createObjectURL(blob);
+window.open(url, '_blank');
+setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 function autoSave() {
+try {
 localStorage.setItem('cs_h', htmlEditor.value);
 localStorage.setItem('cs_c', cssEditor.value);
 localStorage.setItem('cs_j', jsEditor.value);
+} catch (e) {
+console.warn('自动保存失败（隐私模式或存储空间已满）：', e);
+}
 }
 function loadFromStorage() {
+try {
 htmlEditor.value = localStorage.getItem('cs_h') || '';
 cssEditor.value = localStorage.getItem('cs_c') || '';
 jsEditor.value = localStorage.getItem('cs_j') || '';
+} catch (e) {
+console.warn('读取本地存储失败：', e);
+}
 }
 function showToast(msg, icon) {
 const toast = document.getElementById('toast');

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="南极神">
 <meta name="description" content="极限玩家, 命令备忘单">
-<link rel="icon" href="./favicon.ico">
+<link rel="icon" href="../favicon.ico">
 <title>极限玩家命令备忘单</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap');
@@ -472,8 +472,12 @@ body::after {
 
 .desc-command {
   font-family: 'JetBrains Mono', monospace;
-  color: var(--accent);
+  color: var(--text);
   letter-spacing: 0;
+}
+
+.terminal-modal .desc-command {
+  color: var(--accent);
 }
 
 .toast {
@@ -674,8 +678,17 @@ updateClock();
 
 function toggleCat(header) {
   const cat = header.closest('.category');
-  cat.classList.toggle('collapsed');
-  header.setAttribute('aria-expanded', cat.classList.contains('collapsed') ? 'false' : 'true');
+  const wasCollapsed = cat.classList.contains('collapsed');
+
+  document.querySelectorAll('.category').forEach(function(c) {
+    c.classList.add('collapsed');
+    c.querySelector('.cat-header').setAttribute('aria-expanded', 'false');
+  });
+
+  if (wasCollapsed) {
+    cat.classList.remove('collapsed');
+    header.setAttribute('aria-expanded', 'true');
+  }
 }
 
 // Terminal-style detail modal
