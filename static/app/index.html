@@ -233,6 +233,15 @@ body::after{
 }
 .search-input-wrap:focus-within .search-key-hint,
 .search-input-wrap.has-value .search-key-hint{opacity:0}
+.search-clear-btn{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  width:24px;height:24px;display:none;align-items:center;justify-content:center;
+  background:transparent;border:none;color:var(--text-dim);cursor:pointer;
+  font-family:var(--font-mono);font-size:.9em;line-height:1;
+  transition:color .2s;
+}
+.search-clear-btn:hover{color:var(--magenta)}
+.search-input-wrap.has-value .search-clear-btn{display:flex}
 .help-btn{
   flex:0 0 auto;width:44px;
   display:flex;align-items:center;justify-content:center;
@@ -454,7 +463,7 @@ body::after{
      pixel value since search-box isn't a descendant of .navbar; JS keeps
      --mobile-nav-h in sync with the navbar's actual rendered height */
   .search-key-hint{display:none}
-  .search-box input{padding-right:14px}
+  .search-box input{padding-right:38px}
   .search-box{display:none}
   .search-box.mobile-open{
     display:block;position:fixed;top:var(--mobile-nav-h,56px);left:0;right:0;
@@ -491,6 +500,7 @@ body::after{
       <div class="search-input-wrap">
         <input type="text" id="searchInput" aria-label="搜索软件" placeholder="&gt; Search">
         <span class="search-key-hint" aria-hidden="true">/</span>
+        <button type="button" class="search-clear-btn" id="searchClearBtn" aria-label="清空搜索">✕</button>
       </div>
       <button type="button" class="help-btn" id="helpBtn" aria-label="使用说明">?</button>
     </div>
@@ -861,10 +871,32 @@ body::after{
     requestAnimationFrame(() => { updateActiveNav(); spyTicking = false; });
   }, { passive: true });
 
-  searchInput.addEventListener('input', () => {
-    searchInput.closest('.search-input-wrap').classList.toggle('has-value', searchInput.value.length > 0);
-    if (!state.data) return;
-    renderContent(state.data.categories, searchInput.value.trim());
+  // filtering to a short result list naturally clamps the page's scroll position
+  // near the top (there's not enough height left to stay scrolled down); clearing
+  // the search then leaves you stranded at the top instead of where you started.
+  // fix: remember the scroll position the moment a search begins, and restore it
+  // once the box is cleared back to empty.
+  let scrollBeforeSearch = null;
+  function handleSearchInput(){
+    const val = searchInput.value;
+    if (val && scrollBeforeSearch === null) {
+      scrollBeforeSearch = window.scrollY;
+    }
+    searchInput.closest('.search-input-wrap').classList.toggle('has-value', val.length > 0);
+    if (state.data) renderContent(state.data.categories, val.trim());
+    if (!val && scrollBeforeSearch !== null) {
+      const restoreY = scrollBeforeSearch;
+      scrollBeforeSearch = null;
+      requestAnimationFrame(() => window.scrollTo(0, restoreY));
+    }
+  }
+  searchInput.addEventListener('input', handleSearchInput);
+
+  const searchClearBtn = document.getElementById('searchClearBtn');
+  searchClearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    handleSearchInput();
+    searchInput.focus();
   });
 
   /* ---------------- boot ---------------- */

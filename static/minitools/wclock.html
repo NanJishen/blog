@@ -1,65 +1,495 @@
-<!DOCTYPE html><html lang="en"><head><title>周时钟</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Weekday Clock">
-<meta name="keywords" content="Weekday Clock">
-<meta name="author" content="极限玩家">
-<link rel="icon" href="../favicon.ico">
-<style>a{color:#fadcb0;text-decoration:none}body{background:#2a2411;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 20px;margin:0;color:#9b9384;box-sizing:border-box}h1{font-size:36px;margin-bottom:10px;text-align:center}.description{font-size:18px;text-align:center;max-width:600px;margin-bottom:40px;color:#aea087}.clock{width:min(400px,90vw);height:min(400px,90vw);max-width:400px;max-height:400px;background:radial-gradient(circle at center,#8b5e3c 0,#5c3a21 100%);border:12px solid #7e7567;border-radius:50%;position:relative;box-shadow:inset 0 0 20px #3e2a1a,0 8px 20px rgba(0,0,0,.6)}.center-dot{width:16px;height:16px;background:#222;border-radius:50%;position:absolute;top:50%;left:50.2%;transform:translate(-50%,-50%);z-index:5}.label{position:absolute;color:#fadcb0;font-size:14px;font-weight:700;text-shadow:2px 2px 3px #131313;transform:translate(-50%,-50%);pointer-events:none}.hand{position:absolute;width:6px;height:40%;background:#222;top:10%;left:50%;transform-origin:bottom center;transform:rotate(0);border-radius:3px;z-index:4;box-shadow:0 0 6px #000}.sector-line{position:absolute;width:2px;height:45%;background-color:#19191966;top:5%;left:50%;transform-origin:bottom center;z-index:1}section.seo{max-width:700px;margin-top:50px;padding-top:20px;border-top:1px solid #ccc;font-size:16px;line-height:1.6}footer{margin-top:40px;color:#7a6c5d}.clock-only-mode .description,.clock-only-mode footer,.clock-only-mode h1{display:none}.clock-only-mode{padding:20px}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多功能时钟</title>
+  <meta name="description" content="周时钟 + 番茄钟">
+  <style>
+    a { color: #fadcb0; text-decoration: none; }
+    body {
+      background: #2a2411;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 84px 20px 40px;
+      margin: 0;
+      color: #9b9384;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
 
-ul{list-style-type:none;padding:0;overflow:hidden;display:flex}li{display:block;color:#fadcb0;padding:10px;text-decoration:none}a:hover{color:#ffa72b}
-</style>
-</head><body>
-<h1>Weekday Clock</h1><p class="description">对于那些不再工作或上学的人来说，这个时钟以防止忘了工作日</p>
-<div class="clock">
-  <div class="hand" id="dayHand"></div>
-  <div class="center-dot"></div>
+    .description {
+      font-size: 18px;
+      text-align: center;
+      max-width: 600px;
+      margin-bottom: 40px;
+      color: #aea087;
+    }
+
+    /* 顶部导航：通栏 Bar，置于页面最顶部 */
+    .mode-switch {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;   /* 左/中/右三段均分 */
+      background: #211c10;
+      border-bottom: 1px solid #4a4030;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, .45);
+      padding: 0 12px;
+    }
+    .nav-left, .nav-center, .nav-more { display: flex; align-items: stretch; }
+
+    .mode-btn {
+      background: transparent;
+      color: #9b9384;
+      border: none;
+      border-bottom: 3px solid transparent;
+      padding: 14px 26px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+      margin-bottom: -1px;
+      white-space: nowrap;   /* 防止窄屏换行 */
+    }
+
+    @media (max-width: 480px) {
+      .mode-switch { padding: 0 4px; }
+      .mode-btn { padding: 12px 8px; font-size: 13px; }
+    }
+    a.mode-btn { text-decoration: none; display: inline-block; }
+    .mode-btn:hover { color: #fadcb0; }
+    .mode-btn.active { color: #ffa72b; border-bottom-color: #ffa72b; }
+
+    .clock {
+      width: min(400px, 90vw);
+      height: min(400px, 90vw);
+      background: radial-gradient(circle at center, #8b5e3c 0%, #5c3a21 100%);
+      border: 12px solid #7e7567;
+      border-radius: 50%;
+      position: relative;
+      box-shadow: inset 0 0 20px #3e2a1a, 0 8px 20px rgba(0, 0, 0, .6);
+      user-select: none;
+    }
+
+    .center-dot {
+      width: 16px; height: 16px;
+      background: #222; border-radius: 50%;
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    .label {
+      position: absolute;
+      color: #fadcb0;
+      font-size: 14px; font-weight: 700;
+      text-shadow: 2px 2px 3px #131313;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* ===== 指针（周时钟 / 番茄钟共用同款样式） ===== */
+    .hand {
+      position: absolute;
+      width: 6px; height: 40%;
+      background: #222;
+      top: 10%; left: 50%;
+      margin-left: -3px;
+      transform-origin: bottom center;
+      transform: rotate(0deg);
+      border-radius: 3px;
+      z-index: 4;
+      box-shadow: 0 0 6px #000;
+    }
+    .hand-timer { z-index: 5; display: none; }
+
+    /* 夜光钟画布，更多参考 github.com/KyleBing/animate-clock-canvas 不要删除这条注释 */
+    .night-canvas {
+      display: none;
+      width: min(800px, 90vw);
+      height: min(800px, 90vw);
+      background: #080808;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    /* 星期分区线 */
+    .sector-line {
+      position: absolute;
+      width: 2px; height: 45%;
+      background-color: #19191966;
+      top: 5%; left: 50%;
+      margin-left: -1px;
+      transform-origin: bottom center;
+      z-index: 1;
+    }
+
+
+    /* 数字时间：表盘外下方，样式与表盘标签一致 */
+    .time-display {
+      display: none;               /* 仅番茄钟模式显示 */
+      margin-top: 28px;
+      font-size: 30px; font-weight: 700;
+      color: #fadcb0; letter-spacing: 2px;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 2px 2px 3px #131313;   /* 与 .label 同款 */
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.2s;
+    }
+    .time-display:hover { color: #ffa72b; }   /* 悬停橘色 */
+
+
+
+    /* 导航右侧"更多"下拉 */
+    .nav-more { position: relative; }
+    .more-menu {
+      display: none;
+      position: absolute;
+      top: 100%; right: 0;
+      min-width: 150px;
+      flex-direction: column;
+      background: #211c10;
+      border: 1px solid #4a4030;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .5);
+      overflow: hidden;
+      z-index: 101;
+    }
+    .more-menu.show { display: flex; }
+    .more-menu a {
+      padding: 12px 22px;
+      font-size: 14px; font-weight: 600;
+      color: #9b9384;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .more-menu a:hover { background: #3a3222; color: #fadcb0; }
+    /* 夜光钟模式：只留时钟，纯黑背景，便于全屏 */
+    .night-mode {
+      background: #000;
+      justify-content: center;
+      min-height: 100vh;   /* 占满视口，垂直居中才有参照 */
+      padding: 20px;
+    }
+    .night-mode .mode-switch,
+    .night-mode .description { display: none !important; }
+
+    .clock-only-mode .description { display: none !important; }
+    .clock-only-mode { padding: 76px 20px 20px; }
+  </style>
+</head>
+<body>
+  <div class="mode-switch">
+    <div class="nav-left">
+      <a class="mode-btn" href="https://ttti.cc" target="_blank" rel="noopener">极限玩家</a>
+    </div>
+    <div class="nav-center">
+      <button class="mode-btn active" data-mode="weekday">周时钟</button>
+      <button class="mode-btn" data-mode="timer">番茄钟</button>
+      <button class="mode-btn" data-mode="night">夜光钟</button>
+    </div>
+    <div class="nav-more">
+      <button class="mode-btn" id="moreBtn" aria-haspopup="true" aria-expanded="false">更多 ▾</button>
+      <div class="more-menu" id="moreMenu">
+        <a href="https://datetime.app/zh-hans">世界时</a>
+        <a href="https://currenttimeutc.com">UTC 时间</a>
+        <a href="https://time.is">精确时钟</a>
+        <a href="http://makelifecount.vicco.wang">生命倒计时</a>
+      </div>
+    </div>
+  </div>
+
+  <p class="description" id="desc">对于那些不再工作或上学的人来说，这个时钟以防止忘了工作日</p>
+
+  <div class="clock" id="clock">
+    <div class="hand" id="weekdayHand"></div>
+    <div class="hand hand-timer" id="timerHand"></div>
+    <div class="center-dot"></div>
+  </div>
+
+  <div class="time-display" id="timeDisplay" role="button" tabindex="0" title="单击 开始/暂停 · 双击 重置">00:00</div>
+
+  <canvas class="night-canvas" id="nightCanvas" width="800" height="800"></canvas>
+
+
   <script>
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const clock = document.querySelector(".clock");
-    const sectorAngle = 360 / 7;
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('clockonly')) {
-      document.body.classList.add('clock-only-mode');
-    }
-    for (let i = 0; i < 7; i++) {
-      const baseAngle = sectorAngle * i;
-      const sector = document.createElement("div");
-      sector.className = "sector-line";
-      sector.style.transform = `rotate(${baseAngle}deg)`;
-      clock.appendChild(sector);
-      const label = document.createElement("div");
-      label.className = "label";
-      const midAngle = baseAngle + sectorAngle / 2;
-      const radius = 35;
-      const rad = (midAngle - 90) * Math.PI / 180;
-      const x = 50 + radius * Math.cos(rad);
-      const y = 50 + radius * Math.sin(rad);
-      label.style.left = `${x}%`;
-      label.style.top = `${y}%`;
-      label.textContent = days[i];
-      clock.appendChild(label);
-    }
-    function updatePointer() {
-      const now = new Date();
-      const day = now.getDay();
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-      const dayProgress = (hours * 3600 + minutes * 60 + seconds) / (24 * 3600);
-      const sectorStart = (360 / 7) * day;
-      const sectorWidth = 360 / 7;
-      const angle = sectorStart + (sectorWidth * dayProgress);
-      document.getElementById("dayHand").style.transform = `rotate(${angle}deg)`;
-    }
-    updatePointer();
-    setInterval(updatePointer, 1000);
+    (function () {
+      "use strict";
+      const $ = (id) => document.getElementById(id);
+      const clock = $("clock");
+      const weekdayHand = $("weekdayHand");
+      const timerHand = $("timerHand");
+      const desc = $("desc");
+      const timeDisplay = $("timeDisplay");
+      const nightCanvas = $("nightCanvas");
+      const nctx = nightCanvas.getContext("2d");
+      const modeBtns = document.querySelectorAll("button.mode-btn[data-mode]");
+
+      if (new URLSearchParams(location.search).has("clockonly")) {
+        document.body.classList.add("clock-only-mode");
+      }
+
+      /* ============ 通用 ============ */
+      function clearDial() {
+        clock.querySelectorAll(".sector-line, .label").forEach((el) => el.remove());
+      }
+
+      function placeLabel(text, angleDeg, radiusPct) {
+        const label = document.createElement("div");
+        label.className = "label";
+        label.textContent = text;
+        const rad = (angleDeg - 90) * Math.PI / 180;
+        label.style.left = (50 + radiusPct * Math.cos(rad)) + "%";
+        label.style.top = (50 + radiusPct * Math.sin(rad)) + "%";
+        clock.appendChild(label);
+      }
+
+      /* ============ 星期时钟 ============ */
+      const DAYS = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+      const SECTOR = 360 / 7;
+      let weekdayTimer = null;
+
+      function buildWeekdayDial() {
+        clearDial();
+        for (let i = 0; i < 7; i++) {
+          const line = document.createElement("div");
+          line.className = "sector-line";
+          line.style.transform = `rotate(${SECTOR * i}deg)`;
+          clock.appendChild(line);
+          placeLabel(DAYS[i], SECTOR * i + SECTOR / 2, 32);
+        }
+      }
+
+      function updateWeekdayHand() {
+        const now = new Date();
+        const dayProgress = (now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds()) / 86400;
+        const angle = SECTOR * now.getDay() + SECTOR * dayProgress;
+        weekdayHand.style.transform = `rotate(${angle}deg)`;
+      }
+
+      function startWeekday() {
+        weekdayHand.style.display = "block";
+        timerHand.style.display = "none";
+        buildWeekdayDial();
+        updateWeekdayHand();
+        weekdayTimer = setInterval(updateWeekdayHand, 1000);
+      }
+
+      function stopWeekday() {
+        if (weekdayTimer) { clearInterval(weekdayTimer); weekdayTimer = null; }
+      }
+
+      /* ============ 夜光钟 ============ */
+      const NR = 250;
+      let nightTimer = null;
+
+      function drawHand(theta, len, halfW, color) {
+        nctx.save();
+        nctx.rotate(theta);
+        nctx.beginPath();
+        nctx.moveTo(-15, -halfW);
+        nctx.lineTo(-15, halfW);
+        nctx.lineTo(len, 1);
+        nctx.lineTo(len, -1);
+        nctx.fillStyle = color;
+        nctx.fill();
+        nctx.restore();
+      }
+
+      function drawNight() {
+        const w = nightCanvas.width;
+        nctx.clearRect(0, 0, w, w);
+        const now = new Date();
+        const h = now.getHours() % 12;   // 原版 hours>0? 判断在 0 点会回退成当前时间，这里直接取模修正
+        const m = now.getMinutes();
+        const s = now.getSeconds();
+
+        nctx.save();
+        nctx.translate(w / 2, w / 2);
+
+        // 1-12 数字（橙）
+        nctx.font = "36px Arial";
+        nctx.textAlign = "center";
+        nctx.textBaseline = "middle";
+        nctx.fillStyle = "#FFA500";
+        for (let n = 1; n <= 12; n++) {
+          const th = (n - 3) * Math.PI / 6;
+          nctx.fillText(n, NR * Math.cos(th), NR * Math.sin(th));
+        }
+
+        // 外圈 1-60 分钟数字（绿）
+        nctx.fillStyle = "#0f0";
+        nctx.font = "20px sans-serif";
+        for (let n = 1; n <= 60; n++) {
+          const th = (n - 15) * Math.PI / 30;
+          nctx.fillText(n, NR * 1.4 * Math.cos(th), NR * 1.4 * Math.sin(th));
+        }
+
+        // 三根指针：时针橙 / 分针绿 / 秒针黄
+        drawHand((h + m / 60 - 3) * Math.PI / 6, NR * 0.5, 5, "#FFA500");
+        drawHand((m - 15) * Math.PI / 30, NR * 0.7, 4, "#0f0");
+        drawHand((s - 15) * Math.PI / 30, NR * 0.9, 3, "#ff0");
+
+        nctx.restore();
+      }
+
+      function startNight() {
+        drawNight();
+        nightTimer = setInterval(drawNight, 1000);
+      }
+
+      function stopNight() {
+        if (nightTimer) { clearInterval(nightTimer); nightTimer = null; }
+      }
+
+      /* ============ 番茄钟 ============ */
+      let remainingSeconds = 0;
+      let timerInterval = null;
+      let isRunning = false;
+
+      function buildTimerDial() {
+        clearDial();
+        for (let m = 0; m < 60; m += 5) {
+          placeLabel(m, m * 6, 36);
+        }
+      }
+
+      function updateTimerHand() {
+        // 0 分指向 12 点方向，顺时针转动；写法与星期指针一致
+        const angle = (remainingSeconds / 60) * 6;
+        timerHand.style.transform = `rotate(${angle}deg)`;
+      }
+
+      function formatTime(sec) {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+      }
+
+      function updateDisplay() {
+        timeDisplay.textContent = formatTime(remainingSeconds);
+        updateTimerHand();
+      }
+
+      function setSeconds(sec) {
+        remainingSeconds = Math.max(0, Math.min(3600, Math.round(sec)));
+        updateDisplay();
+      }
+
+      function startTimer() {
+        if (remainingSeconds <= 0 || isRunning) return;
+        isRunning = true;
+        const endAt = Date.now() + remainingSeconds * 1000; // 用时间戳，避免 setInterval 漂移
+        timerInterval = setInterval(() => {
+          remainingSeconds = Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
+          updateDisplay();
+          if (remainingSeconds <= 0) {
+            stopTimer();
+            alert("⏰ 时间到！\n倒计时结束。");
+          }
+        }, 250);
+      }
+
+      function stopTimer() {
+        isRunning = false;
+        if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+        updateDisplay();   // 刷新按钮：变回"开始"
+      }
+
+      function resetTimer() {
+        stopTimer();
+        setSeconds(0);
+      }
+
+      function onWheel(e) {
+        if (currentMode !== "timer" || isRunning) return;
+        e.preventDefault();
+        // 向上滚加 30 秒，向下滚减 30 秒
+        setSeconds(remainingSeconds + (e.deltaY < 0 ? 60 : -60));
+      }
+
+      /* ============ 模式切换 ============ */
+      let currentMode = "weekday";
+      let modeBeforeNight = "weekday";   // ESC 从夜光钟返回的目标模式
+
+      function switchMode(mode) {
+        if (mode === currentMode) return;
+        if (mode === "night") modeBeforeNight = currentMode;   // 必须在改写前记录来源
+        currentMode = mode;
+
+        modeBtns.forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.mode === mode);
+        });
+
+        stopWeekday();
+        stopTimer();
+        stopNight();
+
+        // 夜光钟模式隐藏原表盘，其余模式隐藏画布
+        const isNight = mode === "night";
+        clock.style.display = isNight ? "none" : "block";
+        nightCanvas.style.display = isNight ? "block" : "none";
+        document.body.classList.toggle("night-mode", isNight);   // 纯黑全屏样式
+        timeDisplay.style.display = mode === "timer" ? "block" : "none";
+
+        if (mode === "weekday") {
+          desc.textContent = "对于那些不再工作或上学的人来说，这个时钟以防止忘了工作日";
+          startWeekday();
+        } else if (mode === "timer") {
+          desc.textContent = "滚动鼠标滚轮以分钟为单位调整时间";
+          weekdayHand.style.display = "none";
+          timerHand.style.display = "block";
+          buildTimerDial();
+          setSeconds(0);
+        } else {
+          desc.textContent = "黑底夜光指针时钟 · 外圈为分钟刻度";
+          startNight();
+        }
+      }
+
+      modeBtns.forEach((btn) => btn.addEventListener("click", () => switchMode(btn.dataset.mode)));
+
+      // "更多"下拉：点击展开/收起，点外部或选项后关闭
+      const moreBtn = $("moreBtn");
+      const moreMenu = $("moreMenu");
+      moreBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = moreMenu.classList.toggle("show");
+        moreBtn.setAttribute("aria-expanded", open);
+      });
+      moreMenu.addEventListener("click", (e) => {
+        e.stopPropagation();
+        moreMenu.classList.remove("show");
+      });
+      document.addEventListener("click", () => moreMenu.classList.remove("show"));
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && currentMode === "night") {
+          switchMode(modeBeforeNight);
+        }
+      });
+      // 单击时间：开始/暂停；双击：重置（250ms 延时区分，避免双击误触发两次单击）
+      let clickTimer = null;
+      timeDisplay.addEventListener("click", () => {
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { if (isRunning) stopTimer(); else startTimer(); }, 250);
+      });
+      timeDisplay.addEventListener("dblclick", () => {
+        clearTimeout(clickTimer);
+        resetTimer();
+      });
+      clock.addEventListener("wheel", onWheel, { passive: false });
+
+      drawNight();   // 预热一帧，切到夜光钟时无闪烁
+      startWeekday();
+    })();
   </script>
-</div>
-<p></p><ul>
-<li><a href="https://currenttimeutc.com">UTC 时间</a></li>
-<li><a href="https://time.is">精确时钟</a></li>
-<li><a href="http://makelifecount.vicco.wang">生命倒计时</a></li>
-</ul>
-<footer><a href="https://ttti.cc" target="_blank">极限玩家</a></footer>
-</body></html>
+</body>
+</html>

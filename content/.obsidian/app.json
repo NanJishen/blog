@@ -1,6 +1,11 @@
 {
   "livePreview": true,
   "showInlineTitle": false,
-  "propertiesInDocument": "source",
-  "openBehavior": "file:posts/_Drafts"
+  "propertiesInDocument": "visible",
+  "openBehavior": "file:posts/_Drafts",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "posts",
+  "useMarkdownLinks": true,
+  "strictLineBreaks": false,
+  "trashOption": "local"
 }

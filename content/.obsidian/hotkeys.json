@@ -41,5 +41,21 @@
       ],
       "key": "]"
     }
+  ],
+  "editor:table-row-up": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "ArrowUp"
+    }
+  ],
+  "editor:table-row-down": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "ArrowDown"
+    }
   ]
 }

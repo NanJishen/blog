@@ -626,9 +626,9 @@ function render() {
       const card = document.createElement('div');
       card.className = 'cmd-card' + (cmd.placeholder ? ' placeholder' : '');
       card.dataset.cmd = cat.id + '_' + i;
-      card.dataset.desc = cmd.desc || '';
+      card.dataset.more = cmd.more || '';
       card.innerHTML = `
-        <div class="cmd-name" tabindex="0" role="button">${escapeHtml(cmd.name)}</div>
+        <div class="cmd-name" tabindex="0" role="button">${escapeHtml(cmd.desc)}</div>
         <div class="cmd-code">${escapeHtml(cmd.code)}</div>
         <span class="copy-btn">COPY</span>
       `;
@@ -640,12 +640,12 @@ function render() {
       const nameEl = card.querySelector('.cmd-name');
       nameEl.addEventListener('click', function(e) {
         e.stopPropagation();
-        openTerminalModal(cmd.name, cmd.desc, cat.color);
+        openTerminalModal(cmd.desc, cmd.more, cat.color);
       });
       nameEl.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          openTerminalModal(cmd.name, cmd.desc, cat.color);
+          openTerminalModal(cmd.desc, cmd.more, cat.color);
         }
       });
       grid.appendChild(card);
@@ -793,7 +793,7 @@ document.getElementById('search').addEventListener('input', function() {
     cat.querySelectorAll('.cmd-card').forEach(card => {
       const text = (card.querySelector('.cmd-name').textContent + ' ' +
                     card.querySelector('.cmd-code').textContent + ' ' +
-                    (card.dataset.desc || '')).toLowerCase();
+                    (card.dataset.more || '')).toLowerCase();
       const isMatch = text.includes(q);
       card.style.display = isMatch ? 'flex' : 'none';
       if (isMatch) visibleInCat++;

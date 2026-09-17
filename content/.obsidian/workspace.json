@@ -4,22 +4,22 @@
     "type": "split",
     "children": [
       {
-        "id": "bcd6fa0db0a757ed",
+        "id": "106a772f9bdfa3cf",
         "type": "tabs",
         "children": [
           {
-            "id": "b7ddcb8383a55ff2",
+            "id": "c176188914aba886",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "posts/windows-opt.md",
+                "file": "posts/aria2.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "windows-opt"
+              "title": "aria2"
             }
           }
         ]
@@ -112,7 +112,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "posts/windows-opt.md",
+                "file": "posts/aria2.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -137,15 +137,21 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "b7ddcb8383a55ff2",
+  "active": "c176188914aba886",
   "lastOpenFiles": [
-    "posts/ffmpeg.md",
+    "posts/aria2.md",
+    "posts/ventoy.md",
     "posts/chrome.md",
-    "posts/googlesearch.md",
+    "posts/askquestion .md",
+    "_Template/posts.md",
     "posts/_Drafts.md",
+    "未命名.md",
+    "_Template",
+    "posts/windows-opt.md",
+    "posts/ffmpeg.md",
+    "posts/googlesearch.md",
     "about.md",
     "posts/windows-run-shortcut.md",
-    "posts/windows-opt.md",
     "posts/windows-setup.md",
     "posts/youtubecouts.md",
     "posts/wfr.md",
@@ -155,16 +161,11 @@
     "posts/dokuwiki.md",
     "posts/mpv.md",
     "posts/ytdlp.md",
-    "posts/askquestion .md",
     "posts/ji-xiao-kuozan-xiaolv.md",
     "posts/Infoverload.md",
     "posts/godzilla-vs-kong.md",
     "posts/youtubedl.md",
-    "posts/ventoy.md",
     "posts/qnap-docker-transmission.md",
-    "posts/search-read-ask.md",
-    "posts/qnap-Jellyfin-nyanmisaka.md",
-    "posts/qnap-docker-aria.md",
     "_Template"
   ]
 }

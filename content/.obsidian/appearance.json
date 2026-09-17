@@ -2,8 +2,8 @@
   "accentColor": "",
   "theme": "obsidian",
   "interfaceFontFamily": "微软雅黑",
-  "textFontFamily": "微软雅黑",
+  "textFontFamily": "Maple Mono NF CN",
   "baseFontSize": 18,
-  "monospaceFontFamily": "等距更纱黑体 SC",
+  "monospaceFontFamily": "Maple Mono NF CN",
   "showRibbon": false
 }

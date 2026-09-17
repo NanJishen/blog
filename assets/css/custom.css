@@ -1,0 +1,13 @@
+/* 普通透明卡片（无毛玻璃模糊） */
+.article-link--card {
+  background-color: rgba(var(--color-neutral-50), 0.30) !important;
+  border-color: rgba(var(--color-neutral-300), 0.35) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 暗色模式 */
+.dark .article-link--card {
+  background-color: rgba(var(--color-neutral-800), 0.2) !important;
+  border-color: rgba(var(--color-neutral-600), 0.4) !important;
+}

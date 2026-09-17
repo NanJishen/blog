@@ -30,13 +30,31 @@ html::-webkit-scrollbar{width:9px}
 html::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:8px}
 body{
   margin:0;
-  background:
-    radial-gradient(1200px 600px at 12% -10%, rgba(232,180,90,.06), transparent 60%),
-    radial-gradient(900px 500px at 100% 0%, rgba(232,180,90,.04), transparent 55%),
-    var(--bg);
+  background:var(--bg);
   color:var(--text);
   font-family:var(--sans);
   -webkit-font-smoothing:antialiased;
+}
+#ambient{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100vh;
+  height:100dvh;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    radial-gradient(1200px 600px at 12% -10%, rgba(232,180,90,.05), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(232,180,90,.035), transparent 55%);
+}
+#starfield{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100vh;
+  height:100dvh;
+  z-index:-1;
+  pointer-events:none;
 }
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer}
@@ -156,9 +174,13 @@ button{font-family:inherit;cursor:pointer}
   border-bottom:1px dashed var(--border);
 }
 .module__title{
-  margin:0;font-family:var(--mono);font-size:12.5px;
-  text-transform:uppercase;letter-spacing:.09em;color:var(--accent);
-  font-weight:600;
+  margin:0;display:flex;align-items:center;
+  color:var(--accent);
+}
+.module__title svg{
+  width:16px;height:16px;
+  fill:none;stroke:currentColor;
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
 }
 
 .links{display:grid;grid-template-columns:repeat(auto-fill, minmax(96px, 1fr));gap:6px}
@@ -196,7 +218,7 @@ button{font-family:inherit;cursor:pointer}
   padding:6px 9px;border-radius:7px;font-size:12.5px;
   color:var(--text);white-space:nowrap;
 }
-.flyout a:hover{background:var(--accent-glow);color:var(--accent-2)}
+.flyout a:hover{background:none;color:var(--accent)}
 .chip{
   display:flex;align-items:center;width:100%;min-width:0;margin:0;
   padding:5px 10px;border-radius:8px;
@@ -205,15 +227,14 @@ button{font-family:inherit;cursor:pointer}
   overflow:hidden;text-overflow:ellipsis;
   border:1px solid transparent;
   justify-content:flex-start;text-align:left;
-  transition:background .15s, color .15s, border-color .15s, transform .15s;
+  transition:background .15s, color .15s, border-color .15s;
 }
 .chip-group > .chip{
   flex:1;
   border-radius:8px;
   width:auto;
 }
-.chip:hover{background:var(--accent);color:#1a1204;border-color:var(--accent-2);transform:translateY(-1px)}
-.chip-group > .chip:hover{transform:none}
+.chip:hover{background:var(--surface-hover);color:var(--accent)}
 .chip-toggle{
   display:none;
   align-items:center;justify-content:center;
@@ -226,18 +247,11 @@ button{font-family:inherit;cursor:pointer}
 }
 .chip-toggle:hover,
 .chip-group.is-open .chip-toggle{
-  background:var(--accent);color:#1a1204;border-color:var(--accent-2);
+  background:var(--surface-hover);color:var(--accent);
 }
 .chip-group:hover > .chip,
 .chip-group:hover > .chip-toggle{
-  background:var(--accent);color:#1a1204;border-color:var(--accent-2);
-}
-.chip-group:hover > .chip-toggle{
-  border-left-color:rgba(26,18,4,.25);
-  color:#1a1204;
-}
-.chip-group:hover{
-  transform:translateY(-1px);
+  background:var(--surface-hover);color:var(--accent);
 }
 /* 仅移动端 / 触控设备显示展开箭头 */
 @media (hover: none), (pointer: coarse){
@@ -245,21 +259,99 @@ button{font-family:inherit;cursor:pointer}
   .chip-group > .chip{border-radius:8px 0 0 8px}
 }
 
+/* ---------- mini calendar ---------- */
+.mini-cal{font-family:var(--mono)}
+.mini-cal__head{
+  display:grid;
+  grid-template-columns:repeat(7, 1fr);
+  gap:3px;
+  align-items:center;
+  margin-bottom:9px;
+}
+.mini-cal__title{
+  grid-column:1 / 2;
+  justify-self:start;
+  white-space:nowrap;
+  margin-left:2ch;
+  font-size:11.5px;letter-spacing:.08em;color:var(--accent);
+}
+.mini-cal__time{
+  grid-column:7 / 8;
+  justify-self:end;
+  white-space:nowrap;
+  margin-right:2ch;
+  font-size:11.5px;letter-spacing:.08em;color:var(--accent);
+  font-variant-numeric:tabular-nums;
+  transition:color .15s;
+}
+.mini-cal__grid{
+  display:grid;grid-template-columns:repeat(7, 1fr);
+  gap:3px;
+}
+.mini-cal__grid span,
+.mini-cal__grid a{
+  display:flex;align-items:center;justify-content:center;
+  aspect-ratio:1/1;
+  font-size:14px;
+  color:var(--text);
+}
+.mini-cal__grid span.dow{
+  font-size:12px;
+  color:var(--accent);
+  font-weight:600;
+}
+.mini-cal__grid span.other-month{
+  color:var(--text-dim);opacity:.4;
+}
+.mini-cal__grid .today{
+  color:var(--accent);font-weight:700;
+}
+
+/* ---------- mini calculator ---------- */
+.mini-calc{
+  height:100%;
+  display:flex;flex-direction:column;gap:9px;
+  font-family:var(--mono);
+}
+.mini-calc__display{
+  flex:none;
+  background:var(--bg-alt);
+  border-radius:10px;
+  padding:10px 12px;
+  text-align:right;
+  font-size:20px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.mini-calc__pad{
+  flex:1;
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  grid-template-rows:repeat(5, 1fr);
+  gap:6px;
+}
+.calc-btn{
+  display:flex;align-items:center;justify-content:center;
+  height:100%;width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid transparent;
+  background:none;
+  color:var(--text);
+  font-family:var(--mono);
+  font-size:15px;
+  transition:background .15s, color .15s, border-color .15s;
+}
+.calc-btn:hover{background:var(--accent-glow);color:var(--accent-2);border-color:var(--border)}
+.calc-btn--op{color:var(--accent)}
+
 /* ---------- scratchpad ---------- */
-.scratch{
-  max-width:var(--page-max);margin:0 auto;padding:0 clamp(14px,3vw,40px) 76px;
-}
-.scratch__card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);padding:16px;
-}
+.scratch-inline{display:flex;flex-direction:column;height:100%}
 .textinput{
-  width:100%;min-height:150px;resize:vertical;
-  background:var(--bg-alt);border:1px solid var(--border);
+  width:100%;flex:1;min-height:150px;resize:vertical;
+  background:var(--bg-alt);border:none;
   border-radius:10px;padding:10px 12px;color:var(--text-bright);
   font-family:var(--mono);font-size:13px;outline:none;
 }
-.textinput:focus{border-color:var(--border-strong)}
 .clip{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .clip button{
   padding:6px 12px;border-radius:8px;background:var(--surface-hover);
@@ -306,7 +398,7 @@ button{font-family:inherit;cursor:pointer}
   width:max-content;max-width:220px;
 }
 .dock-flyout a{padding:6px 9px;border-radius:7px;font-size:12.5px;color:var(--text);white-space:nowrap}
-.dock-flyout a:hover{background:var(--accent-glow);color:var(--accent-2)}
+.dock-flyout a:hover{background:none;color:var(--accent)}
 
 /* ---------- drawer (navhide) ---------- */
 #navhide{
@@ -328,20 +420,29 @@ button{font-family:inherit;cursor:pointer}
   font-family:var(--mono);font-size:11px;letter-spacing:.12em;
   color:var(--accent);text-transform:uppercase;margin:0 0 8px;
 }
-.drawer-chips{display:flex;flex-wrap:wrap;gap:6px}
+.drawer-chips{display:grid;grid-template-columns:repeat(8, minmax(0,1fr));gap:6px}
 .drawer-chips a{
-  padding:5px 10px;border-radius:8px;background:var(--surface-hover);
+  display:flex;align-items:center;justify-content:center;
+  padding:5px 8px;border-radius:8px;background:var(--surface-hover);
   font-size:12.5px;color:var(--text);border:1px solid transparent;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  text-align:center;
 }
-.drawer-chips a:hover{background:var(--accent);color:#1a1204}
+.drawer-chips a:hover{background:none;color:var(--accent)}
 
+@media (max-width:900px){
+  .drawer-chips{grid-template-columns:repeat(5, minmax(0,1fr))}
+}
 @media (max-width:700px){
-  .board{grid-template-columns:1fr;padding-bottom:24px}
+  .board{grid-template-columns:1fr;padding-bottom:88px}
   .dock-item>a,.dock-item>button{width:34px;height:34px}
+  .drawer-chips{grid-template-columns:repeat(3, minmax(0,1fr))}
 }
 </style>
 </head>
 <body id="top">
+<div id="ambient" aria-hidden="true"></div>
+<canvas id="starfield" aria-hidden="true"></canvas>
 
 <header class="topbar">
   <div class="topbar__inner">
@@ -353,6 +454,7 @@ button{font-family:inherit;cursor:pointer}
           <button type="button" data-engine="google">谷歌</button>
           <button type="button" data-engine="bing">必应</button>
           <button type="button" data-engine="duckduckgo">鸭搜</button>
+          <button type="button" data-engine="bilibili">哔哩</button>
           <button type="button" data-engine="wikipedia">维基</button>
           <button type="button" data-engine="douban">豆瓣</button>
           <button type="button" data-engine="zhihu">知乎</button>
@@ -369,25 +471,22 @@ button{font-family:inherit;cursor:pointer}
 
 <section class="module">
   <header class="module__head">
-    <h2 class="module__title">Home</h2>
+    <h2 class="module__title" aria-label="Home"><svg viewBox="0 0 24 24"><path d="M4 11.5L12 4l8 7.5"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-5h4v5h3a1 1 0 0 0 1-1v-9"/></svg></h2>
   </header>
   <div class="links">
 <a class="chip" href="https://ttti.cc">Home</a>
 <a class="chip" href="./nav/index.html">Nav</a>
 <a class="chip" href="./app/index.html">App</a>
 <a class="chip" href="./cmd/index.html">Cheat</a>
-<span class="chip-group"><a class="chip" href="minitools/todolist.html">Thought</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
-<a href="minitools/stitching.html">截图拼接</a>
-<a href="minitools/stickynote.html">浮动看板</a>
-<a href="https://coder.aaxyz.de:55">编辑代码</a>
-<a href="minitools/testcode.html">测试前端</a></span></span></span>
 <a class="chip" href="http://nannas/test/">Prompt</a>
+<span class="chip-group"><a class="chip" href="minitools/todolist.html">Thought</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<a href="minitools/stickynote.html">浮动看板</a></span></span></span>
   </div>
 </section>
 
 <section class="module">
   <header class="module__head">
-    <h2 class="module__title">Homelab</h2>
+    <h2 class="module__title" aria-label="Homelab"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg></h2>
   </header>
   <div class="links">
 <span class="chip-group"><a class="chip" href="http://192.168.10.1:8123">HASS</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner"><a href="https://192.168.10.1:9443">Portainer</a>
@@ -406,37 +505,37 @@ button{font-family:inherit;cursor:pointer}
 <a href="http://192.168.10.111:8989">Sonarr</a>
 <a href="http://192.168.10.111:9696">Prowlarr</a>
 <a href="http://192.168.10.111:8384">Syncthing</a></span></span></span>
-  </div>
-</section>
-
-<section class="module">
-  <header class="module__head">
-    <h2 class="module__title">Life</h2>
-  </header>
-  <div class="links">
 <span class="chip-group"><a class="chip" href="http://frss.aaxyz.de:56">FreshRSS</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
 <a href="http://linkd.aaxyz.de:56/bookmarks/new">Linkding</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.youtube.com/playlist?list=WL">YouTube</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner"><a href="https://x.com">X</a>
-<a href="https://www.tiktok.com">TikTok</a>
-<a href="https://mastodon.social">Mastodon</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://member.bilibili.com/platform/upload-manager">Bilibili</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner"><a href="https://mp.weixin.qq.com">公众号</a>
-<a href="https://weibo.com/nanjishen/home">微博</a>
-<a href="https://channels.weixin.qq.com">视频号</a>
-<a href="https://douyin.com">抖音</a>
-<a href="https://xiaohongshu.com">小红书</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.taobao.com">淘宝</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<span class="chip-group"><a class="chip" href="https://www.taobao.com">Shopping</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<a href="https://www.jd.com">京东</a>
+<a href="https://www.smzdm.com">值得买</a>
 <a href="https://www.goofish.com">闲鱼</a>
 <a href="https://www.amazon.com">美亚</a>
 <a href="https://www.paypal.com">PayPal</a>
 </span></span></span>
-<a class="chip" href="https://www.jd.com">京东</a>
-<a class="chip" href="https://www.smzdm.com">值得买</a>
   </div>
 </section>
 
 <section class="module">
   <header class="module__head">
-    <h2 class="module__title">AI</h2>
+    <h2 class="module__title" aria-label="Knowledge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.5 4 5.8 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.8-4-9s1.5-6.5 4-9z"/></svg></h2>
+  </header>
+  <div class="links">
+<span class="chip-group"><a class="chip" href="https://www.youtube.com/playlist?list=WL">YouTube</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner"><a href="https://x.com">X</a>
+<a href="https://www.tiktok.com">TikTok</a>
+<a href="https://mastodon.social">Mastodon</a></span></span></span>
+<span class="chip-group">
+<a class="chip" href="https://github.com/NanJishen">GitHub</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<a href="https://github.com/nassets">Nassets</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://dash.cloudflare.com">Cloudflare</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<a class="chip" href="https://www.freehostia.com">Freehostia</a></span></span></span>
+  </div>
+</section>
+
+<section class="module">
+  <header class="module__head">
+    <h2 class="module__title" aria-label="AI"><svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1" fill="currentColor" stroke="none"/><path d="M12 5.5v2"/><rect x="5" y="8" width="14" height="11" rx="3"/><circle cx="9.5" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17h6"/></svg></h2>
   </header>
   <div class="links">
 <a class="chip" href="https://chatgpt.com">ChatGPT</a>
@@ -467,15 +566,15 @@ button{font-family:inherit;cursor:pointer}
 
 <section class="module">
   <header class="module__head">
-    <h2 class="module__title">AI2</h2>
+    <h2 class="module__title" aria-label="AI2"><svg viewBox="0 0 24 24"><circle cx="9" cy="4.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="4.5" r="1" fill="currentColor" stroke="none"/><path d="M9 5.5v2M15 5.5v2"/><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M9 13.5h2M13 13.5h2"/><path d="M9 17h6"/></svg></h2>
   </header>
   <div class="links">
 <a class="chip" href="https://chat.deepseek.com">Deepseek</a>
 <a class="chip" href="https://www.kimi.com">Kimi</a>
-<a class="chip" href="https://www.doubao.com">豆包</a>
-<a class="chip" href="https://yiyan.baidu.com">文心</a>
-<a class="chip" href="https://chat.qwen.ai">千问</a>
-<span class="chip-group"><a class="chip" href="https://chat.z.ai">智谱</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<a class="chip" href="https://www.doubao.com">Doubao</a>
+<a class="chip" href="https://yiyan.baidu.com">Wenxin</a>
+<a class="chip" href="https://chat.qwen.ai">Qwen</a>
+<span class="chip-group"><a class="chip" href="https://chat.z.ai">Z.AI</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
 <a href="https://yuanbao.tencent.com">元宝</a>
 <a href="https://www.qianwen.com">阿里</a>
 <a href="https://www.volcengine.com">火山</a>
@@ -486,7 +585,7 @@ button{font-family:inherit;cursor:pointer}
 
 <section class="module">
   <header class="module__head">
-    <h2 class="module__title">Tools</h2>
+    <h2 class="module__title" aria-label="Tools"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.7-2.7z"/></svg></h2>
   </header>
   <div class="links">
 
@@ -518,69 +617,62 @@ button{font-family:inherit;cursor:pointer}
 </section>
 
 <section class="module">
-  <header class="module__head">
-    <h2 class="module__title">Dev</h2>
-  </header>
-  <div class="links">
-<span class="chip-group">
-<a class="chip" href="https://github.com/NanJishen">GitHub</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
-<a href="https://github.com/nassets">Nassets</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://dash.cloudflare.com">Cloudflare</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
-<a class="chip" href="https://www.freehostia.com">Freehostia</a></span></span></span>
-  </div>
-</section>
-
-<section class="module">
-  <header class="module__head">
-    <h2 class="module__title">Other</h2>
-  </header>
-  <div class="links">
-
-  </div>
-</section>
-
-<section class="module">
-  <header class="module__head">
-    <h2 class="module__title">Other1</h2>
-  </header>
-  <div class="links">
-
-  </div>
-</section>
-
-</main>
-<section class="scratch">
-  <div class="scratch__card">
+  <div class="scratch-inline">
     <textarea class="textinput" id="bar" placeholder=">_"></textarea>
     <div class="clip">
       <button onclick="document.getElementById('bar').select();document.execCommand('cut')">剪切</button>
       <button id="translateBtn" onclick="translateText()">翻译</button>
-      <button onclick="location.href='minitools/notepad.html'">记事本</button>
       <button onclick="location.href='minitools/textedit.html'">便笺</button>
-      <button onclick="location.href='https://xyz.556660.xyz/nanji'">传输文字</button>
-      <button onclick="copyText('东西不错，是我想要的，快递服务态度也不错，如果还有需要会再次光临的')">淘宝评价</button>
+      <button onclick="location.href='https://xyz.556660.xyz/nanji'">传输</button>
+      <button onclick="copyText('东西不错，是我想要的，快递服务态度也不错，如果还有需要会再次光临的')">淘评</button>
     </div>
   </div>
 </section>
 
+<section class="module">
+  <div class="mini-calc" id="miniCalc">
+    <div class="mini-calc__display" id="calcDisplay">0</div>
+    <div class="mini-calc__pad" id="calcPad">
+      <button type="button" class="calc-btn calc-btn--op" data-action="clear">C</button>
+      <button type="button" class="calc-btn calc-btn--op" data-action="sign">±</button>
+      <button type="button" class="calc-btn calc-btn--op" data-action="percent">%</button>
+      <button type="button" class="calc-btn calc-btn--op" data-value="/">÷</button>
+      <button type="button" class="calc-btn" data-value="7">7</button>
+      <button type="button" class="calc-btn" data-value="8">8</button>
+      <button type="button" class="calc-btn" data-value="9">9</button>
+      <button type="button" class="calc-btn calc-btn--op" data-value="*">×</button>
+      <button type="button" class="calc-btn" data-value="4">4</button>
+      <button type="button" class="calc-btn" data-value="5">5</button>
+      <button type="button" class="calc-btn" data-value="6">6</button>
+      <button type="button" class="calc-btn calc-btn--op" data-value="-">−</button>
+      <button type="button" class="calc-btn" data-value="1">1</button>
+      <button type="button" class="calc-btn" data-value="2">2</button>
+      <button type="button" class="calc-btn" data-value="3">3</button>
+      <button type="button" class="calc-btn calc-btn--op" data-value="+">+</button>
+      <a class="calc-btn calc-btn--op" href="./minitools/calc.html">↵</a>
+      <button type="button" class="calc-btn" data-value="0">0</button>
+      <button type="button" class="calc-btn" data-value=".">.</button>
+      <button type="button" class="calc-btn calc-btn--eq" data-action="equals">=</button>
+    </div>
+  </div>
+</section>
+
+<section class="module">
+  <div class="mini-cal" id="miniCal">
+    <div class="mini-cal__head">
+      <a class="mini-cal__title" id="miniCalTitle" href="https://www.baidu.com/s?wd=%E6%97%A5%E5%8E%86"></a>
+      <span class="mini-cal__time" id="miniCalTime"></span>
+    </div>
+    <div class="mini-cal__grid" id="miniCalGrid"></div>
+  </div>
+</section>
+
+</main>
+
 <ul class="dock">
   <li class="dock-item">
-    <button type="button" aria-label="时间日历">
+    <a href="./minitools/wclock.html" aria-label="时间日历">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
-    </button>
-    <span class="flyout dock-flyout"><span class="flyout-inner">
-      <a href="./minitools/wallclock.html" id="ctime">时间</a>
-      <a href="./minitools/wclock.html">周时钟</a>
-      <a href="https://www.baidu.com/s?wd=%E6%97%A5%E5%8E%86">万年历</a>
-      <a href="https://minutetimers.net">计时器</a>
-      <a href="https://justpomodoro.com">番茄钟</a>
-      <a href="https://datetime.app/zh-hans">世界时</a>
-    </span></span>
-  </li>
-
-  <li class="dock-item">
-    <a href="http://www.weather.com.cn/weather1dn/101070501.shtml" aria-label="天气">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
     </a>
   </li>
 
@@ -602,8 +694,11 @@ button{font-family:inherit;cursor:pointer}
       <svg viewBox="0 0 24 24"><path d="M4 20l1-4.5L15.5 5 19 8.5 8.5 19 4 20z"/><path d="M13.5 6.5L17.5 10.5"/></svg>
     </button>
     <span class="flyout dock-flyout"><span class="flyout-inner">
-      <a href="minitools/calc.html">计算器</a>
+      <a href="minitools/stitching.html">截图拼接</a>
+      <a href="minitools/notepad.html">记事本</a>
       <a href="https://drawnix.com">白板</a>
+      <a href="https://coder.aaxyz.de:55">编辑代码</a>
+      <a href="minitools/testcode.html">测试前端</a>
       <a href="minitools/palette.html">调色板</a>
       <a href="minitools/watermark.html">加水印</a>
     </span></span>
@@ -621,13 +716,9 @@ button{font-family:inherit;cursor:pointer}
   </li>
 
   <li class="dock-item">
-    <button type="button" aria-label="翻译词典">
+    <a href="minitools/translator.html" aria-label="翻译词典">
       <svg viewBox="0 0 24 24"><path d="M4 5h9M8 3v2M6.5 5c0 4 2 7 5.5 9M11.5 5c-.7 4-3 7.5-7 9.5"/><path d="M14 21l4-9 4 9M15.3 18h5.4"/></svg>
-    </button>
-    <span class="flyout dock-flyout"><span class="flyout-inner">
-      <a href="minitools/translator.html">实时翻译</a>
-      <a href="http://mtrans.aaxyz.de:56">MTran</a>
-    </span></span>
+    </a>
   </li>
 
   <li class="dock-item">
@@ -736,7 +827,8 @@ const engineSearch = {
   wikipedia: 'https://zh.wikipedia.org/wiki/',
   douban: 'https://www.douban.com/search?q=',
   zhihu: 'https://www.zhihu.com/search?type=content&q=',
-  zimu: 'https://subhd.tv/search/'
+  zimu: 'https://subhd.tv/search/',
+  bilibili: 'https://search.bilibili.com/all?keyword='
 };
 const engineHome = {
   baidu: 'https://www.baidu.com',
@@ -746,7 +838,8 @@ const engineHome = {
   wikipedia: 'https://zh.wikipedia.org',
   douban: 'https://www.douban.com',
   zhihu: 'https://www.zhihu.com',
-  zimu: 'https://subhd.tv'
+  zimu: 'https://subhd.tv',
+  bilibili: 'https://member.bilibili.com/platform/upload-manager'
 };
 // 命令表：搜索框内容命中这里的 key 时，点击搜索/回车不再执行搜索，而是执行对应动作
 const RUNCMD_ACTIONS = {
@@ -966,6 +1059,29 @@ function fallbackCopyText(t){
   document.body.removeChild(el);
 }
 
+// 文字框本地持久化：刷新页面后内容仍保留
+const SCRATCH_STORAGE_KEY = 'nav_scratchpad_text';
+function autoGrowScratch(){
+  const bar = document.getElementById('bar');
+  if(!bar) return;
+  if(bar.scrollHeight > bar.clientHeight){
+    bar.style.minHeight = bar.scrollHeight + 'px';
+  }
+}
+(function setupScratchPersistence(){
+  const bar = document.getElementById('bar');
+  if(!bar) return;
+  try{
+    const saved = localStorage.getItem(SCRATCH_STORAGE_KEY);
+    if(saved !== null) bar.value = saved;
+  }catch(e){}
+  bar.addEventListener('input', () => {
+    try{ localStorage.setItem(SCRATCH_STORAGE_KEY, bar.value); }catch(e){}
+    autoGrowScratch();
+  });
+  autoGrowScratch();
+})();
+
 // 中译英 / 英译中：自建 LibreTranslate 实例
 const LIBRETRANSLATE_URL = 'http://192.168.10.1:2300/translate';
 async function translateText(){
@@ -992,6 +1108,8 @@ async function translateText(){
     const data = await res.json();
     if (data && data.translatedText) {
       box.value = data.translatedText;
+      try{ localStorage.setItem(SCRATCH_STORAGE_KEY, box.value); }catch(e){}
+      autoGrowScratch();
     } else {
       throw new Error('响应中没有 translatedText');
     }
@@ -1004,8 +1122,216 @@ async function translateText(){
   }
 }
 
-setInterval(()=>{const el=document.getElementById('ctime'); if(el) el.textContent=new Date().toTimeString().slice(0,5);},60000);
-document.addEventListener('DOMContentLoaded', ()=>{const el=document.getElementById('ctime'); if(el) el.textContent=new Date().toTimeString().slice(0,5);});
+// 本月迷你日历（周一为一周首日）
+function buildMiniCalendar(){
+  const grid = document.getElementById('miniCalGrid');
+  const title = document.getElementById('miniCalTitle');
+  if(!grid || !title) return;
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const today = now.getDate();
+  title.textContent = `${year}年${month+1}月`;
+  grid.innerHTML = '';
+
+  const dows = ['一','二','三','四','五','六','日'];
+  dows.forEach(d=>{
+    const el = document.createElement('span');
+    el.className = 'dow';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(year, month, 1);
+  const startOffset = (firstDay.getDay() + 6) % 7; // 转为周一起始的偏移
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+  for(let i = startOffset; i > 0; i--){
+    const el = document.createElement('span');
+    el.className = 'other-month';
+    el.textContent = daysInPrevMonth - i + 1;
+    grid.appendChild(el);
+  }
+  for(let d = 1; d <= daysInMonth; d++){
+    const isToday = d === today;
+    const el = document.createElement(isToday ? 'a' : 'span');
+    el.textContent = d;
+    if(isToday){
+      el.className = 'today';
+      el.href = 'https://www.weather.com.cn/weather1dn/101070501.shtml';
+    }
+    grid.appendChild(el);
+  }
+  const filled = startOffset + daysInMonth;
+  const remainder = filled % 7;
+  if(remainder !== 0){
+    const fillCount = 7 - remainder;
+    for(let d = 1; d <= fillCount; d++){
+      const el = document.createElement('span');
+      el.className = 'other-month';
+      el.textContent = d;
+      grid.appendChild(el);
+    }
+  }
+}
+function updateMiniCalTime(){
+  const el = document.getElementById('miniCalTime');
+  if(!el) return;
+  el.textContent = new Date().toTimeString().slice(0,5);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  buildMiniCalendar();
+  updateMiniCalTime();
+});
+setInterval(updateMiniCalTime, 60000);
+
+// 迷你计算器
+(function setupMiniCalc(){
+  const display = document.getElementById('calcDisplay');
+  const pad = document.getElementById('calcPad');
+  if(!display || !pad) return;
+
+  let current = '0';
+  let previous = null;
+  let operator = null;
+  let justEvaluated = false;
+
+  const render = () => { display.textContent = current; };
+
+  const inputDigit = (d) => {
+    if(justEvaluated){ current = '0'; justEvaluated = false; }
+    if(d === '.' && current.includes('.')) return;
+    current = (current === '0' && d !== '.') ? d : current + d;
+    render();
+  };
+
+  const evaluate = () => {
+    if(operator === null || previous === null) return;
+    const a = parseFloat(previous);
+    const b = parseFloat(current);
+    let result = 0;
+    switch(operator){
+      case '+': result = a + b; break;
+      case '-': result = a - b; break;
+      case '*': result = a * b; break;
+      case '/': result = b === 0 ? 0 : a / b; break;
+    }
+    current = String(Math.round(result * 1e10) / 1e10);
+    operator = null;
+    previous = null;
+    justEvaluated = true;
+    render();
+  };
+
+  const chooseOperator = (op) => {
+    if(operator && !justEvaluated) evaluate();
+    previous = current;
+    operator = op;
+    justEvaluated = false;
+    current = '0';
+  };
+
+  const clearAll = () => {
+    current = '0'; previous = null; operator = null; justEvaluated = false;
+    render();
+  };
+  const toggleSign = () => { current = String(parseFloat(current) * -1); render(); };
+  const percent = () => { current = String(parseFloat(current) / 100); render(); };
+
+  pad.addEventListener('click', (e) => {
+    const btn = e.target.closest('.calc-btn');
+    if(!btn) return;
+    const { value, action } = btn.dataset;
+    if(value !== undefined){
+      if(['+','-','*','/'].includes(value)) chooseOperator(value);
+      else inputDigit(value);
+    } else if(action){
+      if(action === 'clear') clearAll();
+      else if(action === 'sign') toggleSign();
+      else if(action === 'percent') percent();
+      else if(action === 'equals') evaluate();
+    }
+  });
+
+  render();
+})();
+
+// 星空粒子背景
+(function setupStarfield(){
+  const canvas = document.getElementById('starfield');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if(!ctx) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let stars = [];
+  let w = 0, h = 0, dpr = 1;
+
+  function initStars(){
+    const density = 9000; // 数值越大星星越稀疏
+    const count = Math.min(220, Math.round((w * h) / density));
+    stars = Array.from({ length: count }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.2 + 0.3,
+      baseAlpha: Math.random() * 0.5 + 0.2,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.6 + 0.2,
+      drift: (Math.random() * 0.06) + 0.02
+    }));
+  }
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect();
+    w = rect.width;
+    h = rect.height;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    initStars();
+  }
+
+  function drawStatic(){
+    ctx.clearRect(0, 0, w, h);
+    stars.forEach(s => {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(232,180,90,${s.baseAlpha.toFixed(3)})`;
+      ctx.fill();
+    });
+  }
+
+  function animate(t){
+    const rect = canvas.getBoundingClientRect();
+    if(Math.abs(rect.width - w) > 1 || Math.abs(rect.height - h) > 1){
+      resize();
+    }
+    ctx.clearRect(0, 0, w, h);
+    for(const s of stars){
+      const twinkle = Math.sin(t * 0.001 * s.speed + s.phase) * 0.35 + 0.65;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(232,180,90,${(s.baseAlpha * twinkle).toFixed(3)})`;
+      ctx.fill();
+      s.y -= s.drift;
+      if(s.y < -2) s.y = h + 2;
+    }
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    resize();
+    if(prefersReducedMotion) drawStatic();
+  });
+  resize();
+  if(prefersReducedMotion){
+    drawStatic();
+  } else {
+    requestAnimationFrame(animate);
+  }
+})();
 </script>
 </body>
 </html>
