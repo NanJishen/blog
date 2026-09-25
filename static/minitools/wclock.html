@@ -206,7 +206,7 @@
     </div>
   </div>
 
-  <p class="description" id="desc">对于那些不再工作或上学的人来说，这个时钟以防止忘了工作日</p>
+  <p class="description" id="desc">即使不工作也请珍惜每一周的时间</p>
 
   <div class="clock" id="clock">
     <div class="hand" id="weekdayHand"></div>
@@ -440,10 +440,10 @@
         timeDisplay.style.display = mode === "timer" ? "block" : "none";
 
         if (mode === "weekday") {
-          desc.textContent = "对于那些不再工作或上学的人来说，这个时钟以防止忘了工作日";
+          desc.textContent = "即使不工作也请珍惜每一周的时间";
           startWeekday();
         } else if (mode === "timer") {
-          desc.textContent = "滚动鼠标滚轮以分钟为单位调整时间";
+          desc.textContent = "鼠标滚轮调整时间点击时间启停双击重置";
           weekdayHand.style.display = "none";
           timerHand.style.display = "block";
           buildTimerDial();

@@ -14,7 +14,10 @@ tags: ["Windows"]
 - 更新系统：右键开始 - 设置 - Windows 更新 - 检查更新
 - 激活系统：下载并以管理员运行[极限激活](https://nanji.lanzouu.com/i48Cw2zvwych)，
 - 关闭 UAC：开始 - UAC - 更改用户账户控制设置 - 拉到最底“从不通知”
-- 关闭索引和软件预加载服务：运行 `services.msc` - 找到 Windows Search 和 SysMain - 停止并禁用
+- 关闭服务：运行 `services.msc`，找到如下服务停止并禁用
+	- 搜索索引：Windows Search
+	- 软件预载：SysMain
+	- 兼容助手：Program Compatibility Assistant Service
 - 设置免密登陆：运行 `netplwiz` - 去勾“要使用本计算机，用户必须输入密码”
 	- 无勾选框？修改 `regedit - HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device` ，右侧的 `DevicePasswordLessBuildVersion` 值为 `0`
 - 关闭网卡和蓝牙节约电源：右键开始 - 设备管理器 - 右键网络适配器中的网卡和蓝牙属性 - 电源管理 - 去掉节约电源

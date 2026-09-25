@@ -146,12 +146,13 @@
     pointer-events:none;
   }
   .clear-btn{
-    position:absolute; right:12px; top:50%; transform:translateY(-50%);
-    font-family:var(--font-mono); font-size:10px; color:var(--text-dim);
-    border:1px solid var(--border); border-radius:5px; padding:3px 7px;
-    background:var(--bg-soft); cursor:pointer; display:none;
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    width:20px; height:20px; display:none; align-items:center; justify-content:center;
+    font-size:11px; color:var(--text-dim);
+    border:none; border-radius:50%;
+    background:var(--bg-soft); cursor:pointer;
   }
-  .clear-btn:hover{ color:var(--text); border-color:var(--border-strong); }
+  .clear-btn:hover{ color:var(--text); background:var(--border); }
 
   /* ---------- LAYOUT ---------- */
   .shell{ max-width:1440px; margin:0 auto; display:flex; position:relative; z-index:1; }
@@ -226,7 +227,6 @@
   .cat-section-head .num{ font-family:var(--font-mono); font-size:12px; color:var(--text-faint); }
   .cat-section-head h2{ font-family:var(--font-display); font-weight:600; font-size:24px; margin:0; letter-spacing:0.01em; display:flex; align-items:center; gap:10px; }
   .cat-section-head h2 i{ font-size:17px; color:var(--accent); }
-  .cat-section-head .count-tag{ font-family:var(--font-mono); font-size:11px; color:var(--text-faint); border:1px solid var(--border); border-radius:999px; padding:3px 10px; }
 
   .term-group{ margin-bottom:28px; scroll-margin-top:84px; }
   .term-label{ display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.08em; color:var(--teal); text-transform:uppercase; margin:0 0 14px; }
@@ -292,7 +292,10 @@
     .header-left{ width:100%; border-right:none; padding:14px 16px 0; }
     .header-right{ width:100%; padding:10px 16px 14px; }
     main{ padding:22px 16px 60px; }
-    .grid{ grid-template-columns:1fr; }
+    .grid{ grid-template-columns:repeat(2, 1fr); gap:8px; }
+    .card{ padding:10px 11px; }
+    .card-title{ font-size:12.5px; }
+    .card-desc{ font-size:11px; }
     .search-kbd{ display:none; }
   }
 </style>
@@ -320,7 +323,7 @@
         <i class="fa-solid fa-magnifying-glass"></i>
         <input id="searchInput" type="text" placeholder="搜索站点名称、简介或域名…" autocomplete="off">
         <span class="search-kbd" id="kbdHint">/</span>
-        <button class="clear-btn" id="clearBtn">清除</button>
+        <button class="clear-btn" id="clearBtn" aria-label="清除搜索"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <button class="menu-btn" id="menuBtn" title="分类菜单" aria-label="打开分类菜单"><i class="fa-solid fa-bars"></i></button>
     </div>
@@ -386,7 +389,7 @@ function cleanUrl(url){
   return m ? m[0] : url.trim();
 }
 
-// ---- transform raw parsed yaml into render-ready structure ----
+// ---- 将 nav.js 中的原始数据转换为渲染所需结构 ----
 function transformData(raw){
   return raw.map((cat, i)=>{
     const slug = 'c'+i;
@@ -532,8 +535,7 @@ function renderContent(){
     const head = document.createElement('div');
     head.className = 'cat-section-head';
     head.innerHTML = `<span class="num">${String(idx+1).padStart(2,'0')}</span>
-      <h2><i class="fa-solid ${cat.icon}"></i>${escapeHtml(cat.name)}</h2>
-      <span class="count-tag">${cat.count} 站</span>`;
+      <h2><i class="fa-solid ${cat.icon}"></i>${escapeHtml(cat.name)}</h2>`;
     section.appendChild(head);
 
     cat.groups.forEach(g=>{
@@ -619,7 +621,7 @@ function setupSearch(){
   let debounceTimer;
   function runSearch(){
     const q = searchInput.value.trim().toLowerCase();
-    clearBtn.style.display = q ? 'block' : 'none';
+    clearBtn.style.display = q ? 'flex' : 'none';
     kbdHint.style.display = q ? 'none' : 'block';
 
     let anyVisible = false;

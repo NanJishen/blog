@@ -53,6 +53,16 @@ const NAV_DATA = [
         "name": "抖音",
         "url": "https://www.douyin.com",
         "desc": "国内主流短视频平台"
+      },
+      {
+        "name": "小红书",
+        "url": "https://www.xiaohongshu.com",
+        "desc": "短视频分享平台"
+      },
+      {
+        "name": "微信视频号",
+        "url": "https://channels.weixin.qq.com",
+        "desc": "短视频分享平台"
       }
     ]
   },
@@ -420,7 +430,7 @@ const NAV_DATA = [
           },
           {
             "name": "Snapdrop",
-            "url": "https://snapdrop.net",
+            "url": "https://snapdrop.me",
             "desc": "局域网浏览器P2P文件传输"
           },
           {
