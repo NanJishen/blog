@@ -4339,6 +4339,11 @@ const NAV_DATA = [
             "desc": "很不错的搜书网站"
           },
           {
+            "name": "Ebook Chest",
+            "url": "https://github.com/jbiaojerry/ebook-treasure-chest",
+            "desc": "电子书下载宝库"
+          },
+          {
             "name": "ZLibary",
             "url": "https://zh.z-library.sk",
             "desc": "最给力的书籍下载"
@@ -7054,7 +7059,7 @@ const NAV_DATA = [
           },
           {
             "name": "截图拼接",
-            "url": "https://ttti.cc/minitools/stitching",
+            "url": "https://ttti.cc/tools/stitching",
             "desc": "拼接图像可实现台词拼图"
           },
           {

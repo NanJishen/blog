@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>画图与转换格式</title>
+<link rel="icon" href="../favicon.ico">
+<style>
+  :root { --bar:#26282d; --bg:#17181b; --accent:#3b82f6; --ok:#22c55e; --no:#ef4444; --text:#e5e7eb; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; height:100%; overflow:hidden; background:var(--bg); color:var(--text);
+    font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif; user-select:none; }
+  #app { display:flex; height:100%; }
+  #toolbar { width:60px; flex:none; background:var(--bar); display:flex; flex-direction:column;
+    align-items:center; padding:12px 0; gap:6px; border-right:1px solid #000; }
+  .tool, #cropBar button { width:44px; height:44px; border:none; border-radius:8px; background:transparent; color:var(--text);
+    cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; text-decoration:none; }
+  .tool svg, #cropBar svg { width:22px; height:22px; }
+  .tool img { width:24px; height:24px; display:block; }
+  .tool:hover, #cropBar button:hover { background:#3a3d44; }
+  .tool.active { background:var(--accent); color:#fff; }
+  .tool:disabled { opacity:.35; cursor:not-allowed; background:transparent; }
+  .sep { width:32px; height:1px; background:#444; margin:6px 0; }
+  .spacer { flex:1; }
+  #view { flex:1; position:relative; overflow:hidden; }
+  #view.drop::after { content:'松开鼠标即可放入图片'; position:absolute; inset:12px; border:2px dashed var(--accent);
+    border-radius:14px; background:rgba(59,130,246,.08); color:var(--accent); font-size:18px;
+    display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:10; }
+  #empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#6b7080; pointer-events:none; }
+  #empty svg { pointer-events:auto; cursor:pointer; }
+  #empty svg:hover { color:var(--accent); }
+  #empty svg { width:88px; height:88px; }
+  #stage { position:absolute; display:none; cursor:crosshair; touch-action:none; }
+  #stage.show { display:block; }
+  #cv { position:absolute; left:0; top:0; width:100%; height:100%; display:block; background:#fff;
+    box-shadow:0 4px 24px rgba(0,0,0,.5); }
+  #marquee { position:absolute; display:none; pointer-events:none; border:1px dashed #fff; box-shadow:0 0 0 1px rgba(0,0,0,.5); }
+  #crop { position:absolute; display:none; pointer-events:none; border:1px solid #fff; box-shadow:0 0 0 9999px rgba(0,0,0,.55); }
+  .handle { position:absolute; display:none; background:#fff; border:1px solid #222; border-radius:4px; transform:translate(-50%,-50%); }
+  #hT, #hB { width:44px; height:10px; cursor:ns-resize; }
+  #hL, #hR { width:10px; height:44px; cursor:ew-resize; }
+  #cropBar { position:absolute; top:14px; left:50%; transform:translateX(-50%); display:none; gap:8px;
+    background:var(--bar); padding:6px; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,.4); z-index:5; }
+  #cropBar #applyCrop { color:var(--ok); }
+  #cropBar #cancelCrop { color:var(--no); }
+  #zoomTip { position:absolute; right:12px; bottom:10px; font-size:12px; color:#9ca3af; background:rgba(38,40,45,.8);
+    padding:3px 8px; border-radius:6px; pointer-events:none; display:none; }
+
+  /* 弹窗：背景虚化 */
+  .modal { position:fixed; inset:0; z-index:20; display:flex; align-items:center; justify-content:center;
+    background:rgba(8,9,12,.35); backdrop-filter:blur(12px) saturate(120%); -webkit-backdrop-filter:blur(12px) saturate(120%);
+    opacity:0; visibility:hidden; transition:opacity .22s ease, visibility .22s; }
+  .modal.show { opacity:1; visibility:visible; }
+  .dialog { position:relative; background:rgba(36,38,44,.9); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:26px 28px;
+    min-width:320px; max-width:90vw; box-shadow:0 24px 70px rgba(0,0,0,.6); transform:translateY(10px) scale(.97);
+    transition:transform .25s cubic-bezier(.2,.8,.2,1); }
+  .modal.show .dialog { transform:none; }
+  .dialog h3 { margin:0 0 16px; font-size:18px; font-weight:600; }
+  .dialog ul { padding-left:20px; margin:0; line-height:2; font-size:14px; color:#d1d5db; }
+  .row { display:flex; align-items:center; justify-content:center; gap:10px; margin:12px 0; font-size:14px; color:#d1d5db; }
+  .row input[type=number] { width:120px; padding:8px 10px; border-radius:8px; border:1px solid #3f4249; background:#1b1c20; color:var(--text); font-size:14px; outline:none; }
+  .row input[type=number]:focus { border-color:var(--accent); }
+  .row .lbl { display:inline-block; width:18px; text-align:right; }
+  .row .unit { display:inline-block; width:28px; color:#9ca3af; }
+  input[type=number] { -moz-appearance:textfield; appearance:textfield; }
+  input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+  .row .stepper { position:relative; display:inline-flex; align-items:center; }
+  .row .stepper input { width:120px; padding:8px 30px 8px 10px; border-radius:8px; border:1px solid #3f4249; background:#1b1c20; color:var(--text); font-size:14px; outline:none; }
+  .row .stepper input:focus { border-color:var(--accent); }
+  .dialog .sp { position:absolute; right:4px; top:4px; bottom:4px; width:22px; display:flex; flex-direction:column; gap:2px; }
+  .dialog .sp button { flex:1; width:auto; padding:0; margin:0; border:none; border-radius:5px; background:#2e3036; color:#9ca3af; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .dialog .sp button:hover { background:#3a3d44; color:var(--text); filter:none; }
+  .dialog .sp svg { width:10px; height:10px; }
+  .dialog .btns { display:flex; justify-content:center; gap:10px; margin-top:22px; }
+  .dialog .x-btn { position:absolute; top:14px; right:14px; width:32px; height:32px; padding:0; border:none; border-radius:8px;
+    background:transparent; color:#9ca3af; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .dialog .x-btn:hover { background:#3a3d44; color:var(--text); filter:none; }
+  .dialog .x-btn svg { width:16px; height:16px; }
+  .dialog button { border:none; border-radius:8px; padding:8px 18px; cursor:pointer; color:#e5e7eb; background:#3a3d44; font-size:14px; }
+  .dialog button:hover { filter:brightness(1.15); }
+  .dialog button.ok { background:var(--accent); color:#fff; }
+  .fmt-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .fmt { display:flex; flex-direction:column; align-items:flex-start; gap:6px; text-align:left; padding:14px !important;
+    background:#2e3036 !important; border:1px solid #3f4249 !important; }
+  .fmt b { font-size:16px; color:var(--text); }
+  .fmt span { font-size:12px; color:#9ca3af; line-height:1.5; white-space:normal; }
+  .fmt.sel { border-color:var(--accent) !important; box-shadow:0 0 0 2px rgba(59,130,246,.35); }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="toolbar">
+    <a class="tool" id="btnHome" href="https://ttti.cc" title="返回主页 ttti.cc">
+      <img src="../favicon.ico" alt="主页">
+    </a>
+    <div class="sep"></div>
+    <button class="tool active" id="btnSelect" title="选区">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" stroke-dasharray="3 3"/></svg>
+    </button>
+    <button class="tool" id="btnCrop" title="剪裁">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2v16h16M2 6h16v16"/></svg>
+    </button>
+    <button class="tool" id="btnUndo" title="撤销 Ctrl+Z">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg>
+    </button>
+    <button class="tool" id="btnCanvas" title="画布设置">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 16l8-8M12 8h4v4"/></svg>
+    </button>
+    <button class="tool" id="btnFormat" title="格式转换">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg>
+    </button>
+    <button class="tool" id="btnSave" title="保存 Ctrl+S">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>
+    </button>
+    <div class="spacer"></div>
+    <button class="tool" id="btnHelp" title="操作说明">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 115 .5c0 1.5-2.5 2-2.5 3.5M12 17h.01"/></svg>
+    </button>
+  </div>
+
+  <div id="view">
+    <div id="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+    <div id="stage">
+      <canvas id="cv"></canvas>
+      <div id="marquee"></div>
+      <div id="crop"></div>
+      <div class="handle" id="hT" data-edge="t"></div>
+      <div class="handle" id="hB" data-edge="b"></div>
+      <div class="handle" id="hL" data-edge="l"></div>
+      <div class="handle" id="hR" data-edge="r"></div>
+    </div>
+    <div id="cropBar">
+      <button id="applyCrop" title="应用剪裁 (Enter)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>
+      </button>
+      <button id="cancelCrop" title="取消剪裁 (Esc)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div id="zoomTip"></div>
+  </div>
+</div>
+
+<!-- 画布设置弹窗 -->
+<div class="modal" id="canvasModal">
+  <div class="dialog">
+    <button class="x-btn" title="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <h3>调整图像</h3>
+    <div class="row"><span class="lbl">宽</span> <span class="stepper"><input type="number" id="cw" min="1" max="10000" step="1"><div class="sp"><button data-d="1" title="增加"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l3-3 3 3"/></svg></button><button data-d="-1" title="减少"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3l3 3 3-3"/></svg></button></div></span><span class="unit">px</span></div>
+    <div class="row"><span class="lbl">高</span> <span class="stepper"><input type="number" id="ch" min="1" max="10000" step="1"><div class="sp"><button data-d="1" title="增加"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l3-3 3 3"/></svg></button><button data-d="-1" title="减少"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3l3 3 3-3"/></svg></button></div></span><span class="unit">px</span></div>
+    <div class="row"><label><input type="checkbox" id="lockRatio"> 保持比例</label></div>
+    <div class="btns"><button id="resizeImg">图像</button><button class="ok" id="canvasOk">画布</button></div>
+  </div>
+</div>
+
+<!-- 格式转换弹窗 -->
+<div class="modal" id="formatModal">
+  <div class="dialog">
+    <button class="x-btn" title="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <h3>选择保存格式</h3>
+    <div class="fmt-grid">
+      <button class="fmt" data-fmt="png"><b>PNG</b><span>高清无损格式</span></button>
+      <button class="fmt" data-fmt="jpg"><b>JPG</b><span>小体积适用广泛</span></button>
+      <button class="fmt" data-fmt="webp"><b>WEBP</b><span>更小体积适合网页应用</span></button>
+      <button class="fmt" data-fmt="avif"><b>AVIF</b><span>高压缩率，需现代浏览器和硬件支持</span></button>
+      <button class="fmt" data-fmt="ico"><b>ICO</b><span>只适用于图标</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- 操作说明弹窗 -->
+<div class="modal" id="helpModal">
+  <div class="dialog">
+    <button class="x-btn" title="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <h3>操作说明</h3>
+    <ul>
+      <li><b>拖动选区</b>：移动选取区内图片</li>
+      <li><b>方向键</b>：微调图像，按住 Shift 以10像素移动</li>
+      <li><b>删除键</b>：清除选区，<b>Ctrl+D</b> 取消选区</li>
+      <li><b>鼠标滚轮</b>：可以缩放，<b>Ctrl+0</b> 恢复适应窗口</li>
+      <li><b>鼠标中键/空格</b>：拖动可平移</li>
+      <li><b>格式转换</b>：选择多种格式，之后会按照该选择保存</li>
+    </ul>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept="image/*" hidden>
+<script>
+const $ = s => document.querySelector(s);
+const view = $('#view'), stage = $('#stage'), cv = $('#cv'), ctx = cv.getContext('2d');
+const empty = $('#empty'), marquee = $('#marquee'), cropBox = $('#crop'), cropBar = $('#cropBar'), zoomTip = $('#zoomTip');
+const handles = { t: $('#hT'), b: $('#hB'), l: $('#hL'), r: $('#hR') };
+const btnHome = $('#btnHome'), btnSelect = $('#btnSelect'), btnCanvas = $('#btnCanvas'), btnCrop = $('#btnCrop');
+const btnUndo = $('#btnUndo'), btnFormat = $('#btnFormat'), btnSave = $('#btnSave');
+const canvasModal = $('#canvasModal'), formatModal = $('#formatModal'), helpModal = $('#helpModal');
+const cwInput = $('#cw'), chInput = $('#ch'), lockRatio = $('#lockRatio');
+const MIN = 4, MAX_SIDE = 10000;
+const MIME = { png: 'image/png', jpg: 'image/jpeg', webp: 'image/webp', avif: 'image/avif' };
+
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const makeCanvas = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+const toBlobAsync = (c, type, q) => new Promise(res => c.toBlob(res, type, q));
+
+let base = null, W = 0, H = 0;   // 图像原始像素（离屏画布）
+let flt = null;                  // 浮动选区像素 {c, x, y}
+let sel = null;                  // 选区 {x, y, w, h}（图像坐标）
+let tool = 'select';             // 'select' | 'crop'
+let crop = null;                 // 剪裁框 {l, t, r, b}
+let drag = null, panDrag = null;
+let zoom = 1, panX = 0, panY = 0; // 缩放倍数（相对适应窗口）与舞台偏移
+let spaceDown = false;
+let ratio = 1;                   // 画布设置里使用的宽高比
+let outFormat = 'jpg';           // 保存格式
+let pendingFormat = 'jpg';
+const undoStack = [];
+
+/* ---------- 视图：适应窗口、缩放、平移 ---------- */
+function baseScale() {
+  const r = view.getBoundingClientRect(), pad = 48;
+  return Math.max(0.01, Math.min(1, (r.width - pad) / W, (r.height - pad) / H));
+}
+
+function layout() {
+  if (!base) return;
+  const vr = view.getBoundingClientRect(), vw = vr.width, vh = vr.height;
+  const s = baseScale() * zoom;
+  const sw = Math.max(1, W * s), sh = Math.max(1, H * s);
+  panX = sw <= vw ? (vw - sw) / 2 : clamp(panX, vw - sw, 0);
+  panY = sh <= vh ? (vh - sh) / 2 : clamp(panY, vh - sh, 0);
+  Object.assign(stage.style, { width: sw + 'px', height: sh + 'px', left: panX + 'px', top: panY + 'px' });
+  zoomTip.textContent = Math.round(s * 100) + '%';
+  zoomTip.style.display = Math.abs(s - baseScale()) > 1e-6 || zoom !== 1 ? 'block' : 'none';
+}
+
+function resetView() {
+  zoom = 1;
+  const bs = baseScale();
+  const vr = view.getBoundingClientRect();
+  panX = (vr.width - W * bs) / 2;
+  panY = (vr.height - H * bs) / 2;
+  layout();
+}
+
+// 屏幕坐标 → 图像坐标（与缩放、平移无关）
+function pos(e) {
+  const r = stage.getBoundingClientRect();
+  return {
+    x: clamp(Math.round((e.clientX - r.left) / r.width * W), 0, W),
+    y: clamp(Math.round((e.clientY - r.top) / r.height * H), 0, H)
+  };
+}
+
+view.addEventListener('wheel', e => {
+  if (!base) return;
+  e.preventDefault();
+  const vr = view.getBoundingClientRect();
+  const mx = e.clientX - vr.left, my = e.clientY - vr.top;
+  const bs = baseScale(), oldS = bs * zoom;
+  const ix = (mx - panX) / oldS, iy = (my - panY) / oldS;   // 鼠标下的图像坐标
+  const f = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+  const newS = clamp(oldS * f, 0.05, 32);
+  zoom = newS / bs;
+  panX = mx - ix * newS;
+  panY = my - iy * newS;
+  layout();
+}, { passive: false });
+
+/* ---------- 基础 ---------- */
+function setBase(c) {
+  base = c; W = c.width; H = c.height;
+  cv.width = W; cv.height = H;
+  stage.classList.add('show');
+  empty.style.display = 'none';
+  resetView(); render(); updateUI();
+}
+
+function render() {
+  if (!base) return;
+  ctx.drawImage(base, 0, 0);
+  if (flt) ctx.drawImage(flt.c, flt.x, flt.y);
+}
+
+function snapshot() {
+  const c = makeCanvas(W, H);
+  c.getContext('2d').drawImage(base, 0, 0);
+  undoStack.push(c);
+  if (undoStack.length > 30) undoStack.shift();
+}
+
+function undo() {
+  if (!undoStack.length) return;
+  const prev = undoStack.pop();
+  flt = null; sel = null; crop = null; drag = null; tool = 'select';
+  setBase(prev);
+}
+
+/* ---------- 导入图片（粘贴 / 拖入） ---------- */
+function loadImageFile(file) {
+  if (!file || !file.type.startsWith('image/')) return;
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    commit();
+    if (base) snapshot();
+    const c = makeCanvas(img.naturalWidth, img.naturalHeight);
+    const g = c.getContext('2d');
+    g.fillStyle = '#fff';
+    g.fillRect(0, 0, c.width, c.height);
+    g.drawImage(img, 0, 0);
+    URL.revokeObjectURL(url);
+    tool = 'select'; crop = null;
+    setBase(c);
+  };
+  img.onerror = () => URL.revokeObjectURL(url);
+  img.src = url;
+}
+
+document.addEventListener('paste', e => {
+  if (anyModalOpen()) return;
+  const items = e.clipboardData ? Array.from(e.clipboardData.items) : [];
+  const item = items.find(i => i.type.startsWith('image/'));
+  if (!item) return;
+  e.preventDefault();
+  loadImageFile(item.getAsFile());
+});
+
+window.addEventListener('dragover', e => {
+  e.preventDefault();
+  if (!anyModalOpen()) view.classList.add('drop');
+});
+window.addEventListener('dragleave', e => {
+  if (!e.relatedTarget) view.classList.remove('drop');
+});
+window.addEventListener('drop', e => {
+  e.preventDefault();
+  view.classList.remove('drop');
+  if (anyModalOpen()) return;
+  const file = e.dataTransfer && Array.from(e.dataTransfer.files).find(f => f.type.startsWith('image/'));
+  if (file) loadImageFile(file);
+});
+
+/* ---------- 选区 ---------- */
+// 把选区内的像素"提起"成浮动层，原位置填白
+function lift() {
+  if (flt || !sel || !base) return;
+  snapshot();
+  const c = makeCanvas(sel.w, sel.h);
+  c.getContext('2d').drawImage(base, sel.x, sel.y, sel.w, sel.h, 0, 0, sel.w, sel.h);
+  const g = base.getContext('2d');
+  g.fillStyle = '#fff';
+  g.fillRect(sel.x, sel.y, sel.w, sel.h);
+  flt = { c, x: sel.x, y: sel.y };
+}
+
+// 把浮动层落回图像，取消选区
+function commit() {
+  if (base && flt) base.getContext('2d').drawImage(flt.c, flt.x, flt.y);
+  flt = null; sel = null;
+  render(); updateUI();
+}
+
+/* ---------- 剪裁 ---------- */
+function applyCrop() {
+  if (!crop) return;
+  const { l, t, r, b } = crop, w = r - l, h = b - t;
+  snapshot();
+  const c = makeCanvas(w, h);
+  c.getContext('2d').drawImage(base, l, t, w, h, 0, 0, w, h);
+  crop = null; tool = 'select';
+  setBase(c);
+}
+
+function cancelCrop() {
+  if (!crop) return;
+  crop = null; tool = 'select';
+  updateUI();
+}
+
+function setTool(t) {
+  if (!base) return;
+  commit();
+  tool = t;
+  crop = t === 'crop' ? { l: 0, t: 0, r: W, b: H } : null;
+  updateUI();
+}
+
+/* ---------- 画布设置 ---------- */
+function openCanvasDialog() {
+  commit();
+  const w = base ? W : 800, h = base ? H : 600;
+  cwInput.value = w; chInput.value = h;
+  ratio = w / h;
+  lockRatio.checked = false;
+  openModal(canvasModal);
+  cwInput.focus(); cwInput.select();
+}
+
+cwInput.addEventListener('input', () => {
+  if (lockRatio.checked && cwInput.value) chInput.value = Math.max(1, Math.round(cwInput.value / ratio));
+});
+chInput.addEventListener('input', () => {
+  if (lockRatio.checked && chInput.value) cwInput.value = Math.max(1, Math.round(chInput.value * ratio));
+});
+
+function applyCanvas() {
+  const w = parseInt(cwInput.value, 10), h = parseInt(chInput.value, 10);
+  if (!(w >= 1 && h >= 1 && w <= MAX_SIDE && h <= MAX_SIDE)) {
+    alert(`请输入 1 到 ${MAX_SIDE} 之间的整数`);
+    return;
+  }
+  closeModal(canvasModal);
+  if (!base) {
+    const c = makeCanvas(w, h);
+    const g = c.getContext('2d');
+    g.fillStyle = '#fff';
+    g.fillRect(0, 0, w, h);
+    tool = 'select'; setBase(c);
+    return;
+  }
+  commit();
+  snapshot();
+  const c = makeCanvas(w, h), g = c.getContext('2d');
+  g.fillStyle = '#fff';
+  g.fillRect(0, 0, w, h);
+  g.drawImage(base, 0, 0);   // 以左上角为基准保留原内容
+  tool = 'select'; crop = null;
+  setBase(c);
+}
+
+/* ---------- 格式转换 ---------- */
+function openFormatDialog() {
+  markFormat(outFormat);
+  openModal(formatModal);
+}
+
+function markFormat(f) {
+  pendingFormat = f;
+  document.querySelectorAll('.fmt').forEach(b => b.classList.toggle('sel', b.dataset.fmt === f));
+}
+
+document.querySelectorAll('.fmt').forEach(b => b.onclick = () => {
+  outFormat = b.dataset.fmt;
+  markFormat(outFormat);
+  closeModal(formatModal);
+  updateUI();
+});
+
+/* ---------- 调整图片大小（按新宽高重采样图像） ---------- */
+function resizeImage() {
+  const w = parseInt(cwInput.value, 10), h = parseInt(chInput.value, 10);
+  if (!(w >= 1 && h >= 1 && w <= MAX_SIDE && h <= MAX_SIDE)) {
+    alert(`请输入 1 到 ${MAX_SIDE} 之间的整数`);
+    return;
+  }
+  if (!base) { applyCanvas(); return; }
+  closeModal(canvasModal);
+  commit();
+  snapshot();
+  const c = makeCanvas(w, h), g = c.getContext('2d');
+  g.imageSmoothingEnabled = true;
+  g.imageSmoothingQuality = 'high';
+  g.drawImage(base, 0, 0, w, h);
+  tool = 'select'; crop = null;
+  setBase(c);
+}
+
+/* ---------- 弹窗 ---------- */
+const ALL_MODALS = [canvasModal, formatModal, helpModal];
+function openModal(m) { m.classList.add('show'); }
+function closeModal(m) { m.classList.remove('show'); }
+const anyModalOpen = () => ALL_MODALS.some(m => m.classList.contains('show'));
+
+ALL_MODALS.forEach(m => m.addEventListener('pointerdown', e => {
+  if (e.target === m) closeModal(m);
+}));
+$('#canvasOk').onclick = applyCanvas;
+$('#resizeImg').onclick = resizeImage;
+document.querySelectorAll('.x-btn').forEach(b => b.onclick = () => closeModal(b.closest('.modal')));
+$('#btnHelp').onclick = () => openModal(helpModal);
+[cwInput, chInput].forEach(inp => inp.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); applyCanvas(); }
+  if (e.key === 'Escape') { e.preventDefault(); closeModal(canvasModal); }
+}));
+
+/* ---------- 添加图片（点击加号） ---------- */
+$('#empty').addEventListener('click', () => $('#fileInput').click());
+$('#fileInput').addEventListener('change', e => {
+  const f = e.target.files[0];
+  if (f) loadImageFile(f);
+  e.target.value = '';
+});
+
+/* ---------- 画布设置步进按钮 ---------- */
+document.querySelectorAll('.sp button').forEach(b => b.onclick = () => {
+  const inp = b.closest('.stepper').querySelector('input');
+  inp.value = clamp((parseInt(inp.value, 10) || 1) + Number(b.dataset.d), 1, MAX_SIDE);
+  inp.dispatchEvent(new Event('input'));
+});
+
+/* ---------- 主页 ---------- */
+btnHome.addEventListener('click', e => {
+  if (base && !confirm('返回主页后当前图片会丢失，确定离开吗？')) e.preventDefault();
+});
+
+/* ---------- 界面状态 ---------- */
+function updateUI() {
+  const pct = (v, d) => (v / d * 100) + '%';
+
+  const showSel = !!(sel && tool === 'select' && base);
+  marquee.style.display = showSel ? 'block' : 'none';
+  if (showSel) Object.assign(marquee.style, {
+    left: pct(sel.x, W), top: pct(sel.y, H), width: pct(sel.w, W), height: pct(sel.h, H)
+  });
+
+  const inCrop = !!(crop && tool === 'crop' && base);
+  cropBox.style.display = inCrop ? 'block' : 'none';
+  for (const h of Object.values(handles)) h.style.display = inCrop ? 'block' : 'none';
+  cropBar.style.display = inCrop ? 'flex' : 'none';
+  if (inCrop) {
+    const { l, t, r, b } = crop;
+    Object.assign(cropBox.style, { left: pct(l, W), top: pct(t, H), width: pct(r - l, W), height: pct(b - t, H) });
+    Object.assign(handles.t.style, { left: pct((l + r) / 2, W), top: pct(t, H) });
+    Object.assign(handles.b.style, { left: pct((l + r) / 2, W), top: pct(b, H) });
+    Object.assign(handles.l.style, { left: pct(l, W), top: pct((t + b) / 2, H) });
+    Object.assign(handles.r.style, { left: pct(r, W), top: pct((t + b) / 2, H) });
+  }
+
+  btnSelect.classList.toggle('active', tool === 'select');
+  btnCrop.classList.toggle('active', tool === 'crop');
+  btnSelect.disabled = btnCrop.disabled = !base;
+  btnUndo.disabled = !undoStack.length;
+  btnSave.disabled = !base;
+  btnSave.title = `保存为 ${outFormat.toUpperCase()}  Ctrl+S`;
+  btnFormat.title = `格式转换（当前：${outFormat.toUpperCase()}）`;
+  stage.style.cursor = spaceDown ? 'grab' : (tool === 'crop' ? 'default' : 'crosshair');
+}
+
+/* ---------- 鼠标事件 ---------- */
+stage.addEventListener('pointerdown', e => {
+  if (!base) return;
+  if (e.button === 1 || spaceDown) {          // 中键或空格：平移
+    panDrag = { x: e.clientX, y: e.clientY, px: panX, py: panY };
+    stage.setPointerCapture(e.pointerId);
+    e.preventDefault();
+    return;
+  }
+  const p = pos(e);
+  if (tool === 'crop') {
+    const edge = e.target.dataset ? e.target.dataset.edge : undefined;
+    if (!edge) return;
+    drag = { mode: 'crop', edge };
+  } else if (sel && p.x >= sel.x && p.x < sel.x + sel.w && p.y >= sel.y && p.y < sel.y + sel.h) {
+    drag = { mode: 'move', sx: p.x, sy: p.y, fx: sel.x, fy: sel.y };
+  } else {
+    commit();
+    sel = { x: p.x, y: p.y, w: 0, h: 0 };
+    drag = { mode: 'new', sx: p.x, sy: p.y };
+  }
+  stage.setPointerCapture(e.pointerId);
+  e.preventDefault();
+});
+
+stage.addEventListener('pointermove', e => {
+  if (panDrag) {
+    panX = panDrag.px + (e.clientX - panDrag.x);
+    panY = panDrag.py + (e.clientY - panDrag.y);
+    layout();
+    return;
+  }
+  if (!drag) return;
+  const p = pos(e);
+  if (drag.mode === 'new') {
+    sel = {
+      x: Math.min(drag.sx, p.x), y: Math.min(drag.sy, p.y),
+      w: Math.abs(p.x - drag.sx), h: Math.abs(p.y - drag.sy)
+    };
+  } else if (drag.mode === 'move') {
+    const dx = p.x - drag.sx, dy = p.y - drag.sy;
+    if (!flt && (dx || dy)) lift();
+    if (flt) {
+      flt.x = clamp(drag.fx + dx, 0, W - flt.c.width);
+      flt.y = clamp(drag.fy + dy, 0, H - flt.c.height);
+      sel.x = flt.x; sel.y = flt.y;
+    }
+  } else if (drag.mode === 'crop' && crop) {
+    const c = crop;
+    if (drag.edge === 'l') c.l = clamp(p.x, 0, c.r - MIN);
+    if (drag.edge === 'r') c.r = clamp(p.x, c.l + MIN, W);
+    if (drag.edge === 't') c.t = clamp(p.y, 0, c.b - MIN);
+    if (drag.edge === 'b') c.b = clamp(p.y, c.t + MIN, H);
+  }
+  render(); updateUI();
+});
+
+const endPointer = () => {
+  panDrag = null;
+  if (!drag) return;
+  if (drag.mode === 'new' && sel && (sel.w < 2 || sel.h < 2)) sel = null;
+  drag = null;
+  render(); updateUI();
+};
+stage.addEventListener('pointerup', endPointer);
+stage.addEventListener('pointercancel', endPointer);
+
+/* ---------- 键盘 ---------- */
+window.addEventListener('keydown', e => {
+  if (anyModalOpen()) {
+    if (e.key === 'Escape') ALL_MODALS.forEach(closeModal);
+    return;
+  }
+  if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+
+  const k = e.key, ctrl = e.ctrlKey || e.metaKey, lk = k.toLowerCase();
+
+  if (k === ' ' && base) { spaceDown = true; e.preventDefault(); updateUI(); return; }
+  if (ctrl && lk === 'z') { e.preventDefault(); undo(); return; }
+  if (ctrl && lk === 's') { e.preventDefault(); save(); return; }
+  if (ctrl && lk === 'd') { e.preventDefault(); if (base) commit(); return; }
+  if (ctrl && k === '0') { e.preventDefault(); if (base) resetView(); return; }
+  if (ctrl && lk === 'a') {
+    e.preventDefault();
+    if (base && tool === 'select') { commit(); sel = { x: 0, y: 0, w: W, h: H }; render(); updateUI(); }
+    return;
+  }
+  if (!base) return;
+
+  if (tool === 'crop') {
+    if (k === 'Enter') { e.preventDefault(); applyCrop(); }
+    else if (k === 'Escape') { e.preventDefault(); cancelCrop(); }
+    return;
+  }
+
+  if (k === 'Escape') { commit(); return; }
+
+  if (k === 'Delete' || k === 'Backspace') {
+    if (!sel) return;
+    e.preventDefault();
+    if (!flt) {
+      snapshot();
+      const g = base.getContext('2d');
+      g.fillStyle = '#fff';
+      g.fillRect(sel.x, sel.y, sel.w, sel.h);
+    }
+    flt = null; sel = null;
+    render(); updateUI();
+    return;
+  }
+
+  const dirs = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+  if (dirs[k] && sel) {
+    e.preventDefault();
+    lift();
+    const step = e.shiftKey ? 10 : 1;
+    flt.x = clamp(flt.x + dirs[k][0] * step, 0, W - flt.c.width);
+    flt.y = clamp(flt.y + dirs[k][1] * step, 0, H - flt.c.height);
+    sel.x = flt.x; sel.y = flt.y;
+    render(); updateUI();
+  }
+});
+
+window.addEventListener('keyup', e => {
+  if (e.key === ' ') { spaceDown = false; updateUI(); }
+});
+
+/* ---------- 保存 ---------- */
+// 检测浏览器能否导出某种格式（不支持时 toDataURL 会退回 PNG）
+function canEncode(type) {
+  return makeCanvas(1, 1).toDataURL(type).startsWith(`data:${type}`);
+}
+
+// 生成带白底的完整图像画布
+function flatCanvas(w, h, src) {
+  const c = makeCanvas(w, h), g = c.getContext('2d');
+  g.fillStyle = '#fff';
+  g.fillRect(0, 0, w, h);
+  g.drawImage(src, 0, 0, w, h);
+  return c;
+}
+
+// ICO：以 PNG 内嵌的 ICO 容器，单张图，最大 256 像素
+async function makeIco() {
+  const s = Math.min(1, 256 / W, 256 / H);
+  const w = Math.max(1, Math.round(W * s)), h = Math.max(1, Math.round(H * s));
+  const png = new Uint8Array(await (await toBlobAsync(flatCanvas(w, h, base), 'image/png')).arrayBuffer());
+  const buf = new ArrayBuffer(22 + png.length), dv = new DataView(buf);
+  dv.setUint16(2, 1, true);                 // 类型：ICO
+  dv.setUint16(4, 1, true);                 // 图像数量
+  dv.setUint8(6, w >= 256 ? 0 : w);         // 宽（0 表示 256）
+  dv.setUint8(7, h >= 256 ? 0 : h);         // 高
+  dv.setUint16(10, 1, true);                // 颜色平面
+  dv.setUint16(12, 32, true);               // 位深
+  dv.setUint32(14, png.length, true);       // 数据长度
+  dv.setUint32(18, 22, true);               // 数据偏移
+  new Uint8Array(buf, 22).set(png);
+  return new Blob([buf], { type: 'image/x-icon' });
+}
+
+function download(blob, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+async function save() {
+  if (!base) return;
+  commit();
+  const fmt = outFormat;
+  let blob = null;
+  try {
+    if (fmt === 'ico') {
+      blob = await makeIco();
+    } else if (fmt === 'avif') {
+      if (!canEncode('image/avif')) { alert('当前浏览器不支持导出 AVIF，请选择其他格式'); return; }
+      blob = await toBlobAsync(flatCanvas(W, H, base), MIME.avif, 0.9);
+    } else {
+      blob = await toBlobAsync(flatCanvas(W, H, base), MIME[fmt], fmt === 'png' ? undefined : 0.92);
+    }
+  } catch (err) {
+    alert('保存失败：' + err.message);
+    return;
+  }
+  if (!blob) { alert('保存失败，请换一种格式再试'); return; }
+  download(blob, `edit_${Date.now()}.${fmt}`);
+}
+
+/* ---------- 按钮与初始化 ---------- */
+btnSelect.onclick = () => setTool('select');
+btnCanvas.onclick = openCanvasDialog;
+btnCrop.onclick = () => setTool(tool === 'crop' ? 'select' : 'crop');
+btnUndo.onclick = undo;
+btnFormat.onclick = openFormatDialog;
+btnSave.onclick = save;
+$('#applyCrop').onclick = applyCrop;
+$('#cancelCrop').onclick = cancelCrop;
+window.addEventListener('resize', layout);
+updateUI();
+</script>
+</body>
+</html>

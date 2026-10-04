@@ -57,5 +57,14 @@
       ],
       "key": "ArrowDown"
     }
+  ],
+  "app:switch-vault": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "K"
+    }
   ]
 }
