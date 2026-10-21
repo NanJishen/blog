@@ -121,6 +121,36 @@ const NAV_DATA = [
         ]
       },
       {
+        "term": "在线地图",
+        "links": [
+          {
+            "name": "百度地图",
+            "url": "https://map.baidu.com",
+            "desc": "在线地图"
+          },
+          {
+            "name": "谷歌地图",
+            "url": "https://maps.google.com",
+            "desc": "在线地图"
+          },
+          {
+            "name": "谷歌地球",
+            "url": "https://earth.google.com",
+            "desc": "在线地图"
+          },
+          {
+            "name": "高德地图",
+            "url": "https://amap.com",
+            "desc": "在线地图"
+          },
+          {
+            "name": "OpenStreetMap",
+            "url": "https://openstreetmap.org",
+            "desc": "在线地图"
+          }
+        ]
+      },
+      {
         "term": "翻译查询",
         "links": [
           {
@@ -152,11 +182,6 @@ const NAV_DATA = [
             "name": "Mirai",
             "url": "https://miraitranslate.com/en/trial",
             "desc": "来自日本 Mirai 的翻译服务"
-          },
-          {
-            "name": "火山翻译",
-            "url": "https://translate.volcengine.com",
-            "desc": "新的不错的翻译服务"
           },
           {
             "name": "搜狗翻译",
@@ -319,11 +344,6 @@ const NAV_DATA = [
             "desc": "综合的网盘搜索"
           },
           {
-            "name": "盘搜",
-            "url": "http://www.pansoso.com",
-            "desc": "网盘搜索"
-          },
-          {
             "name": "阿里盘搜",
             "url": "https://upyunso3.com",
             "desc": "阿里云盘搜索"
@@ -331,11 +351,6 @@ const NAV_DATA = [
           {
             "name": "喵狸盘搜",
             "url": "https://www.alipansou.com",
-            "desc": "阿里云盘搜索"
-          },
-          {
-            "name": "阿里盘盘",
-            "url": "https://alipanpan.com",
             "desc": "阿里云盘搜索"
           },
           {
@@ -377,11 +392,6 @@ const NAV_DATA = [
             "name": "夸克小站",
             "url": "https://kkxz.vip",
             "desc": "夸克网盘资源搜索"
-          },
-          {
-            "name": "毕方铺",
-            "url": "https://www.iizhi.cn",
-            "desc": "网盘资源搜索"
           },
           {
             "name": "盘友圈",
@@ -442,11 +452,6 @@ const NAV_DATA = [
             "name": "Netcut",
             "url": "https://netcut.cn",
             "desc": "在线剪切板和7天文件分享"
-          },
-          {
-            "name": "云剪切板",
-            "url": "https://cv.yi2a.com",
-            "desc": "在线剪切板支持命令行"
           },
           {
             "name": "微信文件传输助手",
@@ -524,11 +529,6 @@ const NAV_DATA = [
             "desc": "老牌无限制的临时分享"
           },
           {
-            "name": "File Doge",
-            "url": "https://filedoge.com",
-            "desc": "不限制容量临时分享"
-          },
-          {
             "name": "Internxt Send",
             "url": "https://send.internxt.com",
             "desc": "加密文件传输临时分享"
@@ -599,11 +599,6 @@ const NAV_DATA = [
             "desc": "匿名分享文件"
           },
           {
-            "name": "TransferKit",
-            "url": "https://transferkit.io",
-            "desc": "去中心化分享文件"
-          },
-          {
             "name": "TransferEasy",
             "url": "https://transfereasy.in",
             "desc": "大文件分享"
@@ -669,11 +664,6 @@ const NAV_DATA = [
             "desc": "创建聊天室加文件分享"
           },
           {
-            "name": "FileRoom",
-            "url": "https://fileroom.io",
-            "desc": "本地网络聊天室加文件互传"
-          },
-          {
             "name": "SaladRoom",
             "url": "https://saladroom.net",
             "desc": "网络房间互传文件"
@@ -714,19 +704,9 @@ const NAV_DATA = [
             "desc": "不错图床带管理"
           },
           {
-            "name": "路过图床",
-            "url": "https://imgtu.com",
-            "desc": "老牌稳定图床"
-          },
-          {
             "name": "聚合图床",
             "url": "https://www.superbed.cn",
             "desc": "聚合型图床"
-          },
-          {
-            "name": "笑果图床",
-            "url": "https://imagelol.com",
-            "desc": "很不错图床"
           },
           {
             "name": "图仓图床",
@@ -737,16 +717,6 @@ const NAV_DATA = [
             "name": "传个图",
             "url": "https://chuangetu.com",
             "desc": "免费图床"
-          },
-          {
-            "name": "跬步图床",
-            "url": "https://img.kuibu.net",
-            "desc": "很不错图床"
-          },
-          {
-            "name": "鸡霸图床",
-            "url": "https://gejiba.com",
-            "desc": "很不错图床"
           },
           {
             "name": "流浪图床",
@@ -774,11 +744,6 @@ const NAV_DATA = [
             "desc": "新开图床"
           },
           {
-            "name": "IPFS图床",
-            "url": "https://ipfs.xkx.me",
-            "desc": "IPFS技术图床"
-          },
-          {
             "name": "SM.SM",
             "url": "https://sm.ms",
             "desc": "老牌稳定图床"
@@ -789,11 +754,6 @@ const NAV_DATA = [
             "desc": "免费不限量图床"
           },
           {
-            "name": "imgBee",
-            "url": "https://imgbee.com",
-            "desc": "支持编辑图像分享类图床"
-          },
-          {
             "name": "Postimg",
             "url": "https://postimages.org",
             "desc": "老牌图床"
@@ -802,11 +762,6 @@ const NAV_DATA = [
             "name": "Pasteboard",
             "url": "https://pasteboard.co",
             "desc": "支持10M图像图床"
-          },
-          {
-            "name": "如优图床",
-            "url": "https://img.rruu.net",
-            "desc": "不错图床"
           },
           {
             "name": "ImgBB",
@@ -827,16 +782,6 @@ const NAV_DATA = [
             "name": "Img.onl",
             "url": "https://img.onl",
             "desc": "简单的国外图床"
-          },
-          {
-            "name": "Fghrsh",
-            "url": "https://img.fghrsh.net",
-            "desc": "需注册的大图图床"
-          },
-          {
-            "name": "ZA4",
-            "url": "https://z4a.net",
-            "desc": "海外服务器无需注册图床"
           },
           {
             "name": "Catbox",
@@ -959,6 +904,11 @@ const NAV_DATA = [
             "desc": "国内主流微博平台"
           },
           {
+            "name": "公众号",
+            "url": "https://mp.weixin.qq.com",
+            "desc": "腾讯微信公众号"
+          },
+          {
             "name": "百度贴吧",
             "url": "https://tieba.baidu.com",
             "desc": "百度的兴趣小社区"
@@ -1049,7 +999,7 @@ const NAV_DATA = [
             "desc": "种子与磁力链接解析和播放"
           }
         ]
-      },
+      }
     ]
   },
   {
@@ -1065,18 +1015,8 @@ const NAV_DATA = [
             "desc": "全球知名的创意作品分享"
           },
           {
-            "name": "倾城之链",
-            "url": "https://nicelinks.site",
-            "desc": "很多资源推荐"
-          },
-          {
             "name": "新趣集",
             "url": "https://xinquji.com",
-            "desc": "好产品推荐"
-          },
-          {
-            "name": "创造者日报",
-            "url": "https://creatorsdaily.com",
             "desc": "好产品推荐"
           },
           {
@@ -1095,19 +1035,9 @@ const NAV_DATA = [
             "desc": "很全面的免费资源库"
           },
           {
-            "name": "开软软件趋势",
-            "url": "https://trend.quickso.cn",
-            "desc": "开源软件趋势与评分"
-          },
-          {
             "name": "HelloGithub",
             "url": "https://hellogithub.com",
             "desc": "发现和分享入门级开源项目"
-          },
-          {
-            "name": "Slant",
-            "url": "https://www.slant.co",
-            "desc": "查找最佳软件排名"
           },
           {
             "name": "Free",
@@ -1440,9 +1370,9 @@ const NAV_DATA = [
             "desc": "开源安卓软件合集"
           },
           {
-            "name": "酷安市场",
-            "url": "https://coolapk.com/apk/",
-            "desc": "国内应用市场平台"
+            "name": "酷安",
+            "url": "https://coolapk.com",
+            "desc": "国内应用平台"
           },
           {
             "name": "异星软件空间",
@@ -1450,24 +1380,9 @@ const NAV_DATA = [
             "desc": "软件推荐分享平台"
           },
           {
-            "name": "找应用",
-            "url": "https://findappweb.com",
-            "desc": "找安卓应用和下载"
-          },
-          {
-            "name": "最美应用",
-            "url": "http://zuimeia.com",
-            "desc": "小而美的安卓应用分享"
-          },
-          {
             "name": "安卓果酱",
             "url": "https://cn.apkjam.com",
             "desc": "安卓应用发掘"
-          },
-          {
-            "name": "APKCombo",
-            "url": "https://apkcombo.com/zh/apk-downloader/",
-            "desc": "安卓应用下载"
           },
           {
             "name": "ApkPure",
@@ -1513,11 +1428,6 @@ const NAV_DATA = [
             "name": "Crontab",
             "url": "https://crontab.guru",
             "desc": "cron计划任务编辑器"
-          },
-          {
-            "name": "CMDhelp",
-            "url": "https://cmdhelp.com",
-            "desc": "Linux命令查询"
           }
         ]
       },
@@ -1581,7 +1491,7 @@ const NAV_DATA = [
           },
           {
             "name": "存储容量计算",
-            "url": "容量计算：https://whatsabyte.com/P1/byteconverter.htm",
+            "url": "https://whatsabyte.com/converters/",
             "desc": "电脑存储容量计算"
           },
           {
@@ -1686,24 +1596,9 @@ const NAV_DATA = [
             "desc": "MTV播放加下载"
           },
           {
-            "name": "MVBOX",
-            "url": "https://www.mvbox.net",
-            "desc": "韩国MV播放加下载"
-          },
-          {
             "name": "铜钟",
             "url": "https://tonzhon.com",
             "desc": "在线听歌和云音乐歌单"
-          },
-          {
-            "name": "无损生活",
-            "url": "https://flac.life",
-            "desc": "音乐搜索和下载"
-          },
-          {
-            "name": "AeKun",
-            "url": "http://aekun.com",
-            "desc": "小众音乐分享"
           },
           {
             "name": "51下载器",
@@ -1726,11 +1621,6 @@ const NAV_DATA = [
             "desc": "为音乐人提供平台"
           },
           {
-            "name": "一起听音乐",
-            "url": "http://music.jsososo.com",
-            "desc": "极简好用的在线听歌"
-          },
-          {
             "name": "超高无损",
             "url": "https://www.sq688.com",
             "desc": "网友无损音乐分享"
@@ -1746,18 +1636,13 @@ const NAV_DATA = [
             "desc": "网友音乐分享"
           },
           {
-            "name": "炫音音乐论坛",
-            "url": "https://bbs.musicool.cn",
-            "desc": "网友音乐分享"
-          },
-          {
             "name": "漫音社",
             "url": "http://www.acgjc.com",
             "desc": "动漫音乐相关"
           },
           {
             "name": "TunemyMusic",
-            "url": "https://www.tunemymusic.com/zh-cn/",
+            "url": "https://www.tunemymusic.com/zh-CN",
             "desc": "在不同的音乐服务平台之间传送播放列表"
           }
         ]
@@ -1866,18 +1751,8 @@ const NAV_DATA = [
             "desc": "高清电影下载"
           },
           {
-            "name": "蓝光网",
-            "url": "http://www.languang.co",
-            "desc": "高清电影下载"
-          },
-          {
             "name": "蓝光电影网",
             "url": "http://www.languangdy.com",
-            "desc": "高清电影下载"
-          },
-          {
-            "name": "深影译站",
-            "url": "https://sub.shinybbs.vip",
             "desc": "高清电影下载"
           },
           {
@@ -1889,11 +1764,6 @@ const NAV_DATA = [
             "name": "影网",
             "url": "http://vrfilmlink.com",
             "desc": "高清电影下载"
-          },
-          {
-            "name": "海盗湾",
-            "url": "https://thepiratebay.org",
-            "desc": "知名的电影下载"
           },
           {
             "name": "1337X",
@@ -2086,11 +1956,6 @@ const NAV_DATA = [
             "desc": "YYeTs 字幕组"
           },
           {
-            "name": "A4k字幕网",
-            "url": "https://www.a4k.net",
-            "desc": "不错的字幕组"
-          },
-          {
             "name": "伪射手",
             "url": "https://assrt.net",
             "desc": "老射手字幕"
@@ -2098,11 +1963,6 @@ const NAV_DATA = [
           {
             "name": "R3字幕网",
             "url": "https://r3sub.com",
-            "desc": "不错的字幕网站"
-          },
-          {
-            "name": "点点字幕",
-            "url": "http://www.ddzimu.com",
             "desc": "不错的字幕网站"
           },
           {
@@ -2114,6 +1974,11 @@ const NAV_DATA = [
             "name": "Translate Sub",
             "url": "https://translatesubtitles.co",
             "desc": "字幕文件翻译"
+          },
+          {
+            "name": "Subtitle FPS Converter",
+            "url": "https://subtitleflow.com/tools/subtitle-fps-converter",
+            "desc": "转换字幕速率/帧率"
           }
         ]
       }
@@ -2140,11 +2005,6 @@ const NAV_DATA = [
             "name": "CoverView",
             "url": "https://github.com/rutikwankhade/CoverView",
             "desc": "为博客创建封面图"
-          },
-          {
-            "name": "Bubble",
-            "url": "https://bubble.ilioslabs.dev",
-            "desc": "文字下载为TXT"
           },
           {
             "name": "Itty bitty",
@@ -2232,11 +2092,6 @@ const NAV_DATA = [
         "term": "文字卡片",
         "links": [
           {
-            "name": "Marked",
-            "url": "https://marked.cc",
-            "desc": "文字转便笺图"
-          },
-          {
             "name": "Memonotepad",
             "url": "https://www.memonotepad.com",
             "desc": "文字转书写备忘录图片"
@@ -2312,11 +2167,6 @@ const NAV_DATA = [
             "desc": "不错的二维码生成服务"
           },
           {
-            "name": "9点二维码",
-            "url": "https://qrcode.jiudian.link",
-            "desc": "可调节样式的二维码生成"
-          },
-          {
             "name": "微微二维码",
             "url": "https://jiema.wwei.cn",
             "desc": "可调节样式的二维码生成"
@@ -2337,11 +2187,6 @@ const NAV_DATA = [
             "desc": "很好的二维码生成"
           },
           {
-            "name": "Linktoqr",
-            "url": "https://link-to-qr.com",
-            "desc": "带样式能调色的二维码生成"
-          },
-          {
             "name": "WifiSign",
             "url": "https://www.mywifisign.com",
             "desc": "将Wifi账户密码转二维码"
@@ -2357,24 +2202,9 @@ const NAV_DATA = [
         "term": "截图录制",
         "links": [
           {
-            "name": "网页截屏大师",
-            "url": "https://www.screenshotmaster.com",
-            "desc": "网页在线截屏页转图像"
-          },
-          {
             "name": "Screen Guru",
             "url": "https://screen.guru",
             "desc": "捕获网站为带背景色的MAC样式图"
-          },
-          {
-            "name": "Web-Capture",
-            "url": "https://web-capture.net",
-            "desc": "捕获某网站的长截图"
-          },
-          {
-            "name": "FullpageSC",
-            "url": "https://fullpagescreencapture.com",
-            "desc": "捕获某网站的长截图"
           },
           {
             "name": "Screenshot",
@@ -2405,11 +2235,6 @@ const NAV_DATA = [
             "name": "Loom",
             "url": "https://www.loom.com",
             "desc": "在线录制屏幕带摄像头像"
-          },
-          {
-            "name": "Shareit",
-            "url": "https://shareit.video",
-            "desc": "在线录制屏幕或窗口并分享"
           },
           {
             "name": "Scrnrcrd",
@@ -2452,11 +2277,6 @@ const NAV_DATA = [
             "desc": "随机生成临时邮箱"
           },
           {
-            "name": "Tempinbox",
-            "url": "http://www.tempinbox.com",
-            "desc": "非常不错的临时邮箱"
-          },
-          {
             "name": "Guerrilla Mail",
             "url": "https://www.guerrillamail.com/zh/",
             "desc": "临时邮箱"
@@ -2489,11 +2309,6 @@ const NAV_DATA = [
           {
             "name": "Mailnator",
             "url": "https://www.mailinator.com",
-            "desc": "临时邮箱"
-          },
-          {
-            "name": "Throwaway",
-            "url": "https://www.throwawaymail.com",
             "desc": "临时邮箱"
           },
           {
@@ -2607,11 +2422,6 @@ const NAV_DATA = [
             "desc": "国外接码平台"
           },
           {
-            "name": "ReSMSol",
-            "url": "https://smsreceivefree.com",
-            "desc": "国外接码平台"
-          },
-          {
             "name": "RSOI",
             "url": "https://www.receive-sms-online.info",
             "desc": "国外接码平台"
@@ -2668,7 +2478,7 @@ const NAV_DATA = [
           },
           {
             "name": "OLOCR",
-            "url": "https://olocr.com/chinese_simplified",
+            "url": "https://olocr.com",
             "desc": "简单易用的在线 OCR"
           },
           {
@@ -2690,11 +2500,6 @@ const NAV_DATA = [
             "name": "OCR表格转Excel",
             "url": "https://zhiyakeji.com/freg/",
             "desc": "OCR 表格转 Excel"
-          },
-          {
-            "name": "EasyScreen",
-            "url": "http://online.easyscreenocr.com/ZH",
-            "desc": "易用的 OCR 还有软件下载"
           },
           {
             "name": "OnlineOCR",
@@ -2740,16 +2545,6 @@ const NAV_DATA = [
             "name": "Roman Word Generator",
             "url": "https://randomwordgenerator.com",
             "desc": "随机英文单词生成"
-          },
-          {
-            "name": "美国地址生成器",
-            "url": "https://www.usaddrgen.com",
-            "desc": "假的美国身份生成器"
-          },
-          {
-            "name": "Fake-Name-generator",
-            "url": "https://toolfig.com/fake-name-generator",
-            "desc": "假的美国身份生成器"
           },
           {
             "name": "随机英文姓名生成器",
@@ -2837,19 +2632,9 @@ const NAV_DATA = [
             "desc": "短网址服务支持图像视频"
           },
           {
-            "name": "厘短链",
-            "url": "https://dlj.li",
-            "desc": "短网址生成"
-          },
-          {
             "name": "Offf.to",
             "url": "https://offf.to",
             "desc": "短网址生成"
-          },
-          {
-            "name": "Ji.hn",
-            "url": "https://ji.hn",
-            "desc": "短网址生成追踪和转换"
           },
           {
             "name": "TinyURL",
@@ -2864,11 +2649,6 @@ const NAV_DATA = [
           {
             "name": "Rebrandly",
             "url": "https://www.rebrandly.com",
-            "desc": "缩短链接服务"
-          },
-          {
-            "name": "AdFly",
-            "url": "https://adf.ly",
             "desc": "缩短链接服务"
           }
         ]
@@ -3037,11 +2817,6 @@ const NAV_DATA = [
             "desc": "支持多平台视频下载"
           },
           {
-            "name": "igDown",
-            "url": "https://igdown.cc",
-            "desc": "支持多平台视频下载"
-          },
-          {
             "name": "SSYouTube",
             "url": "https://ssyoutube.com",
             "desc": "支持多平台视频下载"
@@ -3055,11 +2830,6 @@ const NAV_DATA = [
             "name": "Y2meta",
             "url": "https://www.y2meta.com/zh-cn63",
             "desc": "支持多平台视频下载"
-          },
-          {
-            "name": "Ingramer",
-            "url": "https://ingramer.com/downloader",
-            "desc": "国外平台视频下载"
           },
           {
             "name": "KeepPost",
@@ -3082,18 +2852,13 @@ const NAV_DATA = [
             "desc": "获取推特视频和GIF"
           },
           {
-            "name": "TWDown",
-            "url": "https://twdown.net",
-            "desc": "推特视频下载"
-          },
-          {
             "name": "Tweeload",
             "url": "https://tweeload.com",
             "desc": "推特视频下载"
           },
           {
             "name": "XDownload",
-            "url": "https://xdownload.top/zh-cn",
+            "url": "https://xdownload.top",
             "desc": "推特视频下载"
           },
           {
@@ -3137,11 +2902,6 @@ const NAV_DATA = [
             "desc": "TikTok视频下载"
           },
           {
-            "name": "Proxitok",
-            "url": "https://proxitok.pabloferreiro.es",
-            "desc": "TikTok搜索下载和RSS订阅"
-          },
-          {
             "name": "X2Download",
             "url": "https://x2download.com",
             "desc": "油管视频下载"
@@ -3149,11 +2909,6 @@ const NAV_DATA = [
           {
             "name": "SnapSave",
             "url": "https://snapsave.io",
-            "desc": "油管视频下载"
-          },
-          {
-            "name": "SaveMedia.Website",
-            "url": "https://savemedia.website",
             "desc": "油管视频下载"
           },
           {
@@ -3192,11 +2947,6 @@ const NAV_DATA = [
             "desc": "油管下载转档音频和视频"
           },
           {
-            "name": "Keepvid",
-            "url": "https://keepvid.pw/zh/",
-            "desc": "支持多个平台视频下载"
-          },
-          {
             "name": "Yout",
             "url": "https://yout.com",
             "desc": "多平台视频下载"
@@ -3222,24 +2972,9 @@ const NAV_DATA = [
             "desc": "油管视频下载并转换格式"
           },
           {
-            "name": "ddownr",
-            "url": "https://ddownr.com",
-            "desc": "油管视频或播放清单下载"
-          },
-          {
             "name": "Fdown",
             "url": "https://www.fdown.net",
             "desc": "脸书视频下载"
-          },
-          {
-            "name": "Ontiva",
-            "url": "https://ontiva.com",
-            "desc": "油管视频下载"
-          },
-          {
-            "name": "Insta",
-            "url": "https://instaer.app",
-            "desc": "Ins视频下载"
           },
           {
             "name": "BigConverter",
@@ -3282,11 +3017,6 @@ const NAV_DATA = [
             "desc": "多平台视频或音频下载"
           },
           {
-            "name": "odownloader",
-            "url": "https://odownloader.com",
-            "desc": "获取油管的视频和音频"
-          },
-          {
             "name": "OnlyMP3",
             "url": "https://en.onlymp3.to",
             "desc": "油管视频下载为MP3音频"
@@ -3300,16 +3030,6 @@ const NAV_DATA = [
             "name": "SnapAny",
             "url": "https://bilibili.iiilab.com",
             "desc": "哔哩哔哩视频下载"
-          },
-          {
-            "name": "蜜蜂去水印",
-            "url": "https://video.ciding.cc",
-            "desc": "视频下载去水印"
-          },
-          {
-            "name": "Image Extraction",
-            "url": "https://www.imageextraction.com",
-            "desc": "网站图像获取"
           },
           {
             "name": "Image Extractor",
@@ -3332,19 +3052,9 @@ const NAV_DATA = [
             "desc": "下载字幕并转换"
           },
           {
-            "name": "AiTranscript",
-            "url": "https://aiyoutubetranscript.com",
-            "desc": "油管字幕下载"
-          },
-          {
             "name": "Dlytsubtitles",
             "url": "https://www.downloadyoutubesubtitles.com",
             "desc": "下载字幕并转换"
-          },
-          {
-            "name": "YouTube CS",
-            "url": "https://ytbcomments.com",
-            "desc": "油管评论下载"
           },
           {
             "name": "YTG",
@@ -3461,7 +3171,7 @@ const NAV_DATA = [
             "name": "Drawnix",
             "url": "https://drawnix.com",
             "desc": "白板带思维导图"
-          },
+          }
         ]
       },
       {
@@ -3623,11 +3333,6 @@ const NAV_DATA = [
             "desc": "微软官方 Office 模板"
           },
           {
-            "name": "Excelhome",
-            "url": "https://www.excelhome.net",
-            "desc": "Excel教程和下载"
-          },
-          {
             "name": "CSVInk",
             "url": "https://csv.ink",
             "desc": "在线编辑CSV文件"
@@ -3653,24 +3358,9 @@ const NAV_DATA = [
             "desc": "PPT 模板素材"
           },
           {
-            "name": "PPT超级市场",
-            "url": "https://ppt.sotary.com",
-            "desc": "很多不错的 PPT 模板"
-          },
-          {
             "name": "嗨文库",
             "url": "http://hiwenku.com",
             "desc": "下载百度文库文档"
-          },
-          {
-            "name": "办公资源网",
-            "url": "https://www.bangongziyuan.com",
-            "desc": "办公相关资源文档"
-          },
-          {
-            "name": "香当网",
-            "url": "https://www.xiangdang.net",
-            "desc": "范文模板，保证书什么的"
           }
         ]
       },
@@ -3834,8 +3524,8 @@ const NAV_DATA = [
           },
           {
             "name": "QuicklyPDF",
-            "url": "https://quicklypdf.com/zh",
-            "desc": "快捷便捷简单的PDF工具"
+            "url": "https://quicklypdf.com",
+            "desc": "快捷便捷的PDF工具"
           },
           {
             "name": "AvePDF",
@@ -3871,11 +3561,6 @@ const NAV_DATA = [
             "name": "PDF.Online",
             "url": "https://pdf.online",
             "desc": "不错的在线PDF工具"
-          },
-          {
-            "name": "PDFtoImg",
-            "url": "https://pdfconvertfree.com",
-            "desc": "PDF转换为图像文件"
           },
           {
             "name": "PDF Candy",
@@ -3933,11 +3618,6 @@ const NAV_DATA = [
             "desc": "像 Audacity 的音频编辑器"
           },
           {
-            "name": "Ringer",
-            "url": "https://ringer.org",
-            "desc": "音频截取做为铃声"
-          },
-          {
             "name": "Audio Cutter Online",
             "url": "https://clideo.com/cut-audio",
             "desc": "音频剪辑"
@@ -3968,11 +3648,6 @@ const NAV_DATA = [
             "desc": "人声分离并支持调用油管"
           },
           {
-            "name": "UVR5",
-            "url": "https://uvr5.online",
-            "desc": "人声分离"
-          },
-          {
             "name": "Vocalremover",
             "url": "https://vocalremover.org/zh",
             "desc": "音频编辑人声分离伴奏"
@@ -3986,11 +3661,6 @@ const NAV_DATA = [
             "name": "Aoqiv",
             "url": "https://www.aoqiv.com",
             "desc": "在线音乐编辑器"
-          },
-          {
-            "name": "Mycassette",
-            "url": "https://www.mycassette.app",
-            "desc": "将音乐做成磁带视频"
           },
           {
             "name": "Audiomass",
@@ -4048,16 +3718,6 @@ const NAV_DATA = [
         "term": "数据图表",
         "links": [
           {
-            "name": "文图",
-            "url": "http://wentu.io",
-            "desc": "制作可视化图表"
-          },
-          {
-            "name": "Make Graph",
-            "url": "https://makegraph.app",
-            "desc": "免费数据图表制作"
-          },
-          {
             "name": "AI Graph Maker",
             "url": "https://aigraphmaker.net/zh-hans",
             "desc": "AI快速生成图表"
@@ -4086,11 +3746,6 @@ const NAV_DATA = [
             "name": "Taskade",
             "url": "https://www.taskade.com",
             "desc": "制作精美的列表图"
-          },
-          {
-            "name": "百度图说",
-            "url": "https://tushuo.baidu.com",
-            "desc": "百度出品制作各种图表"
           },
           {
             "name": "ChartCube",
@@ -4369,11 +4024,6 @@ const NAV_DATA = [
             "desc": "ePub电子书阅读器"
           },
           {
-            "name": "Lota",
-            "url": "https://app.lotareader.com",
-            "desc": "VSCode风格的 EPUB 电子书阅读器"
-          },
-          {
             "name": "GetFreeEBooks",
             "url": "https://www.getfreeebooks.com",
             "desc": "英文图书推荐合集"
@@ -4512,11 +4162,6 @@ const NAV_DATA = [
             "name": "w3cplus",
             "url": "http://www.w3cplus.com",
             "desc": "前端教程"
-          },
-          {
-            "name": "阿西河",
-            "url": "https://www.axihe.com",
-            "desc": "公益的前端教程"
           }
         ]
       }
@@ -4655,11 +4300,6 @@ const NAV_DATA = [
             "desc": "物流快递公司"
           },
           {
-            "name": "丰网快递",
-            "url": "http://www.fwx-network.com",
-            "desc": "顺丰旗下的快递公司"
-          },
-          {
             "name": "壹米滴答",
             "url": "https://www.yimidida.com",
             "desc": "物流快递公司"
@@ -4672,11 +4312,6 @@ const NAV_DATA = [
           {
             "name": "转中转运",
             "url": "https://www.uszcn.com",
-            "desc": "海淘用海运服务"
-          },
-          {
-            "name": "中环转运",
-            "url": "https://www.zhonghuanus.com",
             "desc": "海淘用海运服务"
           },
           {
@@ -4756,11 +4391,6 @@ const NAV_DATA = [
             "desc": "可以将 JSON 文件数据转成树状图"
           },
           {
-            "name": "jsons",
-            "url": "http://www.jsons.cn",
-            "desc": "Json解析格式化工具"
-          },
-          {
             "name": "sojson",
             "url": "https://www.sojson.com",
             "desc": "Json解析格式化工具"
@@ -4791,19 +4421,9 @@ const NAV_DATA = [
             "desc": "网络免费资源VPS相关"
           },
           {
-            "name": "Geekhub",
-            "url": "https://geekhub.com",
-            "desc": "不错的创意社区论坛"
-          },
-          {
             "name": "IDC Flare",
             "url": "https://idcflare.com",
             "desc": "域名主机等社区论坛"
-          },
-          {
-            "name": "影子论坛",
-            "url": "https://www.shadow-forum.com",
-            "desc": "资源共享平台"
           },
           {
             "name": "屌丝论坛",
@@ -4811,24 +4431,9 @@ const NAV_DATA = [
             "desc": "建站相关讨论"
           },
           {
-            "name": "VPS社区",
-            "url": "https://www.qqvps.com",
-            "desc": "VPS相关讨论"
-          },
-          {
             "name": "CSDN",
             "url": "https://www.csdn.net",
             "desc": "开发者博客社区"
-          },
-          {
-            "name": "极客分享",
-            "url": "https://hackershare.dev",
-            "desc": "分享专业的工具和教程"
-          },
-          {
-            "name": "兴趣小组",
-            "url": "https://www.xqxz.cn",
-            "desc": "各种兴趣爱好的小社区"
           },
           {
             "name": "掘金",
@@ -4851,19 +4456,9 @@ const NAV_DATA = [
             "desc": "不错的开发者社区"
           },
           {
-            "name": "奇客谷",
-            "url": "https://www.qikegu.com",
-            "desc": "开发教程文章支持搜索"
-          },
-          {
             "name": "开源中国",
             "url": "https://www.oschina.net",
             "desc": "国内开源技术交流社区"
-          },
-          {
-            "name": "黑客新闻",
-            "url": "https://www.heikewan.com",
-            "desc": "hacker news 中文版"
           },
           {
             "name": "InfoQ",
@@ -4898,11 +4493,6 @@ const NAV_DATA = [
           {
             "name": "Showcode",
             "url": "https://showcode.app",
-            "desc": "代码转图像"
-          },
-          {
-            "name": "Kod.so",
-            "url": "https://kod.so",
             "desc": "代码转图像"
           },
           {
@@ -5041,11 +4631,6 @@ const NAV_DATA = [
             "desc": "css和js格式化处理等"
           },
           {
-            "name": "Mega Tags",
-            "url": "https://megatags.co",
-            "desc": "社交媒体元数据生成"
-          },
-          {
             "name": "Placeholder",
             "url": "https://placeholder.com",
             "desc": "图像占位图服务"
@@ -5056,24 +4641,9 @@ const NAV_DATA = [
             "desc": "随机或指定占位图服务"
           },
           {
-            "name": "Picsum",
-            "url": "https://placeimg.com",
-            "desc": "随机或指定占位图服务"
-          },
-          {
-            "name": "PlaceIMG",
-            "url": "https://placekitten.com",
-            "desc": "随机或指定占位图服务"
-          },
-          {
             "name": "Dummyimg",
             "url": "https://dummyimage.com",
             "desc": "自定义图像占位图"
-          },
-          {
-            "name": "ipsm.io",
-            "url": "https://ipsm.io",
-            "desc": "生产力工具目前有视频占位符"
           },
           {
             "name": "Tables Gen",
@@ -5096,16 +4666,6 @@ const NAV_DATA = [
             "desc": "随机 Flickr 图像服务"
           },
           {
-            "name": "Pixel 随机图",
-            "url": "https://lorempixel.com",
-            "desc": "随机 Pixel 图像服务"
-          },
-          {
-            "name": "Unsplash 随机图",
-            "url": "https://source.unsplash.com",
-            "desc": "随机 Unsplash 图像服务"
-          },
-          {
             "name": "Gtmetrix",
             "url": "https://gtmetrix.com",
             "desc": "网站性能测试"
@@ -5126,19 +4686,9 @@ const NAV_DATA = [
         "term": "前端素材",
         "links": [
           {
-            "name": "踏得网",
-            "url": "http://techbrood.com",
-            "desc": "源码模板分享平台"
-          },
-          {
             "name": "Yourware",
             "url": "https://www.yourware.so",
             "desc": "前端代码共享平台"
-          },
-          {
-            "name": "Web-tools",
-            "url": "https://devtooly.com",
-            "desc": "前端开发工具合集"
           },
           {
             "name": "Griddy",
@@ -5196,11 +4746,6 @@ const NAV_DATA = [
             "desc": "前端框架交互组件"
           },
           {
-            "name": "ESnippets",
-            "url": "https://emilkowalski.github.io/css-effects-snippets",
-            "desc": "CSS按钮链接动画"
-          },
-          {
             "name": "Favicon",
             "url": "https://favicon.io",
             "desc": "好用的网站图标生成"
@@ -5241,11 +4786,6 @@ const NAV_DATA = [
             "desc": "播放器样式代码生成"
           },
           {
-            "name": "GlassUI",
-            "url": "https://ui.glass/generator",
-            "desc": "创造玻璃效果的CSS界面"
-          },
-          {
             "name": "17素材",
             "url": "http://www.17sucai.com",
             "desc": "各类模板素材"
@@ -5269,11 +4809,6 @@ const NAV_DATA = [
             "name": "Soft-UI",
             "url": "https://neumorphism.io",
             "desc": "UI按钮效果生成"
-          },
-          {
-            "name": "SShadow",
-            "url": "https://shadows.brumm.af",
-            "desc": "多段阴影效果生成"
           },
           {
             "name": "9elements",
@@ -5309,11 +4844,6 @@ const NAV_DATA = [
             "name": "Waves",
             "url": "https://getwaves.io",
             "desc": "波浪效果生生"
-          },
-          {
-            "name": "Clip-path",
-            "url": "https://bennettfeely.com/clippy",
-            "desc": "剪辑背景生成"
           },
           {
             "name": "color-Schemes",
@@ -5446,11 +4976,6 @@ const NAV_DATA = [
             "desc": "很不错的图标库"
           },
           {
-            "name": "FreeIcons",
-            "url": "https://www.freeicons.org",
-            "desc": "免费开源图标并支持搜索"
-          },
-          {
             "name": "Yesicon",
             "url": "https://yesicon.app",
             "desc": "支持中文搜索的免费图标库"
@@ -5484,11 +5009,6 @@ const NAV_DATA = [
             "name": "Potlab Icon",
             "url": "http://www.potlabicons.com",
             "desc": "一套不错的动画图标"
-          },
-          {
-            "name": "BlendIcons",
-            "url": "https://blendicons.com",
-            "desc": "十几万可免费商用图示"
           },
           {
             "name": "Phospicons",
@@ -5526,16 +5046,6 @@ const NAV_DATA = [
             "desc": "SVG按钮图标生成器"
           },
           {
-            "name": "Modulz",
-            "url": "https://icons.modulz.app",
-            "desc": "不错的SVG图标生成器"
-          },
-          {
-            "name": "Ikonate",
-            "url": "https://www.ikonate.com",
-            "desc": "可选你要的SVG图标下载"
-          },
-          {
             "name": "Simpleicons",
             "url": "https://simpleicons.org",
             "desc": "上前的流行图标logo下载"
@@ -5561,11 +5071,6 @@ const NAV_DATA = [
             "desc": "加速网站网页载入速度"
           },
           {
-            "name": "75CDN",
-            "url": "https://cdn.baomitu.com",
-            "desc": "前端项目CDN加速服务"
-          },
-          {
             "name": "Staticfile",
             "url": "https://staticfile.org",
             "desc": "七牛云维护的CDN加速服务"
@@ -5576,7 +5081,7 @@ const NAV_DATA = [
             "desc": "前端项目CDN加速服务"
           },
           {
-            "name": "LOLI",
+            "name": "烧饼论坛",
             "url": "https://sb.sb/blog/css-cdn/",
             "desc": "自建前端CDN加速服务"
           },
@@ -5599,11 +5104,6 @@ const NAV_DATA = [
             "name": "Manypixels",
             "url": "https://gallery.manypixels.co",
             "desc": "SVG 插图"
-          },
-          {
-            "name": "DrawKit",
-            "url": "https://www.drawkit.io",
-            "desc": "很不错的插画图资源"
           },
           {
             "name": "Blush",
@@ -5669,27 +5169,12 @@ const NAV_DATA = [
             "name": "Weareskribbl",
             "url": "https://weareskribbl.com",
             "desc": "免费手绘黑白效果插图"
-          },
-          {
-            "name": "PassionHacks",
-            "url": "https://passionhacks.com/gradient-isometric-illustrations",
-            "desc": "免费的170个插图"
           }
         ]
       },
       {
         "term": "前端其它",
         "links": [
-          {
-            "name": "前端导航",
-            "url": "http://nav.web-hub.cn",
-            "desc": "前端导航"
-          },
-          {
-            "name": "前站导航",
-            "url": "https://www.frontendjs.com",
-            "desc": "前端导航"
-          },
           {
             "name": "Similarweb",
             "url": "https://www.similarweb.com/top-websites",
@@ -5741,11 +5226,6 @@ const NAV_DATA = [
             "desc": "将个人社交媒体链接放在一起"
           },
           {
-            "name": "Capture My Tweet",
-            "url": "https://capturemytweet.in",
-            "desc": "推文转精美图像"
-          },
-          {
             "name": "How Big Is My Browser",
             "url": "http://howbigismybrowser.com",
             "desc": "测量当前浏览器窗口尺寸"
@@ -5786,16 +5266,6 @@ const NAV_DATA = [
             "desc": "程序员开发工具箱"
           },
           {
-            "name": "Tab.tools",
-            "url": "https://tab.tools",
-            "desc": "程序员开发工具箱"
-          },
-          {
-            "name": "ssstab-bar",
-            "url": "https://bar.ssstab.com",
-            "desc": "在线搜索工具箱"
-          },
-          {
             "name": "FreeCodeTools",
             "url": "https://freecodetools.org",
             "desc": "常用的开发者工具"
@@ -5819,16 +5289,6 @@ const NAV_DATA = [
             "name": "菜鸟工具",
             "url": "https://c.runoob.com",
             "desc": "各种工具"
-          },
-          {
-            "name": "奇Q工具",
-            "url": "https://qqe2.com",
-            "desc": "各种工具"
-          },
-          {
-            "name": "Fetoolkit",
-            "url": "https://www.fetoolkit.io",
-            "desc": "前端开发工具箱"
           },
           {
             "name": "Regex101",
@@ -5856,11 +5316,6 @@ const NAV_DATA = [
             "desc": "为不熟悉正则表达式准备的"
           },
           {
-            "name": "Hash 算法",
-            "url": "https://haxi.im",
-            "desc": "哈希值相关"
-          },
-          {
             "name": "Base64C",
             "url": "https://www.base64decode.org",
             "desc": "Base64 加密解密"
@@ -5877,18 +5332,8 @@ const NAV_DATA = [
           },
           {
             "name": "UUIDgr",
-            "url": "https://www.uuidgenerator.net",
+            "url": "https://uuidgenerator.net",
             "desc": "UUID 在线生成"
-          },
-          {
-            "name": "Commands.dev",
-            "url": "https://www.commands.dev",
-            "desc": "流行的终端命令片段精选"
-          },
-          {
-            "name": "Cheet",
-            "url": "https://cheet.dev",
-            "desc": "命令代码片段备忘单"
           },
           {
             "name": "IT Tools",
@@ -5899,11 +5344,6 @@ const NAV_DATA = [
             "name": "Free Tools",
             "url": "https://free.tools",
             "desc": "开发者工具箱"
-          },
-          {
-            "name": "ThiscodeWorks",
-            "url": "https://www.thiscodeworks.com",
-            "desc": "代码片段图书馆"
           },
           {
             "name": "Codeset.io",
@@ -5962,11 +5402,6 @@ const NAV_DATA = [
             "desc": "精品线路VPS"
           },
           {
-            "name": "ClawCloud",
-            "url": "https://claw.cloud",
-            "desc": "优化中国线路VPS"
-          },
-          {
             "name": "Vultr",
             "url": "https://www.vultr.com",
             "desc": "知名的VPS"
@@ -5982,18 +5417,8 @@ const NAV_DATA = [
             "desc": "不错的VPS"
           },
           {
-            "name": "Olink",
-            "url": "https://www.olink.cloud",
-            "desc": "不错的VPS"
-          },
-          {
             "name": "DigitalOcean",
             "url": "https://www.digitalocean.com",
-            "desc": "老牌的VPS"
-          },
-          {
-            "name": "Sugarhosts",
-            "url": "https://www.sugarhosts.com",
             "desc": "老牌的VPS"
           },
           {
@@ -6040,11 +5465,6 @@ const NAV_DATA = [
             "name": "Greencloud",
             "url": "https://greencloudvps.com",
             "desc": "VPS主机供应商"
-          },
-          {
-            "name": "云更易",
-            "url": "http://www.vps2ez.com",
-            "desc": "云主机供应商"
           },
           {
             "name": "DogYun",
@@ -6100,11 +5520,6 @@ const NAV_DATA = [
             "name": "Distrosea",
             "url": "https://distrosea.com",
             "desc": "浏览器使用Linux发行版"
-          },
-          {
-            "name": "Lowendaff",
-            "url": "https://lowendaff.com",
-            "desc": "VPS评测测试"
           }
         ]
       },
@@ -6145,11 +5560,6 @@ const NAV_DATA = [
             "name": "Namecheap",
             "url": "https://namecheap.com",
             "desc": "知名的域名服务商"
-          },
-          {
-            "name": "Freenom",
-            "url": "hhttps://www.freenom.com",
-            "desc": "可以申请免费域名"
           },
           {
             "name": "FreeSSL",
@@ -6225,11 +5635,6 @@ const NAV_DATA = [
             "name": "Jsdelivr",
             "url": "https://www.jsdelivr.com",
             "desc": "CDN 加速服务"
-          },
-          {
-            "name": "Staticdn",
-            "url": "https://cdn.staticdn.net",
-            "desc": "静态反代加速服务"
           },
           {
             "name": "Neocities",
@@ -6327,11 +5732,6 @@ const NAV_DATA = [
             "desc": "检测 IPv6"
           },
           {
-            "name": "ipw",
-            "url": "https://ipw.cn",
-            "desc": "检测 IPv6"
-          },
-          {
             "name": "IP111",
             "url": "http://www.ip111.cn",
             "desc": "测试与外网连通性"
@@ -6345,11 +5745,6 @@ const NAV_DATA = [
             "name": "IPSKK",
             "url": "https://ip.skk.moe",
             "desc": "全面测试与外网连通性"
-          },
-          {
-            "name": "Ipstack",
-            "url": "https://ipstack.com",
-            "desc": "获取IP的地区等详细信息"
           },
           {
             "name": "站长Ping",
@@ -6613,11 +6008,6 @@ const NAV_DATA = [
             "desc": "知名的在线色彩调配工具"
           },
           {
-            "name": "Kolr",
-            "url": "https://kolr-app.vercel.app",
-            "desc": "色彩工具箱"
-          },
-          {
             "name": "Kigen Color",
             "url": "https://kigen.design/color",
             "desc": "在线配色并生成css"
@@ -6708,11 +6098,6 @@ const NAV_DATA = [
             "desc": "了解各大品牌的用色"
           },
           {
-            "name": "Ninja",
-            "url": "https://palette.ninja",
-            "desc": "CSS生成随机5种颜色并能固定"
-          },
-          {
             "name": "Coolors",
             "url": "https://coolors.co/generate",
             "desc": "很不错的多功能颜色工具"
@@ -6784,7 +6169,7 @@ const NAV_DATA = [
           },
           {
             "name": "Pixlr",
-            "url": "https://pixlr.com/cn/",
+            "url": "https://pixlr.com",
             "desc": "在线的 PS 编辑器"
           },
           {
@@ -6808,11 +6193,6 @@ const NAV_DATA = [
             "desc": "多功能图像调整支持批量"
           },
           {
-            "name": "Mark My Images",
-            "url": "https://www.markmyimages.com",
-            "desc": "图像加水印重设尺寸重命名"
-          },
-          {
             "name": "Ctrl.vi",
             "url": "https://ctrl.vi",
             "desc": "使用 Ctrl+V 粘贴图像后编辑"
@@ -6829,7 +6209,7 @@ const NAV_DATA = [
           },
           {
             "name": "3Dimg",
-            "url": "https://www.3dimg.com/editor/",
+            "url": "https://3dimg.com",
             "desc": "在线的图像后编辑"
           },
           {
@@ -6893,11 +6273,6 @@ const NAV_DATA = [
             "desc": "在线快速制作博客封面"
           },
           {
-            "name": "Motionelements-banner",
-            "url": "https://www.motionelements.com/zh-hant/banner",
-            "desc": "免费的广告横幅生成器"
-          },
-          {
             "name": "PixStudio",
             "url": "https://ps.wondershare.com",
             "desc": "很不错的在线图像视频编辑"
@@ -6940,17 +6315,22 @@ const NAV_DATA = [
           {
             "name": "太美工具",
             "url": "https://tiomg.org",
-            "desc": "提供了日常很多实用工具"
+            "desc": "多种图像编辑实用工具"
           },
           {
             "name": "ImagesTool",
             "url": "https://imagestool.com",
-            "desc": "图像工具"
+            "desc": "多种图像编辑实用工具"
+          },
+          {
+            "name": "Img Converter",
+            "url": "https://github.com/KyleBing/img-converter",
+            "desc": "本地离线图像格式转换"
           },
           {
             "name": "Omnifile",
             "url": "https://omnifile.co/zh-cn",
-            "desc": "通用图像转换格式"
+            "desc": "通用图像格式转换"
           },
           {
             "name": "Imageol",
@@ -7083,11 +6463,6 @@ const NAV_DATA = [
             "desc": "快速拼图多种布局"
           },
           {
-            "name": "SideIt",
-            "url": "https://sideit.app",
-            "desc": "快速拼图支持横向纵向"
-          },
-          {
             "name": "做好图拼图",
             "url": "http://www.zuohaotu.com/image-merge.aspx",
             "desc": "快速拼图支持横向纵向"
@@ -7113,11 +6488,6 @@ const NAV_DATA = [
             "desc": "给图添加自定义字幕"
           },
           {
-            "name": "4in1crop",
-            "url": "https://4in1crop.com",
-            "desc": "快速调整图像尺寸适用于社交媒体"
-          },
-          {
             "name": "ImageResizer",
             "url": "https://imageresizer.com",
             "desc": "整合各种图像调整工具"
@@ -7136,11 +6506,6 @@ const NAV_DATA = [
             "name": "EasyResizer",
             "url": "https://easyresizer.com/zh-cn",
             "desc": "批量调整图像尺寸"
-          },
-          {
-            "name": "ImageSplitter",
-            "url": "https://imagesplitter.pro",
-            "desc": "图像分割九宫图"
           },
           {
             "name": "ResizeNow",
@@ -7171,11 +6536,6 @@ const NAV_DATA = [
             "name": "Picresize",
             "url": "https://picresize.com/cn",
             "desc": "批量调整图像尺寸"
-          },
-          {
-            "name": "Resizeimage.net",
-            "url": "https://resizeimage.net",
-            "desc": "图像快速调整尺寸旋转等"
           },
           {
             "name": "Resizing.app",
@@ -7243,11 +6603,6 @@ const NAV_DATA = [
             "desc": "给图像生成 Mockup"
           },
           {
-            "name": "Mockdown",
-            "url": "https://epic.ai/mockdown",
-            "desc": "截图转素描快样式产品图"
-          },
-          {
             "name": "Deviceshots",
             "url": "https://deviceshots.com",
             "desc": "带壳截图生成设备边框"
@@ -7266,11 +6621,6 @@ const NAV_DATA = [
             "name": "Mockmagic",
             "url": "https://www.mockmagic.com",
             "desc": "手机边框图生成"
-          },
-          {
-            "name": "Magicmockup",
-            "url": "https://magicmockups.com",
-            "desc": "图像放到笔记本手机场景生成"
           },
           {
             "name": "Pixeltrue",
@@ -7298,11 +6648,6 @@ const NAV_DATA = [
             "desc": "视频制作工具"
           },
           {
-            "name": "Pickfrom",
-            "url": "https://zh.pickfrom.net",
-            "desc": "一站式视频在线剪辑"
-          },
-          {
             "name": "Video Candy",
             "url": "https://videocandy.com",
             "desc": "视频在线编辑工具"
@@ -7323,34 +6668,9 @@ const NAV_DATA = [
             "desc": "移除视频背景"
           },
           {
-            "name": "智影",
-            "url": "https://zenvideo.qq.com",
-            "desc": "字幕配音等多功能"
-          },
-          {
-            "name": "爱幕",
-            "url": "https://online.aimu-app.com",
-            "desc": "在线视频编辑加字幕"
-          },
-          {
             "name": "字幕酱",
             "url": "https://www.zimujiang.com",
             "desc": "在线语音视频生成字幕"
-          },
-          {
-            "name": "突字幕",
-            "url": "https://2zimu.com",
-            "desc": "在线视频生成字幕"
-          },
-          {
-            "name": "文本配音",
-            "url": "https://www.mu-yan.net",
-            "desc": "在线文本转语音"
-          },
-          {
-            "name": "配音娃",
-            "url": "http://www.peiyinwa.com",
-            "desc": "在线文本转语音"
           },
           {
             "name": "文字转语音",
@@ -7388,11 +6708,6 @@ const NAV_DATA = [
             "desc": "压缩图像"
           },
           {
-            "name": "MozJpeg",
-            "url": "https://mozjpeg.com",
-            "desc": "压缩图像"
-          },
-          {
             "name": "Compress jpg",
             "url": "https://compressjpg.io/zh-CN",
             "desc": "压缩图像"
@@ -7420,7 +6735,7 @@ const NAV_DATA = [
           {
             "name": "Optimizeimages",
             "url": "https://www.optimizeimages.com/tool",
-            "desc": "压缩图像和转换格式"
+            "desc": "压缩图像和格式转换"
           },
           {
             "name": "Recompressor",
@@ -7448,11 +6763,6 @@ const NAV_DATA = [
             "desc": "易用的图像压缩还支持表情"
           },
           {
-            "name": "智图",
-            "url": "http://zhitu.isux.us",
-            "desc": "图像压缩优化支持客户端"
-          },
-          {
             "name": "Jpeg.io",
             "url": "https://www.jpeg.io",
             "desc": "将任何图像压缩为jpeg"
@@ -7461,16 +6771,6 @@ const NAV_DATA = [
             "name": "Compress JPEG",
             "url": "https://compressjpeg.com",
             "desc": "将任何图像压缩为jpeg"
-          },
-          {
-            "name": "Optimizilla",
-            "url": "https://imagecompresiosor.com/zh/",
-            "desc": "待验证"
-          },
-          {
-            "name": "Bench",
-            "url": "https://bench.tanpok.com",
-            "desc": "批量压缩图像且不使用网络"
           },
           {
             "name": "Shrink.media",
@@ -7488,18 +6788,13 @@ const NAV_DATA = [
             "desc": "好用的图像背景消除"
           },
           {
-            "name": "Remove.pictures",
-            "url": "https://remove.pictures",
-            "desc": "好用的图像背景消除"
-          },
-          {
             "name": "Remove.photos",
             "url": "https://remove.photos/zh-cn/",
             "desc": "图像背景消除ocr识别多种工具"
           },
           {
             "name": "BG Remaker",
-            "url": "https://remaker.ai/cn/ai-tools",
+            "url": "https://remaker.ai",
             "desc": "AI 图像背景消除"
           },
           {
@@ -7521,11 +6816,6 @@ const NAV_DATA = [
             "name": "BgSub",
             "url": "https://bgsub.com",
             "desc": "支持4K分辨率的去背景"
-          },
-          {
-            "name": "Extractbg.com",
-            "url": "https://extractbg.com",
-            "desc": "自动化去除背景"
           },
           {
             "name": "Adobe Remove Background",
@@ -7601,11 +6891,6 @@ const NAV_DATA = [
             "name": "Slazzer",
             "url": "https://www.slazzer.com",
             "desc": "快速自动消除图像背景"
-          },
-          {
-            "name": "ImgCleaner",
-            "url": "https://imgcleaner.com",
-            "desc": "去除图像中的物体"
           },
           {
             "name": "去去去水印",
@@ -7859,7 +7144,7 @@ const NAV_DATA = [
           },
           {
             "name": "The Pixel Art",
-            "url": "https://32comic.com/Pixel_Art_Converter/",
+            "url": "https://32comic.com",
             "desc": "图像生成像素画"
           },
           {
@@ -7886,16 +7171,6 @@ const NAV_DATA = [
             "name": "Petalica paint",
             "url": "https://petalica-paint.pixiv.dev",
             "desc": "AI 给画涂色"
-          },
-          {
-            "name": "Colorize-photo",
-            "url": "https://demos.algorithmia.com/colorize-photos",
-            "desc": "为黑白照片着色"
-          },
-          {
-            "name": "Myheritage",
-            "url": "https://www.myheritage.cn",
-            "desc": "为黑白照片着色"
           },
           {
             "name": "Wangyasai",
@@ -7938,24 +7213,14 @@ const NAV_DATA = [
             "desc": "截图美化"
           },
           {
-            "name": "Jellylade",
-            "url": "https://app.jellylade.com",
-            "desc": "截图美化还代设备边框"
-          },
-          {
             "name": "Picyard",
-            "url": "https://picyard.ubout.in",
+            "url": "https://ubout.in",
             "desc": "截图美化编辑器"
           },
           {
             "name": "FabPic",
             "url": "https://www.fabpic.app",
             "desc": "截图美化编辑器"
-          },
-          {
-            "name": "xxbiji",
-            "url": "https://xxbiji.gitee.io/logo-frame-web",
-            "desc": "截图或照片加边框及相机 LOGO"
           },
           {
             "name": "Pretty-snap",
@@ -7978,11 +7243,6 @@ const NAV_DATA = [
             "desc": "GIF 在线编辑器"
           },
           {
-            "name": "Gifsuper",
-            "url": "https://gifsuper.com",
-            "desc": "IF 在线编辑器"
-          },
-          {
             "name": "闪萌",
             "url": "http://www.weshineapp.com",
             "desc": "专业的 GIF 搜索"
@@ -7991,11 +7251,6 @@ const NAV_DATA = [
             "name": "SooGIF",
             "url": "https://www.soogif.com",
             "desc": "搜索和制作 GIF"
-          },
-          {
-            "name": "SosoGIF",
-            "url": "https://www.sosogif.com/tool",
-            "desc": "GIF 搜索和工具"
           },
           {
             "name": "GIF Compressor",
@@ -8016,11 +7271,6 @@ const NAV_DATA = [
             "name": "tt0Gif",
             "url": "https://tt0.top",
             "desc": "多图合成 Gif"
-          },
-          {
-            "name": "Easygif",
-            "url": "https://www.easygif.tools",
-            "desc": "纯前端实现的GIF在线编辑"
           },
           {
             "name": "YouCompress",
@@ -8058,16 +7308,6 @@ const NAV_DATA = [
             "desc": "LOGO 在线设计"
           },
           {
-            "name": "Bingolcon",
-            "url": "http://bingoicon.com",
-            "desc": "快速生成文字图标"
-          },
-          {
-            "name": "Ucraft",
-            "url": "https://www.ucraft.com/free-logo-maker",
-            "desc": "LOGO 在线设计"
-          },
-          {
             "name": "Logodesign",
             "url": "https://www.logodesign.net",
             "desc": "LOGO 在线设计"
@@ -8101,11 +7341,6 @@ const NAV_DATA = [
             "name": "LogoCreator",
             "url": "https://logocreator.io",
             "desc": "LOGO 在线设计"
-          },
-          {
-            "name": "Mi Style Logo Maker",
-            "url": "https://mi-logo.lvwzhen.com",
-            "desc": "小米风格 LOGO 生成"
           },
           {
             "name": "U钙网",
@@ -8279,11 +7514,6 @@ const NAV_DATA = [
             "desc": "2D高清壁纸"
           },
           {
-            "name": "2dwallpapers",
-            "url": "https://www.2dwallpapers.com",
-            "desc": "2D高清壁纸"
-          },
-          {
             "name": "Wallpapers",
             "url": "https://newevolutiondesigns.com/wallpapers",
             "desc": "4K高清壁纸"
@@ -8324,16 +7554,6 @@ const NAV_DATA = [
             "desc": "很多不错的壁纸"
           },
           {
-            "name": "SooHub",
-            "url": "https://www.soohub.com",
-            "desc": "很好的高清壁纸搜索"
-          },
-          {
-            "name": "微软设计壁纸",
-            "url": "https://wallpapers.microsoft.design",
-            "desc": "微软设计壁纸"
-          },
-          {
             "name": "Konachan",
             "url": "https://konachan.com",
             "desc": "你懂的卡通壁纸"
@@ -8347,11 +7567,6 @@ const NAV_DATA = [
             "name": "Simpledesktops",
             "url": "http://simpledesktops.com",
             "desc": "极其简单的壁纸"
-          },
-          {
-            "name": "必应壁纸",
-            "url": "http://bimg.top",
-            "desc": "必应每日壁纸"
           },
           {
             "name": "壁纸湖",
@@ -8424,19 +7639,9 @@ const NAV_DATA = [
             "desc": "AI 生成的图库"
           },
           {
-            "name": "MMTStock",
-            "url": "https://mmtstock.com",
-            "desc": "免费用于商业的图像视频(fq)"
-          },
-          {
             "name": "YayImages",
             "url": "https://yayimages.com",
             "desc": "很不错的免费图库"
-          },
-          {
-            "name": "ImgFinder",
-            "url": "https://imagefinder.co",
-            "desc": "高清免费摄影图像搜索"
           },
           {
             "name": "StockSnap",
@@ -8499,11 +7704,6 @@ const NAV_DATA = [
             "desc": "摄影精美的背景图库"
           },
           {
-            "name": "Wunderstock",
-            "url": "https://wunderstock.com",
-            "desc": "授权图像下载并带编辑器"
-          },
-          {
             "name": "NegativeSpace",
             "url": "https://negativespace.co",
             "desc": "授权分类图像"
@@ -8512,11 +7712,6 @@ const NAV_DATA = [
             "name": "GAHAG",
             "url": "http://gahag.net",
             "desc": "授权分类图像"
-          },
-          {
-            "name": "Captionn",
-            "url": "https://captionn.me",
-            "desc": "免费图像添加文字"
           },
           {
             "name": "Blackwhite",
@@ -8574,11 +7769,6 @@ const NAV_DATA = [
             "desc": "可以根据颜色搜索图像"
           },
           {
-            "name": "ImgCyborg",
-            "url": "https://imagecyseborg.com",
-            "desc": "待验证"
-          },
-          {
             "name": "Logosc",
             "url": "https://www.logosc.cn/so/",
             "desc": "很好的搜图神器"
@@ -8611,11 +7801,6 @@ const NAV_DATA = [
           {
             "name": "沙沙野",
             "url": "https://www.ssyer.com",
-            "desc": "不错的无版权图库库"
-          },
-          {
-            "name": "高图网",
-            "url": "http://www.gaoimg.com",
             "desc": "不错的无版权图库库"
           },
           {
@@ -8734,19 +7919,9 @@ const NAV_DATA = [
             "desc": "免费摄影视频素材库"
           },
           {
-            "name": "Distill",
-            "url": "https://www.wedistill.io",
-            "desc": "免费的高清视频素材"
-          },
-          {
             "name": "Videezy",
             "url": "https://www.videezy.com",
             "desc": "免费视频素材库"
-          },
-          {
-            "name": "Life Vids",
-            "url": "https://lifeofvids.com",
-            "desc": "免费视频剪辑循环素材"
           },
           {
             "name": "Dareful",
@@ -8790,7 +7965,7 @@ const NAV_DATA = [
         "links": [
           {
             "name": "Envato Elements",
-            "url": "Envato：https://elements.envato.com",
+            "url": "https://elements.envato.com",
             "desc": "全球综合型设计素材"
           },
           {
@@ -8862,11 +8037,6 @@ const NAV_DATA = [
             "name": "IconKitchen",
             "url": "https://icon.kitchen/",
             "desc": "可以生成各种应用图标"
-          },
-          {
-            "name": "Findicons",
-            "url": "http://www.findicons.com",
-            "desc": "国外不错的图标搜索"
           },
           {
             "name": "IconArchive",
@@ -8960,7 +8130,7 @@ const NAV_DATA = [
           },
           {
             "name": "Svgrepo",
-            "url": "https://www.svgrepo.com",
+            "url": "https://svgrepo.com",
             "desc": "SVG 图标库"
           },
           {
@@ -8994,11 +8164,6 @@ const NAV_DATA = [
             "desc": "免费矢量图和图标"
           },
           {
-            "name": "NasIcon",
-            "url": "https://gitee.com/heizicao/my-icon",
-            "desc": "适用于自部署服务图标"
-          },
-          {
             "name": "VectorWiki",
             "url": "https://vectorwiki.com",
             "desc": "SVG与PNG的LOGO下载"
@@ -9007,6 +8172,11 @@ const NAV_DATA = [
             "name": "AhaIcon",
             "url": "https://ahaicon.com/zh",
             "desc": "网站logo图标生成器"
+          },
+          {
+            "name": "ICO converter",
+            "url": "https://icoconverter.com",
+            "desc": "转ico软件图标"
           }
         ]
       },
@@ -9089,11 +8259,6 @@ const NAV_DATA = [
             "desc": "换脸特效可与做头像"
           },
           {
-            "name": "HashAvatar",
-            "url": "https://thehashavatars.com",
-            "desc": "头像生成器"
-          },
-          {
             "name": "PFPMaker",
             "url": "https://pfpmaker.com",
             "desc": "上传头像生成多种带背景的"
@@ -9124,19 +8289,9 @@ const NAV_DATA = [
             "desc": "老年过年用的头像装饰"
           },
           {
-            "name": "Bingdwun",
-            "url": "https://bdd2022.com",
-            "desc": "冰墩墩表情生成器"
-          },
-          {
             "name": "Thus",
             "url": "https://thuscn.com/lab/",
             "desc": "Clubhouse 风格头像和简介生成器"
-          },
-          {
-            "name": "举牌小人生成器",
-            "url": "https://small-upup.upuptoyou.com",
-            "desc": "举牌小人生成器"
           },
           {
             "name": "举牌小人生成器",
@@ -9259,11 +8414,6 @@ const NAV_DATA = [
             "desc": "很不错的按照表情分类的音乐"
           },
           {
-            "name": "耳聆网",
-            "url": "https://www.ear0.com",
-            "desc": "由网友上传得各种音效资源"
-          },
-          {
             "name": "Audio Trimmer",
             "url": "https://audiotrimmer.com/cn/royalty-free-music/",
             "desc": "免费商用背景音乐"
@@ -9277,11 +8427,6 @@ const NAV_DATA = [
             "name": "Pixabay-Music",
             "url": "https://pixabay.com/zh/music",
             "desc": "免费授权MP3"
-          },
-          {
-            "name": "Sampld",
-            "url": "https://open.sampld.app",
-            "desc": "免费商用音乐"
           },
           {
             "name": "Kongano",
@@ -9379,19 +8524,9 @@ const NAV_DATA = [
             "desc": "免费素材透明图像"
           },
           {
-            "name": "PNGDirs",
-            "url": "https://www.pngdirs.com",
-            "desc": "免费素材透明图像"
-          },
-          {
             "name": "ImgBin",
             "url": "https://imgbin.com",
             "desc": "免费素材透明图像"
-          },
-          {
-            "name": "Kcaps",
-            "url": "https://kcaps.app",
-            "desc": "生成键盘快捷键图像"
           },
           {
             "name": "Shotki",
@@ -9407,11 +8542,6 @@ const NAV_DATA = [
             "name": "国旗图",
             "url": "https://github.com/hampusborgos/country-flags",
             "desc": "各个国家国旗图下载"
-          },
-          {
-            "name": "Line",
-            "url": "https://flmg.guychienll.dev",
-            "desc": "Line 聊天对话生成器"
           },
           {
             "name": "图鱼纹理",
@@ -9444,11 +8574,6 @@ const NAV_DATA = [
             "desc": "创意内容平台"
           },
           {
-            "name": "译学馆",
-            "url": "https://www.yxgapp.com",
-            "desc": "译制知识视频的平台"
-          },
-          {
             "name": "易撰",
             "url": "https://www.yizhuan5.com",
             "desc": "自媒体工具和导航"
@@ -9457,11 +8582,6 @@ const NAV_DATA = [
             "name": "文案狗",
             "url": "http://www.wenangou.com",
             "desc": "谐音找句和个性网名"
-          },
-          {
-            "name": "热搜榜",
-            "url": "https://article.xmt.cn",
-            "desc": "新媒体工具"
           }
         ]
       },
@@ -9494,34 +8614,9 @@ const NAV_DATA = [
             "desc": "建立模板和在线制作"
           },
           {
-            "name": "Osjobs",
-            "url": "https://tool.osjobs.net",
-            "desc": "建立模板和在线制作"
-          },
-          {
-            "name": "橙子简历",
-            "url": "https://wonderfulcv.com",
-            "desc": "建立模板和在线制作"
-          },
-          {
             "name": "白熊简历",
             "url": "https://cv.ftqq.com",
             "desc": "用 Markdown 写简历"
-          },
-          {
-            "name": "程序员简历",
-            "url": "https://www.1024.cool",
-            "desc": "程序员简历模板"
-          },
-          {
-            "name": "平社区",
-            "url": "https://pingshequ.com/new",
-            "desc": "一键生成海报"
-          },
-          {
-            "name": "方格纸",
-            "url": "http://www.printfreegraphpaper.com",
-            "desc": "易用快速的生成方格纸"
           },
           {
             "name": "纸由我",
@@ -9532,11 +8627,6 @@ const NAV_DATA = [
             "name": "印章生成",
             "url": "https://onepage.czl.net/tools/seal_generation",
             "desc": "印章生成"
-          },
-          {
-            "name": "GraphPaper",
-            "url": "https://www.mygraphpaper.com",
-            "desc": "易用快速的生成方格纸"
           },
           {
             "name": "Gridzzly",
@@ -9690,11 +8780,6 @@ const NAV_DATA = [
             "desc": "关注游戏内容"
           },
           {
-            "name": "游戏时光",
-            "url": "http://www.vgtime.com",
-            "desc": "专注单机游戏和攻略"
-          },
-          {
             "name": "17173",
             "url": "https://www.17173.com",
             "desc": "国内老牌的游戏门户"
@@ -9706,8 +8791,8 @@ const NAV_DATA = [
           },
           {
             "name": "op.gg",
-            "url": "https://www.op.gg/champion",
-            "desc": "LOL 专业论坛"
+            "url": "https://op.gg",
+            "desc": "LOL无畏契约排名查询"
           },
           {
             "name": "灰机wiki",
@@ -9780,6 +8865,11 @@ const NAV_DATA = [
             "desc": "很不错的股票论坛"
           },
           {
+            "name": "Tradingview",
+            "url": "https://cn.tradingview.com",
+            "desc": "金融市场股票走势图表"
+          },
+          {
             "name": "同花顺",
             "url": "http://www.10jqka.com.cn",
             "desc": "专注股票软件"
@@ -9803,21 +8893,6 @@ const NAV_DATA = [
             "name": "东方财富",
             "url": "http://www.eastmoney.com",
             "desc": "财经综合门户"
-          },
-          {
-            "name": "晨星网",
-            "url": "http://cn.morningstar.com",
-            "desc": "基金投资研究"
-          },
-          {
-            "name": "MACD",
-            "url": "http://www.macd.cn",
-            "desc": "技术分析论坛"
-          },
-          {
-            "name": "古道观海",
-            "url": "http://lib.guhai66.com",
-            "desc": "股票分析博客"
           },
           {
             "name": "淘股吧",
@@ -9875,16 +8950,6 @@ const NAV_DATA = [
             "desc": "挖矿矿池平台"
           },
           {
-            "name": "OKEx",
-            "url": "https://www.okex.com",
-            "desc": "加密货币交易所"
-          },
-          {
-            "name": "Gate 芝麻开门",
-            "url": "https://www.gatecn.io",
-            "desc": "加密货币交易所"
-          },
-          {
             "name": "Bitget",
             "url": "https://www.bitget.com",
             "desc": "加密货币交易所"
@@ -9936,7 +9001,7 @@ const NAV_DATA = [
           },
           {
             "name": "下厨房",
-            "url": "http://www.xiachufang.com",
+            "url": "http://xiachufang.com",
             "desc": "学习做菜菜谱"
           },
           {
@@ -10145,11 +9210,6 @@ const NAV_DATA = [
             "desc": "旅游相关网站"
           },
           {
-            "name": "乐途",
-            "url": "http://www.lotour.com",
-            "desc": "旅游相关网站"
-          },
-          {
             "name": "Airbnb",
             "url": "https://zh.airbnb.com",
             "desc": "旅游相关网站"
@@ -10171,7 +9231,7 @@ const NAV_DATA = [
         "links": [
           {
             "name": "社保服务",
-            "url": "http://si.12333.gov.cn",
+            "url": "https://si.12333.gov.cn",
             "desc": "社会保险服务"
           },
           {

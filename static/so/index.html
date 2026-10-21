@@ -2,15 +2,41 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="Author" content="南极神">
-<meta name="Keywords" content="极限搜索,极限玩家">
-<meta name="Description" content="极限搜索,极限玩家">
-<title>极限搜索</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="极限搜索：一个输入框同时搜索谷歌、百度、必应、AI 助手、社交媒体、购物比价等数十个站点，并支持 oml、ip、tq 等快捷指令。">
+<meta name="keywords" content="极限搜索,多引擎搜索,聚合搜索,搜索导航,快捷指令,AI助手,ChatGPT,Claude,Gemini">
+<meta name="author" content="南极神">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0a0a0c">
+<meta name="color-scheme" content="dark">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="极限搜索">
+<meta property="og:title" content="极限搜索 · 多引擎聚合搜索">
+<meta property="og:description" content="一个输入框，搜索几十个站点与 AI 助手，支持快捷指令。">
+<meta property="og:locale" content="zh_CN">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="极限搜索 · 多引擎聚合搜索">
+<meta name="twitter:description" content="一个输入框，搜索几十个站点与 AI 助手，支持快捷指令。">
+
+<title>极限搜索 · 多引擎聚合搜索与快捷指令</title>
 <link rel="icon" href="../favicon.ico">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "极限搜索",
+  "alternateName": "极限玩家",
+  "description": "多引擎聚合搜索与快捷指令入口",
+  "inLanguage": "zh-CN",
+  "author": { "@type": "Person", "name": "南极神" }
+}
+</script>
+
 <style>
   :root{
-    /* ---- token system ---- */
     --bg:               #0a0a0c;
     --bg-elevated:      #131317;
     --surface:          #19191d;
@@ -19,6 +45,7 @@
     --border-soft:      #232328;
     --accent:           #f0a940;
     --accent-strong:    #ffc36b;
+    --accent-line:      #ff9800;
     --accent-soft:      rgba(240,169,64,.10);
     --accent-soft-2:    rgba(240,169,64,.22);
     --text:             #e9dfc9;
@@ -33,7 +60,9 @@
 
   *{margin:0;padding:0;box-sizing:border-box}
   a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   ::selection{background:var(--accent-soft-2);color:var(--accent-strong)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
 
   body{
     font-family:var(--font-body);
@@ -50,9 +79,6 @@
     clip:rect(0 0 0 0);white-space:nowrap;
   }
 
-  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
-
-  /* faint ambient scanline texture, purely atmospheric */
   .scanline-overlay{
     position:fixed;inset:0;pointer-events:none;z-index:0;
     background:repeating-linear-gradient(180deg,rgba(255,255,255,.012) 0px,rgba(255,255,255,.012) 1px,transparent 1px,transparent 3px),
@@ -60,10 +86,7 @@
   }
 
   /* ---------- top bar ---------- */
-  .topbar{
-    position:relative;z-index:2;
-    padding:1.4rem 1.2rem 0.6rem;
-  }
+  .topbar{position:relative;z-index:2;padding:1.4rem 1.2rem .6rem}
   .topbar-inner{
     max-width:900px;margin:0 auto;
     display:flex;align-items:center;justify-content:space-between;
@@ -74,26 +97,19 @@
     display:flex;align-items:baseline;gap:2px;
   }
   .brand b{color:var(--accent);font-weight:600}
-  .clock{
-    font-family:var(--font-display);font-size:.85rem;color:var(--text-faint);
-    letter-spacing:.03em;
-  }
 
   @keyframes blink{50%{opacity:0}}
   @media (prefers-reduced-motion: reduce){
     .prompt-caret{animation:none}
   }
 
-  /* ---------- console / hero ---------- */
+  /* ---------- console ---------- */
   main{position:relative;z-index:1;flex:1;padding:0 1.2rem 3rem}
   .console{max-width:900px;margin:0 auto;padding-top:2.2rem}
 
   .input-row{
     display:flex;align-items:center;gap:.7rem;
-    background:transparent;
-    border:none;
-    border-bottom:1px solid #ff9800;
-    border-radius:0;
+    border-bottom:1px solid var(--accent-line);
     padding:0 .3rem 0 1.1rem;
   }
   .prompt-caret{
@@ -101,12 +117,20 @@
     animation:blink 1.1s steps(1) infinite;
   }
   #searchInput{
-    flex:1;border:0;background:transparent;color:var(--text);
+    flex:1;min-width:0;border:0;background:transparent;color:var(--text);
     font-family:var(--font-body);font-size:1.05rem;
     padding:1rem .2rem;
   }
   #searchInput::placeholder{color:var(--text-faint)}
   #searchInput:focus{outline:none}
+  .clear-btn{
+    flex-shrink:0;width:28px;height:28px;margin-left:.2rem;
+    font-size:1.3rem;line-height:1;color:var(--text-faint);
+    border-radius:50%;display:flex;align-items:center;justify-content:center;
+    transition:color .15s ease,background .15s ease;
+  }
+  .clear-btn:hover{color:var(--accent-strong);background:var(--surface)}
+  .clear-btn[hidden]{display:none}
 
   @keyframes shake{
     10%,90%{transform:translateX(-1px)}
@@ -137,13 +161,13 @@
     font-family:var(--font-display);
     font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;
     color:var(--text-dim);font-weight:600;
-    margin-bottom:.7rem;
+    margin-bottom:1.1rem;
     padding-left:.55rem;
     border-left:2px solid var(--accent-soft-2);
   }
   .category-title .icon{width:14px;height:14px;flex-shrink:0;color:var(--accent)}
 
-  .chips{display:flex;flex-wrap:wrap;gap:.45rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.7rem}
   .chip{
     display:inline-flex;align-items:center;gap:.35rem;
     background:var(--surface);
@@ -152,7 +176,6 @@
     font-size:.86rem;
     padding:.5rem .8rem;
     border-radius:999px;
-    cursor:pointer;
     transition:background .15s ease, border-color .15s ease, color .15s ease, transform .1s ease;
   }
   .chip:hover{background:var(--surface-hover);border-color:var(--accent-soft-2);color:var(--accent-strong)}
@@ -162,7 +185,7 @@
   #sidebar-toggle{
     position:fixed;top:18px;right:18px;width:40px;height:40px;
     background:var(--surface);border:1px solid var(--border);color:var(--text);
-    border-radius:var(--radius-sm);cursor:pointer;
+    border-radius:var(--radius-sm);
     display:flex;align-items:center;justify-content:center;font-size:1.1rem;
     box-shadow:var(--shadow);z-index:1001;
     transition:background .15s ease, color .15s ease;
@@ -179,47 +202,55 @@
   #sidebar.active{right:0}
   #sidebar ul{list-style:none}
   #sidebar > ul > li{margin:.15rem 0}
-  #sidebar a{
+  #sidebar a,
+  #sidebar .submenu-toggle{
     color:var(--text-dim);display:flex;align-items:center;justify-content:flex-start;
+    width:100%;text-align:left;
     padding:.65rem .7rem;border-radius:var(--radius-sm);font-size:.92rem;
     transition:background .15s ease,color .15s ease;
   }
-  #sidebar a:hover{background:var(--surface);color:var(--accent-strong)}
+  #sidebar a:hover,
+  #sidebar .submenu-toggle:hover{background:var(--surface);color:var(--accent-strong)}
   #sidebar ul ul{padding-left:.9rem;max-height:0;overflow:hidden;transition:max-height .2s ease}
   #sidebar ul ul.show{max-height:400px}
-  #sidebar li.has-submenu > a::after{
-    content:"▸";font-size:.75rem;color:var(--text-faint);
+  .has-submenu > .submenu-toggle::after{
+    content:"▸";margin-left:auto;font-size:.75rem;color:var(--text-faint);
     transition:transform .2s ease;
   }
-  #sidebar li.has-submenu.open > a::after{transform:rotate(90deg);color:var(--accent)}
+  .has-submenu.open > .submenu-toggle::after{transform:rotate(90deg);color:var(--accent)}
   #sidebar-divider{height:1px;background:var(--border-soft);margin:.6rem .5rem}
 
   /* ---------- modals ---------- */
   .modal{
-    display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);
+    position:fixed;inset:0;background:rgba(0,0,0,.7);
     justify-content:center;align-items:center;z-index:1002;padding:1rem;
   }
+  .modal:not([hidden]){display:flex}
   .modal-content{
     background:var(--bg-elevated);border:1px solid var(--border-soft);
     padding:1.6rem;border-radius:var(--radius);box-shadow:var(--shadow);
-    max-width:min(90vw,380px);position:relative;color:var(--text);
+    max-width:min(90vw,380px);max-height:90vh;overflow:auto;
+    position:relative;color:var(--text);
   }
-  .modal-content h3{
+  .modal-content:focus{outline:none}
+  .modal-content h2{
     font-family:var(--font-display);font-size:.95rem;letter-spacing:.03em;
-    color:var(--accent);margin-bottom:1rem;
+    color:var(--accent);margin-bottom:1rem;font-weight:600;
   }
   .modal-content .close{
-    position:absolute;top:.6rem;right:.9rem;font-size:1.4rem;line-height:1;
-    cursor:pointer;color:var(--text-faint);
+    position:absolute;top:.4rem;right:.6rem;font-size:1.4rem;line-height:1;
+    padding:.2rem .4rem;color:var(--text-faint);
   }
   .modal-content .close:hover{color:var(--accent)}
-  .modal-content img{max-width:100%;border-radius:var(--radius-sm);display:block;margin:0 auto}
+  .modal-content img{
+    display:block;margin:0 auto;
+    width:auto;height:auto;max-width:100%;max-height:65vh;
+    border-radius:var(--radius-sm);
+  }
 
   #helpContent table{width:100%;border-collapse:collapse;font-size:.88rem}
   #helpContent td{padding:.45rem .3rem;border-bottom:1px solid var(--border-soft)}
-  #helpContent td:first-child{
-    font-family:var(--font-display);color:var(--accent);width:70px;
-  }
+  #helpContent td:first-child{font-family:var(--font-display);color:var(--accent);width:70px}
   #helpContent td:last-child{color:var(--text-dim)}
 
   @media (max-width:520px){
@@ -238,7 +269,7 @@
 <div class="scanline-overlay" aria-hidden="true"></div>
 
 <!-- icon sprite -->
-<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+<svg style="position:absolute;width:0;height:0" aria-hidden="true" focusable="false">
   <defs>
     <symbol id="icon-ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M9 3v4M15 3v4M8 12h.01M16 12h.01M9 16h6"/></symbol>
     <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
@@ -249,115 +280,112 @@
     <symbol id="icon-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></symbol>
     <symbol id="icon-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5a16 16 0 0 1 20 0M5.5 12.5a11 11 0 0 1 13 0M9 16.5a6 6 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></symbol>
     <symbol id="icon-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"/></symbol>
-    <symbol id="icon-tools" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3-3z"/></symbol>
-    <symbol id="icon-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7.5-4.6-10-9.3C0.3 8 2 4.5 5.6 4c2-.3 3.8.7 6.4 3.2C14.6 4.7 16.4 3.7 18.4 4c3.6.5 5.3 4 3.6 7.7C19.5 16.4 12 21 12 21z"/></symbol>
-    <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></symbol>
   </defs>
 </svg>
 
-<button id="sidebar-toggle" onclick="toggleSidebar()" aria-label="打开导航菜单" aria-controls="sidebar" aria-expanded="false">☰</button>
+<button id="sidebar-toggle" type="button" aria-label="打开导航菜单" aria-controls="sidebar" aria-expanded="false">☰</button>
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="so.html"><b>极限搜索</b></a>
-    <div id="clock" class="clock"></div>
+    <a class="brand" href="index.html"><b>极限搜索</b></a>
   </div>
 </header>
 
 <main>
   <section class="console" aria-label="搜索控制台">
-    <label for="searchInput" class="visually-hidden">搜索内容</label>
+    <label for="searchInput" class="visually-hidden">输入搜索内容或快捷指令，按回车使用默认搜索引擎</label>
     <div class="input-row">
       <span class="prompt-caret" aria-hidden="true">&gt;</span>
-      <input type="text" id="searchInput" autocomplete="off" spellcheck="false"
-             onkeydown="handleKeydown(event)">
+      <input type="text" id="searchInput" autocomplete="off" spellcheck="false">
+      <button id="clearBtn" class="clear-btn" type="button" aria-label="清除搜索内容" title="清除" hidden>&times;</button>
     </div>
 
     <div class="categories">
 
       <div class="category">
-        <h2 class="category-title"><svg class="icon"><use href="#icon-search"></use></svg>搜索引擎</h2>
+        <h2 class="category-title"><svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg>搜索引擎</h2>
         <div class="chips">
-          <button class="chip" id="defaultSearch" data-engine="谷歌">谷歌</button>
-          <button class="chip" data-engine="百度">百度</button>
-          <button class="chip" data-engine="必应">必应</button>
-          <button class="chip" data-engine="维基">维基</button>
+          <button class="chip" id="defaultSearch" type="button" data-engine="谷歌" title="回车默认使用">谷歌</button>
+          <button class="chip" type="button" data-engine="百度">百度</button>
+          <button class="chip" type="button" data-engine="必应">必应</button>
+          <button class="chip" type="button" data-engine="维基">维基</button>
         </div>
       </div>
 
       <div class="category">
-        <h2 class="category-title"><svg class="icon"><use href="#icon-ai"></use></svg>AI助手</h2>
+        <h2 class="category-title"><svg class="icon" aria-hidden="true"><use href="#icon-ai"></use></svg>AI助手</h2>
         <div class="chips">
-          <button class="chip" data-engine="GPT">ChatGPT</button>
-          <button class="chip" data-engine="Gemini">Gemini</button>
-          <button class="chip" data-engine="Claude">Claude</button>
-          <button class="chip" data-engine="DeepSeek">DeepSeek</button>
-          <button class="chip" data-engine="Copilot">Copilot</button>
+          <button class="chip" type="button" data-engine="GPT">ChatGPT</button>
+          <button class="chip" type="button" data-engine="Gemini">Gemini</button>
+          <button class="chip" type="button" data-engine="Claude">Claude</button>
+          <button class="chip" type="button" data-engine="DeepSeek">DeepSeek</button>
+          <button class="chip" type="button" data-engine="Copilot">Copilot</button>
         </div>
       </div>
 
       <div class="category">
-        <h2 class="category-title"><svg class="icon"><use href="#icon-globe"></use></svg>翻译词典</h2>
+        <h2 class="category-title"><svg class="icon" aria-hidden="true"><use href="#icon-globe"></use></svg>翻译词典</h2>
         <div class="chips">
-          <button class="chip" data-engine="Bingfy">Bing 词典</button>
-          <button class="chip" data-engine="欧路">欧路词典</button>
+          <button class="chip" type="button" data-engine="Bingfy">Bing 词典</button>
+          <button class="chip" type="button" data-engine="欧路">欧路词典</button>
         </div>
       </div>
 
       <div class="category">
-        <h2 class="category-title"><svg class="icon"><use href="#icon-media"></use></svg>社交媒体</h2>
+        <h2 class="category-title"><svg class="icon" aria-hidden="true"><use href="#icon-media"></use></svg>社交媒体</h2>
         <div class="chips">
-          <button class="chip" data-engine="知乎">知乎</button>
-          <button class="chip" data-engine="油管">油管</button>
-          <button class="chip" data-engine="哔哩">哔哩</button>
-          <button class="chip" data-engine="微博">微博</button>
+          <button class="chip" type="button" data-engine="知乎">知乎</button>
+          <button class="chip" type="button" data-engine="油管">油管</button>
+          <button class="chip" type="button" data-engine="哔哩">哔哩</button>
+          <button class="chip" type="button" data-engine="微博">微博</button>
         </div>
       </div>
 
       <div class="category">
-        <h2 class="category-title"><svg class="icon"><use href="#icon-cart"></use></svg>购物比价</h2>
+        <h2 class="category-title"><svg class="icon" aria-hidden="true"><use href="#icon-cart"></use></svg>购物比价</h2>
         <div class="chips">
-          <button class="chip" data-engine="值得买">值得买</button>
-          <button class="chip" data-engine="淘宝">淘宝</button>
-          <button class="chip" data-engine="京东">京东</button>
+          <button class="chip" type="button" data-engine="值得买">值得买</button>
+          <button class="chip" type="button" data-engine="淘宝">淘宝</button>
+          <button class="chip" type="button" data-engine="京东">京东</button>
         </div>
       </div>
 
       <div class="category">
-        <h2 class="category-title"><svg class="icon"><use href="#icon-film"></use></svg>影视资源</h2>
+        <h2 class="category-title"><svg class="icon" aria-hidden="true"><use href="#icon-film"></use></svg>影视资源</h2>
         <div class="chips">
-          <button class="chip" data-engine="豆瓣">豆瓣</button>
-          <button class="chip" data-engine="番茄">番茄</button>
-          <button class="chip" data-engine="字幕">字幕</button>
+          <button class="chip" type="button" data-engine="豆瓣">豆瓣</button>
+          <button class="chip" type="button" data-engine="番茄">番茄</button>
+          <button class="chip" type="button" data-engine="字幕">字幕</button>
+          <button class="chip" type="button" data-engine="Uindex">Uindex</button>
+          <button class="chip" type="button" data-engine="Neodb">Neodb</button>
         </div>
       </div>
 
       <div class="category">
-        <h2 class="category-title"><svg class="icon"><use href="#icon-package"></use></svg>程序应用</h2>
+        <h2 class="category-title"><svg class="icon" aria-hidden="true"><use href="#icon-package"></use></svg>程序应用</h2>
         <div class="chips">
-          <button class="chip" data-engine="容器">容器</button>
-          <button class="chip" data-engine="应用">应用</button>
-          <button class="chip" data-engine="扩展">扩展</button>
-          <button class="chip" data-engine="油猴">油猴</button>
+          <button class="chip" type="button" data-engine="容器">容器</button>
+          <button class="chip" type="button" data-engine="应用">应用</button>
+          <button class="chip" type="button" data-engine="扩展">扩展</button>
+          <button class="chip" type="button" data-engine="油猴">油猴</button>
         </div>
       </div>
 
       <div class="category">
-        <h2 class="category-title"><svg class="icon"><use href="#icon-wifi"></use></svg>网络工具</h2>
+        <h2 class="category-title"><svg class="icon" aria-hidden="true"><use href="#icon-wifi"></use></svg>网络工具</h2>
         <div class="chips">
-          <button class="chip" data-engine="CheckIP">CheckIP</button>
-          <button class="chip" data-engine="Whios">Whios</button>
-          <button class="chip" data-engine="ping0">ping0</button>
-          <button class="chip" data-engine="Ping">Ping</button>
+          <button class="chip" type="button" data-engine="CheckIP">CheckIP</button>
+          <button class="chip" type="button" data-engine="Whios">Whios</button>
+          <button class="chip" type="button" data-engine="ping0">ping0</button>
+          <button class="chip" type="button" data-engine="Ping">Ping</button>
         </div>
       </div>
 
       <div class="category">
-        <h2 class="category-title"><svg class="icon"><use href="#icon-grid"></use></svg>更多</h2>
+        <h2 class="category-title"><svg class="icon" aria-hidden="true"><use href="#icon-grid"></use></svg>更多</h2>
         <div class="chips">
-          <button class="chip" data-engine="股票">股票</button>
-          <button class="chip" data-engine="QR">QR</button>
-          <button class="chip" data-engine="Cheat">Cheat</button>
+          <button class="chip" type="button" data-engine="股票">股票</button>
+          <button class="chip" type="button" data-engine="Cheat">Cheat</button>
         </div>
       </div>
 
@@ -371,108 +399,139 @@
     <li><a href="https://nav.ttti.cc"><span>极限导航</span></a></li>
     <li><a href="https://app.ttti.cc"><span>软件导航</span></a></li>
     <li class="has-submenu">
-      <a href="javascript:void(0)" onclick="toggleSubmenu(this.parentElement)"><span>在线工具</span></a>
-      <ul>
+      <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="tools-submenu"><span>在线工具</span></button>
+      <ul id="tools-submenu">
         <li><a href="../tools/notepad.html">记事本</a></li>
         <li><a href="../tools/calc.html">计算器</a></li>
+        <li><a href="../tools/clock.html">时钟</a></li>
+        <li><a href="../tools/translator.html">翻译</a></li>
         <li><a href="../tools/paint.html">画图</a></li>
         <li><a href="../tools/textedit.html">快捷便笺</a></li>
         <li><a href="../tools/stitching.html">截图拼接</a></li>
-        <li><a href="../tools/todolist.html">代办清单</a></li>
-        <li><a href="../tools/stickynote.html">浮动看板</a></li>
+        <li><a href="../tools/todo.html">代办清单</a></li>
+        <li><a href="../tools/kanban.html">浮动看板</a></li>
         <li><a href="../tools/palette.html">调色板</a></li>
         <li><a href="../tools/watermark.html">加水印</a></li>
       </ul>
     </li>
-    <li id="sidebar-divider"></li>
-    <li><a href="#" onclick="showDonation();return false;"><span>赞赏支持</span></a></li>
+    <li id="sidebar-divider" role="separator"></li>
+    <li><button class="submenu-toggle" type="button" id="donateBtn"><span>赞赏支持</span></button></li>
   </ul>
 </aside>
 
 <!-- 赞赏支持模态框 -->
-<div id="donationModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="hideDonation()">&times;</span>
-    <h3>感谢你的支持</h3>
+<div id="donationModal" class="modal" hidden>
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="donationTitle" tabindex="-1">
+    <button class="close" type="button" aria-label="关闭" data-close="donationModal">&times;</button>
+    <h2 id="donationTitle">感谢你的支持</h2>
     <img src="../pay.jpg" alt="赞赏二维码">
   </div>
 </div>
 
 <!-- 帮助模态框 -->
-<div id="helpModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="hideHelp()">&times;</span>
-    <h3>快捷指令</h3>
-    <div id="helpContent"></div>
+<div id="helpModal" class="modal" hidden>
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="helpTitle" tabindex="-1">
+    <button class="close" type="button" aria-label="关闭" data-close="helpModal">&times;</button>
+    <h2 id="helpTitle">快捷指令</h2>
+    <table id="helpContent">
+      <tr><td>ip</td><td>查看本机 IP</td></tr>
+      <tr><td>tq</td><td>查看天气</td></tr>
+      <tr><td>tr</td><td>打开必应翻译</td></tr>
+    </table>
   </div>
 </div>
 
 <script>
-  const searchInput = document.getElementById('searchInput');
-  searchInput.focus();
+(function () {
+  'use strict';
 
-  // ---- 实时时钟（终端风格装饰，兼具实用性）----
-  function tickClock(){
-    const d = new Date();
-    const pad = n => String(n).padStart(2,'0');
-    document.getElementById('clock').textContent =
-      `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-  }
-  tickClock();
-  setInterval(tickClock, 1000);
+  const $ = id => document.getElementById(id);
+  const searchInput    = $('searchInput');
+  const sidebar        = $('sidebar');
+  const sidebarToggle  = $('sidebar-toggle');
+  const donationModal  = $('donationModal');
+  const helpModal      = $('helpModal');
 
-  // ---- 搜索引擎映射（保持原有全部条目与地址）----
+  // ---- 搜索引擎 ----
+  // 模板中的 {q} 会被替换为 URL 编码后的搜索词
   const searchEngines = {
-    'GPT': 'https://chatgpt.com/?q=',
-    'Gemini': 'https://gemini.google.com/app?q=',
-    'Claude': 'https://claude.ai/new?q=',
-    'DeepSeek': 'https://chat.deepseek.com/?q=',
-    'Copilot': 'https://www.bing.com/search?showconv=1&sendquery=1&q=',
-    '百度': 'https://www.baidu.com/s?wd=',
-    '谷歌': 'https://www.google.com/search?q=',
-    '必应': 'https://cn.bing.com/search?q=',
-    '维基': 'https://zh.wikipedia.org/wiki/',
-    '知乎': 'https://www.zhihu.com/search?type=content&q=',
-    'Bingfy': 'https://cn.bing.com/dict/search?q=',
-    '欧路': 'https://dict.eudic.net/dicts/en/',
-    '油管': 'https://www.youtube.com/hashtag/',
-    '哔哩': 'https://search.bilibili.com/all?keyword=',
-    '值得买': 'https://search.smzdm.com/?s=',
-    '淘宝': 'https://s.taobao.com/search?q=',
-    '京东': 'https://search.jd.com/Search?keyword=',
-    '微博': 'https://s.weibo.com/weibo/',
-    '豆瓣': 'https://www.douban.com/search?q=',
-    '番茄': 'https://www.rottentomatoes.com/search?search=',
-    '字幕': 'https://subhd.tv/search/',
-    '容器': 'https://hub.docker.com/search?q=',
-    'CheckIP': 'https://check-host.net/ip-info?host=',
-    'Whios': 'https://w.is/',
-    'ping0': 'https://ping0.cc/ip/',
-    'Ping': 'https://ping.pe/',
-    '应用': 'https://play.google.com/store/search?q=',
-    '扩展': 'https://chrome.google.com/webstore/search/',
-    '油猴': 'https://greasyfork.org/zh-CN/scripts?q=',
-    '股票': 'https://xueqiu.com/k?q=',
-    'QR': 'https://my.tv.sohu.com/user/a/wvideo/getQRCode.do?text=',
-    'Cheat': 'https://cheat.sh/'
+    // AI 助手
+    'GPT':       'https://chatgpt.com/?q={q}',
+    'Gemini':    'https://gemini.google.com/app?q={q}',
+    'Claude':    'https://claude.ai/new?q={q}',
+    'DeepSeek':  'https://chat.deepseek.com/?q={q}',
+    'Copilot':   'https://www.bing.com/search?showconv=1&sendquery=1&q={q}',
+
+    // 搜索引擎
+    '谷歌':      'https://www.google.com/search?q={q}',
+    '百度':      'https://www.baidu.com/s?wd={q}',
+    '必应':      'https://cn.bing.com/search?q={q}',
+    '维基':      'https://zh.wikipedia.org/wiki/{q}',
+
+    // 翻译词典
+    'Bingfy':    'https://cn.bing.com/dict/search?q={q}',
+    '欧路':      'https://dict.eudic.net/dicts/en/{q}',
+
+    // 社交媒体
+    '知乎':      'https://www.zhihu.com/search?type=content&q={q}',
+    '油管':      'https://www.youtube.com/hashtag/{q}',
+    '哔哩':      'https://search.bilibili.com/all?keyword={q}',
+    '微博':      'https://s.weibo.com/weibo/{q}',
+
+    // 购物比价
+    '值得买':    'https://search.smzdm.com/?s={q}',
+    '淘宝':      'https://s.taobao.com/search?q={q}',
+    '京东':      'https://search.jd.com/Search?keyword={q}',
+
+    // 影视资源
+    '豆瓣':      'https://www.douban.com/search?q={q}',
+    '番茄':      'https://www.rottentomatoes.com/search?search={q}',
+    '字幕':      'https://subhd.tv/search/{q}',
+    'Uindex':    'https://uindex.org/search.php?search={q}',
+    'Neodb':     'https://neodb.social/search?q={q}',
+
+    // 程序应用
+    '容器':      'https://hub.docker.com/search?q={q}',
+    '应用':      'https://play.google.com/store/search?q={q}',
+    '扩展':      'https://chromewebstore.google.com/search/{q}',
+    '油猴':      'https://greasyfork.org/zh-CN/scripts?q={q}',
+
+    // 网络工具
+    'CheckIP':   'https://check-host.net/ip-info?host={q}',
+    'Whios':     'https://w.is/{q}',
+    'ping0':     'https://ping0.cc/ip/{q}',
+    'Ping':      'https://ping.pe/{q}',
+
+    // 更多
+    '股票':      'https://xueqiu.com/k?q={q}',
+    'Cheat':     'https://cheat.sh/{q}'
   };
 
-  function openSearch(engine, query){
-    const template = searchEngines[engine];
-    if (!template) return;
-    const url = template.includes('{q}')
-      ? template.replace('{q}', encodeURIComponent(query))
-      : template + encodeURIComponent(query);
-    // noopener/noreferrer: prevents the third-party page from getting a
-    // handle back to this tab (window.opener) — avoids reverse-tabnabbing.
+  // ---- 快捷指令（跳转类）----
+  const shortcutUrls = {
+    'ip':  'https://ipcheck.ing',
+    'tq':  'http://www.weather.com.cn/weather1dn/101070501.shtml',
+    'tr':  'https://cn.bing.com/translator',
+    'xyz': 'https://a.aaxyz.de/'
+  };
+  const helpKeys = new Set(['?', '？']);
+
+  const has = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+  // ---- 搜索 ----
+  function openSearch(engine, query) {
+    if (!has(searchEngines, engine)) return;
+    const url = searchEngines[engine].replace('{q}', () => encodeURIComponent(query));
+    // noopener,noreferrer：避免第三方页面拿到 window.opener（反向标签页劫持）
     window.open(url, '_blank', 'noopener,noreferrer');
   }
 
-  function search(engine){
+  function search(engine) {
     const query = searchInput.value.trim();
-    if (!query){
+    if (!query) {
       const row = document.querySelector('.input-row');
-      row.classList.remove('shake'); void row.offsetWidth; // restart animation
+      row.classList.remove('shake');
+      void row.offsetWidth; // 重启动画
       row.classList.add('shake');
       searchInput.focus();
       return;
@@ -480,92 +539,141 @@
     openSearch(engine, query);
   }
 
-  // 事件委托：所有带 data-engine 的按钮统一在这里处理，不用逐个写 onclick
-  document.querySelector('.categories').addEventListener('click', function(e){
-    const btn = e.target.closest('[data-engine]');
-    if (!btn) return;
-    search(btn.dataset.engine);
-  });
+  // 事件委托：所有 data-engine 按钮统一处理
+  document.querySelector('.categories')
+    .addEventListener('click', e => {
+      const btn = e.target.closest('[data-engine]');
+      if (btn) search(btn.dataset.engine);
+    });
 
-  // ---- 快捷指令（保持原有全部条目与地址）----
-  const shortcuts = {
-    '?': showHelp,
-    '？': showHelp,
-    'oml': () => window.location.href = "https://outlook.live.com",
-    'gml': () => window.location.href = "https://mail.google.com",
-    'ip':  () => window.location.href = "https://ipcheck.ing",
-    'tm':  () => window.location.href = "https://datetime.app/zh-hans",
-    'tq':  () => window.location.href = "http://www.weather.com.cn/weather1dn/101070501.shtml",
-    'tr':  () => window.location.href = "https://cn.bing.com/translator",
-    'xyz': () => window.location.href = "https://a.aaxyz.de/"
-  };
+  // ---- 快捷指令帮助 ----
+  function openHelp() {
+    searchInput.value = '';
+    syncClear();
+    openModal(helpModal);
+  }
 
-  // 回车：先匹配指令，未命中则用当前默认搜索引擎（谷歌，标了 ↵ 的那个）
-  function handleKeydown(e){
-    if (e.key !== 'Enter') return;
+  // ---- 回车：先匹配指令，否则用默认搜索引擎 ----
+  searchInput.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || e.isComposing) return;
+    e.preventDefault();
     const cmd = searchInput.value.trim();
-    if (cmd in shortcuts){
-      shortcuts[cmd]();
-      searchInput.value = '';
+
+    if (helpKeys.has(cmd)) {
+      openHelp();
       return;
     }
-    const defaultChip = document.getElementById('defaultSearch');
+    if (has(shortcutUrls, cmd)) {
+      searchInput.value = '';
+      window.location.href = shortcutUrls[cmd];
+      return;
+    }
+    const defaultChip = $('defaultSearch');
     if (defaultChip) search(defaultChip.dataset.engine);
-  }
+  });
 
   // ---- 侧边栏 ----
-  const sidebar = document.getElementById('sidebar');
-  const sidebarToggle = document.getElementById('sidebar-toggle');
-
-  function toggleSidebar(){
-    const open = sidebar.classList.toggle('active');
-    sidebarToggle.setAttribute('aria-expanded', open);
+  function setSidebar(open) {
+    sidebar.classList.toggle('active', open);
+    sidebarToggle.setAttribute('aria-expanded', String(open));
   }
 
-  document.addEventListener('click', function(event){
-    if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)){
-      sidebar.classList.remove('active');
-      sidebarToggle.setAttribute('aria-expanded', 'false');
+  sidebarToggle.addEventListener('click', e => {
+    e.stopPropagation();
+    setSidebar(!sidebar.classList.contains('active'));
+  });
+
+  document.addEventListener('click', e => {
+    if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+      setSidebar(false);
     }
   });
 
-  function toggleSubmenu(li){
-    li.classList.toggle('open');
-    li.querySelector('ul').classList.toggle('show');
+  // 子菜单展开/收起
+  document.querySelectorAll('.has-submenu > .submenu-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const li = btn.parentElement;
+      const open = li.classList.toggle('open');
+      li.querySelector('ul').classList.toggle('show', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+
+  // ---- 弹窗 ----
+  // 同一时间只允许一个弹窗打开。焦点移动放到下一帧，
+  // 避免当前这次回车被浏览器当作对新聚焦按钮的点击而立即关闭弹窗。
+  let activeModal = null;
+  let returnFocusEl = null;
+
+  function openModal(modal) {
+    if (activeModal) closeModal();
+    returnFocusEl = document.activeElement;
+    activeModal = modal;
+    modal.hidden = false;
+    requestAnimationFrame(() => modal.querySelector('.modal-content').focus());
   }
 
-  // ---- 赞赏支持模态框 ----
-  function showDonation(){ document.getElementById('donationModal').style.display = 'flex'; }
-  function hideDonation(){ document.getElementById('donationModal').style.display = 'none'; }
-
-  // ---- 帮助模态框 ----
-  function showHelp(){
-    document.getElementById('helpContent').innerHTML = `
-      <table>
-        <tr><td>oml</td><td>打开 Outlook</td></tr>
-        <tr><td>gml</td><td>打开 Gmail</td></tr>
-        <tr><td>ip</td><td>查看本机 IP</td></tr>
-        <tr><td>tm</td><td>查看当前时间</td></tr>
-        <tr><td>tq</td><td>查看天气</td></tr>
-        <tr><td>tr</td><td>打开必应翻译</td></tr>
-        <tr><td>xyz</td><td>打开导航中转</td></tr>
-        <tr><td>?</td><td>显示本帮助</td></tr>
-      </table>`;
-    document.getElementById('helpModal').style.display = 'flex';
-    searchInput.value = '';
+  function closeModal() {
+    if (!activeModal) return;
+    activeModal.hidden = true;
+    activeModal = null;
+    (returnFocusEl && returnFocusEl.focus ? returnFocusEl : searchInput).focus();
   }
-  function hideHelp(){ document.getElementById('helpModal').style.display = 'none'; }
 
-  // ---- Esc 关闭弹层 ----
-  document.addEventListener('keydown', function(e){
+  // 关闭按钮
+  document.querySelectorAll('.modal .close').forEach(btn => {
+    btn.addEventListener('click', closeModal);
+  });
+
+  // 点击遮罩关闭
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModal();
+    });
+  });
+
+  // 赞赏支持
+  $('donateBtn').addEventListener('click', () => {
+    setSidebar(false);
+    openModal(donationModal);
+  });
+
+  // Esc 关闭弹窗和侧边栏
+  document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
-    hideDonation();
-    hideHelp();
-    if (sidebar.classList.contains('active')){
-      sidebar.classList.remove('active');
-      sidebarToggle.setAttribute('aria-expanded', 'false');
-    }
+    closeModal();
+    if (sidebar.classList.contains('active')) setSidebar(false);
   });
+
+  // ---- 清除按钮 ----
+  const clearBtn = $('clearBtn');
+
+  function syncClear() {
+    clearBtn.hidden = searchInput.value === '';
+  }
+
+  searchInput.addEventListener('input', syncClear);
+
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    syncClear();
+    searchInput.focus();
+  });
+
+  // ---- "/" 键聚焦搜索框 ----
+  document.addEventListener('keydown', e => {
+    if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (document.querySelector('.modal:not([hidden])')) return;
+    const el = document.activeElement;
+    const typing = el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
+    if (typing) return;
+    e.preventDefault();
+    searchInput.focus();
+  });
+
+  syncClear();
+  searchInput.focus();
+})();
 </script>
 </body>
 </html>

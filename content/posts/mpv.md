@@ -177,7 +177,7 @@ ytdl-format=bestvideo+bestaudio/best # 最佳视频音频，如果没有，回�
 | r R              | 上下移动字幕位置                          |
 | Ctrl + ↑ ↓       | 字幕大小（需自定义）                        |
 
-**input.conf**  自定义快捷键，可以[参考](https://github.com/mpv-player/mpv/blob/master/etc/input.conf)
+**input.conf** 自定义快捷键，[参考](https://github.com/mpv-player/mpv/blob/master/etc/input.conf)
 
 ```bash
 ## 键盘
@@ -206,6 +206,11 @@ F1 af toggle "lavfi=[loudnorm=I=-16]"
 F2 af toggle 'pan="stereo|FL=0.707*FC+0.3*FL+0.1*BL+0.1*LFE|FR=0.707*FC+0.3*FR+0.1*BR+0.1*LFE"'
 F3 cycle-values sub-ass-override force no
 
+# 微调字幕速度 (每次增减 0.001)
+Alt+[ add sub-speed -0.001
+Alt+] add sub-speed +0.001
+Alt+r set sub-speed 1.0 # 重置
+
 ## 鼠标
 MBTN_RIGHT cycle pause; show-text "${?pause==yes:暂停}${!pause==yes:播放}"
 MBTN_MID cycle mute # 鼠标点击滚轮静音
@@ -217,7 +222,9 @@ MBTN_BACK seek -2 # 侧键后退2秒
 
 ## 脚本
 
-[用户脚本库](https://github.com/mpv-player/mpv/wiki/User-Scripts)，脚本 `.lua` 文件 放在 `/scripts` 目录中，脚本配置 `.conf` 配置文件放在 `/script-opts` 目录中
+脚本能附加功能，浏览[用户脚本库](https://github.com/mpv-player/mpv/wiki/User-Scripts)或自己编写并放置于对应目录
+- 脚本文件 `.lua` 放到 `/scripts`
+- 脚本配置文件 `.conf` 放到 `/script-opts`
 
 **常用脚本**
 
@@ -229,9 +236,8 @@ log_path=T:/cache/history.log # 自定义历史文件记录位置
 
 [thumbfast](https://github.com/po5/thumbfast)：播放进度显示缩略图
 
-最小化并自动暂停播放
+最小化并自动暂停播放，编写 `auto-pause.lua` 脚本
 ```lua
--- 编写 auto-pause.lua 脚本
 mp.observe_property("window-minimized", "bool", function(name, value)
     if value then
         mp.set_property("pause", "yes")
@@ -241,9 +247,8 @@ mp.observe_property("window-minimized", "bool", function(name, value)
 end)
 ```
 
-清除播放历史记录
+清除播放历史记录，编写 `clear-history.lua` 脚本
 ```lua
--- 编写 clear-history.lua 脚本
 local u = require 'mp.utils'
 mp.add_key_binding("Ctrl+Shift+H", "clear-history", function()
     local p = "T:/cache/mpv/watch_later"
@@ -252,9 +257,8 @@ mp.add_key_binding("Ctrl+Shift+H", "clear-history", function()
 end)
 ```
 
-[Navigator](https://github.com/jonniek/mpv-filenavigator)：文件浏览器，f 在收藏目录间切换，↑↓ 上下选择，←→ 进入返回目录  
-```bash
-# 修改 navigator.lua 文件，搜索字段： 
+[Navigator](https://github.com/jonniek/mpv-filenavigator)：文件浏览器，f 在收藏目录间切换，↑↓ 上下选择，←→ 进入返回目录，可以修改 `navigator.lua` 文件进行配置
+```lua
 defaultpath = 默认路径 "T:/Videos"  
 navigator_mainkey = 快捷键 Ctrl+o
 favorites = 想收藏的目录
@@ -271,6 +275,55 @@ selection_prefix = "{\\c&00BFFF&}■ " 选择条目颜色
 [autosubsync-mpv](https://github.com/joaquintorres/autosubsync-mpv)：自动同步字幕，解决音频字幕不同步
 
 [mpv-copyTime](https://github.com/Arieleg/mpv-copyTime)：复制当前播放位置时间
+
+解决Web版与蓝光版字幕同步问题，编写 `sub-time-sync.lua` 脚本
+```lua
+local mp = require 'mp'
+
+local first_real = nil
+local first_sub = nil
+
+function mark_point()
+    local pos = mp.get_property_number("time-pos")
+    local sub_delay = mp.get_property_number("sub-delay") or 0
+    local sub_pos = pos - sub_delay
+
+    if not first_real then
+        first_real = pos
+        first_sub = sub_pos
+        mp.osd_message(string.format("已标记【第一个时间点】: %.2fs", pos), 3)
+    else
+        local second_real = pos
+        local second_sub = sub_pos
+
+        local sub_speed = (second_real - first_real) / (second_sub - first_sub)
+        local new_delay = first_real - (first_sub * sub_speed)
+
+        mp.set_property_number("sub-speed", sub_speed)
+        mp.set_property_number("sub-delay", new_delay)
+
+        mp.osd_message(string.format("字幕校准完成！\n倍速: %.4f | 延迟: %.2fs", sub_speed, new_delay), 4)
+        -- 重置标记状态，方便重新设置
+        first_real = nil
+        first_sub = nil
+    end
+end
+
+function reset_sync()
+    first_real = nil
+    first_sub = nil
+    mp.set_property_number("sub-speed", 1.0)
+    mp.set_property_number("sub-delay", 0)
+    mp.osd_message("字幕缩放与延迟已重置", 3)
+end
+
+mp.add_key_binding("n", "mark_sync_point", mark_point)
+mp.add_key_binding("Ctrl+n", "reset_sync_point", reset_sync)
+```
+使用方法
+1. 播放视频，第一句台词出现时，用`z`/`x`调整并根据人物说话对齐台词，按`n`键标记开头
+2. 将视频拉到结尾处左右的最后一句台词，再用`z`/`x`调整对齐台词，再次按下`n`键标记结尾
+3. 如需重置，按 `Ctrl+N`
 
 ## OSC
 

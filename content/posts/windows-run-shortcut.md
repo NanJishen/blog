@@ -240,6 +240,7 @@ tags: ["Windows"]
 | powercfg.cpl                 | 电源选项                                                                        |
 | appwiz.cpl                   | 卸载或更改程序                                                                     |
 | sysdm.cpl                    | 系统属性                                                                        |
+| mmsys.cpl                    | 声音属性                                                                        |
 | firewall.cpl                 | Windows防火墙                                                                  |
 
 ### Shell Command

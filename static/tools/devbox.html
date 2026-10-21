@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="极限工具箱：JSON、Base64、URL、时间戳、哈希、UUID、正则、JWT，纯本地运行的开发者工具箱">
+<title>极限工具箱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="../favicon-32x32.png">
+<style>
+:root{--line:rgba(212,175,55,.16);--line2:rgba(212,175,55,.3);--tx:#efe9d8;--mu:#968c74;--dim:#6d6552;--gold:#d4af37;--gold2:#f0d98a;--gold3:#8a6d1f;--ok:#7ddf9b;--err:#ff7a7a;
+--sans:Inter,-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html,body{min-height:100%}
+body{background-color:#000;color:var(--tx);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+background-image:radial-gradient(900px 520px at 80% -8%,rgba(212,175,55,.06),transparent 62%),radial-gradient(700px 500px at 10% 105%,rgba(255,255,255,.03),transparent 65%);background-attachment:fixed}
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+::selection{background:rgba(212,175,55,.35)}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:var(--gold3);border-radius:8px}
+a:focus-visible,button:focus-visible,.kv:focus-visible{outline:1px solid var(--gold);outline-offset:2px}
+button,select{font:inherit;color:var(--tx)}
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 clamp(16px,3vw,24px) 48px}
+.sp{flex:1}
+
+/* 顶部 */
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0 14px;border-bottom:1px solid var(--line);margin-bottom:32px}
+.brand{display:flex;gap:10px;align-items:center;color:inherit;text-decoration:none}
+.brand img,.brand b{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;font-size:14px;color:var(--gold);box-shadow:0 0 16px -2px rgba(212,175,55,.5)}
+.brand h1{font-size:17px;font-weight:600;letter-spacing:.08em;background:linear-gradient(90deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+/* 工具菜单（居中弹窗） */
+.menu{background:none;border:1px solid var(--line2);border-radius:8px;width:40px;height:40px;display:grid;place-items:center;cursor:pointer;color:var(--gold2);transition:border-color .15s}
+.menu:hover{border-color:var(--gold)}
+.dlg{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fi .15s}
+.dlg[hidden]{display:none}
+@keyframes fi{from{opacity:0}}
+.pnl{width:min(760px,100%);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;background:rgba(6,5,10,.94);border:1px solid var(--line2);border-radius:14px;padding:22px;box-shadow:0 30px 80px -20px #000}
+.search{position:relative;display:block;margin-bottom:18px}
+.search input{width:100%;background:none;border:0;border-bottom:1px solid var(--line2);color:var(--tx);padding:9px 54px 9px 2px;font:inherit;font-size:16px;outline:0;transition:border-color .15s}
+.search input::placeholder{color:var(--dim)}
+.search kbd{position:absolute;right:2px;top:50%;transform:translateY(-50%);font:11px var(--mono);color:var(--gold);border:1px solid var(--line2);border-radius:4px;padding:0 6px}
+nav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+nav a{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 6px 12px;color:var(--mu);text-decoration:none;text-align:center;font-size:14px;line-height:1.35;transition:color .15s,border-color .15s;user-select:none}
+nav a i{font:500 13px var(--mono);font-style:normal;min-width:36px;height:36px;padding:0 4px;border:1px solid var(--line2);border-radius:9px;display:grid;place-items:center;color:var(--gold)}
+nav a:hover{color:var(--gold2);border-color:var(--gold)}
+.none{grid-column:1/-1;text-align:center;color:var(--dim);padding:24px 0}
+
+/* 标题与卡片（镂空） */
+header{margin-bottom:18px}
+header h2{font-size:26px;font-weight:600;letter-spacing:-.01em;color:var(--gold2)}
+header p{color:var(--mu);font-size:15px}
+.card{border:1px solid var(--line);border-radius:12px;padding:22px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+
+/* 按钮：纯文字 */
+.btn{background:none;border:0;border-radius:6px;padding:5px 10px;cursor:pointer;color:var(--mu);font-weight:500;font-size:14.5px;transition:color .15s}
+.btn:hover{color:var(--gold2)}
+.btn.pri{color:var(--gold);font-weight:600}.btn.pri:hover{color:var(--gold2)}
+.ghost{background:none;border:0;color:var(--mu);cursor:pointer;font-size:13px;padding:2px 6px;border-radius:5px}.ghost:hover{color:var(--gold2)}
+
+/* 下拉框 / 输入 / 勾选 */
+select,.in{background:none;border:0;border-bottom:1px solid var(--line2);border-radius:0;padding:5px 2px;outline:0;font:14.5px var(--mono);color:var(--tx);transition:border-color .15s}
+select{font-family:var(--sans);-webkit-appearance:none;appearance:none;cursor:pointer;color:var(--gold2);padding-right:20px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23d4af37' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 3px center/10px}
+select option{background:#0c0a12;color:var(--tx)}
+select:focus,.in:focus{border-color:var(--gold)}
+.chk{display:flex;gap:7px;align-items:center;color:var(--mu);cursor:pointer;user-select:none;font-size:14.5px;transition:color .15s}
+.chk:hover{color:var(--tx)}.chk:has(input:checked){color:var(--gold2)}
+.chk input{-webkit-appearance:none;appearance:none;width:14px;height:14px;margin:0;border:1px solid var(--line2);border-radius:3px;display:inline-grid;place-content:center;cursor:pointer;transition:border-color .15s}
+.chk input::before{content:"";width:8px;height:8px;background:var(--gold);clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0,43% 62%);transform:scale(0);transition:transform .12s}
+.chk input:checked{border-color:var(--gold)}.chk input:checked::before{transform:scale(1)}
+
+/* 文本区 */
+.split,.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pane{display:flex;flex-direction:column;min-width:0}
+.lbl{display:flex;align-items:center;gap:4px;color:var(--gold);font-size:13px;font-weight:500;margin-bottom:6px;opacity:.9}
+textarea{width:100%;min-height:340px;resize:none;background:none;border:1px solid var(--line);border-radius:8px;padding:12px 14px;color:var(--tx);font:15px/1.65 var(--mono);outline:0;tab-size:2}
+textarea.s{min-height:120px}
+.out{border:1px solid var(--line);border-radius:8px;padding:12px 14px;font:15px/1.7 var(--mono);white-space:pre-wrap;word-break:break-all;min-height:120px;overflow:auto}
+.status{font:13.5px var(--mono);color:var(--mu)}.status.ok{color:var(--ok)}.status.err{color:var(--err)}
+.h{font-size:13px;color:var(--gold);margin:18px 0 8px;font-weight:500;opacity:.9}
+mark{background:rgba(212,175,55,.32);color:#fff;border-radius:2px;box-shadow:0 0 0 1px rgba(212,175,55,.5)}
+
+/* 结果行 */
+.kvs{display:flex;flex-direction:column;gap:6px}
+.kv{display:grid;grid-template-columns:120px 1fr auto;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:9px 2px;cursor:pointer;transition:border-color .15s}
+.kv:hover{border-color:var(--gold)}
+.kv span{color:var(--mu);font-size:14px}.kv code{font:15px var(--mono);word-break:break-all}
+.kv i{font-style:normal;font-size:12.5px;color:var(--gold);opacity:0;transition:opacity .15s}.kv:hover i,.kv:focus-visible i{opacity:1}
+.big{font:500 32px var(--mono);letter-spacing:-.03em;cursor:pointer;color:var(--gold2);text-shadow:0 0 20px rgba(212,175,55,.35)}
+
+footer{text-align:center;margin-top:28px;font-size:12px;color:var(--dim)}
+footer a{color: inherit}
+#toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);background:var(--gold2);color:#1a1204;padding:7px 14px;border-radius:8px;opacity:0;pointer-events:none;transition:.2s;font-size:13px;font-weight:600;z-index:70;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+#toast.err{background:var(--err);color:#1a0505}
+
+/* Diff / Cron */
+#a,#b{min-height:220px}
+.dif{padding:6px 0;max-height:520px;overflow:auto;min-height:60px}
+.dl{display:grid;grid-template-columns:44px 44px 18px 1fr;font:14px/1.6 var(--mono);white-space:pre-wrap;word-break:break-all}
+.dl b{color:var(--dim);font-weight:400;text-align:right;padding-right:10px;user-select:none}
+.dl i{font-style:normal;user-select:none;color:var(--dim)}
+.dl.add{background:rgba(125,223,155,.08)}.dl.add i{color:var(--ok)}
+.dl.del{background:rgba(255,122,122,.08)}.dl.del i{color:var(--err)}
+.dl ins,.dl del{text-decoration:none;border-radius:2px;color:#fff}
+.dl.add ins{background:rgba(125,223,155,.3)}.dl.del del{background:rgba(255,122,122,.3)}
+.dl.sk{display:block;text-align:center;color:var(--dim);font-size:13px}
+.f5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.f span{display:block;color:var(--mu);font-size:13px;margin-bottom:2px}
+.f input{width:100%;text-align:center}
+.say{font-size:20px;color:var(--gold2);min-height:32px}
+
+/* 批量重命名 */
+.card.drop{outline:2px dashed var(--gold);outline-offset:-8px}
+.in::placeholder{color:var(--dim)}
+.ibtn{width:38px;height:38px;display:grid;place-items:center;background:none;border:1px solid var(--line2);border-radius:8px;color:var(--mu);cursor:pointer;transition:color .15s,border-color .15s}
+.ibtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ibtn:hover:not(:disabled){color:var(--gold2);border-color:var(--gold)}
+.ibtn.pri{color:var(--gold);border-color:var(--gold)}
+.ibtn:disabled{opacity:.3;cursor:not-allowed}
+.vsep{width:1px;height:20px;background:var(--line2);margin:0 4px}
+.warn{margin-bottom:14px;padding:10px 14px;border:1px solid rgba(242,179,94,.5);border-radius:8px;color:#f2b35e;font-size:14px}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:4px 0 18px}
+.rr{border:1px solid var(--line);border-radius:10px;padding:12px 14px;transition:border-color .15s}
+.rr:has(.sw:checked){border-color:var(--gold)}
+.rh{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--mu);cursor:pointer;transition:color .15s}
+.rr:has(.sw:checked) .rh{color:var(--gold2)}
+.rb{display:grid;gap:10px;margin-top:12px}
+.rb .in,.rb select{width:100%}
+.fld{display:grid;gap:2px;color:var(--mu);font-size:13px}
+.sw{-webkit-appearance:none;appearance:none;width:30px;height:18px;margin:0;border:1px solid var(--line2);border-radius:9px;position:relative;cursor:pointer;flex:none;transition:border-color .15s}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;border:1px solid var(--mu);transition:transform .15s,border-color .15s,background .15s}
+.sw:checked{border-color:var(--gold)}
+.sw:checked::after{transform:translateX(12px);border-color:var(--gold);background:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{font:12.5px var(--mono);color:var(--mu);background:none;border:1px solid var(--line);border-radius:6px;padding:1px 8px;cursor:pointer;transition:color .15s,border-color .15s}
+.chips button:hover{color:var(--gold2);border-color:var(--gold)}
+.tbl{max-height:min(520px,62vh);overflow:auto;border:1px solid var(--line);border-radius:8px}
+.tr{display:grid;grid-template-columns:30px minmax(0,1fr) minmax(0,1fr) 84px;gap:12px;align-items:center;padding:7px 14px;border-bottom:1px solid var(--line);font:14px var(--mono)}
+.tr:last-child{border-bottom:0}
+.tr.th{position:sticky;top:0;z-index:1;background:#07060b;color:var(--mu);font:13px var(--sans)}
+.tr>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr.off{opacity:.4}
+.tr .old{color:var(--mu)}
+.tr .dir{opacity:.6}
+.tr del{color:var(--err);text-decoration:none;background:rgba(255,122,122,.14);border-radius:3px}
+.tr ins{color:var(--ok);text-decoration:none;background:rgba(125,223,155,.14);border-radius:3px}
+.tr .st{font:13px var(--sans);text-align:right}
+.st.ok{color:var(--ok)}.st.same{color:var(--mu)}.st.bad,.st.dup,.st.exists{color:var(--err)}
+.tr input[type=checkbox]{-webkit-appearance:none;appearance:none;width:14px;height:14px;margin:0;border:1px solid var(--line2);border-radius:3px;display:inline-grid;place-content:center;cursor:pointer;transition:border-color .15s}
+.tr input[type=checkbox]::before{content:"";width:8px;height:8px;background:var(--gold);clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0,43% 62%);transform:scale(0);transition:transform .12s}
+.tr input[type=checkbox]:checked{border-color:var(--gold)}.tr input[type=checkbox]:checked::before{transform:scale(1)}
+.empty{padding:48px 16px;text-align:center;color:var(--mu)}
+.empty strong{display:block;color:var(--gold2);font-size:18px;margin-bottom:6px}
+.sum{margin-top:12px;color:var(--mu);font-size:14px}
+.sum b{color:var(--tx);font-weight:600}.sum .e{color:var(--err)}
+dialog{background:rgba(6,5,10,.97);color:var(--tx);border:1px solid var(--line2);border-radius:14px;width:min(720px,92vw);padding:18px}
+dialog::backdrop{background:rgba(0,0,0,.72)}
+dialog p{color:var(--mu);margin-bottom:10px;font-size:14.5px}
+dialog textarea{min-height:0;height:320px;font-size:13px;white-space:pre}
+.acts{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+@media(max-width:720px){
+.pnl{padding:16px}
+.rg{grid-template-columns:1fr}
+.tbl{max-height:none;overflow:visible;border:0}
+.tr{grid-template-columns:28px minmax(0,1fr);gap:2px 10px;align-items:start;padding:10px 4px}
+.tr>span{white-space:normal;overflow:visible;word-break:break-all}
+.tr>span:nth-child(1){grid-column:1;grid-row:1/span 3;padding-top:2px}
+.tr>span:nth-child(n+2){grid-column:2}
+.tr>span:empty{display:none}
+.tr>span:nth-child(3)::before{content:"→ ";color:var(--mu)}
+.tr .st{text-align:left}
+.tr.th{position:static;padding:8px 4px;background:none}
+.tr.th .old,.tr.th .st,.tr.th>span:nth-child(3){display:none}
+.tr.th::after{content:"全选";grid-column:2}
+nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+.split,.row2{grid-template-columns:1fr}
+textarea{min-height:220px}
+.kv{grid-template-columns:1fr auto}.kv span{grid-column:1/-1}
+header h2{font-size:22px}.card{padding:14px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<noscript>需要启用 JavaScript 才能使用极限工具箱。</noscript>
+<div class="wrap">
+ <div class="top">
+  <a class="brand" href="./devbox.html" title="极限工具箱"><img id="logo" src="https://ttti.cc/favicon-32x32.png" width="36" height="36" alt="" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'◆'}))"><h1>极限工具箱</h1></a>
+  <button class="menu" id="mb" title="工具菜单 (Ctrl+K)" aria-label="工具菜单" aria-haspopup="dialog" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+ </div>
+  <main>
+  <header><h2 id="title"></h2><p id="desc"></p></header>
+  <section id="stage" class="card"></section>
+ </main>
+ <footer>由<a href="https://ttti.cc">极限玩家</a>驱动</footer>
+</div>
+<div id="dlg" class="dlg" role="dialog" aria-modal="true" aria-label="选择工具" hidden>
+ <div class="pnl">
+  <label class="search"><input id="q" autocomplete="off" aria-label="搜索工具"><kbd>Esc</kbd></label>
+  <nav id="nav"></nav>
+ </div>
+</div>
+<div id="toast"></div>
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let tt;function toast(m,err){const t=$('#toast');t.textContent=m;t.classList.toggle('err',!!err);t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),err?5000:m.length>6?2600:1400)}
+async function copy(s){try{await navigator.clipboard.writeText(s)}catch(e){const a=document.createElement('textarea');a.value=s;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(_){}a.remove()}toast('已复制')}
+function kv(box,list){box.replaceChildren();for(const[l,v]of list){const d=document.createElement('div'),a=document.createElement('span'),c=document.createElement('code'),i=document.createElement('i');d.className='kv';d.tabIndex=0;d.setAttribute('role','button');a.textContent=l;c.textContent=v;i.textContent='点击复制';d.append(a,c,i);d.onclick=()=>copy(v);d.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();copy(v)}};box.append(d)}}
+const enc64=s=>{let r='';for(const x of new TextEncoder().encode(s))r+=String.fromCharCode(x);return btoa(r)};
+const dec64=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/').replace(/\s/g,'');while(s.length%4)s+='=';return new TextDecoder().decode(Uint8Array.from(atob(s),c=>c.charCodeAt(0)))};
+const pane=(l,id,ro,ph='',c='')=>`<div class="pane"><div class="lbl">${l}<span class="sp"></span><button class="ghost" ${ro?`data-c="#${id}">复制`:`data-x="#${id}">清空`}</button></div><textarea id="${id}" class="${c}" aria-label="${l}" spellcheck="false" ${ro?'readonly':''} placeholder="${esc(ph)}"></textarea></div>`;
+document.addEventListener('click',e=>{const c=e.target.closest('[data-c]');if(c){const t=$(c.dataset.c);copy(t.value??t.textContent)}const x=e.target.closest('[data-x]');if(x){const t=$(x.dataset.x);t.value='';t.dispatchEvent(new Event('input'));t.focus()}});
+const pad=n=>String(n).padStart(2,'0');
+const uid=()=>crypto.randomUUID?crypto.randomUUID():'10000000-1000-4000-8000-100000000000'.replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));
+const fmtDate=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+
+/* ---------- JSON ---------- */
+function json(r){
+ r.innerHTML=`<div class="bar"><button class="btn pri" data-m="fmt">格式化</button><button class="btn" data-m="min">压缩</button><button class="btn" data-m="sort">键排序</button><select id="ind"><option value="2">2 空格</option><option value="4">4 空格</option><option value="t">Tab</option></select><span class="sp"></span><span class="status" id="st">等待输入</span></div><div class="split">${pane('输入','i',0,'{"hello":"world"}')}${pane('输出','o',1)}</div>`;
+ let m='fmt';const i=$('#i'),o=$('#o'),st=$('#st');
+ const sortK=v=>Array.isArray(v)?v.map(sortK):v&&typeof v=='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,sortK(v[k])])):v;
+ const run=()=>{const s=i.value;if(!s.trim()){o.value='';st.className='status';st.textContent='等待输入';return}
+  try{let v=JSON.parse(s);if(m=='sort')v=sortK(v);const n=$('#ind').value;o.value=m=='min'?JSON.stringify(v):JSON.stringify(v,null,n=='t'?'\t':+n);st.className='status ok';st.textContent='✓ 有效 JSON · '+o.value.length+' 字符'}
+  catch(e){o.value='';st.className='status err';st.textContent='✗ '+e.message}};
+ r.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{m=b.dataset.m;r.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('pri',x==b));run()});
+ i.oninput=run;$('#ind').onchange=run;
+}
+/* ---------- Base64 ---------- */
+function b64(r){
+ r.innerHTML=`<div class="bar"><button class="btn pri" data-m="e">编码</button><button class="btn" data-m="d">解码</button><label class="chk"><input type="checkbox" id="u">URL 安全</label><span class="sp"></span><span class="status" id="st"></span></div><div class="split">${pane('输入','i',0,'输入文本或 Base64')}${pane('输出','o',1)}</div>`;
+ let m='e';const i=$('#i'),o=$('#o'),st=$('#st');
+ const run=()=>{st.className='status';st.textContent='';if(!i.value){o.value='';return}
+  try{if(m=='e'){let s=enc64(i.value);if($('#u').checked)s=s.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');o.value=s}else o.value=dec64(i.value);st.className='status ok';st.textContent='✓ 完成'}
+  catch(e){o.value='';st.className='status err';st.textContent='✗ 不是有效的 Base64'}};
+ r.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{m=b.dataset.m;r.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('pri',x==b));run()});
+ i.oninput=run;$('#u').onchange=run;
+}
+/* ---------- URL ---------- */
+function url(r){
+ r.innerHTML=`<div class="bar"><button class="btn pri" data-m="c">编码 Component</button><button class="btn" data-m="u">编码 URI</button><button class="btn" data-m="d">解码</button><span class="sp"></span><span class="status" id="st"></span></div><div class="split">${pane('输入','i',0,'https://example.com/search?q=你好 世界&lang=zh')}${pane('输出','o',1)}</div><div class="h">URL 解析</div><div class="kvs" id="p"></div>`;
+ let m='c';const i=$('#i'),o=$('#o'),st=$('#st');
+ const run=()=>{st.className='status';st.textContent='';const s=i.value;
+  try{o.value=m=='c'?encodeURIComponent(s):m=='u'?encodeURI(s):decodeURIComponent(s.replace(/\+/g,' '))}catch(e){o.value='';st.className='status err';st.textContent='✗ 含有非法转义序列'}
+  const p=$('#p');try{const u=new URL(s.trim());const l=[['协议',u.protocol],['主机',u.host],['路径',u.pathname],['Hash',u.hash||'—']];u.searchParams.forEach((v,k)=>l.push(['参数 '+k,v]));kv(p,l)}catch(e){p.innerHTML='<div class="status">输入完整 URL 后在此显示解析结果</div>'}};
+ r.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{m=b.dataset.m;r.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('pri',x==b));run()});
+ i.oninput=run;run();
+}
+/* ---------- Timestamp ---------- */
+function ts(r){
+ r.innerHTML=`<div class="lbl">当前 Unix 时间戳（点击复制）</div><div class="bar"><div class="big" id="now"></div><span class="sp"></span><button class="btn" id="nowms">毫秒</button></div>
+ <div class="row2"><div><div class="h" style="margin-top:6px">时间戳 → 日期</div><input class="in" id="t" style="width:100%;margin-bottom:10px" placeholder="如 1700000000 或 1700000000000"><div class="kvs" id="k1"></div></div>
+ <div><div class="h" style="margin-top:6px">日期 → 时间戳</div><input class="in" id="d" style="width:100%;margin-bottom:10px" placeholder="如 2026-10-12 08:30:00"><div class="kvs" id="k2"></div></div></div>`;
+ let ms=false;const now=$('#now');
+ const tick=()=>{if(!now.isConnected)return clearInterval(iv);now.textContent=ms?Date.now():Math.floor(Date.now()/1e3)};
+ const iv=setInterval(tick,500);tick();now.onclick=()=>copy(now.textContent);
+ $('#nowms').onclick=e=>{ms=!ms;e.target.textContent=ms?'秒':'毫秒';tick()};
+ const rel=t=>{const s=Math.round((t-Date.now())/1e3),a=Math.abs(s),u=a<60?[a,'秒']:a<3600?[Math.floor(a/60),'分钟']:a<86400?[Math.floor(a/3600),'小时']:[Math.floor(a/86400),'天'];return u[0]+u[1]+(s<0?'前':'后')};
+ $('#t').oninput=e=>{const v=e.target.value.trim(),box=$('#k1');if(!/^-?\d+(\.\d+)?$/.test(v))return box.innerHTML='';let n=+v;if(Math.abs(n)<1e11)n*=1e3;const d=new Date(n);if(isNaN(d))return box.innerHTML='';
+  kv(box,[['本地时间',fmtDate(d)],['UTC',d.toISOString().replace('T',' ').slice(0,19)],['ISO 8601',d.toISOString()],['相对',rel(n)]])};
+ $('#d').oninput=e=>{const v=e.target.value.trim(),box=$('#k2');const d=new Date(v);if(!v||isNaN(d))return box.innerHTML='';kv(box,[['秒',String(Math.floor(d/1e3))],['毫秒',String(+d)]])};
+ $('#d').value=fmtDate(new Date());$('#d').oninput({target:$('#d')});
+}
+/* ---------- Hash ---------- */
+function hash(r){
+ r.innerHTML=`<div class="bar"><label class="chk"><input type="checkbox" id="up">大写输出</label><span class="sp"></span><span class="status">基于 Web Crypto · 实时计算</span></div>${pane('输入文本','i',0,'输入要计算哈希的文本','s')}<div class="h">结果</div><div class="kvs" id="k"></div>`;
+ const run=async()=>{if(!crypto.subtle){kv($('#k'),[['提示','当前是非安全上下文（HTTP），浏览器禁用了 Web Crypto。请用 https 或 localhost 打开。']]);return}const t=new TextEncoder().encode($('#i').value),l=[];
+  for(const a of['SHA-1','SHA-256','SHA-384','SHA-512']){let h=[...new Uint8Array(await crypto.subtle.digest(a,t))].map(b=>b.toString(16).padStart(2,'0')).join('');if($('#up').checked)h=h.toUpperCase();l.push([a,h])}
+  kv($('#k'),l)};
+ $('#i').oninput=run;$('#up').onchange=run;run();
+}
+/* ---------- UUID ---------- */
+function uuid(r){
+ r.innerHTML=`<div class="bar"><button class="btn pri" id="g">重新生成</button><select id="n"><option>1</option><option selected>5</option><option>10</option><option>20</option></select><label class="chk"><input type="checkbox" id="up">大写</label><label class="chk"><input type="checkbox" id="nh">去掉连字符</label><span class="sp"></span><button class="btn" id="all">复制全部</button></div><div class="kvs" id="k"></div>`;
+ let cur=[];const run=()=>{cur=Array.from({length:+$('#n').value},()=>{let u=uid();if($('#nh').checked)u=u.replace(/-/g,'');return $('#up').checked?u.toUpperCase():u});kv($('#k'),cur.map((u,i)=>['UUID v4 #'+(i+1),u]))};
+ $('#g').onclick=run;['n','up','nh'].forEach(x=>$('#'+x).onchange=run);$('#all').onclick=()=>copy(cur.join('\n'));run();
+}
+/* ---------- Regex ---------- */
+function regex(r){
+ r.innerHTML=`<div class="bar"><input class="in" id="p" style="flex:1;min-width:200px" placeholder="正则表达式，如 (\\d+)-(\\w+)" spellcheck="false"><input class="in" id="f" style="width:84px" value="g" spellcheck="false" title="标志"><span class="status" id="st"></span></div>${pane('测试文本','i',0,'在此输入要匹配的文本','s')}<div class="h">匹配高亮</div><div class="out" id="o"></div><div class="h">匹配详情</div><div class="kvs" id="k"></div>`;
+ const run=()=>{const st=$('#st'),o=$('#o'),s=$('#i').value;st.className='status';st.textContent='';$('#k').innerHTML='';o.innerHTML=esc(s);if(!$('#p').value)return;
+  try{let f=$('#f').value;if(!f.includes('g'))f+='g';const re=new RegExp($('#p').value,f),ms=[...s.matchAll(re)];let h='',last=0;
+   for(const m of ms){h+=esc(s.slice(last,m.index))+'<mark>'+esc(m[0])+'</mark>';last=m.index+m[0].length}
+   o.innerHTML=h+esc(s.slice(last));st.className='status ok';st.textContent='✓ '+ms.length+' 个匹配';
+   kv($('#k'),ms.slice(0,50).flatMap((m,j)=>[['匹配 #'+(j+1)+' @'+m.index,m[0]],...[...m].slice(1).map((g,x)=>['　分组 '+(x+1),g??'(未参与)'])]))}
+  catch(e){st.className='status err';st.textContent='✗ '+e.message}};
+ ['p','f','i'].forEach(x=>$('#'+x).oninput=run);
+}
+/* ---------- JWT ---------- */
+function jwt(r){
+ r.innerHTML=`<div class="bar"><span class="status" id="st">粘贴 JWT 即可解码（不校验签名）</span></div>${pane('JWT','i',0,'eyJhbGciOi...','s')}<div class="row2"><div><div class="h">Header</div><div class="out" id="h"></div></div><div><div class="h">Payload</div><div class="out" id="pl"></div></div></div><div class="h">声明</div><div class="kvs" id="k"></div>`;
+ $('#i').oninput=()=>{const st=$('#st'),s=$('#i').value.trim();$('#k').innerHTML='';$('#h').textContent=$('#pl').textContent='';if(!s){st.className='status';st.textContent='粘贴 JWT 即可解码（不校验签名）';return}
+  try{const [a,b]=s.split('.');const H=JSON.parse(dec64(a)),P=JSON.parse(dec64(b));$('#h').textContent=JSON.stringify(H,null,2);$('#pl').textContent=JSON.stringify(P,null,2);st.className='status ok';st.textContent='✓ 解码成功';
+   const l=[];for(const k of['iat','nbf','exp'])if(typeof P[k]=='number')l.push([{iat:'签发 iat',nbf:'生效 nbf',exp:'过期 exp'}[k],fmtDate(new Date(P[k]*1e3))]);
+   if(typeof P.exp=='number')l.push(['状态',P.exp*1e3<Date.now()?'已过期':'有效中']);kv($('#k'),l)}
+  catch(e){st.className='status err';st.textContent='✗ 不是有效的 JWT'}};
+}
+
+/* ---------- Diff ---------- */
+function diff(r){
+ r.innerHTML=`<div class="bar"><label class="chk"><input type="checkbox" id="iw">忽略空白</label><label class="chk"><input type="checkbox" id="ic">忽略大小写</label><label class="chk"><input type="checkbox" id="od">仅显示差异</label><span class="sp"></span><button class="btn" id="sw">交换两侧</button><span class="status" id="st"></span></div><div class="split">${pane('原文','a',0,'原始文本','s')}${pane('新文','b',0,'修改后的文本','s')}</div><div class="h">差异</div><div class="out dif" id="o"></div>`;
+ const run=()=>{
+  const a=$('#a').value.split('\n'),b=$('#b').value.split('\n'),iw=$('#iw').checked,ic=$('#ic').checked,od=$('#od').checked;
+  const nz=l=>{if(ic)l=l.toLowerCase();return iw?l.replace(/\s+/g,' ').trim():l},na=a.map(nz),nb=b.map(nz);
+  let p=0;while(p<a.length&&p<b.length&&na[p]==nb[p])p++;
+  let q=0;while(q<a.length-p&&q<b.length-p&&na[a.length-1-q]==nb[b.length-1-q])q++;
+  const A=na.slice(p,a.length-q),B=nb.slice(p,b.length-q),n=A.length,m=B.length,rows=[];
+  for(let i=0;i<p;i++)rows.push({t:' ',o:i+1,n:i+1,x:a[i]});
+  if(n*m>4e6){for(let i=0;i<n;i++)rows.push({t:'-',o:p+i+1,x:a[p+i]});for(let j=0;j<m;j++)rows.push({t:'+',n:p+j+1,x:b[p+j]})}
+  else{const L=Array.from({length:n+1},()=>new Uint32Array(m+1));
+   for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)L[i][j]=A[i]==B[j]?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+   let i=0,j=0;while(i<n||j<m){
+    if(i<n&&j<m&&A[i]==B[j]){rows.push({t:' ',o:p+i+1,n:p+j+1,x:a[p+i]});i++;j++}
+    else if(j>=m||(i<n&&L[i+1][j]>=L[i][j+1])){rows.push({t:'-',o:p+i+1,x:a[p+i]});i++}
+    else{rows.push({t:'+',n:p+j+1,x:b[p+j]});j++}}}
+  for(let i=0;i<q;i++)rows.push({t:' ',o:a.length-q+i+1,n:b.length-q+i+1,x:a[a.length-q+i]});
+  const hl=(d,s)=>{const x=d.x,y=s.x;let u=0;while(u<x.length&&u<y.length&&x[u]==y[u])u++;let v=0;while(v<x.length-u&&v<y.length-u&&x[x.length-1-v]==y[y.length-1-v])v++;if(u+v>=Math.min(x.length,y.length)*.3){d.h=[u,x.length-v];s.h=[u,y.length-v]}};
+  for(let i=0;i<rows.length;){if(rows[i].t=='-'){let j=i;while(j<rows.length&&rows[j].t=='-')j++;let k=j;while(k<rows.length&&rows[k].t=='+')k++;for(let x=0;x<Math.min(j-i,k-j);x++)hl(rows[i+x],rows[j+x]);i=k}else i++}
+  const ad=rows.filter(r=>r.t=='+').length,de=rows.filter(r=>r.t=='-').length,st=$('#st');
+  st.className='status'+(ad||de?'':' ok');st.textContent=ad||de?`+${ad}  −${de}`:($('#a').value||$('#b').value?'✓ 两侧内容相同':'');
+  const keep=rows.map(()=>!od);if(od)rows.forEach((r,i)=>{if(r.t!=' ')for(let k=Math.max(0,i-3);k<=Math.min(rows.length-1,i+3);k++)keep[k]=true});
+  let h='',skip=0;const flush=()=>{if(skip){h+=`<div class="dl sk"><span>⋯ 省略 ${skip} 行相同内容 ⋯</span></div>`;skip=0}};
+  rows.forEach((r,i)=>{if(!keep[i]){skip++;return}flush();let x=esc(r.x);
+   if(r.h){const[u,e]=r.h,g=r.t=='-'?'del':'ins';x=esc(r.x.slice(0,u))+`<${g}>`+esc(r.x.slice(u,e))+`</${g}>`+esc(r.x.slice(e))}
+   h+=`<div class="dl ${r.t=='+'?'add':r.t=='-'?'del':''}"><b>${r.o||''}</b><b>${r.n||''}</b><i>${r.t=='+'?'+':r.t=='-'?'−':''}</i><span>${x||' '}</span></div>`});
+  flush();$('#o').innerHTML=h;};
+ ['a','b'].forEach(k=>$('#'+k).oninput=run);['iw','ic','od'].forEach(k=>$('#'+k).onchange=run);
+ $('#sw').onclick=()=>{[$('#a').value,$('#b').value]=[$('#b').value,$('#a').value];run()};run();
+}
+/* ---------- Cron ---------- */
+const MN='JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC'.split(' '),WN='SUN MON TUE WED THU FRI SAT'.split(' '),WD=['日','一','二','三','四','五','六'];
+function cf(s,lo,hi,names){const set=new Set(),val=x=>/^\d+$/.test(x)?+x:names?names.indexOf(x.toUpperCase())+lo:NaN;
+ for(const part of s.split(',')){const[rg,sp]=part.split('/'),st=sp==null?1:+sp;if(!Number.isInteger(st)||st<1)throw Error('步长无效：'+part);
+  let a,b;if(rg=='*'||rg=='?'){a=lo;b=hi}else{const[x,y]=rg.split('-');a=val(x);b=y==null?(sp==null?a:hi):val(y)}
+  if(!(a>=lo&&b<=hi&&a<=b))throw Error('取值无效或超出范围：'+part);for(let v=a;v<=b;v+=st)set.add(v)}
+ return[...set].sort((x,y)=>x-y)}
+const rng=(a,f)=>a.length>2&&a[a.length-1]-a[0]==a.length-1?f(a[0])+'至'+f(a[a.length-1]):a.map(f).join('、');
+function desc(p,f){const[mi,h,dm,mo,dw]=p,st=x=>x=='*'||x=='?',num=x=>/^\d+$/.test(x),stp=x=>/^\*\/\d+$/.test(x);let t;
+ if(st(mi)&&st(h))t='每分钟';else if(stp(mi)&&st(h))t='每 '+mi.slice(2)+' 分钟';
+ else if(num(mi)&&st(h))t='每小时的第 '+mi+' 分钟';else if(num(mi)&&num(h))t=h+':'+pad(+mi);
+ else if(num(mi)&&stp(h))t='每 '+h.slice(2)+' 小时'+(+mi?'的第 '+mi+' 分钟':'整点');
+ else t=(st(h)?'每小时':rng(f.h,x=>x+' 点'))+(st(mi)?'的每分钟':f.mi.length==1&&!f.mi[0]?'整':'的第 '+rng(f.mi,x=>x)+' 分钟');
+ const d=[];if(!st(mo)&&!st(dm))d.push('每年 '+rng(f.mo,x=>x+' 月')+' '+rng(f.dm,x=>x+' 日'));else{if(!st(mo))d.push('每年 '+rng(f.mo,x=>x+' 月'));if(!st(dm))d.push('每月 '+rng(f.dm,x=>x+' 日'))}if(!st(dw))d.push('每'+rng(f.dw,x=>'周'+WD[x]));
+ return d.length?d.join('，')+'，'+t:/^\d+:\d\d$/.test(t)?'每天 '+t:t}
+function cron(r){
+ const P=[['每分钟','* * * * *'],['每 5 分钟','*/5 * * * *'],['每小时','0 * * * *'],['每天 0:00','0 0 * * *'],['工作日 9:00','0 9 * * 1-5'],['每周一 9:00','0 9 * * 1'],['每月 1 号','0 0 1 * *'],['每年 1 月 1 日','0 0 1 1 *']],
+  L=['分钟','小时','日','月','星期'],M={'@yearly':'0 0 1 1 *','@annually':'0 0 1 1 *','@monthly':'0 0 1 * *','@weekly':'0 0 * * 0','@daily':'0 0 * * *','@midnight':'0 0 * * *','@hourly':'0 * * * *'};
+ r.innerHTML=`<div class="bar"><input class="in" id="x" style="flex:1;min-width:240px;font-size:20px" value="*/5 * * * *" spellcheck="false" aria-label="Cron 表达式"><button class="ghost" data-c="#x">复制</button></div>
+ <div class="bar">${P.map((p,i)=>`<button class="btn" data-i="${i}">${p[0]}</button>`).join('')}</div>
+ <div class="f5">${L.map((l,i)=>`<label class="f"><span>${l}</span><input class="in" id="f${i}" spellcheck="false"></label>`).join('')}</div>
+ <div class="status" id="st" style="margin-top:14px"></div><div class="h">含义</div><div class="say" id="ds"></div><div class="h">未来 10 次执行（本地时区）</div><div class="kvs" id="k"></div>`;
+ const x=$('#x'),st=$('#st');
+ const run=src=>{let v=x.value.trim();v=M[v.toLowerCase()]||v;const p=v.split(/\s+/);
+  if(src!='f'&&p.length==5)p.forEach((s,i)=>$('#f'+i).value=s);
+  $('#k').replaceChildren();$('#ds').textContent='';
+  try{if(p.length!=5)throw Error('需要 5 个字段：分 时 日 月 周（支持 @daily 等别名）');
+   const f={mi:cf(p[0],0,59),h:cf(p[1],0,23),dm:cf(p[2],1,31),mo:cf(p[3],1,12,MN),dw:[...new Set(cf(p[4],0,7,WN).map(n=>n%7))].sort((a,b)=>a-b)};
+   $('#ds').textContent=desc(p,f);st.className='status ok';st.textContent='✓ 表达式有效';
+   const star=s=>s=='*'||s=='?',both=!star(p[2])&&!star(p[4]),out=[],now=new Date();
+   let day=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+   for(let k=0;k<1900&&out.length<10;k++,day=new Date(day.getFullYear(),day.getMonth(),day.getDate()+1)){
+    if(!f.mo.includes(day.getMonth()+1))continue;
+    const a=f.dm.includes(day.getDate()),b=f.dw.includes(day.getDay());if(!(both?a||b:a&&b))continue;
+    for(const h of f.h)for(const m of f.mi){const t=new Date(day.getFullYear(),day.getMonth(),day.getDate(),h,m);if(t>now&&out.length<10)out.push(t)}}
+   kv($('#k'),out.length?out.map((t,i)=>['#'+(i+1),fmtDate(t).slice(0,16)+' · 周'+WD[t.getDay()]]):[['提示','未来 5 年内没有匹配的时间']])}
+  catch(e){st.className='status err';st.textContent='✗ '+e.message}};
+ x.oninput=()=>run();
+ for(let i=0;i<5;i++)$('#f'+i).oninput=()=>{x.value=[0,1,2,3,4].map(j=>$('#f'+j).value.trim()||'*').join(' ');run('f')};
+ r.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{x.value=P[b.dataset.i][1];run()});run();
+}
+
+/* ---------- 批量重命名 ---------- */
+function rename(r){
+ const ic=d=>`<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+ r.innerHTML=`<div class="warn" id="warn" hidden></div>
+ <div class="bar">
+  <button class="ibtn" id="pickDir" title="选择文件夹" aria-label="选择文件夹">${ic('<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>')}</button>
+  <button class="ibtn" id="pickFiles" title="添加文件" aria-label="添加文件">${ic('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 12v6M9 15h6"/>')}</button>
+  <input id="fileInput" type="file" multiple hidden>
+  <span class="vsep"></span>
+  <button class="ibtn" id="undo" title="撤销上次" aria-label="撤销上次" disabled>${ic('<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>')}</button>
+  <button class="ibtn" id="exp" title="导出脚本" aria-label="导出脚本" disabled>${ic('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3"/><path d="M12 15h5"/>')}</button>
+  <span class="sp"></span>
+  <button class="ibtn pri" id="apply" title="应用重命名" aria-label="应用重命名" disabled>${ic('<path d="m5 12.5 4.5 4.5L19 7.5"/>')}</button>
+ </div>
+ <div class="rg">
+  <div class="rr" data-r="find"><label class="rh"><input type="checkbox" class="sw">查找替换</label><div class="rb">
+   <input class="in" id="find" placeholder="查找" spellcheck="false"><input class="in" id="rep" placeholder="替换为（可留空）" spellcheck="false">
+   <div class="row2"><label class="chk"><input type="checkbox" id="rx">正则表达式</label><label class="chk"><input type="checkbox" id="cs">区分大小写</label></div></div></div>
+  <div class="rr" data-r="tpl"><label class="rh"><input type="checkbox" class="sw">命名模板</label><div class="rb">
+   <input class="in" id="tpl" value="{name}" spellcheck="false">
+   <div class="chips"><button data-tok="{name}">{name}</button><button data-tok="{orig}">{orig}</button><button data-tok="{n}">{n}</button><button data-tok="{date}">{date}</button><button data-tok="{parent}">{parent}</button></div>
+   <div class="row2"><label class="fld">序号起始<input class="in" type="number" id="start" value="1" min="0"></label><label class="fld">序号位数<input class="in" type="number" id="digits" value="2" min="1" max="8"></label></div></div></div>
+  <div class="rr" data-r="case"><label class="rh"><input type="checkbox" class="sw">大小写</label><div class="rb">
+   <select id="case"><option value="lower">全部小写</option><option value="upper">全部大写</option><option value="title">单词首字母大写</option></select></div></div>
+  <div class="rr" data-r="ext"><label class="rh"><input type="checkbox" class="sw">扩展名</label><div class="rb">
+   <select id="ext"><option value="lower">转为小写</option><option value="upper">转为大写</option><option value="set">改为…</option></select>
+   <input class="in" id="extv" placeholder="新扩展名，如 jpg（留空则移除）" spellcheck="false"></div></div>
+ </div>
+ <div class="bar">
+  <input class="in" id="fq" placeholder="筛选文件名（未匹配的不处理）" spellcheck="false" style="flex:1;min-width:200px;max-width:340px">
+  <select id="sort"><option value="name">按名称</option><option value="name-desc">按名称（倒序）</option><option value="mtime">按修改时间</option><option value="size">按大小</option></select>
+  <label class="chk"><input type="checkbox" id="rec">包含子文件夹</label>
+ </div>
+ <div class="tbl" id="table"></div><div class="sum" id="sum"></div>
+ <dialog id="sdlg"><p>把脚本保存到文件所在目录后运行（PowerShell）。先改成临时名再改成目标名，不会互相覆盖。</p><textarea id="script" readonly spellcheck="false"></textarea>
+  <div class="acts"><button class="btn" id="copy">复制</button><button class="btn" id="dl">下载 .ps1</button><button class="btn" id="close">关闭</button></div></dialog>`;
+ const $=s=>r.querySelector(s),me=$('#fq'),S={items:[],root:null,names:new Map(),hist:[],uid:0,rows:[]};
+ const BAD=/[\\/:*?"<>|\x00-\x1f]/,RESERVED=/^(con|prn|aux|nul|com\d|lpt\d)$/i,coll=new Intl.Collator(undefined,{numeric:true,sensitivity:'base'});
+ const dirSet=d=>(S.names.has(d)||S.names.set(d,new Set()),S.names.get(d)),zp=(n,w)=>String(n).padStart(w,'0');
+ const gl=(t,f)=>{const h=e=>{if(!me.isConnected)return removeEventListener(t,h);f(e)};addEventListener(t,h)};
+ const reset=()=>{S.root=null;S.items=[];S.names=new Map()};
+ const addItem=(f,handle=null)=>{dirSet('').add(f.name.toLowerCase());S.items.push({id:++S.uid,name:f.name,dir:'',handle,parent:null,perm:handle,size:f.size,mtime:f.lastModified,on:true})};
+ const fail=e=>{if(e&&e.name!=='AbortError')toast('无法打开选择器：'+(e.message||e),true)};
+
+ /* 载入文件 */
+ async function scan(dir,path){for await(const[name,h]of dir.entries()){dirSet(path).add(name.toLowerCase());
+  if(h.kind==='file'){const f=await h.getFile();S.items.push({id:++S.uid,name,dir:path,handle:h,parent:dir,perm:S.root,size:f.size,mtime:f.lastModified,on:true})}
+  else if($('#rec').checked)await scan(h,path+name+'/')}}
+ async function loadFolder(h){S.root=h;S.items=[];S.names=new Map();S.hist=[];await scan(h,'');render()}
+ $('#pickDir').onclick=async()=>{if(!window.showDirectoryPicker)return toast('当前浏览器不支持直接改名，请用 Chrome / Edge；或添加文件后导出脚本',true);try{await loadFolder(await showDirectoryPicker({mode:'readwrite'}))}catch(e){fail(e)}};
+ $('#pickFiles').onclick=async()=>{if(window.showOpenFilePicker){try{const hs=await showOpenFilePicker({multiple:true});reset();for(const h of hs)addItem(await h.getFile(),h);render()}catch(e){fail(e)}}else $('#fileInput').click()};
+ $('#fileInput').onchange=e=>{reset();for(const f of e.target.files)addItem(f);render();toast('此浏览器无法直接改名，请使用「导出脚本」')};
+ $('#rec').onchange=async()=>{if(S.root)await loadFolder(S.root)};
+ gl('dragover',e=>{e.preventDefault();r.classList.add('drop')});
+ gl('dragleave',e=>{if(!e.relatedTarget)r.classList.remove('drop')});
+ gl('drop',async e=>{e.preventDefault();r.classList.remove('drop');
+  const files=[...e.dataTransfer.files],hs=(await Promise.all([...e.dataTransfer.items].map(i=>i.getAsFileSystemHandle?i.getAsFileSystemHandle():null))).filter(Boolean);
+  if(!hs.length&&files.length){reset();files.forEach(f=>addItem(f));render();return}
+  const dir=hs.find(h=>h.kind==='directory');if(dir)return loadFolder(dir);
+  if(hs.length){reset();for(const h of hs)addItem(await h.getFile(),h);render()}});
+
+ /* 规则 */
+ const on=k=>$(`[data-r=${k}] .sw`).checked;
+ const split=n=>{const i=n.lastIndexOf('.');return i>0?[n.slice(0,i),n.slice(i)]:[n,'']};
+ const ymd=t=>{const d=new Date(t);return d.getFullYear()+zp(d.getMonth()+1,2)+zp(d.getDate(),2)};
+ function makeRegex(){const f=$('#find').value;if(!f)return null;try{return new RegExp($('#rx').checked?f:f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'+($('#cs').checked?'':'i'))}catch(e){return null}}
+ function build(it,n,re){let[base,ext]=split(it.name);const orig=base;
+  if(on('find')&&re){const x=$('#rep').value;base=$('#rx').checked?base.replace(re,x):base.replace(re,()=>x)}
+  if(on('case')){const c=$('#case').value;base=c==='lower'?base.toLowerCase():c==='upper'?base.toUpperCase():base.toLowerCase().replace(/(^|[\s_\-.])(\p{L})/gu,(m,a,b)=>a+b.toUpperCase())}
+  if(on('tpl')){const parent=it.dir?it.dir.split('/').filter(Boolean).pop():(S.root?S.root.name:'');
+   base=$('#tpl').value.replace(/\{(name|orig|n|date|parent)\}/g,(m,k)=>k==='name'?base:k==='orig'?orig:k==='date'?ymd(it.mtime):k==='parent'?parent:zp(n,+$('#digits').value||1))}
+  if(on('ext')){const m=$('#ext').value;if(m==='lower')ext=ext.toLowerCase();else if(m==='upper')ext=ext.toUpperCase();else{const v=$('#extv').value.trim().replace(/^\./,'');ext=v?'.'+v:''}}
+  return base+ext}
+ function invalid(name){const[base]=split(name);if(!base.trim())return '名称为空';if(BAD.test(name))return '含非法字符';if(/[. ]$/.test(name))return '不能以点或空格结尾';if(RESERVED.test(base))return '系统保留名';if(name.length>255)return '名称过长';return ''}
+
+ /* 预览 */
+ function compute(){const q=$('#fq').value.trim().toLowerCase(),sort=$('#sort').value,list=S.items.filter(i=>!q||i.name.toLowerCase().includes(q));
+  list.sort((a,b)=>sort==='mtime'?a.mtime-b.mtime:sort==='size'?a.size-b.size:(a.dir===b.dir?0:coll.compare(a.dir,b.dir))||coll.compare(a.name,b.name)*(sort==='name-desc'?-1:1));
+  const re=makeRegex();let n=+$('#start').value||0;
+  const rows=list.map(it=>{if(!it.on)return{it,to:it.name,st:'off'};const to=build(it,n++,re);return{it,to,st:to===it.name?'same':'ok',note:''}});
+  const changing=rows.filter(x=>x.st==='ok'),freed=new Set(changing.map(x=>x.it.dir+'|'+x.it.name.toLowerCase())),count=new Map();
+  for(const x of changing){const k=x.it.dir+'|'+x.to.toLowerCase();count.set(k,(count.get(k)||0)+1)}
+  for(const x of changing){const k=x.it.dir+'|'+x.to.toLowerCase(),bad=invalid(x.to);
+   if(bad){x.st='bad';x.note=bad}else if(count.get(k)>1){x.st='dup';x.note='重名'}else if(dirSet(x.it.dir).has(x.to.toLowerCase())&&!freed.has(k)){x.st='exists';x.note='已存在'}}
+  return rows}
+ function marks(a,b){let p=0;while(p<a.length&&p<b.length&&a[p]===b[p])p++;let s=0;while(s<a.length-p&&s<b.length-p&&a[a.length-1-s]===b[b.length-1-s])s++;
+  const mk=(str,tag)=>esc(str.slice(0,p))+(str.length-s>p?`<${tag}>${esc(str.slice(p,str.length-s))}</${tag}>`:'')+esc(str.slice(str.length-s));return[mk(a,'del'),mk(b,'ins')]}
+ const stText={off:'',same:'无变化',ok:'将重命名',bad:'',dup:'',exists:''};
+ function render(){const rows=S.rows=compute(),t=$('#table');
+  if(!S.items.length)t.innerHTML='<div class="empty"><strong>把文件夹或文件拖到这里</strong>或使用上方按钮选择；所有处理都在本地完成，无需联网</div>';
+  else{const all=S.items.every(i=>i.on);
+   t.innerHTML=`<div class="tr th"><span><input type="checkbox" id="all" ${all?'checked':''}></span><span class="old">原名称</span><span>新名称</span><span class="st">状态</span></div>`+
+   rows.map(x=>{const dir=x.it.dir?`<span class="dir">${esc(x.it.dir)}</span>`:'',[o,n]=['ok','bad','dup','exists'].includes(x.st)?marks(x.it.name,x.to):[esc(x.it.name),esc(x.it.name)];
+    return `<div class="tr ${x.st==='off'?'off':''}"><span><input type="checkbox" data-id="${x.it.id}" ${x.it.on?'checked':''}></span><span class="old" title="${esc(x.it.dir+x.it.name)}">${dir}${o}</span><span>${x.st==='off'||x.st==='same'?'':n}</span><span class="st ${x.st}">${x.note||stText[x.st]}</span></div>`}).join('')}
+  const ok=rows.filter(x=>x.st==='ok').length,err=rows.filter(x=>['bad','dup','exists'].includes(x.st)).length;
+  $('#sum').innerHTML=S.items.length?`共 ${S.items.length} 个文件，将重命名 <b>${ok}</b> 个`+(err?`，<span class="e">${err} 个有冲突</span>`:''):'尚未载入文件';
+  $('#apply').disabled=$('#exp').disabled=!(ok&&!err);$('#undo').disabled=!S.hist.length}
+ const onInput=e=>{if(!me.isConnected)return r.removeEventListener('input',onInput);const card=e.target.closest('.rr');if(card&&!e.target.classList.contains('sw'))card.querySelector('.sw').checked=true;
+  if(e.target.dataset.id)S.items.find(i=>i.id==e.target.dataset.id).on=e.target.checked;
+  else if(e.target.id==='all')S.items.forEach(i=>i.on=e.target.checked);
+  render()};
+ r.addEventListener('input',onInput);
+ r.querySelectorAll('[data-tok]').forEach(b=>b.onclick=()=>{const el=$('#tpl'),s=el.selectionStart??el.value.length,d=el.selectionEnd??s;
+  el.value=el.value.slice(0,s)+b.dataset.tok+el.value.slice(d);el.focus();el.setSelectionRange(s+b.dataset.tok.length,s+b.dataset.tok.length);$('[data-r=tpl] .sw').checked=true;render()});
+
+ /* 执行重命名 */
+ async function mv(it,to){const old=it.name;let moved=false;
+  const has=async n=>{try{await it.parent.getFileHandle(n);return true}catch(e){return false}};
+  if(it.handle.move&&!S.noMove){try{await it.handle.move(to);moved=it.parent?(await has(to))&&(old.toLowerCase()===to.toLowerCase()||!(await has(old))):true}catch(e){S.noMove=true;if(!it.parent)throw e}}
+  if(!moved){if(!it.parent)throw new Error('浏览器不支持就地改名');
+   try{await it.parent.getFileHandle(to);throw new Error('目标已存在')}catch(e){if(e.name!=='NotFoundError')throw e}
+   const src=await it.handle.getFile(),nh=await it.parent.getFileHandle(to,{create:true});await src.stream().pipeTo(await nh.createWritable());await it.parent.removeEntry(old);it.handle=nh}
+  const set=dirSet(it.dir);set.delete(old.toLowerCase());set.add(to.toLowerCase());it.name=to}
+ async function execute(pairs){const fails=[],groups={};let done=0;pairs.forEach(p=>(groups[p.it.dir]||=[]).push(p));
+  for(const g of Object.values(groups)){const cur=new Set(g.map(p=>p.it.name.toLowerCase())),chain=g.filter(p=>cur.has(p.to.toLowerCase())),direct=g.filter(p=>!chain.includes(p)),parked=[];
+   for(const p of chain){try{await mv(p.it,'__tmp_'+Date.now().toString(36)+'_'+p.it.id);parked.push(p)}catch(e){fails.push(`${p.it.name}：${e.message}`)}}
+   for(const p of direct){try{await mv(p.it,p.to);done++}catch(e){fails.push(`${p.it.name}：${e.message}`)}}
+   for(const p of parked){try{await mv(p.it,p.to);done++}catch(e){fails.push(`${p.it.name}：${e.message}`)}}}
+  return{done,fails}}
+ async function ensurePerm(items){for(const h of new Set(items.map(i=>i.perm).filter(Boolean))){const o={mode:'readwrite'};if((await h.queryPermission(o))!=='granted'&&(await h.requestPermission(o))!=='granted')return false}return true}
+ async function runPairs(pairs){if(!(await ensurePerm(pairs.map(p=>p.it))))return toast('没有写入权限，已取消',true);
+  $('#apply').disabled=true;const before=pairs.map(p=>({it:p.it,from:p.it.name,to:p.to})),{done,fails}=await execute(pairs);
+  return{done,fails,ok:before.filter(b=>b.it.name===b.to)}}
+ async function bindParent(items){toast('请选择这些文件所在的文件夹，以授予改名权限');let dir;
+  try{dir=await showDirectoryPicker({mode:'readwrite',startIn:items[0].handle})}catch(e){return false}
+  for(const it of items){try{const fh=await dir.getFileHandle(it.name);if(!(await fh.isSameEntry(it.handle)))throw new Error('不是同一个文件');it.handle=fh;it.parent=dir;it.perm=dir}
+   catch(e){toast(`所选文件夹里找不到 ${it.name}，请选择文件实际所在的文件夹`,true);return false}}
+  for await(const[n]of dir.entries())dirSet('').add(n.toLowerCase());
+  render();if($('#apply').disabled){toast('文件夹内已有同名文件，请查看标红项',true);return false}return true}
+ $('#apply').onclick=async()=>{try{
+  if(!S.items.some(i=>i.handle))return toast('这些文件没有写入权限，无法直接改名。请改用「选择文件夹」或拖入文件夹，或导出脚本',true);
+  const loose=S.rows.filter(x=>x.st==='ok'&&x.it.handle&&!x.it.parent).map(x=>x.it);
+  if(loose.length&&!(await bindParent(loose)))return;
+  const res=await runPairs(S.rows.filter(x=>x.st==='ok').map(x=>({it:x.it,to:x.to})));
+  if(!res)return render();
+  if(res.ok.length){S.hist.push(res.ok);r.querySelectorAll('.sw').forEach(s=>s.checked=false);toast(res.fails.length?`改名已完成，${res.fails.length} 个失败：${res.fails[0]}`:'改名已完成',!!res.fails.length)}
+  else{if(res.fails.length)console.warn(res.fails);toast('请更换非系统文件所在目录',true)}
+  render()}catch(e){console.error(e);toast('出错：'+(e.message||e),true);render()}};
+ $('#undo').onclick=async()=>{const last=S.hist.pop(),res=await runPairs(last.filter(b=>b.it.name===b.to).map(b=>({it:b.it,to:b.from})));render();
+  if(res)res.fails.length?toast(`撤销失败 ${res.fails.length} 个：${res.fails[0]}`,true):toast(`已撤销 ${res.done} 个`)};
+
+ /* 导出脚本 */
+ $('#exp').onclick=()=>{const q=s=>"'"+s.replace(/'/g,"''")+"'",rows=S.rows.filter(x=>x.st==='ok'),
+  L=['# 批量重命名脚本：放在文件所在目录后运行','Set-Location -LiteralPath $PSScriptRoot',"$ErrorActionPreference = 'Stop'",''];
+  rows.forEach((x,i)=>L.push(`Rename-Item -LiteralPath ${q(x.it.dir+x.it.name)} -NewName ${q('__tmp_'+i)}`));L.push('');
+  rows.forEach((x,i)=>L.push(`Rename-Item -LiteralPath ${q(x.it.dir+'__tmp_'+i)} -NewName ${q(x.to)}`));
+  $('#script').value=L.join('\r\n');$('#sdlg').showModal()};
+ $('#close').onclick=()=>$('#sdlg').close();
+ $('#copy').onclick=async()=>{const b=$('#copy');try{await navigator.clipboard.writeText($('#script').value)}catch(e){$('#script').select();document.execCommand('copy')}b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1400)};
+ $('#dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+$('#script').value],{type:'text/plain;charset=utf-8'}));a.download='rename.ps1';a.click();URL.revokeObjectURL(a.href)};
+
+ if(!window.showDirectoryPicker){const w=$('#warn');w.hidden=false;w.textContent=window.isSecureContext?'当前浏览器不支持直接重命名文件，请使用 Chrome / Edge。仍可预览并导出脚本。':'当前页面不在安全上下文（例如通过局域网 http 地址打开），浏览器已禁用文件读写。请直接双击打开本地文件（file://），或使用 http://localhost 访问。仍可预览并导出脚本。'}
+ render();
+}
+
+const T=[
+ {id:'json',n:'JSON',g:'{ }',d:'格式化、压缩、校验与键排序',r:json},
+ {id:'base64',n:'Base64',g:'64',d:'文本与 Base64 互转，支持 UTF-8 与 URL 安全',r:b64},
+ {id:'url',n:'URL 编解码',g:'%',d:'URL 编码、解码与参数解析',r:url},
+ {id:'time',n:'时间戳',g:'⏱',d:'Unix 时间戳与日期互转',r:ts},
+ {id:'hash',n:'哈希',g:'#',d:'SHA-1 / 256 / 384 / 512 实时计算',r:hash},
+ {id:'uuid',n:'UUID',g:'ID',d:'批量生成 UUID v4',r:uuid},
+ {id:'regex',n:'正则测试',g:'.*',d:'实时匹配、高亮与分组查看',r:regex},
+ {id:'jwt',n:'JWT 解码',g:'JWT',d:'解析 Header、Payload 与过期时间',r:jwt},
+ {id:'diff',n:'文本对比',g:'±',d:'逐行 Diff，行内高亮变化，支持忽略空白与大小写',r:diff},
+ {id:'cron',n:'Cron',g:'*/5',d:'设定表达式，解析含义并预览未来执行时间',r:cron},
+ {id:'rename',n:'批量重命名',g:'mv',d:'批量重命名本地文件：查找替换、命名模板、大小写、扩展名，可导出脚本',r:rename}
+];
+const nav=$('#nav'),dlg=$('#dlg'),mb=$('#mb'),wrap=$('.wrap');
+function openMenu(){$('#q').value='';draw();dlg.hidden=false;wrap.inert=true;mb.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';if(matchMedia('(hover:hover)').matches)$('#q').focus()}
+function closeMenu(){dlg.hidden=true;wrap.inert=false;mb.setAttribute('aria-expanded','false');document.body.style.overflow='';mb.focus()}
+mb.onclick=openMenu;dlg.onmousedown=e=>{if(e.target==dlg)closeMenu()};
+function draw(f=''){nav.replaceChildren();f=f.toLowerCase();let n=0;for(const t of T)if((t.n+t.d+t.id).toLowerCase().includes(f)){n++;const a=document.createElement('a');a.href='#'+t.id;a.title=t.d;a.onclick=closeMenu;a.innerHTML=`<i>${t.g}</i><span>${t.n}</span>`;nav.append(a)}if(!n){const d=document.createElement('p');d.className='none';d.textContent='没有匹配的工具';nav.append(d)}}
+function go(id){const t=T.find(x=>x.id==id)||T[0];if(location.hash.slice(1)!=t.id)history.replaceState(null,'','#'+t.id);$('#title').textContent=t.n;$('#desc').textContent=t.d;document.title=t.n+' · 极限工具箱';t.r($('#stage'))}
+$('#q').oninput=e=>draw(e.target.value);
+$('#q').onkeydown=e=>{if(e.key=='Enter'){const a=nav.querySelector('a');if(a)a.click()}};
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()=='k'){e.preventDefault();dlg.hidden?openMenu():closeMenu();return}if(e.key=='Escape'&&!dlg.hidden)closeMenu()});
+/* ---------- 宇宙背景 ---------- */
+(()=>{const c=$('#sky'),x=c.getContext('2d'),rm=matchMedia('(prefers-reduced-motion: reduce)').matches;let W,H,S=[],M=null;
+ function init(){const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*d;c.height=H*d;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(d,0,0,d,0,0);
+  S=Array.from({length:Math.round(W*H/4200)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()**3*1.4+.25,p:Math.random()*6.28,s:.4+Math.random()*1.6,g:Math.random()<.2}))}
+ function frame(t){x.clearRect(0,0,W,H);
+  for(const s of S){x.globalAlpha=.3+.7*(.5+.5*Math.sin((rm?0:t)/1e3*s.s+s.p));x.fillStyle=s.g?'#f0d98a':'#fff6e6';x.beginPath();x.arc(s.x,s.y,s.r,0,6.283);x.fill();if(!rm){s.y-=.012*s.r;if(s.y<-2)s.y=H+2}}
+  if(!rm){if(!M&&Math.random()<.003)M={x:Math.random()*W*.8+W*.2,y:Math.random()*H*.4,v:7+Math.random()*4,l:0};
+   if(M){const a=Math.PI*.78,dx=Math.cos(a),dy=Math.sin(a);M.x+=dx*M.v;M.y+=dy*M.v;M.l++;const g=x.createLinearGradient(M.x,M.y,M.x-dx*90,M.y-dy*90);g.addColorStop(0,'rgba(240,217,138,.9)');g.addColorStop(1,'rgba(240,217,138,0)');x.globalAlpha=1;x.strokeStyle=g;x.lineWidth=1.4;x.beginPath();x.moveTo(M.x,M.y);x.lineTo(M.x-dx*90,M.y-dy*90);x.stroke();if(M.l>60||M.x<-100||M.y>H+100)M=null}}
+  requestAnimationFrame(frame)}
+ let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(init,150)});init();requestAnimationFrame(frame);
+})();
+addEventListener('hashchange',()=>go(location.hash.slice(1)));
+go(location.hash.slice(1));
+</script>
+</body>
+</html>

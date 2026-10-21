@@ -1,0 +1,32 @@
+{
+  "title": "FreshRSS 快捷键",
+  "keys": [
+    {"key": "1", "desc": "普通视图"},
+    {"key": "2", "desc": "全屏视图"},
+    {"key": "3", "desc": "阅读视图"},
+    {"key": "4", "desc": "RSS视图"},
+    {"key": "Shift+J", "desc": "打开下一个订阅源"},
+    {"key": "J", "desc": "打开下一篇文章"},
+    {"key": "H", "desc": "打开下一篇未读文章"},
+    {"key": "Shift+H", "desc": "打开下一个未读的订阅源"},
+    {"key": "K", "desc": "打开上一篇文章"},
+    {"key": "Shift+K", "desc": "打开上一个订阅源"},
+    {"key": "Home", "desc": "打开第一篇文章"},
+    {"key": "End", "desc": "打开最后一篇文章"},
+    {"key": "N", "desc": "跳转到下一篇文章而不打开"},
+    {"key": "P", "desc": "跳转到上一篇文章而不打开"},
+    {"key": "R", "desc": "标记已读"},
+    {"key": "Alt+R", "desc": "将上方的文章标记为已读"},
+    {"key": "Shift+R", "desc": "将当前分类所有文章标记为已读"},
+    {"key": "F", "desc": "加入收藏"},
+    {"key": "S", "desc": "分享"},
+    {"key": "Enter", "desc": "折叠文章"},
+    {"key": "V", "desc": "播放/暂停媒体"},
+    {"key": "A", "desc": "访问搜索框"},
+    {"key": "U", "desc": "显示自定义查询"},
+    {"key": "Esc", "desc": "关闭菜单"},
+    {"key": "Alt+H", "desc": "打开下一个分类"},
+    {"key": "Alt+J", "desc": "打开下一个分类"},
+    {"key": "Alt+K", "desc": "打开上一个分类"}
+  ]
+}

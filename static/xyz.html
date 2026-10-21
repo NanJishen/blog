@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <title>极限导航</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#000000">
 <link rel="icon" href="favicon.ico">
 <style>
 :root{
-  --bg:#0a0a0b;
+  --bg:#000;
   --bg-alt:transparent;
-  --surface:transparent;
   --surface-hover:transparent;
   --popup-bg:rgba(18, 18, 18, 0.22);
   --popup-blur:blur(18px) saturate(160%);
-  --popup-bg-alt:transparent;
   --border:rgba(232,180,90,.14);
   --border-strong:rgba(232,180,90,.38);
   --text:#cdc5b3;
@@ -28,37 +28,17 @@
   --page-max: 1140px;
 }
 *{box-sizing:border-box}
-html{scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
+html{background-color:#000;background-image:radial-gradient(900px 520px at 80% -8%,rgba(212,175,55,.06),transparent 62%),radial-gradient(700px 500px at 10% 105%,rgba(255,255,255,.03),transparent 65%);background-attachment:fixed;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
 html::-webkit-scrollbar{width:9px}
 html::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:8px}
 body{
   margin:0;
-  background:var(--bg);
+  background:transparent;
   color:var(--text);
   font-family:var(--sans);
   -webkit-font-smoothing:antialiased;
 }
-#ambient{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100vh;
-  height:100dvh;
-  z-index:-2;
-  pointer-events:none;
-  background:
-    radial-gradient(1200px 600px at 12% -10%, rgba(232,180,90,.05), transparent 60%),
-    radial-gradient(900px 500px at 100% 0%, rgba(232,180,90,.035), transparent 55%);
-}
-#starfield{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100vh;
-  height:100dvh;
-  z-index:-1;
-  pointer-events:none;
-}
+#sky{position:fixed;inset:0;z-index:-1;pointer-events:none}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 ::selection{background:var(--accent);color:#1a1204}
@@ -68,6 +48,7 @@ button{font-family:inherit;cursor:pointer}
   position:sticky;top:0;z-index:50;
   background:rgba(10,10,11,.78);
   backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
 }
 .topbar__inner{
   max-width:var(--page-max);margin:0 auto;
@@ -78,12 +59,11 @@ button{font-family:inherit;cursor:pointer}
   flex:1;display:flex;align-items:center;gap:6px;
   background:transparent;
   border:1px solid var(--border);
-  border-radius:999px;
-  padding:5px 6px 5px 10px;
+  border-radius:16px;
+  padding:5px 10px;
   transition:border-color .2s, box-shadow .2s;
   position:relative;
 }
-.search:focus-within{border-color:var(--border-strong);box-shadow:0 0 0 4px var(--accent-glow)}
 .search__engine{
   position:relative;flex:none;
 }
@@ -104,6 +84,7 @@ button{font-family:inherit;cursor:pointer}
   min-width:70px;padding:8px;
   background:var(--popup-bg);
   backdrop-filter:var(--popup-blur);
+  -webkit-backdrop-filter:var(--popup-blur);
   border:1px solid var(--border-strong);
   border-radius:12px;
   z-index:120;
@@ -140,6 +121,46 @@ button{font-family:inherit;cursor:pointer}
 .search__submit svg{width:15px;height:15px}
 .search__submit:hover{color:var(--accent-2);background:var(--accent-glow)}
 
+/* ---------- n / a 关键字搜索下拉 ---------- */
+.navres{
+  display:none;position:fixed;z-index:130;
+  max-height:min(62vh,480px);overflow-y:auto;
+  padding:6px;
+  background:var(--popup-bg);
+  backdrop-filter:var(--popup-blur);
+  -webkit-backdrop-filter:var(--popup-blur);
+  border:1px solid var(--border-strong);
+  border-radius:14px;
+  scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent;
+}
+.navres.is-open{display:block}
+.navres__item{
+  display:flex;align-items:baseline;gap:10px;min-width:0;
+  padding:8px 12px;border-radius:9px;cursor:pointer;
+}
+.navres__item.is-active{background:var(--accent-glow);outline:1px solid var(--border-strong)}
+.navres__name{
+  flex:none;max-width:45%;
+  color:var(--text-bright);font-size:13.5px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.navres__url{
+  flex:1;min-width:0;
+  color:var(--text-dim);font-family:var(--mono);font-size:11.5px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.navres__tag{flex:none;color:var(--accent);font-size:11px;opacity:.85;white-space:nowrap}
+.navres mark{background:none;color:var(--accent-2);font-weight:600}
+.navres__lks{flex:none;display:flex;align-items:center;gap:1px}
+.navres__lk{padding:0 4px;border-radius:6px;font-size:13px;line-height:1.5;cursor:pointer;opacity:.85}
+.navres__lk:hover{background:var(--accent-glow);opacity:1}
+.navres__msg{padding:10px 12px;color:var(--text-dim);font-size:12.5px}
+.navres__foot{
+  padding:6px 12px 2px;margin-top:2px;
+  color:var(--text-dim);font-family:var(--mono);font-size:11px;letter-spacing:.02em;
+}
+@media (max-width:560px){ .navres__tag,.navres__foot{display:none} }
+
 /* ---------- board / grid ---------- */
 .board{
   max-width:var(--page-max);margin:0 auto;
@@ -153,7 +174,7 @@ button{font-family:inherit;cursor:pointer}
   position:relative;
   border:1px solid var(--border);
   border-radius:var(--radius);
-  padding:15px 15px 13px;
+  padding:15px;
   z-index:1;
 }
 .module:has(.chip-group:hover),
@@ -168,7 +189,7 @@ button{font-family:inherit;cursor:pointer}
 }
 .module__head{
   display:flex;align-items:center;gap:9px;
-  padding-bottom:10px;margin-bottom:11px;
+  padding:5px 0 15px;
   border-bottom:1px dashed var(--border);
 }
 .module__title{
@@ -184,7 +205,6 @@ button{font-family:inherit;cursor:pointer}
 .links{display:grid;grid-template-columns:repeat(auto-fill, minmax(96px, 1fr));gap:6px}
 .chip-group{
   position:relative;display:flex;width:100%;align-items:stretch;
-  transition:transform .15s;
   z-index:1;
 }
 .chip-group:hover,
@@ -222,7 +242,7 @@ button{font-family:inherit;cursor:pointer}
   display:flex;align-items:center;min-width:0;margin:0;
   padding:5px 10px;
   color:var(--text);
-  font-size:12.5px;line-height:1.4;white-space:nowrap;
+  font-size:12.5px;line-height:1.8;white-space:nowrap;
   overflow:hidden;text-overflow:ellipsis;
   border:1px solid transparent;
   justify-content:flex-start;text-align:left;
@@ -234,29 +254,11 @@ button{font-family:inherit;cursor:pointer}
   width:auto;
 }
 .chip:hover{background:transparent;color:var(--accent)}
-.chip-toggle{
-  display:none;
-  align-items:center;justify-content:center;
-  flex:none;width:28px;padding:0;margin:0;
-  border-radius:0 8px 8px 0;
-  background:var(--surface-hover);color:var(--accent);
-  border:1px solid transparent;border-left:1px solid var(--border);
-  font-size:16px;line-height:1;
-  transition:background .15s, color .15s, border-color .15s;
-}
-.chip-toggle:hover,
-.chip-group.is-open .chip-toggle{
+.chip-group:hover > .chip{
   background:var(--surface-hover);color:var(--accent);
 }
-.chip-group:hover > .chip,
-.chip-group:hover > .chip-toggle{
-  background:var(--surface-hover);color:var(--accent);
-}
-/* 仅移动端 / 触控设备显示展开箭头 */
-@media (hover: none), (pointer: coarse){
-  .chip-toggle{display:flex}
-  .chip-group > .chip{border-radius:8px 0 0 8px}
-}
+/* 移动端：长按条目展开子菜单（见脚本）；屏蔽长按时的系统选中与链接菜单 */
+.chip-group > .chip{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 
 /* ---------- mini calendar ---------- */
 .mini-cal{font-family:var(--mono)}
@@ -265,7 +267,7 @@ button{font-family:inherit;cursor:pointer}
   grid-template-columns:repeat(7, 1fr);
   gap:3px;
   align-items:center;
-  margin-bottom:9px;
+  margin-bottom:15px;
 }
 .mini-cal__title{
   grid-column:1 / 2;
@@ -305,6 +307,49 @@ button{font-family:inherit;cursor:pointer}
 .mini-cal__grid .today{
   color:var(--accent);font-weight:700;
 }
+
+/* 点击右上角时间 → 日历切换为倒计时器 */
+.mini-cal__time{cursor:pointer;-webkit-user-select:none;user-select:none}
+.mini-cal__time:hover,.mini-cal__time:focus-visible{color:var(--accent-2);outline:none}
+.mini-cal.is-timer .mini-cal__grid{display:none}
+.cd{display:none;flex-direction:column;align-items:center;justify-content:center;font-family:var(--mono);color:var(--text)}
+.mini-cal.is-timer .cd{display:flex}
+.cd [hidden]{display:none !important}
+.cd__set,.cd__run,.cd__pane{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+.cd__set,.cd__run{max-width:300px}
+.cd__row{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.cd__row i{font-style:normal;font-size:13px;color:var(--text-dim);margin-right:6px}
+.cd__seg{display:flex;gap:8px}
+.cd__in{
+  width:3.2em;text-align:center;font:inherit;font-size:20px;color:var(--text-bright);
+  background:transparent;border:1px solid var(--border);border-radius:8px;padding:6px 2px;
+  -moz-appearance:textfield;color-scheme:dark;font-variant-numeric:tabular-nums;
+}
+.cd__in::-webkit-outer-spin-button,.cd__in::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.cd__in--time{width:auto;padding:6px 10px;font-size:22px}
+.cd__in:focus{outline:none;border-color:var(--border-strong)}
+.cd__btn{
+  font:inherit;font-size:12.5px;color:var(--text-dim);background:transparent;cursor:pointer;
+  border:1px solid var(--border);border-radius:6px;padding:5px 12px;transition:color .15s,border-color .15s,background .15s;
+}
+.cd__btn:hover{color:var(--accent);border-color:var(--border-strong)}
+.cd__btn.is-on{color:var(--accent);border-color:var(--border-strong);background:var(--accent-glow)}
+.cd__hint{min-height:1.5em;text-align:center;font-size:13px;color:var(--accent);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.cd__go{
+  width:100%;font:inherit;font-size:13px;letter-spacing:.1em;color:var(--accent);cursor:pointer;
+  background:var(--accent-glow);border:1px solid var(--border-strong);border-radius:8px;padding:9px 0;transition:color .15s;
+}
+.cd__go:hover{color:var(--accent-2)}
+.cd__run{text-align:center}
+.cd__cap{font-size:12px;letter-spacing:.2em;color:var(--text-dim)}
+.cd__big{font-size:40px;line-height:1.1;font-weight:600;letter-spacing:.04em;color:var(--text-bright);font-variant-numeric:tabular-nums}
+.cd__run.is-wait .cd__big{color:var(--text-dim)}
+.cd__run.is-done .cd__big{color:var(--accent);animation:cdBlink 1s steps(2,start) infinite}
+@keyframes cdBlink{50%{opacity:.25}}
+.cd__bar{width:100%;height:3px;border-radius:3px;background:var(--border);overflow:hidden}
+.cd__bar i{display:block;height:100%;width:0;background:var(--accent)}
+.cd__info{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px;color:var(--text);font-variant-numeric:tabular-nums}
+.cd__info b{font-weight:600;color:var(--accent)}
 
 /* ---------- mini calculator ---------- */
 .mini-calc{
@@ -351,7 +396,7 @@ button{font-family:inherit;cursor:pointer}
   border-radius:10px;padding:10px 12px;color:var(--text-bright);
   font-family:var(--mono);font-size:13px;outline:none;
 }
-.clip{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.clip{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 .clip button{
   padding:6px 12px;border-radius:8px;background:var(--surface-hover);
   color:var(--text);border:1px dashed var(--border-strong);font-size:12px;
@@ -371,12 +416,12 @@ button{font-family:inherit;cursor:pointer}
   -webkit-backdrop-filter:blur(16px) saturate(140%);
   border:1px solid var(--border);
   border-radius:999px;
-  box-shadow:none;
   padding:7px 10px;
   list-style:none;margin:0;
   overflow-x:auto;-webkit-overflow-scrolling:touch;
 }
 .dock-item{position:relative;flex:none}
+.dock-item--scroll{display:none}   /* 回到顶部 / 底部箭头只在窄屏（手机）显示，桌面不需要 */
 .dock-item>a,.dock-item>button{
   display:flex;align-items:center;justify-content:center;
   width:38px;height:38px;border-radius:11px;border:none;background:none;
@@ -391,28 +436,23 @@ button{font-family:inherit;cursor:pointer}
   position:fixed;display:none;z-index:200;
 }
 .dock-flyout.is-open{display:block}
-.dock-flyout .flyout-inner{
-  display:flex;flex-direction:column;gap:1px;
-  background:var(--popup-bg);
-  backdrop-filter:var(--popup-blur);
-  -webkit-backdrop-filter:var(--popup-blur);
-  border:1px solid var(--border-strong);
-  border-radius:12px;padding:6px;
-  width:max-content;max-width:220px;
-}
-.dock-flyout a{padding:6px 9px;border-radius:7px;font-size:12.5px;color:var(--text);white-space:nowrap}
-.dock-flyout a:hover{background:none;color:var(--accent)}
+.dock-flyout .flyout-inner{max-width:220px}
+.flyout a.ha-action{display:flex;align-items:center;justify-content:center;padding:8px 12px}
+.ha-action svg{flex:none;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---------- drawer (navhide) ---------- */
 #navhide{
-  display:none;position:fixed;inset:0;z-index:100;
-  background:rgba(6,6,7,.72);backdrop-filter:blur(6px);
+  display:none;position:fixed;inset:0;z-index:150;
+  background:rgba(6,6,7,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   padding:6vh 5vw;overflow:auto;
 }
+#navhide.show{display:flex}
+/* margin:auto 让内容在横竖两个方向居中；内容比窗口高时从顶部开始，仍可滚动 */
 #navhide .drawer{
-  max-width:900px;margin:0 auto;
+  width:100%;max-width:900px;margin:auto;
   border:1px solid var(--border-strong);border-radius:18px;
   padding:26px clamp(16px,3vw,34px) 34px;
+  animation:thRise .22s cubic-bezier(.2,.8,.3,1);
 }
 #navhide h2{
   font-family:var(--mono);font-size:20px;color:var(--text-bright);
@@ -439,30 +479,169 @@ button{font-family:inherit;cursor:pointer}
 @media (max-width:700px){
   .board{grid-template-columns:1fr;padding-bottom:88px}
   .dock-item>a,.dock-item>button{width:34px;height:34px}
+  .dock-item--scroll{display:block}
   .drawer-chips{grid-template-columns:repeat(3, minmax(0,1fr))}
+}
+/* ---------- 想法（待办）弹窗 ---------- */
+.th-overlay{
+  display:none;position:fixed;inset:0;z-index:150;
+  background:rgba(6,6,7,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:6vh 5vw;
+}
+.th-overlay.show{display:flex}
+@keyframes thRise{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.th-panel{
+  width:100%;max-width:640px;max-height:90vh;
+  display:flex;flex-direction:column;
+  border:1px solid var(--border-strong);border-radius:18px;
+  overflow:hidden;
+  animation:thRise .22s cubic-bezier(.2,.8,.3,1);
+}
+.th-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:16px 20px 12px;border-bottom:1px dashed var(--border);
+}
+.th-title{
+  margin:0;display:flex;align-items:center;gap:.6em;
+  font-family:var(--mono);font-size:18px;font-weight:600;color:var(--text-bright);
+}
+.th-badge{
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  background:var(--accent-glow);border:1px solid var(--border);
+  padding:.15em .55em;border-radius:999px;
+}
+.th-tools{display:flex;align-items:center;gap:6px}
+.th-tools .th-ico,.th-tools .th-x{
+  width:30px;height:30px;padding:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:12px;color:var(--text);text-decoration:none;
+  background:none;border:1px solid var(--border);border-radius:8px;cursor:pointer;
+  transition:color .15s,border-color .15s,background .15s;
+}
+.th-tools .th-ico:hover{color:var(--accent-2);border-color:var(--border-strong);background:var(--accent-glow)}
+.th-tools .th-ico svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.th-tools .th-x{color:var(--text-dim);border-color:transparent}
+.th-tools .th-x:hover{color:var(--accent)}
+#thoughtBody{
+  overflow-y:auto;padding:14px 20px 22px;
+  scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent;
+}
+.th-section{margin-bottom:18px}
+.th-heading{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);display:flex;align-items:center;gap:.6em;
+  margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);
+}
+.th-list{list-style:none;margin:0;padding:0}
+.th-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 12px;margin-bottom:6px;
+  border:1px solid var(--border);border-radius:10px;background:transparent;
+  transition:border-color .15s,background .15s,opacity .15s;
+}
+.th-item[data-edit-id]{cursor:pointer;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.th-item:hover{border-color:var(--border-strong)}
+.th-item.done{opacity:.5}
+.th-item.done .th-text{text-decoration:line-through;color:var(--text-dim)}
+.th-item.dragging{
+  position:relative;z-index:5;pointer-events:none;
+  background:rgba(18,18,18,.96);border-color:var(--border-strong);
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+}
+.th-item.drop-above{box-shadow:0 -2px 0 0 var(--accent)}
+.th-item.drop-below{box-shadow:0 2px 0 0 var(--accent)}
+.th-check{
+  flex:0 0 auto;margin-top:2px;width:18px;height:18px;border-radius:5px;
+  border:1.5px solid var(--border-strong);background:none;color:transparent;
+  font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.th-check:hover{border-color:var(--accent)}
+.th-item.done .th-check{background:var(--accent);border-color:var(--accent);color:#1a1204}
+.th-body{flex:1;min-width:0}
+.th-text{color:var(--text);line-height:1.5;word-break:break-word;font-size:14px}
+.th-time{margin-top:3px;font-family:var(--mono);font-size:11px;color:var(--text-dim)}
+.th-side{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px}
+.th-drag{
+  touch-action:none;cursor:grab;color:var(--text-dim);opacity:.6;
+  padding:3px 4px;background:none;border:none;
+}
+.th-drag:hover{opacity:1;color:var(--accent)}
+.th-drag:active{cursor:grabbing}
+.th-del{
+  font-size:12px;color:var(--text-dim);opacity:.5;padding:3px;
+  background:none;border:none;cursor:pointer;transition:opacity .15s,color .15s;
+}
+.th-del:hover{opacity:1;color:var(--accent)}
+.th-empty{list-style:none;font-size:13px;color:var(--text-dim);padding:14px 0;text-align:center}
+.th-empty-all{text-align:center;color:var(--text-dim);padding:40px 10px;font-size:14px;line-height:1.8}
+/* 编辑弹层 */
+.th-overlay--edit{z-index:160}
+.th-modal{
+  width:100%;max-width:420px;
+  background:rgba(18,18,18,.96);border:1px solid var(--border-strong);border-radius:14px;
+  padding:18px;animation:thRise .2s cubic-bezier(.2,.8,.3,1);
+}
+.th-modal textarea{
+  width:100%;min-height:5em;resize:none;background:transparent;
+  border:1px solid var(--border);border-radius:10px;padding:10px 12px;
+  color:var(--text-bright);font-family:var(--sans);font-size:14px;outline:none;
+}
+.th-modal textarea:focus{border-color:var(--border-strong)}
+.th-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.th-actions button{
+  font-family:var(--mono);font-size:12.5px;padding:6px 14px;border-radius:8px;
+  background:none;border:1px solid var(--border);color:var(--text);cursor:pointer;
+}
+.th-actions button:hover{border-color:var(--border-strong);color:var(--accent-2)}
+.th-actions .primary{background:var(--accent);color:#1a1204;border-color:var(--accent)}
+.th-actions .primary:hover{background:var(--accent-2);color:#1a1204}
+.ek-overlay{z-index:165}
+.ek-panel{max-width:372px;max-height:86vh}
+.ek-head{
+  display:flex;align-items:center;justify-content:flex-start;gap:8px;
+  padding:20px 18px 12px;border-bottom:1px dashed var(--border);
+}
+.ek-head svg{flex:0 0 auto;width:15px;height:15px;fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ek-hint{flex:1;min-width:0;text-align:left;font-family:var(--mono);font-size:13px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ek-list{padding:18px 18px 26px;overflow-y:auto;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:8px}
+.ek-item{
+  flex:0 0 calc((100% - 16px) / 3);
+  display:flex;align-items:center;justify-content:flex-start;gap:13px;
+  font-family:var(--sans);font-size:14px;color:var(--text);
+  background:none;border:none;border-radius:10px;padding:12px;cursor:pointer;
+  transition:color .15s,background .15s;
+}
+.ek-item:hover{color:var(--accent-2);background:var(--accent-glow)}
+.ek-num{
+  flex:0 0 auto;min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11.5px;color:var(--accent);
+  border:1px solid var(--border-strong);border-radius:6px;
+}
+/* 添加成功的提示 */
+.th-toast{
+  position:fixed;left:50%;bottom:78px;z-index:170;
+  transform:translate(-50%,10px);opacity:0;pointer-events:none;
+  background:rgba(18,18,18,.92);border:1px solid var(--border-strong);
+  color:var(--accent-2);font-family:var(--mono);font-size:12.5px;
+  padding:7px 14px;border-radius:999px;white-space:nowrap;
+  transition:opacity .2s,transform .2s;
+}
+.th-toast.show{opacity:1;transform:translate(-50%,0)}
+@media (max-width:600px){
+  .th-overlay,#navhide{padding:3vh 3vw}
+  .th-panel{max-height:94vh}
 }
 </style>
 </head>
 <body id="top">
-<div id="ambient" aria-hidden="true"></div>
-<canvas id="starfield" aria-hidden="true"></canvas>
+<canvas id="sky" aria-hidden="true"></canvas>
 
 <header class="topbar">
   <div class="topbar__inner">
     <form class="search" onsubmit="event.preventDefault();searchGo();return false;">
       <div class="search__engine">
         <button type="button" class="search__prompt" id="engine-btn" aria-label="选择搜索引擎" aria-expanded="false">❯</button>
-        <div class="search__menu" id="engine-menu" role="listbox">
-          <button type="button" data-engine="baidu" class="is-active">百度</button>
-          <button type="button" data-engine="google">谷歌</button>
-          <button type="button" data-engine="bing">必应</button>
-          <button type="button" data-engine="duckduckgo">鸭搜</button>
-          <button type="button" data-engine="bilibili">哔哩</button>
-          <button type="button" data-engine="wikipedia">维基</button>
-          <button type="button" data-engine="douban">豆瓣</button>
-          <button type="button" data-engine="zhihu">知乎</button>
-          <button type="button" data-engine="zimu">字幕</button>
-        </div>
+        <div class="search__menu" id="engine-menu" role="listbox"></div>
       </div>
       <input type="text" id="Searchbox" autofocus enterkeyhint="search" inputmode="search">
       <button type="submit" class="search__submit" aria-label="搜索"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
@@ -480,10 +659,12 @@ button{font-family:inherit;cursor:pointer}
 <a class="chip" href="https://ttti.cc">Home</a>
 <a class="chip" href="./nav/index.html">Nav</a>
 <a class="chip" href="./app/index.html">App</a>
+<span class="chip-group"><a class="chip" href="./tools/kanban.html">Kanban</a><span class="flyout"><span class="flyout-inner"><a href="tools/stitching.html">拼截图</a>
+<a href="tools/paint.html">改图像</a>
+<a href="https://coder.aaxyz.de:55">写代码</a>
+<a href="tools/devbox.html">工具箱</a></span></span></span>
 <a class="chip" href="./cmd/index.html">Cheat</a>
-<a class="chip" href="http://nannas/test/">Prompt</a>
-<span class="chip-group"><a class="chip" href="tools/todolist.html">Thought</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
-<a href="tools/stickynote.html">浮动看板</a></span></span></span>
+<a class="chip" href="./prompt/index.html">Prompt</a>
   </div>
 </section>
 
@@ -492,25 +673,26 @@ button{font-family:inherit;cursor:pointer}
     <h2 class="module__title" aria-label="Homelab"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg></h2>
   </header>
   <div class="links">
-<span class="chip-group"><a class="chip" href="http://192.168.10.1:8123">HASS</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner"><a href="https://192.168.10.1:9443">Portainer</a>
+<span class="chip-group"><a class="chip" href="https://nha.aaxyz.de:55">HASS</a><span class="flyout"><span class="flyout-inner"><a href="https://192.168.10.1:9443">Portainer</a>
 <a href="http://192.168.10.1:299">Uptime</a>
 <a href="http://aaxyz.de:811">NPM</a>
 <a href="http://192.168.10.111:8384">Syncthing</a></span></span></span>
-<span class="chip-group"><a class="chip" href="http://192.168.10.1/cgi-bin/luci/admin/services/passwall2/acl">Router</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner"><a href="http://192.168.10.111:5000">NAS</a>
+<span class="chip-group"><a class="chip" href="http://192.168.10.1/cgi-bin/luci/admin/services/passwall2/acl">Router</a><span class="flyout"><span class="flyout-inner"><a href="http://192.168.10.111:5000">NAS</a>
 <a href="http://192.168.10.213">MiWifi</a>
 <a href="http://192.168.10.158">Awtrix</a>
 </span></span></span>
-<span class="chip-group"><a class="chip" href="http://aria2.aaxyz.de:56/ariang">AriaNg</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner"><a href="http://192.168.10.111:9092">qBTorrent</a>
-<a href="http://duf.aaxyz.de:56">Dufs</a>
+<span class="chip-group"><a class="chip" href="https://aria2.aaxyz.de:55/ariang">AriaNg</a><span class="flyout"><span class="flyout-inner"><a href="http://192.168.10.111:9092">qBTorrent</a>
+<a href="https://duf.aaxyz.de:55">Dufs</a>
 <a href="https://photo.aaxyz.de:55">Immich</a>
-<a href="http://nf.aaxyz.de:56">Jellyfin</a>
+<a href="https://nf.aaxyz.de:55">Jellyfin</a>
 <a href="http://192.168.10.111:7878">Radarr</a>
 <a href="http://192.168.10.111:8989">Sonarr</a>
-<a href="http://192.168.10.111:9696">Prowlarr</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://frss.aaxyz.de:55">FreshRSS</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
-<a href="http://linkd.aaxyz.de:56/bookmarks?unread=yes">Linkding</a>
+<a href="http://192.168.10.111:9696">Prowlarr</a>
+<a href="http://192.168.10.111:8900">Peach</a></span></span></span>
+<span class="chip-group"><a class="chip" href="https://frss.aaxyz.de:55">FreshRSS</a><span class="flyout"><span class="flyout-inner">
+<a href="https://linkd.aaxyz.de:55">Linkding</a>
 <a href="https://theoldreader.com/feeds">Oreader</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://www.taobao.com">Taobao</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<span class="chip-group"><a class="chip" href="https://www.taobao.com">Taobao</a><span class="flyout"><span class="flyout-inner">
 <a href="https://www.jd.com">京东</a>
 <a href="https://www.smzdm.com">值得买</a>
 <a href="https://www.goofish.com">闲鱼</a>
@@ -525,13 +707,13 @@ button{font-family:inherit;cursor:pointer}
     <h2 class="module__title" aria-label="Knowledge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.5 4 5.8 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.8-4-9s1.5-6.5 4-9z"/></svg></h2>
   </header>
   <div class="links">
-<span class="chip-group"><a class="chip" href="https://www.youtube.com/playlist?list=WL">YouTube</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner"><a href="https://x.com">X</a>
+<span class="chip-group"><a class="chip" href="https://www.youtube.com">YouTube</a><span class="flyout"><span class="flyout-inner"><a href="https://x.com">X</a>
 <a href="https://www.tiktok.com">TikTok</a>
 <a href="https://mastodon.social">Mastodon</a></span></span></span>
 <span class="chip-group">
-<a class="chip" href="https://github.com/NanJishen">GitHub</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<a class="chip" href="https://github.com/NanJishen">GitHub</a><span class="flyout"><span class="flyout-inner">
 <a href="https://github.com/nassets">Nassets</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://dash.cloudflare.com">Cloudflare</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<span class="chip-group"><a class="chip" href="https://dash.cloudflare.com">Cloudflare</a><span class="flyout"><span class="flyout-inner">
 <a class="chip" href="https://www.freehostia.com">Freehostia</a></span></span></span>
   </div>
 </section>
@@ -545,7 +727,7 @@ button{font-family:inherit;cursor:pointer}
 <a class="chip" href="https://gemini.google.com">Gemini</a>
 <a class="chip" href="https://claude.ai">Claude</a>
 <a class="chip" href="http://grok.com">Grok</a>
-<span class="chip-group"><a class="chip" href="https://copilot.microsoft.com">Copilot</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<span class="chip-group"><a class="chip" href="https://copilot.microsoft.com">Copilot</a><span class="flyout"><span class="flyout-inner">
 <a href="https://duck.ai">DuckGoAI</a>
 <a href="https://www.meta.ai">MetaAI</a>
 <a href="https://www.perplexity.ai">Perplexity</a>
@@ -553,7 +735,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://huggingface.co/chat">Hugging</a>
 <a href="https://groq.com">Groq</a>
 <a href="https://ai.azure.com">Azure</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://foundr.ai">Foundr</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<span class="chip-group"><a class="chip" href="https://foundr.ai">Foundr</a><span class="flyout"><span class="flyout-inner">
 <a href="https://www.myaiexp.com">AI星图</a>
 <a href="https://github.com/xx025/carrot">AI导航站</a>
 <a href="https://www.aiznx.com">AI智能箱</a>
@@ -577,7 +759,7 @@ button{font-family:inherit;cursor:pointer}
 <a class="chip" href="https://www.doubao.com">Doubao</a>
 <a class="chip" href="https://yiyan.baidu.com">Wenxin</a>
 <a class="chip" href="https://chat.qwen.ai">Qwen</a>
-<span class="chip-group"><a class="chip" href="https://chat.z.ai">Z.AI</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<span class="chip-group"><a class="chip" href="https://chat.z.ai">Z.AI</a><span class="flyout"><span class="flyout-inner">
 <a href="https://yuanbao.tencent.com">元宝</a>
 <a href="https://www.qianwen.com">阿里</a>
 <a href="https://www.volcengine.com">火山</a>
@@ -592,12 +774,11 @@ button{font-family:inherit;cursor:pointer}
   </header>
   <div class="links">
 
-<a class="chip" href="https://www.mchose.com.cn/#/connectDevice">Mchose</a>
-<span class="chip-group"><a class="chip" href="https://turboscribe.ai/zh-CN/">Turboe</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<span class="chip-group"><a class="chip" href="https://turboscribe.ai/zh-CN/">Turboe</a><span class="flyout"><span class="flyout-inner">
 <a href="https://turboscribe.ai/zh-CN/downloader/youtube/video">Youtube-dl</a>
 </span></span></span>
 
-<span class="chip-group"><a class="chip" href="https://www.bing.com/images/create">BImg</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner"><a href="https://raphael.app/zh">Raphael</a>
+<span class="chip-group"><a class="chip" href="https://www.bing.com/images/create">BImg</a><span class="flyout"><span class="flyout-inner"><a href="https://raphael.app/zh">Raphael</a>
 <a href="https://www.domoai.app/zh-Hant">DomoAI</a>
 <a href="https://pai.video">拍我AI</a>
 <a href="https://hailuoai.video">Hailuo</a>
@@ -611,7 +792,7 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://picso.ai">PicSo</a>
 <a href="https://novelai.net">NovelAI</a>
 <a href="https://www.puppetry.com">Puppetry</a></span></span></span>
-<span class="chip-group"><a class="chip" href="https://app.koofr.net">Koofr</a><button type="button" class="chip-toggle" onclick="event.stopPropagation();toggleFlyout(this)" aria-label="展开">▾</button><span class="flyout"><span class="flyout-inner">
+<span class="chip-group"><a class="chip" href="https://app.koofr.net">Koofr</a><span class="flyout"><span class="flyout-inner">
 <a href="https://infini-cloud.net/en/">InfiniCLOUD</a>
 <a href="https://drive.filen.io">Filen</a>
 <a href="https://drive.mypikpak.com">PikPak</a>
@@ -624,11 +805,11 @@ button{font-family:inherit;cursor:pointer}
   <div class="scratch-inline">
     <textarea class="textinput" id="bar" placeholder=">_"></textarea>
     <div class="clip">
-      <button onclick="document.getElementById('bar').select();document.execCommand('cut')">剪切</button>
+      <button onclick="cutScratch()">剪切</button>
       <button id="translateBtn" onclick="translateText()">翻译</button>
       <button onclick="location.href='tools/textedit.html'">便笺</button>
       <button onclick="location.href='https://xyz.556660.xyz/nanji'">传输</button>
-      <button onclick="copyText('东西不错，是我想要的，快递服务态度也不错，如果还有需要会再次光临的')">淘评</button>
+      <button onclick="location.href='tools/notepad.html'">记事本</button>
     </div>
   </div>
 </section>
@@ -665,9 +846,42 @@ button{font-family:inherit;cursor:pointer}
   <div class="mini-cal" id="miniCal">
     <div class="mini-cal__head">
       <a class="mini-cal__title" id="miniCalTitle" href="https://www.baidu.com/s?wd=%E6%97%A5%E5%8E%86"></a>
-      <span class="mini-cal__time" id="miniCalTime"></span>
+      <span class="mini-cal__time" id="miniCalTime" role="button" tabindex="0" title="点击切换日历 / 倒计时"></span>
     </div>
     <div class="mini-cal__grid" id="miniCalGrid"></div>
+    <div class="cd" id="cd">
+      <div class="cd__set" id="cdSet">
+        <div class="cd__seg">
+          <button type="button" class="cd__btn is-on" id="cdModeDur">时长</button>
+          <button type="button" class="cd__btn" id="cdModeAt">结束时间</button>
+        </div>
+        <div class="cd__pane" id="cdPaneDur">
+          <div class="cd__row">
+            <input class="cd__in" id="cdH" type="number" min="0" max="99" placeholder="0" inputmode="numeric"><i>时</i>
+            <input class="cd__in" id="cdM" type="number" min="0" max="999" placeholder="0" inputmode="numeric"><i>分</i>
+            <input class="cd__in" id="cdS" type="number" min="0" max="999" placeholder="0" inputmode="numeric"><i>秒</i>
+          </div>
+          <div class="cd__row">
+            <button type="button" class="cd__btn" data-m="5">5分</button>
+            <button type="button" class="cd__btn" data-m="10">10分</button>
+            <button type="button" class="cd__btn" data-m="25">25分</button>
+            <button type="button" class="cd__btn" data-m="60">1小时</button>
+          </div>
+        </div>
+        <div class="cd__pane" id="cdPaneAt" hidden>
+          <div class="cd__row"><input class="cd__in cd__in--time" id="cdAt" type="time"></div>
+        </div>
+        <div class="cd__hint" id="cdHint"></div>
+        <button type="button" class="cd__go" id="cdGo">开始倒计时</button>
+      </div>
+      <div class="cd__run" id="cdRun" hidden>
+        <div class="cd__cap" id="cdCap">剩余</div>
+        <div class="cd__big" id="cdBig">00:00:00</div>
+        <div class="cd__bar"><i id="cdBar"></i></div>
+        <div class="cd__info"><span id="cdEnd"></span><span id="cdStart"></span></div>
+        <button type="button" class="cd__go" id="cdCancel">取消</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -675,54 +889,37 @@ button{font-family:inherit;cursor:pointer}
 
 <ul class="dock">
   <li class="dock-item">
-    <a href="./tools/wclock.html" aria-label="时间日历">
+    <a href="./tools/clock.html" aria-label="时间日历">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
     </a>
   </li>
 
   <li class="dock-item">
-    <button type="button" aria-label="地图">
+    <a href="https://map.baidu.com" aria-label="地图" title="百度地图">
       <svg viewBox="0 0 24 24"><path d="M12 22s7-7.4 7-12.5A7 7 0 0 0 5 9.5C5 14.6 12 22 12 22z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
-    </button>
-    <span class="flyout dock-flyout"><span class="flyout-inner">
-      <a href="https://map.baidu.com">百度地图</a>
-      <a href="https://maps.google.com">谷歌地图</a>
-      <a href="https://earth.google.com">谷歌地球</a>
-      <a href="https://www.amap.com">高德地图</a>
-      <a href="https://www.openstreetmap.org">OSM</a>
-    </span></span>
-  </li>
-
-  <li class="dock-item">
-    <button type="button" aria-label="小工具">
-      <svg viewBox="0 0 24 24"><path d="M4 20l1-4.5L15.5 5 19 8.5 8.5 19 4 20z"/><path d="M13.5 6.5L17.5 10.5"/></svg>
-    </button>
-    <span class="flyout dock-flyout"><span class="flyout-inner">
-      <a href="tools/stitching.html">拼接图</a>
-      <a href="tools/notepad.html">记事本</a>
-      <a href="tools/paint.html">画图</a>
-      <a href="https://drawnix.com">白板</a>
-      <a href="https://coder.aaxyz.de:55">写代码</a>
-      <a href="tools/testcode.html">测前端</a>
-      <a href="tools/palette.html">调色板</a>
-      <a href="tools/watermark.html">加水印</a>
-    </span></span>
-  </li>
-
-  <li class="dock-item">
-    <a href="tools/translator.html" aria-label="翻译词典">
-      <svg viewBox="0 0 24 24"><path d="M4 5h9M8 3v2M6.5 5c0 4 2 7 5.5 9M11.5 5c-.7 4-3 7.5-7 9.5"/><path d="M14 21l4-9 4 9M15.3 18h5.4"/></svg>
     </a>
   </li>
 
   <li class="dock-item">
-    <button type="button" aria-label="金融行情">
+    <a href="https://xueqiu.com" aria-label="金融行情">
       <svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+    </a>
+  </li>
+
+  <li class="dock-item">
+    <a href="https://www.mchose.com.cn/#/connectDevice" aria-label="外设设备" title="迈从驱动">
+      <svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 3v7"/><path d="M6 10h12"/></svg>
+    </a>
+  </li>
+
+  <li class="dock-item">
+    <button type="button" aria-label="Home Assistant" title="Home Assistant">
+      <svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg>
     </button>
     <span class="flyout dock-flyout"><span class="flyout-inner">
-      <a href="https://xueqiu.com">Stock</a>
-      <a href="https://cn.tradingview.com">Tdview</a>
-      <a href="https://www.google.com/search?q=%E7%BE%8E%E5%85%83+%E4%BA%BA%E6%B0%91%E5%B8%81">Exrate</a>
+      <a href="#" class="ha-action" data-ha-service="button/press" data-ha-entity="button.xiaomi_bar2_d755_toggle" aria-label="显示器挂灯" title="显示器挂灯"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="4" rx="1.5"/><path d="M8 10l-2 4M12 10v5M16 10l2 4"/></svg></a>
+      <a href="#" class="ha-action" data-ha-service="switch/toggle" data-ha-entity="switch.qiang_bi_cha_zuo" aria-label="墙壁插座" title="墙壁插座"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M9.5 9.5v2.5M14.5 9.5v2.5M10 16h4"/></svg></a>
+      <a href="#" class="ha-action" data-ha-service="script/turn_on" data-ha-entity="script.1683454414705" aria-label="手机充电" title="手机充电"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M12.8 8.5l-2.3 3.6h3l-2.3 3.6"/></svg></a>
     </span></span>
   </li>
 
@@ -741,12 +938,18 @@ button{font-family:inherit;cursor:pointer}
   </li>
 
   <li class="dock-item">
+    <button type="button" id="skyBtn" aria-label="切换背景" title="切换背景">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6"/><ellipse cx="12" cy="12" rx="10" ry="3.2" transform="rotate(-25 12 12)"/></svg>
+    </button>
+  </li>
+
+  <li class="dock-item dock-item--scroll">
     <a href="#top" aria-label="回到顶部并聚焦搜索框" onclick="setTimeout(()=>document.getElementById('Searchbox')?.focus(),50)">
       <svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>
     </a>
   </li>
-  <li class="dock-item">
-    <a href="#bar" aria-label="前往剪贴板">
+  <li class="dock-item dock-item--scroll">
+    <a href="#" aria-label="回到最底部" onclick="event.preventDefault();window.scrollTo({top:document.documentElement.scrollHeight,behavior:'smooth'})">
       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </a>
   </li>
@@ -814,69 +1017,379 @@ button{font-family:inherit;cursor:pointer}
 <a href="https://www.ihezu.cn">奈飞小铺</a>
 <a href="https://nf.video">银河录像局</a>
 </div></div>
-<div class="drawer-group"><h3>SHT</h3><div class="drawer-chips">
-<a href="https://www.sehuatang.net/forum-38-1.html">欧美无码</a>
-<a href="https://www.sehuatang.net/forum-36-1.html">亚洲无码</a>
-<a href="https://www.sehuatang.net/forum-103-1.html">高清中文</a>
-</div></div>
+  </div>
+</div>
+
+<div class="th-overlay" id="thoughtOverlay">
+  <div class="th-panel" role="dialog" aria-modal="true" aria-labelledby="thoughtTitle">
+    <header class="th-head">
+      <h2 class="th-title" id="thoughtTitle">想法</h2>
+      <div class="th-tools">
+        <button type="button" class="th-ico" id="thoughtExport" aria-label="导出 md" title="导出 md"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg></button>
+        <button type="button" class="th-ico" id="thoughtClearDone" aria-label="清除已完成" title="清除已完成"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/></svg></button>
+        <a class="th-ico" href="tools/todo.html" aria-label="最大化" title="打开完整页面"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5"/><path d="M20 9V4h-5"/><path d="M4 15v5h5"/><path d="M20 15v5h-5"/></svg></a>
+        <button type="button" class="th-x" id="thoughtClose" aria-label="关闭">✕</button>
+      </div>
+    </header>
+    <div id="thoughtBody"></div>
+  </div>
+</div>
+<div class="th-overlay th-overlay--edit" id="thoughtEdit">
+  <div class="th-modal">
+    <textarea id="thoughtEditInput" rows="3"></textarea>
+    <div class="th-actions">
+      <button type="button" id="thoughtEditCancel">取消</button>
+      <button type="button" class="primary" id="thoughtEditConfirm">确认</button>
+    </div>
+  </div>
+</div>
+<div class="th-toast" id="thoughtToast" role="status" aria-live="polite"></div>
+<div class="th-overlay ek-overlay" id="enginePicker">
+  <div class="th-panel ek-panel" role="dialog" aria-modal="true" aria-label="选择搜索引擎">
+    <header class="ek-head">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <span class="ek-hint" id="enginePickerHint"></span>
+    </header>
+    <div class="ek-list" id="enginePickerList"></div>
   </div>
 </div>
 
 <script>
-let currentEngine = 'baidu';
-const engineSearch = {
-  baidu: 'https://www.baidu.com/s?wd=',
-  google: 'https://www.google.com/search?q=',
-  bing: 'https://www.bing.com/search?q=',
-  duckduckgo: 'https://duckduckgo.com/?q=',
-  wikipedia: 'https://zh.wikipedia.org/wiki/',
-  douban: 'https://www.douban.com/search?q=',
-  zhihu: 'https://www.zhihu.com/search?type=content&q=',
-  zimu: 'https://subhd.tv/search/',
-  bilibili: 'https://search.bilibili.com/all?keyword='
-};
-const engineHome = {
-  baidu: 'https://www.baidu.com',
-  google: 'https://www.google.com',
-  bing: 'https://www.bing.com',
-  duckduckgo: 'https://duckduckgo.com',
-  wikipedia: 'https://zh.wikipedia.org',
-  douban: 'https://www.douban.com',
-  zhihu: 'https://www.zhihu.com',
-  zimu: 'https://subhd.tv',
-  bilibili: 'https://member.bilibili.com/platform/upload-manager'
-};
-// 命令表：搜索框内容命中这里的 key 时，点击搜索/回车不再执行搜索，而是执行对应动作
+const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+// 搜索引擎：只维护这一张表。url 中的 {q} 会被替换成编码后的关键词；
+// 引擎主页默认取 url 的域名，特殊的（如哔哩）用 home 覆盖；没有 url 的是本地功能（想法）。
+const ENGINES = [
+  { id: 'thought',    name: '想法' },
+  { id: 'baidu',      name: '百度', url: 'https://www.baidu.com/s?wd={q}' },
+  { id: 'google',     name: '谷歌', url: 'https://www.google.com/search?q={q}' },
+  { id: 'bing',       name: '必应', url: 'https://www.bing.com/search?q={q}' },
+  { id: 'duckduckgo', name: '鸭搜', url: 'https://duckduckgo.com/?q={q}' },
+  { id: 'bilibili',   name: '哔哩', url: 'https://search.bilibili.com/all?keyword={q}', home: 'https://member.bilibili.com/platform/upload-manager' },
+  { id: 'douban',     name: '豆瓣', url: 'https://www.douban.com/search?q={q}' },
+  { id: 'movie',      name: '影视', url: 'https://uindex.org/search.php?search={q}' },
+  { id: 'zimu',       name: '字幕', url: 'https://subhd.tv/search/{q}' }
+];
+const DEFAULT_ENGINE = 'baidu';
+const SO_PAGE = './so/index.html';
+let currentEngine = DEFAULT_ENGINE;
+
+const engineById = id => ENGINES.find(e => e.id === id) || ENGINES.find(e => e.id === DEFAULT_ENGINE);
+const engineHome = e => e.home || (e.url ? new URL(e.url).origin : '');
+const engineUrl = (e, q) => e.url.replace('{q}', encodeURIComponent(q));
+const getInput = () => (document.getElementById('Searchbox')?.value || '').trim();
+const isUrl = text => /^https?:\/\//i.test(text);
+
+document.getElementById('engine-menu').innerHTML =
+  ENGINES.map(e => `<button type="button" data-engine="${e.id}">${e.name}</button>`).join('');
+
+function applyEngineUI(){
+  document.querySelectorAll('#engine-menu button[data-engine]')
+    .forEach(b => b.classList.toggle('is-active', b.dataset.engine === currentEngine));
+  const btn = document.getElementById('engine-btn');
+  if (btn) btn.title = currentEngine === 'thought' ? '当前：想法（回车加入待办）' : '选择搜索引擎';
+}
+applyEngineUI();
+
+// 统一执行入口：想法 → 加入/打开待办；网址 → 直接打开；空内容 → emptyTarget；其余 → 搜索
+function dispatch(engine, input, emptyTarget){
+  if (engine.id === 'thought') return input ? Thoughts.add(input) : Thoughts.open();
+  if (isUrl(input)) return window.open(input);
+  if (!input) return window.open(emptyTarget);
+  return window.open(engineUrl(engine, input));
+}
+
+// ---------- 关键字搜索：在搜索框输入「n 关键字」或「a 关键字」，检索 nav/nav.js、app/app.js，下拉预览，点选/回车跳转 ----------
+// 数据文件只在输入「n 」/「a 」（前缀 + 空格）时才加载，不影响主页启动速度。
+const NavSearch = (function(){
+  const MAX_RESULTS = 30;
+
+  /*NAV-CORE-START*/
+  // 在函数作用域里执行数据文件，取出 window.X 或顶层 const X（不污染页面全局）
+  function evalSource(src, g){
+    return new Function('window', src +
+      `\n;return (typeof window.${g} !== 'undefined') ? window.${g} : (typeof ${g} !== 'undefined' ? ${g} : undefined);`)({});
+  }
+
+  const toHref = (u, base) => {
+    try {
+      const href = new URL(String(u).trim(), base).href;
+      return /^(https?|file):/i.test(href) ? href : '';
+    } catch (e) { return ''; }
+  };
+  const hostOf = href => { try { return new URL(href).host.replace(/^www\./, '').toLowerCase(); } catch (e) { return ''; } };
+  function makeEntry(name, links, desc, tag){
+    const urls = links.map(l => l.href);
+    return {
+      name, desc, tag, links,
+      url: urls[0] || '',
+      hosts: urls.map(hostOf),
+      hay: [name, desc, tag, ...urls].join(' ').toLowerCase()
+    };
+  }
+
+  // nav.js：NAV_DATA = [{ taxonomy, links:[{name,url,desc}] } | { taxonomy, list:[{ term, links:[...] }] }]
+  function flattenNav(data, base){
+    const out = [], seen = new Set();
+    const add = (l, tag) => {
+      if (!l) return;
+      const href = toHref(l.url || '', base);
+      if (!href) return;
+      const name = String(l.name || '').trim() || href;
+      const key = name + '\n' + href;
+      if (seen.has(key)) return;
+      seen.add(key);
+      out.push(makeEntry(name, [{ href }], String(l.desc || '').trim(), tag));
+    };
+    (Array.isArray(data) ? data : []).forEach(cat => {
+      const c = cat.taxonomy || '';
+      (cat.links || []).forEach(l => add(l, c));
+      (cat.list || []).forEach(sec =>
+        (sec.links || []).forEach(l => add(l, [c, sec.term].filter(Boolean).join(' / '))));
+    });
+    return out;
+  }
+
+  // app.js：window.APP_DATA = { meta, categories:[{ id, title, items:[{ name, desc, detail?, links?:[{href,emoji}] }] }] }
+  function flattenApp(data, base){
+    const out = [], seen = new Set();
+    ((data && data.categories) || []).forEach(cat => {
+      (cat.items || []).forEach(it => {
+        if (!it || !it.name) return;
+        const links = (it.links || [])
+          .map(l => ({ href: toHref((l && l.href) || '', base), emoji: (l && l.emoji) || '🔗' }))
+          .filter(l => l.href);
+        const e = makeEntry(String(it.name).trim(), links, String(it.desc || '').trim(), cat.title || '');
+        const key = e.name + '\n' + (e.url || e.tag);
+        if (seen.has(key)) return;
+        seen.add(key);
+        out.push(e);
+      });
+    });
+    return out;
+  }
+
+  const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  function search(entries, query){
+    const tokens = query.toLowerCase().split(/\s+/).filter(Boolean);
+    if (!tokens.length) return entries.slice(0, MAX_RESULTS);
+    const scored = [];
+    entries.forEach((e, i) => {
+      if (!tokens.every(t => e.hay.includes(t))) return;
+      const name = e.name.toLowerCase();
+      let score = 0;
+      tokens.forEach(t => {
+        if (name.startsWith(t)) score += 3;
+        else if (e.hosts.some(h => h.startsWith(t))) score += 2.5;
+        else if (name.includes(t)) score += 2;
+        else score += 1;
+      });
+      scored.push({ e, score, i });
+    });
+    scored.sort((x, y) => y.score - x.score || x.i - y.i);
+    return scored.slice(0, MAX_RESULTS).map(x => x.e);
+  }
+  /*NAV-CORE-END*/
+
+  // 数据源：文件路径、全局变量名、解析函数、没有链接时的兜底页面
+  const PREFIX = { n: 'nav', a: 'app' };   // 搜索框前缀 -> 数据源
+  const SOURCES = {
+    nav: { file: './nav/nav.js', global: 'NAV_DATA', flatten: flattenNav, fallback: './nav/index.html' },
+    app: { file: './app/app.js', global: 'APP_DATA', flatten: flattenApp, fallback: './app/index.html' }
+  };
+
+  function highlight(text, tokens){
+    if (!tokens.length) return escapeHtml(text);
+    const re = new RegExp('(' + tokens.map(reEsc).join('|') + ')', 'ig');
+    return text.split(re).map((part, i) => i % 2 ? `<mark>${escapeHtml(part)}</mark>` : escapeHtml(part)).join('');
+  }
+  const shortUrl = u => { try { const x = new URL(u); return x.host + (x.pathname === '/' ? '' : x.pathname) + x.search; } catch (e) { return u; } };
+
+  // 通过 file:// 打开时 fetch 不可用，退回 <script> 加载（const 只能声明一次，所以只加载一次并缓存）
+  const scriptData = {};
+  function loadByScriptTag(key, base){
+    if (scriptData[key]) return Promise.resolve(scriptData[key]);
+    const src = SOURCES[key];
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = base.href;
+      s.onload = () => {
+        s.remove();
+        try { scriptData[key] = (0, eval)(`${src.global}`); resolve(scriptData[key]); }
+        catch (e) { reject(new Error(`${src.file} 中没有找到 ${src.global}`)); }
+      };
+      s.onerror = () => { s.remove(); reject(new Error('无法加载 ' + src.file)); };
+      document.head.appendChild(s);
+    });
+  }
+
+  let cache = {};   // key -> Promise<entries>；关闭下拉时清空，下次输入会重新读取最新文件
+  function loadEntries(key){
+    if (cache[key]) return cache[key];
+    const src = SOURCES[key];
+    const base = new URL(src.file, location.href);
+    const pr = (async () => {
+      let data;
+      try {
+        const res = await fetch(base, { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        data = evalSource(await res.text(), src.global);
+        if (data === undefined) throw new Error('no data');
+      } catch (e) {
+        data = await loadByScriptTag(key, base);
+      }
+      return src.flatten(data, base);
+    })();
+    cache[key] = pr;
+    pr.catch(() => { if (cache[key] === pr) delete cache[key]; });
+    return pr;
+  }
+
+  const box = document.getElementById('Searchbox');
+  const panel = document.createElement('div');
+  panel.className = 'navres';
+  panel.setAttribute('role', 'listbox');
+  panel.tabIndex = -1;
+  document.body.appendChild(panel);
+
+  let results = [], idx = -1, tokens = [], curKey = 'nav';
+
+  // 「n/a + 空白 + 关键字」才触发，与当前选中的搜索引擎无关（包括「想法」模式）
+  const thoughtMode = () => currentEngine === 'thought';
+  function parseQuery(){
+    const m = /^\s*(n|a)\s([\s\S]*)$/i.exec(box.value);
+    return m ? { key: PREFIX[m[1].toLowerCase()], q: m[2].trim() } : null;
+  }
+  const isOpen = () => panel.classList.contains('is-open');
+  function place(){
+    const r = box.closest('.search').getBoundingClientRect();
+    panel.style.left = r.left + 'px';
+    panel.style.top = (r.bottom + 8) + 'px';
+    panel.style.width = r.width + 'px';
+  }
+  function hide(){
+    panel.classList.remove('is-open');
+    results = []; idx = -1;
+    cache = {};
+  }
+  function setActive(i){
+    const items = panel.querySelectorAll('.navres__item');
+    if (!items.length) return;
+    idx = (i + items.length) % items.length;
+    items.forEach((el, k) => el.classList.toggle('is-active', k === idx));
+    items[idx].scrollIntoView({ block: 'nearest' });
+  }
+  function render(){
+    if (!results.length) {
+      panel.innerHTML = '<div class="navres__msg">没有匹配的条目</div>';
+    } else {
+      panel.innerHTML = results.map((e, i) => {
+        const lks = (curKey === 'app' && e.links.length)
+          ? `<span class="navres__lks">${e.links.map(l => `<span class="navres__lk" data-href="${escapeHtml(l.href)}" title="${escapeHtml(l.href)}">${escapeHtml(l.emoji)}</span>`).join('')}</span>` : '';
+        const mid = e.desc || (e.url ? shortUrl(e.url) : '');
+        return `<div class="navres__item${i === idx ? ' is-active' : ''}" role="option" data-i="${i}" title="${escapeHtml(e.url || e.desc)}">
+          <span class="navres__name">${highlight(e.name, tokens)}</span>
+          <span class="navres__url">${highlight(mid, tokens)}</span>
+          ${e.tag ? `<span class="navres__tag">${escapeHtml(e.tag)}</span>` : ''}${lks}
+        </div>`;
+      }).join('') +
+        `<div class="navres__foot">${curKey} · ${results.length} 条 · ↑↓ 选择 · Enter 打开${curKey === 'app' ? ' · 点图标直达' : ''} · Esc 关闭</div>`;
+    }
+    place();
+    panel.classList.add('is-open');
+  }
+
+  const same = (a, b) => a && b && a.key === b.key && a.q === b.q;
+  async function update(){
+    const p = parseQuery();
+    if (!p) {
+      if (isOpen()) hide();   // 单字母前缀不再预加载：否则输入以 n / a 开头的普通搜索词时会白白读取数据文件
+      return;
+    }
+    let all;
+    try { all = await loadEntries(p.key); }
+    catch (e) {
+      if (!same(parseQuery(), p)) return;
+      panel.innerHTML = `<div class="navres__msg">读取 ${SOURCES[p.key].file.replace('./', '')} 失败：${escapeHtml(e.message)}</div>`;
+      place(); panel.classList.add('is-open');
+      return;
+    }
+    if (!same(parseQuery(), p)) return;   // 异步期间输入已变化
+    curKey = p.key;
+    tokens = p.q.toLowerCase().split(/\s+/).filter(Boolean);
+    results = search(all, p.q);
+    idx = results.length ? 0 : -1;
+    render();
+  }
+
+  function openUrl(u){
+    hide();
+    window.open(u, '_blank', 'noopener');
+  }
+  // 点条目：有链接开第一个；没有链接的条目（app 里只有说明的）打开对应的整理页
+  const openEntry = e => openUrl(e.url || SOURCES[curKey].fallback);
+
+  // 供 searchGo 调用：下拉有结果时回车打开当前高亮项
+  function enter(){
+    if (!isOpen()) return false;
+    if (results.length && idx >= 0) { openEntry(results[idx]); return true; }
+    return thoughtMode();   // 想法模式下没有匹配时别把「n xxx」当成想法记下来
+  }
+
+  box.addEventListener('input', update);
+  box.addEventListener('focus', () => { if (parseQuery()) update(); });
+  box.addEventListener('keydown', e => {
+    if (!isOpen() || e.isComposing) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActive(idx + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(idx - 1); }
+    else if (e.key === 'Escape') { e.preventDefault(); hide(); }
+  });
+  panel.addEventListener('mousedown', e => e.preventDefault());   // 点选时不让搜索框失焦
+  panel.addEventListener('mouseover', e => {
+    const el = e.target.closest('.navres__item');
+    if (el) { idx = +el.dataset.i; panel.querySelectorAll('.navres__item').forEach((x, k) => x.classList.toggle('is-active', k === idx)); }
+  });
+  panel.addEventListener('click', e => {
+    const lk = e.target.closest('.navres__lk');
+    if (lk) return openUrl(lk.dataset.href);
+    const el = e.target.closest('.navres__item');
+    if (el) openEntry(results[+el.dataset.i]);
+  });
+  document.addEventListener('click', e => {
+    if (isOpen() && !e.target.closest('.navres') && !e.target.closest('.search')) hide();
+  });
+  window.addEventListener('resize', () => { if (isOpen()) place(); });
+
+  return { enter, hide };
+})();
+
+// 命令表：搜索框内容命中这里的 key 时，不再执行搜索，而是执行对应动作
 const RUNCMD_ACTIONS = {
-  n: () => { document.getElementById('navhide').style.display = 'block'; },
+  n: () => document.getElementById('navhide').classList.add('show'),
   key: () => { location.href = 'https://bkey.aaxyz.de:55'; },
   nas: () => { location.href = 'https://nas.aaxyz.de:55'; },
   st: () => { location.href = 'http://localhost:8384'; }
 };
+
+// 回车 / 点搜索：空内容跳 so 页
 const searchGo = () => {
-  const input = (document.getElementById('Searchbox')?.value || '').trim();
-  if (RUNCMD_ACTIONS[input]) return RUNCMD_ACTIONS[input]();
-  if (input.startsWith('http://') || input.startsWith('https://')) {
-    return window.open(input);
-  }
-  // 内容为空 → 项目内 so/index.html
-  if (!input) return window.open('./so/index.html');
-  const base = engineSearch[currentEngine] || engineSearch.baidu;
-  return window.open(base + encodeURIComponent(input));
+  const input = getInput();
+  if (NavSearch.enter()) return;   // 「n 关键字」「a 关键字」下拉有结果时，回车打开高亮条目（须在命令表之前，否则「n 」会被当成命令 n）
+  if (Object.hasOwn(RUNCMD_ACTIONS, input)) return RUNCMD_ACTIONS[input]();
+  return dispatch(engineById(currentEngine), input, SO_PAGE);
 };
-// 从引擎菜单选择：空内容跳引擎主页，有内容则搜索
-const selectEngineAndGo = (engine) => {
-  currentEngine = engine;
-  const input = (document.getElementById('Searchbox')?.value || '').trim();
-  if (input.startsWith('http://') || input.startsWith('https://')) {
-    return window.open(input);
-  }
-  if (!input) {
-    return window.open(engineHome[engine] || engineHome.baidu || 'https://www.baidu.com');
-  }
-  const base = engineSearch[engine] || engineSearch.baidu;
-  return window.open(base + encodeURIComponent(input));
-};
+document.querySelector('.search__submit')?.addEventListener('click', e => {
+  if (!getInput()) { e.preventDefault(); location.href = SO_PAGE; }
+});
+
+// 从引擎菜单 / Ctrl+K 弹窗选择：切换引擎并立即执行（空内容跳该引擎主页）
+function selectEngineAndGo(id){
+  const engine = engineById(id);
+  currentEngine = engine.id;
+  applyEngineUI();
+  return dispatch(engine, getInput(), engineHome(engine));
+}
 
 (function setupEngineMenu(){
   const btn = document.getElementById('engine-btn');
@@ -923,8 +1436,6 @@ const selectEngineAndGo = (engine) => {
     }
   };
   const selectEngine = (opt) => {
-    options.forEach(b => b.classList.remove('is-active'));
-    opt.classList.add('is-active');
     close();
     selectEngineAndGo(opt.dataset.engine);
   };
@@ -982,6 +1493,7 @@ const selectEngineAndGo = (engine) => {
 // 按 / 聚焦搜索框（不在输入框/可编辑元素内时）
 document.addEventListener('keydown', (e) => {
   if (e.key !== '/') return;
+  if (Thoughts.isOpen()) return;
   const tag = (e.target.tagName || '').toLowerCase();
   const editable = e.target.isContentEditable || tag === 'input' || tag === 'textarea' || tag === 'select';
   if (editable) return;
@@ -993,21 +1505,26 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-function xnavhide(){document.getElementById("navhide").style.display="none"}
+function xnavhide(){document.getElementById('navhide').classList.remove('show')}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') xnavhide(); });
 
 function clearFlyoutState(){
   document.querySelectorAll('.chip-group.is-open').forEach(g => g.classList.remove('is-open'));
 }
-function toggleFlyout(btn){
-  const group = btn.closest('.chip-group');
-  if(!group) return;
-  const wasOpen = group.classList.contains('is-open');
-  clearFlyoutState();
-  if(!wasOpen) group.classList.add('is-open');
-}
 document.addEventListener('click', (e) => {
   if(!e.target.closest('.chip-group')) clearFlyoutState();
 });
+
+// 底部居中的短提示
+let toastTimer = null;
+function showToast(msg, ms = 1400){
+  const el = document.getElementById('thoughtToast');
+  if(!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), ms);
+}
 
 // Dock flyouts: moved out to <body> and positioned with getBoundingClientRect,
 // so they're never clipped by the dock's own box.
@@ -1059,29 +1576,82 @@ function setupDockFlyouts(){
     document.querySelectorAll('.dock-flyout.is-open').forEach(f => f.classList.remove('is-open'));
   });
 }
-document.addEventListener('DOMContentLoaded', setupDockFlyouts);
+setupDockFlyouts();
 
-function copyText(t){
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(t).catch(() => fallbackCopyText(t));
-  } else {
-    fallbackCopyText(t);
+// Home Assistant：点击 dock 弹层里带 data-ha-service / data-ha-entity 的条目，调用对应服务。
+// 令牌放在同目录的 haapi 文件里，不写进页面源码；但能访问该目录的人仍可读到它，只建议在局域网内使用。
+// 浏览器跨域请求需要 HA 允许本页面的来源，见 configuration.yaml 的 http.cors_allowed_origins。
+const HA_URL = 'https://nha.aaxyz.de:55';
+const HA_TOKEN_FILE = 'haapi'; // 与本页面同目录的纯文本文件，内容只放令牌
+let haTokenPromise = null;
+// 失败原因分类，用来给出不同的提示：token / mixed / network / auth / reject / empty / http
+class HaError extends Error { constructor(kind, msg){ super(msg); this.kind = kind; } }
+function haToken(){
+  haTokenPromise ??= fetch(HA_TOKEN_FILE, { cache: 'no-store' })
+    .then(r => {
+      if(!r.ok) throw new HaError('token', 'haapi: HTTP ' + r.status);
+      return r.text();
+    })
+    .then(t => {
+      const token = t.split(/\r?\n/).map(l => l.trim()).find(Boolean)
+        ?.replace(/^bearer\s+/i, '').replace(/^['"]|['"]$/g, '');
+      // 服务器对不存在的文件常回退成 HTML 页面，别把它当令牌发给 HA
+      if(!token || token.length < 20 || /[<\s]/.test(token)) throw new HaError('token', 'haapi: 内容不是令牌');
+      return token;
+    })
+    .catch(err => { // 失败后下次点击可重试
+      haTokenPromise = null;
+      throw err instanceof HaError ? err : new HaError('token', 'haapi: ' + err.message);
+    });
+  return haTokenPromise;
+}
+async function haCallService(service, entityId){
+  const token = await haToken();
+  let res;
+  try{
+    res = await fetch(`${HA_URL}/api/services/${service}`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ entity_id: entityId })
+    });
+  }catch(err){
+    // https 页面请求 http 的 HA 会被浏览器当作混合内容拦截（除非站点设置里允许了不安全内容），
+    // 所以先照常发请求，失败后才据此给出提示，避免误判
+    const mixed = location.protocol === 'https:' && HA_URL.startsWith('http:');
+    throw new HaError(mixed ? 'mixed' : 'network', err.message);   // 连不上 / 跨域未放行 / 预检被拒 / 混合内容
   }
+  if(res.status === 401 || res.status === 403) throw new HaError('auth', 'HTTP ' + res.status);
+  if(res.status === 400 || res.status === 404) throw new HaError('reject', 'HTTP ' + res.status);
+  if(!res.ok) throw new HaError('http', 'HTTP ' + res.status);
+  // HA 对不存在的实体也返回 200 和空数组；按钮/开关正常触发一定会返回变化的状态
+  let changed = null;
+  try{ changed = await res.json(); }catch(e){}
+  if(Array.isArray(changed) && !changed.length && service !== 'script/turn_on') throw new HaError('empty', 'no state change');
 }
-function fallbackCopyText(t){
-  const el = document.createElement('textarea');
-  el.value = t;
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand('copy');
-  document.body.removeChild(el);
-}
+let haBusy = false;
+document.addEventListener('click', async e => {
+  const item = e.target.closest('[data-ha-entity]');
+  if(!item) return;
+  e.preventDefault();
+  document.querySelectorAll('.dock-flyout.is-open').forEach(f => f.classList.remove('is-open'));
+  if(haBusy) return;
+  haBusy = true;
+  try{
+    const { haService, haEntity } = item.dataset;
+    await haCallService(haService, haEntity);   // 发送和出错都不弹提示，出错只写控制台
+  }catch(err){
+    console.error('Home Assistant 调用失败:', err);
+  }finally{
+    haBusy = false;
+  }
+});
 
 // 文字框本地持久化：刷新页面后内容仍保留
 const SCRATCH_STORAGE_KEY = 'nav_scratchpad_text';
 function autoGrowScratch(){
   const bar = document.getElementById('bar');
   if(!bar) return;
+  bar.style.minHeight = '';
   if(bar.scrollHeight > bar.clientHeight){
     bar.style.minHeight = bar.scrollHeight + 'px';
   }
@@ -1100,12 +1670,27 @@ function autoGrowScratch(){
   autoGrowScratch();
 })();
 
+// 剪切：全选 → 写入剪贴板 → 清空。用 Clipboard API；
+// 通过局域网 http 访问时不是安全上下文，没有 navigator.clipboard，退回 execCommand
+async function cutScratch(){
+  const box = document.getElementById('bar');
+  if (!box.value) return;
+  box.select();
+  try {
+    await navigator.clipboard.writeText(box.value);
+    box.value = '';
+    box.dispatchEvent(new Event('input', { bubbles: true }));   // 触发自动保存与高度调整
+  } catch (e) {
+    document.execCommand('cut');
+  }
+}
+
 // 中译英 / 英译中：自建 LibreTranslate 实例
-const LIBRETRANSLATE_URL = 'http://192.168.10.1:2300/translate';
+const LIBRETRANSLATE_URL = 'https://ltrans.aaxyz.de:55/translate';
 async function translateText(){
   const box = document.getElementById('bar');
   const text = box.value.trim();
-  if (!text) return;
+  if (!text) { location.href = './tools/translator.html'; return; }
 
   const isChinese = /[\u4e00-\u9fa5]/.test(text);
   const source = isChinese ? 'zh' : 'en';
@@ -1149,7 +1734,8 @@ function buildMiniCalendar(){
   const year = now.getFullYear();
   const month = now.getMonth();
   const today = now.getDate();
-  title.textContent = `${year}年${month+1}月`;
+  miniCalDay = today;
+  if(!miniCalTimerOn) title.textContent = `${year}年${month+1}月`;
   grid.innerHTML = '';
 
   const dows = ['一','二','三','四','五','六','日'];
@@ -1193,16 +1779,187 @@ function buildMiniCalendar(){
     }
   }
 }
+let miniCalDay = null;
+let miniCalTimerOn = false;   // 日历当前是否处于倒计时视图
 function updateMiniCalTime(){
   const el = document.getElementById('miniCalTime');
   if(!el) return;
-  el.textContent = new Date().toTimeString().slice(0,5);
+  const now = new Date();
+  el.textContent = now.toTimeString().slice(0,5);
+  if(miniCalDay !== null && miniCalDay !== now.getDate()) buildMiniCalendar();
 }
-document.addEventListener('DOMContentLoaded', () => {
-  buildMiniCalendar();
+buildMiniCalendar();
+(function tickMiniCalTime(){
   updateMiniCalTime();
-});
-setInterval(updateMiniCalTime, 60000);
+  setTimeout(tickMiniCalTime, 60000 - Date.now() % 60000 + 50);
+})();
+
+// 倒计时器：点击日历右上角时间在「日历 / 倒计时」之间切换。
+// 可按「时长」或指定「结束时间」（几点结束）开始；开始、结束时间以绝对时间戳存进 localStorage，
+// 刷新或重新打开页面后仍按当时设定的结束时间计算。
+(function setupMiniCountdown(){
+  const $ = id => document.getElementById(id);
+  const root = $('miniCal'), timeEl = $('miniCalTime'), titleEl = $('miniCalTitle'), grid = $('miniCalGrid');
+  const box = $('cd'), setBox = $('cdSet'), runBox = $('cdRun');
+  if(!root || !timeEl || !titleEl || !grid || !box) return;
+
+  const KEY = 'nav_countdown', VIEW_KEY = 'nav_countdown_view', CFG_KEY = 'nav_countdown_cfg';
+  const store = {
+    get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+    set(k, v){ try{ v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  };
+  const p2 = n => String(n).padStart(2, '0');
+  const hms = ms => { const t = Math.max(0, Math.ceil(ms / 1000)); return `${p2(Math.floor(t / 3600))}:${p2(Math.floor(t % 3600 / 60))}:${p2(t % 60)}`; };
+  const dayDiff = ts => { const a = new Date(ts), b = new Date(); a.setHours(0,0,0,0); b.setHours(0,0,0,0); return Math.round((a - b) / 864e5); };
+  // 几点：同一天只显示时分秒，跨天加「明天 / 昨天 / M月D日」
+  const clock = ts => {
+    const d = new Date(ts), n = dayDiff(ts);
+    const pre = n === 0 ? '' : n === 1 ? '明天 ' : n === -1 ? '昨天 ' : `${d.getMonth() + 1}月${d.getDate()}日 `;
+    return pre + d.toTimeString().slice(0, 8);
+  };
+
+  const inH = $('cdH'), inM = $('cdM'), inS = $('cdS'), inAt = $('cdAt');
+  const btnDur = $('cdModeDur'), btnAt = $('cdModeAt'), paneDur = $('cdPaneDur'), paneAt = $('cdPaneAt'), hint = $('cdHint');
+  const cap = $('cdCap'), big = $('cdBig'), bar = $('cdBar'), elStart = $('cdStart'), elEnd = $('cdEnd');
+  const titleHref = titleEl.getAttribute('href');
+  const origTitle = document.title;
+
+  const validState = v => v && Number.isFinite(v.s) && Number.isFinite(v.e) && v.e > v.s ? v : null;
+  let st = validState(store.get(KEY));           // { s: 开始时间戳, e: 结束时间戳 }
+  let mode = 'dur', lastPhase = null, timer = 0, lastH = 0;
+
+  const phaseOf = now => !st ? '' : now < st.s ? 'wait' : now < st.e ? 'run' : 'done';
+  const durMs = () => {
+    const v = el => Math.max(0, Math.floor(+el.value || 0));
+    return Math.min(v(inH) * 3600 + v(inM) * 60 + v(inS), 99 * 3600) * 1000;
+  };
+  // 按当前设置算出结束时间戳；没填好返回 0。结束时间已过则顺延到明天
+  function resolveEnd(now){
+    if(mode === 'dur'){ const d = durMs(); return d ? now + d : 0; }
+    if(!/^\d{1,2}:\d{2}$/.test(inAt.value)) return 0;
+    const [h, m] = inAt.value.split(':').map(Number);
+    const c = new Date(now); c.setHours(h, m, 0, 0);
+    let t = c.getTime();
+    if(t <= now) t += 864e5;
+    return t;
+  }
+
+  function renderHint(){
+    const now = Date.now(), e = resolveEnd(now);
+    hint.textContent = !e ? '' : mode === 'dur' ? `${clock(e)} 结束` : `${clock(e)} 结束 · 共 ${hms(e - now)}`;
+  }
+
+  function render(){
+    setBox.hidden = !!st;
+    runBox.hidden = !st;
+    lastPhase = phaseOf(Date.now());
+    tick();
+  }
+
+  function tick(){
+    const now = Date.now(), ph = phaseOf(now);
+    if(st && ph !== lastPhase){
+      if(ph === 'done') document.title = '⏰ 倒计时结束 · ' + origTitle;   // 页面开着时结束，提醒一下
+      lastPhase = ph;
+    }
+    if(miniCalTimerOn){
+      if(!st) renderHint();
+      else{
+        runBox.className = 'cd__run is-' + ph;
+        cap.textContent = ph === 'wait' ? '距开始' : ph === 'run' ? '剩余' : '已结束';
+        big.textContent = ph === 'wait' ? hms(st.s - now) : ph === 'run' ? hms(st.e - now) : '00:00:00';
+        bar.style.width = (ph === 'wait' ? 0 : ph === 'run' ? (now - st.s) / (st.e - st.s) * 100 : 100) + '%';
+        elEnd.innerHTML = `结束 <b>${clock(st.e)}</b>`;
+        elStart.textContent = `开始 ${clock(st.s)}`;
+        $('cdCancel').textContent = ph === 'done' ? '清除' : '取消';
+      }
+    }
+    // 倒计时视图可见，或还有未结束的计时：继续走；否则停表
+    if(miniCalTimerOn || (st && ph !== 'done')){
+      if(!timer) timer = setInterval(tick, 250);
+    }else if(timer){ clearInterval(timer); timer = 0; }
+  }
+
+  function startCountdown(){
+    const now = Date.now(), e = resolveEnd(now);
+    if(!e){ (mode === 'at' ? inAt : (inM.value ? inS : inM)).focus(); return; }
+    st = { s: now, e };
+    store.set(KEY, st);
+    store.set(CFG_KEY, { mode, h: inH.value, m: inM.value, s: inS.value });   // 记住上次的方式和时长
+    render();
+  }
+  function cancelCountdown(){
+    st = null;
+    store.set(KEY, null);
+    document.title = origTitle;
+    render();
+  }
+
+  function showTimer(on){
+    if(on === miniCalTimerOn) return;
+    if(on){
+      if(grid.offsetHeight) lastH = grid.offsetHeight;
+      if(lastH) box.style.minHeight = lastH + 'px';   // 与日历等高，切换时页面不跳动
+      miniCalTimerOn = true;
+      root.classList.add('is-timer');
+      titleEl.textContent = '倒计时';
+      titleEl.removeAttribute('href');
+    }else{
+      miniCalTimerOn = false;
+      root.classList.remove('is-timer');
+      if(titleHref) titleEl.setAttribute('href', titleHref);
+      buildMiniCalendar();
+    }
+    store.set(VIEW_KEY, on ? 1 : 0);
+    tick();
+  }
+
+  const setMode = m => {
+    mode = m;
+    btnDur.classList.toggle('is-on', m === 'dur');
+    btnAt.classList.toggle('is-on', m === 'at');
+    paneDur.hidden = m !== 'dur';
+    paneAt.hidden = m !== 'at';
+    if(m === 'at' && !inAt.value) inAt.value = new Date().toTimeString().slice(0, 5);
+    renderHint();
+  };
+
+  // 预填上次使用的方式和时长
+  const cfg = store.get(CFG_KEY);
+  if(cfg){ inH.value = cfg.h || ''; inM.value = cfg.m || ''; inS.value = cfg.s || ''; }
+
+  timeEl.addEventListener('click', () => showTimer(!miniCalTimerOn));
+  timeEl.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); showTimer(!miniCalTimerOn); }
+  });
+  btnDur.addEventListener('click', () => setMode('dur'));
+  btnAt.addEventListener('click', () => setMode('at'));
+  setBox.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => {
+    const m = +b.dataset.m;
+    inH.value = m >= 60 ? Math.floor(m / 60) : '';
+    inM.value = m % 60 || '';
+    inS.value = '';
+    renderHint();
+  }));
+  [inH, inM, inS, inAt].forEach(el => {
+    el.addEventListener('input', renderHint);
+    el.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); startCountdown(); } });
+  });
+  $('cdGo').addEventListener('click', startCountdown);
+  $('cdCancel').addEventListener('click', cancelCountdown);
+
+  // 其它标签页修改了倒计时：同步过来
+  window.addEventListener('storage', e => {
+    if(e.key !== KEY) return;
+    st = validState(store.get(KEY));
+    if(!st) document.title = origTitle;
+    render();
+  });
+
+  // 页面重新打开：有计时就回到倒计时视图，按存下来的结束时间继续算
+  render();
+  if(st || store.get(VIEW_KEY) === 1) showTimer(true);
+})();
 
 // 迷你计算器
 (function setupMiniCalc(){
@@ -1275,80 +2032,576 @@ setInterval(updateMiniCalTime, 60000);
   render();
 })();
 
-// 星空粒子背景
-(function setupStarfield(){
-  const canvas = document.getElementById('starfield');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  if(!ctx) return;
+// 宇宙背景（来自 devbox：纯黑星空 + 流星）
+/* 宇宙背景：星空（默认）/ 银河 / 流星雨。点 dock 里的「切换背景」按钮循环切换，选择记在 localStorage */
+const SkyBg = (() => {
+  const c = document.getElementById('sky'), x = c && c.getContext('2d');
+  if (!x) return null;
+  const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;   // 开启「减少动态效果」时只画静态画面
+  const KEY = 'xyz.skyMode';
+  const rnd = Math.random;
+  let W = 0, H = 0, raf = 0, lastDraw = 0, idx = 0, cur = null;
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let stars = [];
-  let w = 0, h = 0, dpr = 1;
-
-  function initStars(){
-    const density = 9000; // 数值越大星星越稀疏
-    const count = Math.min(220, Math.round((w * h) / density));
-    stars = Array.from({ length: count }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: Math.random() * 1.2 + 0.3,
-      baseAlpha: Math.random() * 0.5 + 0.2,
-      phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.6 + 0.2,
-      drift: (Math.random() * 0.06) + 0.02
-    }));
+  // 可闪烁的小星点，位置用 0~1 的比例保存，窗口缩放时无需重算
+  const dustN = () => Math.round(Math.min(380, Math.max(140, W * H / 6000)));
+  const makeDust = n => Array.from({ length: n }, () => ({ x: rnd(), y: rnd(), r: rnd() ** 3 * 1.2 + .3, p: rnd() * 6.28, s: .4 + rnd() * 1.6, g: rnd() < .15 }));
+  function drawDust(arr, t){
+    for (const s of arr) {
+      x.globalAlpha = .25 + .6 * (.5 + .5 * Math.sin(t / 1e3 * s.s + s.p));
+      x.fillStyle = s.g ? '#ffe2a8' : '#dfe6ff';
+      x.beginPath(); x.arc(s.x * W, s.y * H, s.r, 0, 6.283); x.fill();
+    }
+    x.globalAlpha = 1;
+  }
+  // 中心不透明、边缘渐隐的圆形光斑精灵，银河和流星用它叠加出柔和的光
+  function sprite(r, g, b){
+    const s = document.createElement('canvas'); s.width = s.height = 128;
+    const q = s.getContext('2d'), gr = q.createRadialGradient(64, 64, 0, 64, 64, 64);
+    gr.addColorStop(0, `rgba(${r},${g},${b},.9)`);
+    gr.addColorStop(.35, `rgba(${r},${g},${b},.38)`);
+    gr.addColorStop(1, `rgba(${r},${g},${b},0)`);
+    q.fillStyle = gr; q.fillRect(0, 0, 128, 128);
+    return s;
   }
 
-  function resize(){
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const rect = canvas.getBoundingClientRect();
-    w = rect.width;
-    h = rect.height;
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    initStars();
+  /* 0 星空：金色星点缓缓上浮，偶尔划过一颗金色流星 */
+  function makeStars(){
+    const S = []; let M = null;
+    const mk = () => ({ x: rnd() * W, y: rnd() * H, r: rnd() ** 3 * 1.4 + .25, p: rnd() * 6.28, s: .4 + rnd() * 1.6, g: rnd() < .2 });
+    return {
+      resize(oW, oH){
+        if (oW && oH) S.forEach(s => { s.x *= W / oW; s.y *= H / oH; });
+        const n = Math.round(W * H / 4200);
+        if (S.length > n) S.length = n;
+        while (S.length < n) S.push(mk());
+      },
+      frame(t){
+        for (const s of S) {
+          x.globalAlpha = .3 + .7 * (.5 + .5 * Math.sin((rm ? 0 : t) / 1e3 * s.s + s.p));
+          x.fillStyle = s.g ? '#f0d98a' : '#fff6e6';
+          x.beginPath(); x.arc(s.x, s.y, s.r, 0, 6.283); x.fill();
+          if (!rm) { s.y -= .012 * s.r; if (s.y < -2) s.y = H + 2; }
+        }
+        if (rm) return;
+        if (!M && rnd() < .003) M = { x: rnd() * W * .8 + W * .2, y: rnd() * H * .4, v: 7 + rnd() * 4, l: 0 };
+        if (M) {
+          const a = Math.PI * .78, dx = Math.cos(a), dy = Math.sin(a);
+          M.x += dx * M.v; M.y += dy * M.v; M.l++;
+          const g = x.createLinearGradient(M.x, M.y, M.x - dx * 90, M.y - dy * 90);
+          g.addColorStop(0, 'rgba(240,217,138,.9)'); g.addColorStop(1, 'rgba(240,217,138,0)');
+          x.globalAlpha = 1; x.strokeStyle = g; x.lineWidth = 1.4;
+          x.beginPath(); x.moveTo(M.x, M.y); x.lineTo(M.x - dx * 90, M.y - dy * 90); x.stroke();
+          if (M.l > 60 || M.x < -100 || M.y > H + 100) M = null;
+        }
+      }
+    };
   }
 
-  function drawStatic(){
-    ctx.clearRect(0, 0, w, h);
-    stars.forEach(s => {
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(232,180,90,${s.baseAlpha.toFixed(3)})`;
-      ctx.fill();
+  /* 1 银河：倾斜的双旋臂星系缓慢自转，暖黄的核心、蓝白的旋臂和零星的粉色星云 */
+  function makeGalaxy(){
+    const dust = makeDust(dustN());
+    const haze = sprite(90, 100, 210), core = sprite(255, 210, 140), armGlow = sprite(120, 150, 255);
+    const COLORS = ['255,222,170', '235,230,255', '190,205,255', '150,175,255', '255,150,190'];
+    const LEVELS = [.22, .4, .65];
+    const TILT = .42, ROT = -.38;
+    let cx = 0, cy = 0, R = 0, buckets = [], arms = [];
+    function build(){
+      const narrow = W < 760;
+      cx = W / 2; cy = H * (narrow ? .40 : .38);                // 旋转中心略高于屏幕正中
+      R = narrow ? W * .80 : Math.min(W * .40, H * .80);
+      const N = Math.round(Math.min(4400, W * H / 440));
+      buckets = COLORS.flatMap(col => LEVELS.map(a => ({ col, a, list: [] })));
+      for (let i = 0; i < N; i++) {
+        const rr = rnd() ** 1.7 * .97 + .015;                                   // 越靠中心越密
+        const th = (i % 2) * Math.PI + 5.2 * rr + (rnd() + rnd() - 1) * (.75 - .45 * rr);   // 旋臂加随机散布
+        const ci = rr < .18 ? 0 : rnd() < .08 ? 4 : rr < .5 ? 1 + (rnd() < .5 ? 1 : 0) : 2 + (rnd() < .5 ? 1 : 0);
+        const ai = rnd() < .5 ? 0 : rnd() < .6 ? 1 : 2;
+        buckets[ci * 3 + ai].list.push({ r: rr * R, th, s: rnd() < .12 ? 1.6 : .9 });
+      }
+      arms = [];   // 沿旋臂铺一串柔光，让旋臂形状更清晰
+      for (let arm = 0; arm < 2; arm++)
+        for (let rr = .2; rr < .98; rr += .045)
+          arms.push({ r: rr * R, th: arm * Math.PI + 5.2 * rr, s: R * (.20 - .09 * rr), a: .09 * (1 - .3 * rr) });
+    }
+    return {
+      resize(){ build(); },
+      frame(t){
+        const ang = rm ? 0 : t * 2.2e-5, cr = Math.cos(ROT), sr = Math.sin(ROT);
+        drawDust(dust, rm ? 0 : t);
+        x.globalCompositeOperation = 'lighter';
+        // 盘面薄雾（压扁并旋转）和核心光晕
+        x.save(); x.translate(cx, cy); x.rotate(ROT); x.scale(1, TILT);
+        x.globalAlpha = .30; x.drawImage(haze, -R * 1.05, -R * 1.05, R * 2.1, R * 2.1);
+        x.restore();
+        x.globalAlpha = .45; const cs = R * .30; x.drawImage(core, cx - cs, cy - cs, cs * 2, cs * 2);
+        for (const m of arms) {
+          const a = m.th + ang, px = m.r * Math.cos(a), py = m.r * Math.sin(a) * TILT;
+          x.globalAlpha = m.a;
+          x.drawImage(armGlow, cx + px * cr - py * sr - m.s, cy + px * sr + py * cr - m.s, m.s * 2, m.s * 2);
+        }
+        // 星点：同一颜色和亮度的一起画，减少样式切换
+        for (const b of buckets) {
+          if (!b.list.length) continue;
+          x.fillStyle = `rgb(${b.col})`; x.globalAlpha = b.a;
+          for (const p of b.list) {
+            const a = p.th + ang, px = p.r * Math.cos(a), py = p.r * Math.sin(a) * TILT;
+            x.fillRect(cx + px * cr - py * sr, cy + px * sr + py * cr, p.s, p.s);
+          }
+        }
+        x.globalCompositeOperation = 'source-over';
+        x.globalAlpha = 1;
+      }
+    };
+  }
+
+  /* 2 流星雨：深蓝的地平线微光下，一群同方向的流星带着长长的尾迹划过星空 */
+  function makeMeteor(){
+    const dust = makeDust(Math.round(dustN() * 1.1));
+    const ANG = Math.PI * .74, DX = Math.cos(ANG), DY = Math.sin(ANG);
+    const COLS = ['240,245,255', '170,210,255', '240,217,138'];
+    const glow = sprite(220, 230, 255);
+    const ms = [];
+    function spawn(inScreen){
+      ms.push({
+        x: inScreen ? rnd() * W : W * (.1 + rnd() * 1.15),
+        y: inScreen ? rnd() * H * .7 : -H * .1 + rnd() * H * .5,
+        v: .45 + rnd() * .7, len: 90 + rnd() * 150, w: .8 + rnd() * 1.2,
+        c: COLS[rnd() < .55 ? 0 : rnd() < .6 ? 1 : 2], age: inScreen ? 400 : 0
+      });
+    }
+    return {
+      resize(oW){ if (!oW) for (let i = 0; i < 3; i++) spawn(true); },
+      frame(t, dt){
+        const g = x.createLinearGradient(0, H * .62, 0, H);   // 地平线微光
+        g.addColorStop(0, 'rgba(70,80,190,0)'); g.addColorStop(1, 'rgba(90,76,185,.28)');
+        x.fillStyle = g; x.fillRect(0, H * .62, W, H * .38);
+        drawDust(dust, rm ? 0 : t);
+        if (rm) return;
+        if (ms.length < 12 && rnd() < dt / 1000 * 2.6) spawn(false);
+        x.lineCap = 'round';
+        for (let i = ms.length - 1; i >= 0; i--) {
+          const m = ms[i];
+          m.age += dt; m.x += DX * m.v * dt; m.y += DY * m.v * dt;
+          const a = Math.min(1, m.age / 200), tx = m.x - DX * m.len, ty = m.y - DY * m.len;
+          const lg = x.createLinearGradient(m.x, m.y, tx, ty);
+          lg.addColorStop(0, `rgba(${m.c},${.95 * a})`); lg.addColorStop(.25, `rgba(${m.c},${.35 * a})`); lg.addColorStop(1, `rgba(${m.c},0)`);
+          x.strokeStyle = lg; x.lineWidth = m.w;
+          x.beginPath(); x.moveTo(m.x, m.y); x.lineTo(tx, ty); x.stroke();
+          x.fillStyle = `rgba(${m.c},${.9 * a})`;
+          x.beginPath(); x.arc(m.x, m.y, m.w * .9, 0, 6.283); x.fill();
+          x.globalAlpha = .55 * a; const gs = m.w * 7; x.drawImage(glow, m.x - gs, m.y - gs, gs * 2, gs * 2); x.globalAlpha = 1;
+          if (m.x < -m.len || m.y > H + m.len) ms.splice(i, 1);
+        }
+      }
+    };
+  }
+
+  const MODES = [
+    { id: 'stars',  name: '星空',   make: makeStars },
+    { id: 'galaxy', name: '银河',   make: makeGalaxy },
+    { id: 'meteor', name: '流星雨', make: makeMeteor }
+  ];
+
+  function size(){
+    const d = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    c.width = W * d; c.height = H * d;
+    c.style.width = W + 'px'; c.style.height = H + 'px';
+    x.setTransform(d, 0, 0, d, 0, 0);
+  }
+  function loop(t){
+    raf = requestAnimationFrame(loop);
+    const dt = Math.min(64, lastDraw ? t - lastDraw : 16);
+    lastDraw = t;
+    x.clearRect(0, 0, W, H); x.globalAlpha = 1;
+    cur.frame(t, dt);
+  }
+  function start(){
+    cancelAnimationFrame(raf); lastDraw = 0;
+    if (rm) { x.clearRect(0, 0, W, H); x.globalAlpha = 1; cur.frame(0, 0); return; }
+    raf = requestAnimationFrame(loop);
+  }
+  const btn = document.getElementById('skyBtn');
+  function setMode(i){
+    idx = i;
+    x.globalCompositeOperation = 'source-over';
+    cur = MODES[idx].make();
+    cur.resize(0, 0);
+    start();
+    try { localStorage.setItem(KEY, MODES[idx].id); } catch (e) {}
+    if (btn) btn.title = `切换背景（当前：${MODES[idx].name}）`;
+  }
+  function cycle(){
+    setMode((idx + 1) % MODES.length);
+    showToast('背景：' + MODES[idx].name);
+  }
+
+  size();
+  let saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  setMode(Math.max(0, MODES.findIndex(m => m.id === saved)));
+  if (btn) btn.addEventListener('click', cycle);
+  let rt;
+  addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      const oW = W, oH = H;
+      size(); cur.resize(oW, oH);
+      if (rm) start();
+    }, 150);
+  });
+  return { cycle };
+})();
+
+/* ===== 想法 / 待办（功能提取自 todo.html，数据沿用同一个 localStorage 键） ===== */
+const Thoughts = (function(){
+  const KEY = 'todo';
+  const LONG_PRESS_MS = 500;
+  const $t = id => document.getElementById(id);
+  const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()));
+  const GRIP = '<svg width="8" height="12" viewBox="0 0 8 12" fill="currentColor" aria-hidden="true"><circle cx="2" cy="2" r="1.2"/><circle cx="6" cy="2" r="1.2"/><circle cx="2" cy="6" r="1.2"/><circle cx="6" cy="6" r="1.2"/><circle cx="2" cy="10" r="1.2"/><circle cx="6" cy="10" r="1.2"/></svg>';
+
+  const timeLabel = ts => {
+    const d = new Date(ts), p = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 ${p(d.getHours())}:${p(d.getMinutes())}`;
+  };
+
+  const DataService = {
+    load(){
+      let list;
+      try { list = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e) { list = []; }
+      let changed = false;
+      list.forEach(item => {
+        if (!item.id) { item.id = uid(); changed = true; }
+        if (!item.createdAt) { item.createdAt = Date.now(); changed = true; }
+        if (item.done && !item.completedAt) { item.completedAt = item.createdAt; changed = true; }
+      });
+      if (changed) this.save(list);
+      return list;
+    },
+    save(list){ try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e) {} },
+    add(title){
+      const list = this.load(), now = Date.now();
+      list.push({ id: uid(), title, done: false, createdAt: now, order: now, completedAt: null });
+      this.save(list);
+    },
+    update(id, patch){
+      const list = this.load(), t = list.find(x => x.id === id);
+      if (t) Object.assign(t, patch);
+      this.save(list);
+    },
+    setOrder(ids){
+      const list = this.load();
+      ids.forEach((id, i) => { const t = list.find(x => x.id === id); if (t) t.order = i; });
+      this.save(list);
+    },
+    remove(id){ this.save(this.load().filter(t => t.id !== id)); },
+    clearCompleted(){ this.save(this.load().filter(t => !t.done)); }
+  };
+
+  const sorted = () => DataService.load().sort((a, b) => (a.order ?? a.createdAt) - (b.order ?? b.createdAt));
+  const isOpen = () => $t('thoughtOverlay').classList.contains('show');
+  let editingId = null, pressTimer = null;
+
+  function render(){
+    const list = sorted();
+    const pending = list.filter(t => !t.done);
+    const done = list.filter(t => t.done);
+
+    if (!list.length) {
+      $t('thoughtBody').innerHTML = '<div class="th-empty-all">念念不忘，必有回响</div>';
+      return;
+    }
+    const item = (t, isPending) => `
+      <li class="th-item${t.done ? ' done' : ''}" data-row-id="${t.id}"${isPending ? ` data-pending="1" data-edit-id="${t.id}"` : ''}>
+        <button type="button" class="th-check" data-action="toggle" data-id="${t.id}" data-done="${!t.done}"
+          aria-label="${t.done ? '标记为未完成' : '标记为完成'}">${t.done ? '✓' : ''}</button>
+        <div class="th-body">
+          <div class="th-text">${escapeHtml(t.title)}</div>
+          <div class="th-time">${timeLabel(t.createdAt)}</div>
+        </div>
+        <div class="th-side">
+          ${isPending ? `<button type="button" class="th-drag" aria-label="拖动排序">${GRIP}</button>` : ''}
+          <button type="button" class="th-del" data-action="remove" data-id="${t.id}" aria-label="删除">✕</button>
+        </div>
+      </li>`;
+
+    let html = `<div class="th-section">
+      <div class="th-heading">待完成 <span class="th-badge">${pending.length}</span></div>
+      <ul class="th-list">${pending.length ? pending.map(t => item(t, true)).join('') : '<li class="th-empty">暂时没有待完成</li>'}</ul>
+    </div>`;
+    if (done.length) {
+      html += `<div class="th-section">
+        <div class="th-heading">已完成 <span class="th-badge">${done.length}</span></div>
+        <ul class="th-list">${done.map(t => item(t, false)).join('')}</ul>
+      </div>`;
+    }
+    $t('thoughtBody').innerHTML = html;
+  }
+
+  function reorder(dragId, targetId, after){
+    const ids = sorted().map(t => t.id).filter(id => id !== dragId);
+    const idx = ids.indexOf(targetId);
+    if (idx < 0) return render();
+    ids.splice(after ? idx + 1 : idx, 0, dragId);
+    DataService.setOrder(ids);
+    render();
+  }
+
+  function startDrag(e){
+    const handle = e.target.closest('.th-drag');
+    if (!handle || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    e.preventDefault();
+    const row = handle.closest('[data-row-id]');
+    const dragId = row.dataset.rowId;
+    const startY = e.clientY;
+    let target = null;
+    const clearMarks = () => $t('thoughtBody').querySelectorAll('.drop-above,.drop-below')
+      .forEach(el => el.classList.remove('drop-above', 'drop-below'));
+    const onMove = ev => {
+      row.style.transform = `translateY(${ev.clientY - startY}px)`;
+      const over = document.elementFromPoint(ev.clientX, ev.clientY)?.closest('[data-pending]');
+      clearMarks();
+      target = null;
+      if (over && over !== row) {
+        const r = over.getBoundingClientRect();
+        const after = ev.clientY > r.top + r.height / 2;
+        over.classList.add(after ? 'drop-below' : 'drop-above');
+        target = { id: over.dataset.rowId, after };
+      }
+    };
+    const onEnd = () => {
+      handle.removeEventListener('pointermove', onMove);
+      handle.removeEventListener('pointerup', onEnd);
+      handle.removeEventListener('pointercancel', onEnd);
+      clearMarks();
+      row.classList.remove('dragging');
+      row.style.transform = '';
+      if (target) reorder(dragId, target.id, target.after);
+    };
+    row.classList.add('dragging');
+    handle.setPointerCapture(e.pointerId);
+    handle.addEventListener('pointermove', onMove);
+    handle.addEventListener('pointerup', onEnd);
+    handle.addEventListener('pointercancel', onEnd);
+  }
+
+  function openEdit(id){
+    const t = DataService.load().find(x => x.id === id);
+    if (!t || t.done) return;
+    editingId = id;
+    const input = $t('thoughtEditInput');
+    input.value = t.title;
+    $t('thoughtEdit').classList.add('show');
+    requestAnimationFrame(() => { input.focus(); input.select(); });
+  }
+  function closeEdit(){ $t('thoughtEdit').classList.remove('show'); editingId = null; }
+  function confirmEdit(){
+    const v = $t('thoughtEditInput').value.trim();
+    if (editingId && v) DataService.update(editingId, { title: v });
+    closeEdit();
+    render();
+  }
+  function cancelPress(){ clearTimeout(pressTimer); pressTimer = null; }
+
+  function exportMd(){
+    const list = sorted();
+    let md = `# 想法\n\n导出时间：${timeLabel(Date.now())}\n\n`;
+    md += list.length
+      ? list.map(t => `- ${t.done ? '[x]' : '[ ]'} ${t.title}`).join('\n') + '\n'
+      : '_还没有想法_\n';
+    const url = URL.createObjectURL(new Blob([md], { type: 'text/markdown;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url;
+    const d = new Date(), p = n => String(n).padStart(2, '0');
+    a.download = `thoughts-${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}.md`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function add(text){
+    const title = (text || '').trim();
+    if (!title) return;
+    DataService.add(title);
+    const box = $t('Searchbox');
+    if (box) box.value = '';
+    showToast('已加入想法');
+    if (isOpen()) render();
+  }
+  function open(){ render(); $t('thoughtOverlay').classList.add('show'); }
+  function close(){ $t('thoughtOverlay').classList.remove('show'); closeEdit(); }
+
+  function init(){
+    const body = $t('thoughtBody');
+    body.addEventListener('click', e => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      if (btn.dataset.action === 'toggle') {
+        const done = btn.dataset.done === 'true';
+        DataService.update(btn.dataset.id, { done, completedAt: done ? Date.now() : null });
+      } else if (btn.dataset.action === 'remove') {
+        DataService.remove(btn.dataset.id);
+      }
+      render();
+    });
+    body.addEventListener('pointerdown', startDrag);
+    body.addEventListener('dblclick', e => {
+      const el = e.target.closest('[data-edit-id]');
+      if (el && !e.target.closest('button')) openEdit(el.dataset.editId);
+    });
+    body.addEventListener('touchstart', e => {
+      const el = e.target.closest('[data-edit-id]');
+      if (!el || e.target.closest('button')) return;
+      cancelPress();
+      pressTimer = setTimeout(() => { pressTimer = null; openEdit(el.dataset.editId); }, LONG_PRESS_MS);
+    }, { passive: true });
+    ['touchend', 'touchmove', 'touchcancel'].forEach(type =>
+      body.addEventListener(type, cancelPress, { passive: true }));
+
+    $t('thoughtClose').addEventListener('click', close);
+    $t('thoughtOverlay').addEventListener('click', e => { if (e.target.id === 'thoughtOverlay') close(); });
+    $t('thoughtExport').addEventListener('click', exportMd);
+    $t('thoughtClearDone').addEventListener('click', () => {
+      DataService.clearCompleted();
+      render();
+      showToast('已清除已完成');
+    });
+
+    $t('thoughtEditConfirm').addEventListener('click', confirmEdit);
+    $t('thoughtEditCancel').addEventListener('click', closeEdit);
+    $t('thoughtEdit').addEventListener('click', e => { if (e.target.id === 'thoughtEdit') closeEdit(); });
+    $t('thoughtEditInput').addEventListener('keydown', e => {
+      if (e.isComposing) return;
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); confirmEdit(); }
+      if (e.key === 'Escape') { e.stopPropagation(); closeEdit(); }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Escape') return;
+      if ($t('thoughtEdit').classList.contains('show')) return closeEdit();
+      if (isOpen()) close();
+    });
+    // Ctrl/Cmd+L：打开想法弹窗（再按一次关闭；会覆盖浏览器「聚焦地址栏」的默认行为）
+    document.addEventListener('keydown', e => {
+      if (e.isComposing || e.shiftKey || e.altKey || !(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== 'l') return;
+      if ($t('enginePicker')?.classList.contains('show')) return;
+      e.preventDefault();
+      NavSearch.hide();
+      isOpen() ? close() : open();
+    });
+    window.addEventListener('storage', e => { if (e.key === KEY && isOpen()) render(); });
+    $t('Searchbox').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && e.shiftKey && !e.isComposing) {
+        e.preventDefault();
+        add($t('Searchbox').value);
+      }
     });
   }
 
-  function animate(t){
-    const rect = canvas.getBoundingClientRect();
-    if(Math.abs(rect.width - w) > 1 || Math.abs(rect.height - h) > 1){
-      resize();
-    }
-    ctx.clearRect(0, 0, w, h);
-    for(const s of stars){
-      const twinkle = Math.sin(t * 0.001 * s.speed + s.phase) * 0.35 + 0.65;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(232,180,90,${(s.baseAlpha * twinkle).toFixed(3)})`;
-      ctx.fill();
-      s.y -= s.drift;
-      if(s.y < -2) s.y = h + 2;
-    }
-    requestAnimationFrame(animate);
+  init();
+  return { add, open, close, isOpen };
+})();
+/* Ctrl/Cmd+K：弹窗按数字键选择搜索引擎并搜索 */
+(function setupEnginePicker(){
+  const $e = id => document.getElementById(id);
+  const overlay = $e('enginePicker'), list = $e('enginePickerList'), hint = $e('enginePickerHint');
+  if (!overlay) return;
+  const isOpen = () => overlay.classList.contains('show');
+  const PICK_ENGINES = ENGINES.slice(0, 10);
+  const keyLabel = i => (i === 9 ? '0' : String(i + 1));
+
+  function open(){
+    const q = getInput();
+    list.innerHTML = PICK_ENGINES.map((it, i) =>
+      `<button type="button" class="ek-item" data-engine="${it.id}">
+        <span class="ek-num">${keyLabel(i)}</span><span class="ek-name">${it.name}</span>
+      </button>`).join('');
+    hint.textContent = q || '无搜索内容，选择后打开主页';
+    hint.style.color = q ? '' : 'var(--text-dim)';
+    overlay.classList.add('show');
+  }
+  function close(){ overlay.classList.remove('show'); }
+  function pick(id){
+    close();
+    selectEngineAndGo(id);
   }
 
-  window.addEventListener('resize', () => {
-    resize();
-    if(prefersReducedMotion) drawStatic();
+  list.addEventListener('click', e => {
+    const b = e.target.closest('[data-engine]');
+    if (b) pick(b.dataset.engine);
   });
-  resize();
-  if(prefersReducedMotion){
-    drawStatic();
-  } else {
-    requestAnimationFrame(animate);
-  }
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.isComposing) return;
+    const isK = (e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase() === 'k';
+    if (isK) {
+      e.preventDefault();
+      if (isOpen()) return close();
+      if (Thoughts.isOpen()) return;
+      return open();
+    }
+    if (!isOpen()) return;
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); return close(); }
+    if (/^[0-9]$/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+      const idx = e.key === '0' ? 9 : Number(e.key) - 1;
+      const it = PICK_ENGINES[idx];
+      if (it) pick(it.id);
+    }
+  }, true);
+})();
+
+/* 移动端：长按带子菜单的条目展开子菜单 */
+(function setupLongPressFlyouts(){
+  const LONG_MS = 500;
+  let timer = null, touching = false, suppressClick = false;
+  document.addEventListener('touchstart', e => {
+    const chip = e.target.closest('.chip-group > .chip');
+    suppressClick = false;
+    touching = true;
+    clearTimeout(timer);
+    timer = null;
+    if (!chip) return;
+    const group = chip.parentElement;
+    timer = setTimeout(() => {
+      timer = null;
+      clearFlyoutState();
+      group.classList.add('is-open');
+      suppressClick = true;
+    }, LONG_MS);
+  }, { passive: true });
+  const endTouch = () => { clearTimeout(timer); timer = null; touching = false; };
+  ['touchend', 'touchmove', 'touchcancel'].forEach(type =>
+    document.addEventListener(type, endTouch, { passive: true }));
+  // 长按触发后，吞掉随之而来的 click，避免直接跳转
+  window.addEventListener('click', e => {
+    if (suppressClick) { suppressClick = false; e.preventDefault(); e.stopPropagation(); }
+  }, true);
+  // 阻止长按时系统弹出的链接菜单
+  document.addEventListener('contextmenu', e => {
+    if (touching && e.target.closest('.chip-group > .chip')) e.preventDefault();
+  });
+})();
+
+/* 打开页面时直接聚焦搜索框；从后台标签切回、从缓存恢复时同样处理（不打断弹窗、已有焦点和选中的文字） */
+(function autoFocusSearch(){
+  const box = document.getElementById('Searchbox');
+  if (!box) return;
+  const idle = () => {
+    const a = document.activeElement;
+    if (a && a !== document.body && a !== box) return false;
+    if (Thoughts.isOpen() || document.querySelector('.ek-overlay.show, #navhide.show')) return false;
+    return !String(getSelection());
+  };
+  const focusBox = () => { if (!document.hidden && document.activeElement !== box && idle()) box.focus({ preventScroll: true }); };
+  focusBox();
+  requestAnimationFrame(focusBox);
+  setTimeout(focusBox, 120);
+  window.addEventListener('pageshow', focusBox);
+  document.addEventListener('visibilitychange', focusBox);
 })();
 </script>
 </body>

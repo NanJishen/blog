@@ -4,17 +4,22 @@
     "type": "split",
     "children": [
       {
-        "id": "d8bd0cbca34b8d58",
+        "id": "72bf428892681636",
         "type": "tabs",
         "children": [
           {
-            "id": "bdb13437f68be06d",
+            "id": "4f5961ee220b789a",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "posts/mpv.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "mpv"
             }
           }
         ]
@@ -107,6 +112,7 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "posts/mpv.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -127,13 +133,13 @@
       "switcher:打开快速切换": false,
       "templates:插入模板": false,
       "workspaces:管理工作区布局": false,
-      "markdown-importer:打开 Markdown 格式转换器": false,
       "command-palette:打开命令面板": false
     }
   },
-  "active": "bdb13437f68be06d",
+  "active": "d9928fd942df4c86",
   "lastOpenFiles": [
     "posts/windows-opt.md",
+    "posts/windows-run-shortcut.md",
     "posts/ventoy.md",
     "posts/aria2.md",
     "posts/chrome.md",
@@ -145,7 +151,6 @@
     "posts/ffmpeg.md",
     "posts/googlesearch.md",
     "about.md",
-    "posts/windows-run-shortcut.md",
     "posts/windows-setup.md",
     "posts/youtubecouts.md",
     "posts/wfr.md",

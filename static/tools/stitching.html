@@ -1,3 +1,2729 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>电影截图字幕拼图</title>
-<link rel="icon" href="../favicon.ico">
-<style>:root{--primary:#111827;--primary-hover:#000000;--primary-fg:#ffffff;--surface:#ffffff;--bg:#f5f5f5;--text:#111827;--text-muted:#6b7280;--border:#e5e7eb;--handle:#ef4444;--handle-local:#3b82f6;--shadow:0 0 0 1px rgb(0 0 0 / 0.04),0 1px 2px rgb(0 0 0 / 0.04);--shadow-md:0 0 0 1px rgb(0 0 0 / 0.04),0 4px 16px rgb(0 0 0 / 0.06);--radius:14px;--radius-sm:10px;--dialog-backdrop:rgba(0,0,0,0.4);--btn-disabled-bg:#e5e7eb;--btn-disabled-text:#9ca3af;--header-bg:#ffffff;--header-text:#111827;--header-hover:rgb(0 0 0 / 0.05);--close-hover:#f3f4f6;--empty-icon:#d1d5db}[data-theme="dark"]{--primary:#f5f5f5;--primary-hover:#ffffff;--primary-fg:#0a0a0a;--surface:#171717;--bg:#0a0a0a;--text:#f5f5f5;--text-muted:#a3a3a3;--border:#262626;--handle:#f87171;--handle-local:#60a5fa;--shadow:0 0 0 1px rgb(255 255 255 / 0.06);--shadow-md:0 0 0 1px rgb(255 255 255 / 0.06),0 8px 24px rgb(0 0 0 / 0.4);--dialog-backdrop:rgba(0,0,0,0.7);--btn-disabled-bg:#262626;--btn-disabled-text:#525252;--header-bg:#171717;--header-text:#f5f5f5;--header-hover:rgb(255 255 255 / 0.08);--close-hover:#262626;--empty-icon:#404040}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html,body{min-height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);user-select:none;-webkit-user-select:none;touch-action:manipulation}.app{min-height:100vh;min-height:100dvh;padding-top:52px;box-sizing:border-box}.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 14px;height:52px;background:var(--header-bg);color:var(--header-text);border-bottom:1px solid var(--border);position:fixed;top:0;left:0;right:0;z-index:100}.header-left{display:flex;align-items:center;gap:8px;flex-shrink:0}.header-left .btn{height:34px;padding:0 14px;font-size:13px;border-radius:8px}.header-left .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border);box-shadow:none}.header-left .btn-ghost:hover:not(:disabled){background:var(--header-hover);color:var(--text)}.header-right{display:flex;align-items:center;gap:4px;margin-left:auto}.nav-links{display:flex;align-items:center;gap:2px}.nav-link{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:none;border-radius:8px;background:transparent;color:var(--text-muted);font-size:13px;font-weight:500;font-family:inherit;text-decoration:none;cursor:pointer;transition:background 0.15s,color 0.15s;white-space:nowrap}.nav-link:hover{background:var(--header-hover);color:var(--text)}.nav-link svg{flex-shrink:0;opacity:0.75}.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border:none;border-radius:8px;background:transparent;color:var(--text-muted);cursor:pointer;transition:background 0.15s,color 0.15s;flex-shrink:0}.theme-toggle:hover{background:var(--header-hover);color:var(--text)}.theme-toggle .icon-sun{display:none}.theme-toggle .icon-moon{display:block}[data-theme="dark"] .theme-toggle .icon-sun{display:block}[data-theme="dark"] .theme-toggle .icon-moon{display:none}.main{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;align-items:start}.panel{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:12px}.screenshot-list{flex:1;display:flex;flex-direction:column;gap:14px}.screenshot-item{position:relative;border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow);background:#000;touch-action:pan-y;-webkit-touch-callout:none;flex-shrink:0}.screenshot-item canvas{display:block;width:100%;height:auto}.shadow-layer{position:absolute;inset:0;pointer-events:none}.top-shadow,.bottom-shadow{position:absolute;left:0;right:0;background:rgba(0,0,0,0.55)}.top-shadow{top:0}.bottom-shadow{bottom:0}.handle-layer{position:absolute;inset:0;pointer-events:none}.handle{position:absolute;left:0;right:0;height:2px;background:var(--handle);transform:translateY(-50%);cursor:row-resize;pointer-events:auto;touch-action:none;z-index:2}.handle::after{content:'';position:absolute;right:8px;top:50%;width:28px;height:10px;background:var(--handle);border-radius:5px;transform:translateY(-50%)}.handle.local{background:var(--handle-local)}.handle.local::after{background:var(--handle-local)}.handle-tooltip{position:absolute;right:42px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.8);color:#fff;font-size:11px;font-weight:600;padding:2px 7px;border-radius:4px;pointer-events:none;opacity:0;transition:opacity 0.15s;white-space:nowrap;z-index:3}.handle:hover .handle-tooltip,.handle.dragging .handle-tooltip{opacity:1}.action-layer{position:absolute;top:8px;left:8px;display:flex;gap:5px;opacity:0;transition:opacity 0.2s;z-index:4}.screenshot-item:hover .action-layer,.screenshot-item:focus-within .action-layer{opacity:1}.icon-btn{width:30px;height:30px;border:none;border-radius:6px;background:rgba(0,0,0,0.55);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;backdrop-filter:blur(4px);transition:background 0.15s,transform 0.1s}.icon-btn:hover{background:rgba(0,0,0,0.8)}.icon-btn:active{transform:scale(0.92)}.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:40px;padding:0 18px;border:none;border-radius:var(--radius-sm);background:var(--primary);color:var(--primary-fg);font-size:13px;font-weight:600;cursor:pointer;transition:background 0.15s,transform 0.1s,opacity 0.15s;white-space:nowrap}.btn:hover:not(:disabled){background:var(--primary-hover)}.btn:active:not(:disabled){transform:scale(0.98)}.btn:disabled{background:var(--btn-disabled-bg);color:var(--btn-disabled-text);cursor:not-allowed}.btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border)}.btn-secondary:hover:not(:disabled){background:var(--header-hover)}.btn-secondary:disabled{background:transparent;border-color:var(--border);color:var(--btn-disabled-text)}.preview-area{flex:1;min-height:240px;display:flex;align-items:center;justify-content:center;position:relative}.preview-area canvas{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:var(--radius-sm);box-shadow:var(--shadow-md);background:var(--surface);display:block;cursor:zoom-in;transition:opacity 0.15s}.preview-area canvas:hover{opacity:0.92}.preview-area canvas.is-empty{display:none;cursor:default;opacity:1}.preview-area .empty-state{position:absolute;inset:0}.preview-area.has-preview .empty-state{display:none}.main>.panel:nth-of-type(2){align-self:start;position:sticky;top:66px}.main.is-empty>.panel{height:calc(100vh - 92px);height:calc(100dvh - 92px)}.lightbox{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;padding:24px;cursor:zoom-out;opacity:0;visibility:hidden;transition:opacity 0.2s,visibility 0.2s}.lightbox.open{opacity:1;visibility:visible}.lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;box-shadow:0 8px 32px rgb(0 0 0 / 0.4);cursor:default}.lightbox-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border:none;border-radius:50%;background:rgba(255,255,255,0.15);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;z-index:1001}.lightbox-close:hover{background:rgba(255,255,255,0.3)}body.dragging-global,body.dragging-global *{cursor:row-resize !important}.app.drag-over .panel{outline:2px dashed var(--primary);outline-offset:-2px}.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-muted);font-size:14px;font-weight:500;gap:10px;padding:40px 20px;text-align:center}#emptyState{cursor:pointer;border-radius:var(--radius-sm);transition:background 0.15s,color 0.15s}#emptyState:hover{background:var(--header-hover);color:var(--text)}.empty-state svg{color:var(--empty-icon);margin-bottom:2px}dialog{border:none;border-radius:var(--radius);padding:0;box-shadow:0 20px 40px rgb(0 0 0 / 0.18);max-width:420px;width:92%;background:var(--surface);color:var(--text);margin:auto;position:fixed;inset:0;height:fit-content;max-height:85vh;overflow-y:auto}dialog::backdrop{background:var(--dialog-backdrop);backdrop-filter:blur(3px)}.dialog-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0;position:sticky;top:0;background:var(--surface)}.dialog-title{font-size:16px;font-weight:600}.dialog-close{width:32px;height:32px;border:none;border-radius:6px;background:transparent;color:var(--text-muted);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s,color 0.15s;flex-shrink:0}.dialog-close:hover{background:var(--close-hover);color:var(--text)}.dialog-body{padding:12px 20px 20px;font-size:14px;line-height:1.7;color:var(--text-muted)}.dialog-body b,.dialog-body strong{color:var(--text)}.dialog-body ol{margin:10px 0 0 1.2em;padding:0}.dialog-body li{margin-bottom:6px}@media (max-width:900px){.main{grid-template-columns:1fr;grid-template-rows:auto auto;padding:14px;gap:14px}.main>.panel:nth-of-type(2){position:static;align-self:auto}.preview-area{min-height:200px}.main.is-empty>.panel{height:calc((100vh - 94px)/2);height:calc((100dvh - 94px)/2)}}@media (max-width:600px){.app{padding-top:48px}.header{height:48px;padding:0 8px;gap:6px}.header-left{gap:6px}.header-left .btn{height:32px;padding:0 10px;font-size:12px}.header-left .btn span{display:none}.nav-link{padding:6px 8px;font-size:12px;gap:4px}.nav-link span{display:none}.nav-link svg{width:14px;height:14px}.main{grid-template-columns:1fr;padding:10px;gap:10px}.panel{padding:12px;gap:10px;border-radius:10px}.preview-area{max-height:none}.main.is-empty>.panel{height:calc((100dvh - 78px)/2)}.btn{height:38px;font-size:13px;padding:0 12px}.action-layer{opacity:1}.icon-btn{width:28px;height:28px;font-size:13px}.empty-state{padding:28px 12px;font-size:13px}dialog{width:94%;max-width:none;border-radius:10px}.dialog-header{padding:14px 16px 0}.dialog-body{padding:10px 16px 16px;font-size:13px}}</style> </head><body><div class="app"><header class="header"><div class="header-left"><button class="btn btn-ghost" id="addBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>添加截图</span></button><button class="btn btn-secondary" id="downloadBtn" disabled><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>保存拼图</span></button></div><div class="header-right"><nav class="nav-links"><a class="nav-link" href="https://ttti.cc" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>极限博客</span></a><a class="nav-link" href="https://nav.ttti.cc" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span>极限导航</span></a><button class="nav-link" id="helpBtn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>使用方法</span></button></nav><button class="theme-toggle" id="themeToggle" type="button" title="切换主题" aria-label="切换主题"><svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></header><main class="main is-empty"><section class="panel"><div class="screenshot-list" id="screenshotList"><div class="empty-state" id="emptyState"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>添加截图</span></div></div></section><section class="panel"><div class="preview-area" id="previewArea"><div class="empty-state"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><span>实时预览</span></div><canvas id="previewCanvas" class="is-empty"></canvas></div></section></main></div><dialog id="helpDialog"><div class="dialog-header"><div class="dialog-title" id="helpDialogTitle">使用方法</div><button class="dialog-close" id="helpDialogClose" type="button" aria-label="Close">✕</button></div><div class="dialog-body" id="helpDialogBody"></div></dialog><div class="lightbox" id="lightbox" role="dialog" aria-modal="true"><button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close">✕</button><img id="lightboxImg" alt="Preview"></div> <script>(()=>{'use strict';const TEXT={help_title:'使用步骤',help_body:'<ol><li>点击「添加截图」，多选想要拼接的图片；也可直接拖拽图片到窗口，或粘贴（Ctrl+V）快速添加</li><li>拖动手柄选择字幕区域，松开后自动更新预览</li><li>点击「保存拼图」下载结果</li></ol><br>双击手柄可为单张截图单独设置区域（脱离全局控制）',joined_screenshot:'拼接截图',moveUp:'上移',moveDown:'下移',remove:'删除'};const THEME_KEY='stitch-theme';const storage=(()=>{try{return window.localStorage;}catch(_){return null;}})();function getPreferredTheme(){const saved=storage?storage.getItem(THEME_KEY):null;if(saved==='dark'||saved==='light')return saved;try{return window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}catch(_){return 'light';}}function applyTheme(theme){if(theme==='dark'){document.documentElement.setAttribute('data-theme','dark');}else{document.documentElement.removeAttribute('data-theme');}try{storage?.setItem(THEME_KEY,theme);}catch(_){}}applyTheme(getPreferredTheme());function loadImage(file){return new Promise((resolve,reject)=>{const img=new Image();const url=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};img.onerror=(err)=>{URL.revokeObjectURL(url);reject(err);};img.src=url;});}function downloadCanvas(canvas,filename){canvas.toBlob((blob)=>{const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);},'image/jpeg',0.95);}class DoubleClickDetector{constructor(){this.lastTime=0;this.lastX=0;this.lastY=0;}check(e){const dt=e.timeStamp-this.lastTime;const dx=e.clientX-this.lastX;const dy=e.clientY-this.lastY;const isDbl=dt<280&&(dx*dx+dy*dy)<100;this.lastTime=e.timeStamp;this.lastX=e.clientX;this.lastY=e.clientY;return isDbl;}}class ScreenshotItem{constructor(image,index,total,globalTop,globalBottom,state,callbacks){this.image=image;this.index=index;this.total=total;this.globalTop=globalTop;this.globalBottom=globalBottom;this.state=state;this.callbacks=callbacks;this.dbl=new DoubleClickDetector();this.el=this._build();this._draw();this.updateVisuals();}_build(){const div=document.createElement('div');div.className='screenshot-item';div.innerHTML=`<canvas></canvas><div class="shadow-layer"><div class="top-shadow"></div><div class="bottom-shadow"></div></div><div class="handle-layer"><div class="handle top-handle" data-type="top"><span class="handle-tooltip"></span></div><div class="handle bottom-handle" data-type="bottom"><span class="handle-tooltip"></span></div></div><div class="action-layer">${this.index>0?`<button class="icon-btn" data-action="up" title="${TEXT.moveUp}">↑</button>`:''}${this.index<this.total-1?`<button class="icon-btn" data-action="down" title="${TEXT.moveDown}">↓</button>`:''}<button class="icon-btn" data-action="remove" title="${TEXT.remove}">✕</button></div>`;this.canvas=div.querySelector('canvas');this.topShadow=div.querySelector('.top-shadow');this.bottomShadow=div.querySelector('.bottom-shadow');this.topHandle=div.querySelector('.top-handle');this.bottomHandle=div.querySelector('.bottom-handle');this.topTooltip=div.querySelector('.top-handle .handle-tooltip');this.bottomTooltip=div.querySelector('.bottom-handle .handle-tooltip');this._bindDrag(this.topHandle,'top');this._bindDrag(this.bottomHandle,'bottom');div.querySelector('[data-action="up"]')?.addEventListener('click',()=>this.callbacks.onMoveUp(this.index));div.querySelector('[data-action="down"]')?.addEventListener('click',()=>this.callbacks.onMoveDown(this.index));div.querySelector('[data-action="remove"]').addEventListener('click',()=>this.callbacks.onRemove(this.index));return div;}_bindDrag(handle,type){handle.addEventListener('pointerdown',(e)=>{e.preventDefault();e.stopPropagation();if(this.dbl.check(e)){this._toggleLocal();return;}handle.setPointerCapture(e.pointerId);handle.classList.add('dragging');document.body.classList.add('dragging-global');const onMove=(ev)=>{ev.preventDefault();const rect=this.el.getBoundingClientRect();let val=Math.max(0,Math.min(1,(ev.clientY-rect.top)/rect.height));if(type==='top'){val=Math.min(val,this.state.localBottom-0.02);this.state.localTop=val;}else{val=Math.max(val,this.state.localTop+0.02);this.state.localBottom=val;}this.updateVisuals();if(!this.state.useLocal){this.callbacks.onChange(type,type==='top'?this.state.localTop:this.state.localBottom);}};const onUp=()=>{handle.classList.remove('dragging');document.body.classList.remove('dragging-global');try{handle.releasePointerCapture(e.pointerId);}catch(_){}handle.removeEventListener('pointermove',onMove);handle.removeEventListener('pointerup',onUp);handle.removeEventListener('pointercancel',onUp);this.callbacks.onDragEnd?.();};handle.addEventListener('pointermove',onMove);handle.addEventListener('pointerup',onUp);handle.addEventListener('pointercancel',onUp);});}_toggleLocal(){this.state.useLocal=!this.state.useLocal;if(!this.state.useLocal){this.state.localTop=this.globalTop;this.state.localBottom=this.globalBottom;this.callbacks.onChange('top',this.state.localTop);this.callbacks.onChange('bottom',this.state.localBottom);}this.updateVisuals();this.callbacks.onDragEnd?.();}updateGlobals(top,bottom){this.globalTop=top;this.globalBottom=bottom;if(!this.state.useLocal){this.state.localTop=top;this.state.localBottom=bottom;this.updateVisuals();}}updateVisuals(){const top=this.state.localTop;const bottom=this.state.localBottom;this.topShadow.style.height=`${top*100}%`;this.bottomShadow.style.height=`${(1-bottom)*100}%`;this.topHandle.style.top=`${top*100}%`;this.topHandle.classList.toggle('local',this.state.useLocal);this.topTooltip.textContent=Math.round(top*100)+'%';this.bottomHandle.style.top=`${bottom*100}%`;this.bottomHandle.classList.toggle('local',this.state.useLocal);this.bottomTooltip.textContent=Math.round(bottom*100)+'%';}_draw(){this.canvas.width=this.image.width;this.canvas.height=this.image.height;this.canvas.getContext('2d').drawImage(this.image,0,0);}getExportState(){return{image:this.image,topRatio:this.state.useLocal?this.state.localTop:this.globalTop,bottomRatio:this.state.useLocal?this.state.localBottom:this.globalBottom};}}class App{constructor(){this.images=[];this.states=[];this.topRatio=0.80;this.bottomRatio=0.95;this.items=[];this.$={main:document.querySelector('.main'),list:document.getElementById('screenshotList'),empty:document.getElementById('emptyState'),preview:document.getElementById('previewCanvas'),previewArea:document.getElementById('previewArea'),addBtn:document.getElementById('addBtn'),downloadBtn:document.getElementById('downloadBtn'),helpBtn:document.getElementById('helpBtn'),helpDialog:document.getElementById('helpDialog'),helpDialogClose:document.getElementById('helpDialogClose'),helpDialogBody:document.getElementById('helpDialogBody'),lightbox:document.getElementById('lightbox'),lightboxImg:document.getElementById('lightboxImg'),lightboxClose:document.getElementById('lightboxClose'),themeToggle:document.getElementById('themeToggle'),};this.hasPreview=false;this._initUI();this._bindEvents();this._clearPreview();}_initUI(){document.getElementById('helpDialogTitle').textContent=TEXT.help_title;this.$.helpDialogBody.innerHTML=TEXT.help_body;}_bindEvents(){this.$.addBtn.addEventListener('click',()=>this._addScreenshots());this.$.empty.addEventListener('click',()=>this._addScreenshots());this.$.downloadBtn.addEventListener('click',()=>this._download());this.$.helpBtn.addEventListener('click',()=>this.$.helpDialog.showModal());this.$.helpDialogClose.addEventListener('click',()=>this.$.helpDialog.close());this.$.helpDialog.addEventListener('click',(e)=>{if(e.target===this.$.helpDialog)this.$.helpDialog.close();});this.$.preview.addEventListener('click',()=>this._openLightbox());this.$.lightboxClose.addEventListener('click',(e)=>{e.stopPropagation();this._closeLightbox();});this.$.lightbox.addEventListener('click',()=>this._closeLightbox());document.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&this.$.lightbox.classList.contains('open')){this._closeLightbox();}});this.$.themeToggle.addEventListener('click',()=>{const next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';applyTheme(next);});document.addEventListener('paste',(e)=>{const items=e.clipboardData?.items;if(!items)return;const files=[];for(const item of items){if(item.kind==='file'){const f=item.getAsFile();if(f)files.push(f);}}if(files.length){e.preventDefault();this._addFiles(files);}});let dragDepth=0;const appEl=document.querySelector('.app');const hasFiles=(e)=>!!e.dataTransfer&&Array.from(e.dataTransfer.types||[]).includes('Files');document.addEventListener('dragenter',(e)=>{if(!hasFiles(e))return;e.preventDefault();dragDepth++;appEl.classList.add('drag-over');});document.addEventListener('dragover',(e)=>{if(!hasFiles(e))return;e.preventDefault();});document.addEventListener('dragleave',(e)=>{if(!hasFiles(e))return;dragDepth=Math.max(0,dragDepth-1);if(dragDepth===0)appEl.classList.remove('drag-over');});document.addEventListener('drop',(e)=>{if(!hasFiles(e))return;e.preventDefault();dragDepth=0;appEl.classList.remove('drag-over');this._addFiles(e.dataTransfer.files);});}async _addScreenshots(){const input=document.createElement('input');input.type='file';input.accept='image/*';input.multiple=true;input.style.cssText='position:fixed;top:-9999px;left:-9999px;';document.body.appendChild(input);input.onchange=async()=>{await this._addFiles(input.files);input.remove();};input.click();}async _addFiles(fileList){const files=Array.from(fileList||[]).filter((f)=>f.type.startsWith('image/'));if(files.length===0)return;const results=await Promise.allSettled(files.map((file)=>loadImage(file)));let failed=0;results.forEach((r)=>{if(r.status==='fulfilled'){this.images.push(r.value);this.states.push({useLocal:false,localTop:this.topRatio,localBottom:this.bottomRatio});}else{failed++;console.error('Failed to load image',r.reason);}});if(failed>0)console.warn(`${failed} image(s) failed to load`);this._renderList();this._generate();}_renderList(){this.$.list.querySelectorAll('.screenshot-item').forEach((el)=>el.remove());this.items=[];this.$.main.classList.toggle('is-empty',this.images.length===0);if(this.images.length===0){this.$.empty.style.display='flex';return;}this.$.empty.style.display='none';this.images.forEach((img,idx)=>{const item=new ScreenshotItem(img,idx,this.images.length,this.topRatio,this.bottomRatio,this.states[idx],{onMoveUp:(i)=>this._move(i,-1),onMoveDown:(i)=>this._move(i,1),onRemove:(i)=>this._remove(i),onChange:(type,val)=>this._onHandleChange(type,val),onDragEnd:()=>this._generate()});this.items.push(item);this.$.list.appendChild(item.el);});}_onHandleChange(type,val){if(type==='top')this.topRatio=val;else this.bottomRatio=val;this.items.forEach((item)=>item.updateGlobals(this.topRatio,this.bottomRatio));}_move(idx,dir){const target=idx+dir;if(target<0||target>=this.images.length)return;[this.images[idx],this.images[target]]=[this.images[target],this.images[idx]];[this.states[idx],this.states[target]]=[this.states[target],this.states[idx]];this._renderList();this._generate();}_remove(idx){this.images.splice(idx,1);this.states.splice(idx,1);this._renderList();if(this.images.length===0){this.$.downloadBtn.disabled=true;this._clearPreview();}else{this._generate();}}_clearPreview(){const c=this.$.preview;c.width=16;c.height=9;const ctx=c.getContext('2d');ctx.fillStyle='transparent';ctx.clearRect(0,0,16,9);c.classList.add('is-empty');this.$.previewArea.classList.remove('has-preview');this.hasPreview=false;}_generate(){if(this.images.length===0)return;const specs=this.items.map((item)=>item.getExportState());const minWidth=Math.min(...specs.map((s)=>s.image.width));let totalHeight=0;const slices=[];specs.forEach((spec,idx)=>{const{image:img,topRatio,bottomRatio}=spec;const topY=topRatio*img.height;const bottomY=bottomRatio*img.height;const cropH=Math.max(1,bottomY-topY);const scaledH=(cropH/img.width)*minWidth;slices.push({img,sy:topY,sh:cropH,dy:totalHeight,dh:scaledH});totalHeight+=scaledH;});const c=this.$.preview;c.width=minWidth;c.height=Math.round(totalHeight);const ctx=c.getContext('2d');slices.forEach((s)=>{ctx.drawImage(s.img,0,s.sy,s.img.width,s.sh,0,s.dy,minWidth,s.dh);});c.classList.remove('is-empty');this.$.previewArea.classList.add('has-preview');this.hasPreview=true;this.$.downloadBtn.disabled=false;}_openLightbox(){if(!this.hasPreview)return;this.$.lightboxImg.src=this.$.preview.toDataURL('image/jpeg',0.92);this.$.lightbox.classList.add('open');document.body.style.overflow='hidden';}_closeLightbox(){this.$.lightbox.classList.remove('open');document.body.style.overflow='';setTimeout(()=>{if(!this.$.lightbox.classList.contains('open')){this.$.lightboxImg.src='';}},200);}_download(){downloadCanvas(this.$.preview,TEXT.joined_screenshot+'.jpg');}}new App();})();</script> </body></html>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>电影字幕截图拼接</title>
+    <link rel="icon" href="../favicon.ico" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --primary: #f5f5f5;
+        --primary-hover: #ffffff;
+        --primary-fg: #0a0a0a;
+        --surface: #171717;
+        --bg: #0a0a0a;
+        --text: #f5f5f5;
+        --text-muted: #a3a3a3;
+        --border: #262626;
+        --handle: #f87171;
+        --handle-local: #60a5fa;
+        --shadow: 0 0 0 1px rgb(255 255 255 / 0.06);
+        --shadow-md: 0 0 0 1px rgb(255 255 255 / 0.06), 0 8px 24px rgb(0 0 0 / 0.4);
+        --radius: 14px;
+        --radius-sm: 10px;
+        --dialog-backdrop: rgba(0, 0, 0, 0.7);
+        --btn-disabled-bg: #262626;
+        --btn-disabled-text: #525252;
+        --header-bg: #171717;
+        --header-text: #f5f5f5;
+        --header-hover: rgb(255 255 255 / 0.08);
+        --close-hover: #262626;
+        --empty-icon: #404040;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        min-height: 100%;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      .app {
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding-top: 52px;
+        box-sizing: border-box;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 0 14px;
+        height: 52px;
+        background: var(--header-bg);
+        color: var(--header-text);
+        border-bottom: 1px solid var(--border);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+      }
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .header-left .btn {
+        height: 34px;
+        padding: 0 14px;
+        font-size: 13px;
+        border-radius: 8px;
+      }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: auto;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .nav-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 13px;
+        font-weight: 500;
+        font-family: inherit;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        white-space: nowrap;
+      }
+      .nav-link:hover {
+        background: var(--header-hover);
+        color: var(--text);
+      }
+      .nav-link svg {
+        flex-shrink: 0;
+        opacity: 0.75;
+      }
+      .nav-icon {
+        padding: 0;
+        width: 36px;
+        height: 36px;
+        justify-content: center;
+      }
+      .main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 20px;
+        align-items: start;
+      }
+      .panel {
+        background: var(--surface);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .screenshot-list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .screenshot-item {
+        position: relative;
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        background: #000;
+        touch-action: pan-y;
+        -webkit-touch-callout: none;
+        flex-shrink: 0;
+      }
+      .screenshot-item canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .shadow-layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .top-shadow,
+      .bottom-shadow {
+        position: absolute;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.55);
+      }
+      .top-shadow {
+        top: 0;
+      }
+      .bottom-shadow {
+        bottom: 0;
+      }
+      .left-shadow,
+      .right-shadow {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.55);
+      }
+      .left-shadow {
+        left: 0;
+      }
+      .right-shadow {
+        right: 0;
+      }
+      .handle-layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .handle {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--handle);
+        transform: translateY(-50%);
+        cursor: row-resize;
+        pointer-events: auto;
+        touch-action: none;
+        z-index: 2;
+      }
+      .handle::after {
+        content: "";
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        width: 28px;
+        height: 10px;
+        background: var(--handle);
+        border-radius: 5px;
+        transform: translateY(-50%);
+      }
+      .handle.local {
+        background: var(--handle-local);
+      }
+      .handle.local::after {
+        background: var(--handle-local);
+      }
+      .handle.v {
+        top: 0;
+        bottom: 0;
+        left: auto;
+        right: auto;
+        width: 2px;
+        height: auto;
+        cursor: col-resize;
+        z-index: 3;
+      }
+      .handle.v::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -7px;
+        right: -7px;
+      }
+      .handle.v::after {
+        right: auto;
+        left: 0;
+        top: 50%;
+        width: 10px;
+        height: 28px;
+        border-radius: 5px;
+        transform: translateY(-50%);
+      }
+      .handle.v-left {
+        transform: none;
+      }
+      .handle.v-right {
+        transform: translateX(-100%);
+      }
+      .handle.v-right::after {
+        left: auto;
+        right: 0;
+      }
+      .handle.v .handle-tooltip {
+        right: auto;
+        left: 16px;
+        top: 50%;
+      }
+      .handle.v-right .handle-tooltip {
+        left: auto;
+        right: 16px;
+      }
+      .handle-tooltip {
+        position: absolute;
+        right: 42px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 7px;
+        border-radius: 4px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s;
+        white-space: nowrap;
+        z-index: 3;
+      }
+      .handle:hover .handle-tooltip,
+      .handle.dragging .handle-tooltip {
+        opacity: 1;
+      }
+      .action-layer {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        display: flex;
+        gap: 5px;
+        opacity: 0;
+        transition: opacity 0.2s;
+        z-index: 4;
+      }
+      .screenshot-item:hover .action-layer,
+      .screenshot-item:focus-within .action-layer {
+        opacity: 1;
+      }
+      .icon-btn {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        backdrop-filter: blur(4px);
+        transition:
+          background 0.15s,
+          transform 0.1s;
+      }
+      .icon-btn:hover {
+        background: rgba(0, 0, 0, 0.8);
+      }
+      .icon-btn:active {
+        transform: scale(0.92);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        height: 40px;
+        padding: 0 18px;
+        border: none;
+        border-radius: var(--radius-sm);
+        background: var(--primary);
+        color: var(--primary-fg);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          transform 0.1s,
+          opacity 0.15s;
+        white-space: nowrap;
+      }
+      .btn:hover:not(:disabled) {
+        background: var(--primary-hover);
+      }
+      .btn:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+      .btn:disabled {
+        background: var(--btn-disabled-bg);
+        color: var(--btn-disabled-text);
+        cursor: not-allowed;
+      }
+      .btn-secondary {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      .btn-secondary:hover:not(:disabled) {
+        background: var(--header-hover);
+      }
+      .btn-secondary:disabled {
+        background: transparent;
+        border-color: var(--border);
+        color: var(--btn-disabled-text);
+      }
+      .preview-area {
+        flex: 1;
+        min-height: 240px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .preview-area canvas {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-md);
+        background: var(--surface);
+        display: block;
+        cursor: zoom-in;
+      }
+      .preview-area canvas.is-empty {
+        display: none;
+        cursor: default;
+      }
+      .preview-area .empty-state {
+        position: absolute;
+        inset: 0;
+      }
+      .preview-area.has-preview .empty-state {
+        display: none;
+      }
+      .main > .panel:nth-of-type(2) {
+        align-self: start;
+        position: sticky;
+        top: 66px;
+      }
+      .main.is-empty > .panel {
+        height: calc(100vh - 92px);
+        height: calc(100dvh - 92px);
+      }
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.45);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        cursor: zoom-out;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.2s,
+          visibility 0.2s;
+      }
+      .lightbox.open {
+        opacity: 1;
+        visibility: visible;
+      }
+      .lightbox canvas {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 4px;
+        box-shadow:
+          0 16px 48px rgb(0 0 0 / 0.6),
+          0 0 0 1px rgb(255 255 255 / 0.08);
+        cursor: default;
+        will-change: transform;
+        transform-origin: center;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .lightbox.zoomed canvas {
+        cursor: grab;
+      }
+      .lightbox.panning canvas {
+        cursor: grabbing;
+      }
+      .lightbox-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s;
+        z-index: 1001;
+      }
+      .lightbox-close:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+      body.dragging-global,
+      body.dragging-global * {
+        cursor: row-resize !important;
+      }
+      body.dragging-global-x,
+      body.dragging-global-x * {
+        cursor: col-resize !important;
+      }
+      .app.drag-over .panel {
+        outline: 2px dashed var(--primary);
+        outline-offset: -2px;
+      }
+      .empty-state {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 14px;
+        font-weight: 500;
+        gap: 10px;
+        padding: 40px 20px;
+        text-align: center;
+      }
+      #emptyState {
+        cursor: pointer;
+        border-radius: var(--radius-sm);
+        transition: color 0.15s;
+      }
+      #emptyState:hover {
+        color: var(--text);
+      }
+      .empty-state svg {
+        color: var(--empty-icon);
+        margin-bottom: 2px;
+        transition: color 0.15s;
+      }
+      #emptyState:hover svg {
+        color: var(--text);
+      }
+      dialog {
+        border: none;
+        border-radius: var(--radius);
+        padding: 0;
+        box-shadow: 0 20px 40px rgb(0 0 0 / 0.18);
+        max-width: 420px;
+        width: 92%;
+        background: var(--surface);
+        color: var(--text);
+        margin: auto;
+        position: fixed;
+        inset: 0;
+        height: fit-content;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+      dialog::backdrop {
+        background: var(--dialog-backdrop);
+        backdrop-filter: blur(3px);
+      }
+      .dialog-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px 0;
+        position: sticky;
+        top: 0;
+        background: var(--surface);
+      }
+      .dialog-title {
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .dialog-close {
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        flex-shrink: 0;
+      }
+      .dialog-close:hover {
+        background: var(--close-hover);
+        color: var(--text);
+      }
+      .dialog-body {
+        padding: 12px 20px 20px;
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--text-muted);
+      }
+      .dialog-body b,
+      .dialog-body strong {
+        color: var(--text);
+      }
+      .dialog-body ol {
+        margin: 10px 0 0 1.2em;
+        padding: 0;
+      }
+      .dialog-body li {
+        margin-bottom: 6px;
+      }
+      .header-left .btn-icon {
+        width: 34px;
+        padding: 0;
+      }
+      .btn-secondary.is-active {
+        background: var(--header-hover);
+      }
+      .wm-pop {
+        position: fixed;
+        z-index: 110;
+        width: 300px;
+        max-width: calc(100vw - 16px);
+        max-height: calc(100vh - 70px);
+        max-height: calc(100dvh - 70px);
+        overflow-y: auto;
+        background: var(--surface);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: 0 12px 32px rgb(0 0 0 / 0.18);
+      }
+      .wm-pop[hidden] {
+        display: none;
+      }
+      .wm-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 12px 0 16px;
+      }
+      .wm-title {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .wm-body {
+        padding: 8px 16px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .wm-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 0;
+      }
+      .wm-label {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-muted);
+      }
+      .wm-input {
+        width: 100%;
+        height: 36px;
+        padding: 0 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        font-size: 13px;
+        outline: none;
+        user-select: text;
+        -webkit-user-select: text;
+      }
+      .wm-input:focus {
+        border-color: var(--primary);
+      }
+      .wm-fontrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .wm-select {
+        flex: 1;
+        min-width: 0;
+        height: 32px;
+        padding: 0 8px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        font-size: 13px;
+        outline: none;
+        cursor: pointer;
+      }
+      .wm-select:focus {
+        border-color: var(--primary);
+      }
+      .wm-color {
+        flex: none;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: transparent;
+        cursor: pointer;
+        overflow: hidden;
+      }
+      .wm-color::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+      .wm-color::-webkit-color-swatch {
+        border: none;
+      }
+      .wm-color::-moz-color-swatch {
+        border: none;
+      }
+      .wm-pos {
+        display: flex;
+        gap: 10px;
+      }
+      .wm-seg {
+        display: flex;
+        flex: 1;
+      }
+      .wm-seg button {
+        flex: 1;
+        height: 32px;
+        border: 1px solid var(--border);
+        border-radius: 0;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s,
+          border-color 0.15s;
+      }
+      .wm-seg button:first-child {
+        border-radius: 8px 0 0 8px;
+      }
+      .wm-seg button + button {
+        margin-left: -1px;
+      }
+      .wm-seg button:last-child {
+        border-radius: 0 8px 8px 0;
+      }
+      .wm-seg button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      .wm-seg button:hover {
+        background: var(--header-hover);
+      }
+      .wm-seg button.active {
+        position: relative;
+        background: var(--primary);
+        color: var(--primary-fg);
+        border-color: var(--primary);
+      }
+      .range {
+        position: relative;
+        padding-top: 14px;
+      }
+      .range input {
+        -webkit-appearance: none;
+        appearance: none;
+        display: block;
+        width: 100%;
+        height: 16px;
+        margin: 0;
+        background: transparent;
+        cursor: pointer;
+      }
+      .range input::-webkit-slider-runnable-track {
+        height: 4px;
+        border-radius: 2px;
+        background: var(--border);
+      }
+      .range input::-moz-range-track {
+        height: 4px;
+        border-radius: 2px;
+        background: var(--border);
+      }
+      .range input::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 12px;
+        height: 12px;
+        margin-top: -6px;
+        border-radius: 50%;
+        background: var(--primary);
+        border: 2px solid var(--surface);
+        box-shadow: 0 0 0 1px var(--text-muted);
+      }
+      .range input::-moz-range-thumb {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--primary);
+        border: 2px solid var(--surface);
+        box-shadow: 0 0 0 1px var(--text-muted);
+      }
+      .range input:focus {
+        outline: none;
+      }
+      .range-tip {
+        position: absolute;
+        top: -5px;
+        left: 0;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1.4;
+        padding: 1px 6px;
+        border-radius: 4px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s;
+        white-space: nowrap;
+      }
+      .wm-sep {
+        height: 1px;
+        background: var(--border);
+      }
+      .range.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      .range:hover .range-tip,
+      .range.active .range-tip,
+      .range input:focus-visible ~ .range-tip {
+        opacity: 1;
+      }
+      .fx-presets {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+      }
+      .fx-presets button {
+        height: 30px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+        font-size: 12px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s,
+          border-color 0.15s;
+      }
+      .fx-presets button:hover {
+        background: var(--header-hover);
+      }
+      .fx-presets button.active {
+        background: var(--primary);
+        color: var(--primary-fg);
+        border-color: var(--primary);
+      }
+      .wm-fxbox {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .wm-fxbox.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      .wm-inline {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .wm-inline-ctrl {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .wm-chip {
+        height: 32px;
+        padding: 0 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s,
+          border-color 0.15s;
+      }
+      .wm-chip:hover {
+        background: var(--header-hover);
+      }
+      .wm-chip.active {
+        background: var(--primary);
+        color: var(--primary-fg);
+        border-color: var(--primary);
+      }
+      .wm-chip.active + .wm-color {
+        opacity: 0.4;
+      }
+      .wm-note {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      @media (max-width: 900px) {
+        .main {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto;
+          padding: 14px;
+          gap: 14px;
+        }
+        .main > .panel:nth-of-type(2) {
+          position: static;
+          align-self: auto;
+        }
+        .preview-area {
+          min-height: 200px;
+        }
+        .main.is-empty > .panel {
+          height: calc((100vh - 94px) / 2);
+          height: calc((100dvh - 94px) / 2);
+        }
+      }
+      @media (max-width: 600px) {
+        .app {
+          padding-top: 48px;
+        }
+        .header {
+          height: 48px;
+          padding: 0 8px;
+          gap: 6px;
+        }
+        .header-left {
+          gap: 6px;
+        }
+        .header-left .btn {
+          height: 32px;
+          padding: 0 10px;
+          font-size: 12px;
+        }
+        .header-left .btn span {
+          display: none;
+        }
+        .header-left .btn-icon {
+          width: 32px;
+          padding: 0;
+        }
+        .nav-link {
+          padding: 6px 8px;
+          font-size: 12px;
+          gap: 4px;
+        }
+        .nav-icon {
+          padding: 0;
+          width: 32px;
+          height: 32px;
+        }
+        .nav-link span {
+          display: none;
+        }
+        .nav-link svg {
+          width: 14px;
+          height: 14px;
+        }
+        .main {
+          grid-template-columns: 1fr;
+          padding: 10px;
+          gap: 10px;
+        }
+        .panel {
+          padding: 12px;
+          gap: 10px;
+          border-radius: 10px;
+        }
+        .preview-area {
+          max-height: none;
+        }
+        .main.is-empty > .panel {
+          height: calc((100dvh - 78px) / 2);
+        }
+        .btn {
+          height: 38px;
+          font-size: 13px;
+          padding: 0 12px;
+        }
+        .action-layer {
+          opacity: 1;
+        }
+        .icon-btn {
+          width: 28px;
+          height: 28px;
+          font-size: 13px;
+        }
+        .empty-state {
+          padding: 28px 12px;
+          font-size: 13px;
+        }
+        dialog {
+          width: 94%;
+          max-width: none;
+          border-radius: 10px;
+        }
+        .dialog-header {
+          padding: 14px 16px 0;
+        }
+        .dialog-body {
+          padding: 10px 16px 16px;
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="header-left">
+          <button
+            class="btn btn-secondary btn-icon"
+            id="addBtn"
+            type="button"
+            title="添加截图"
+            aria-label="添加截图"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg></button
+          ><button
+            class="btn btn-secondary btn-icon"
+            id="captureBtn"
+            type="button"
+            title="截取屏幕"
+            aria-label="截取屏幕"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+              />
+              <circle cx="12" cy="13" r="4" />
+            </svg></button
+          ><button
+            class="btn btn-secondary btn-icon"
+            id="bsBtn"
+            type="button"
+            title="边框与阴影"
+            aria-label="边框与阴影"
+            aria-expanded="false"
+            aria-controls="bsPop"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="14" height="14" rx="3" />
+              <path d="M7 21h12a2 2 0 0 0 2-2V7" />
+            </svg></button
+          ><button
+            class="btn btn-secondary btn-icon"
+            id="fxBtn"
+            type="button"
+            title="滤镜与边框"
+            aria-label="滤镜与边框"
+            aria-expanded="false"
+            aria-controls="fxPop"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"
+              />
+              <path d="M20 3v4" />
+              <path d="M22 5h-4" />
+              <path d="M4 17v2" />
+              <path d="M5 18H3" />
+            </svg></button
+          ><button
+            class="btn btn-secondary btn-icon"
+            id="downloadBtn"
+            type="button"
+            title="保存拼图"
+            aria-label="保存拼图"
+            disabled
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg></button
+          ><button
+            class="btn btn-secondary btn-icon"
+            id="settingsBtn"
+            type="button"
+            title="设置"
+            aria-label="设置"
+            aria-expanded="false"
+            aria-controls="wmPop"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="header-right">
+          <nav class="nav-links">
+            <a
+              class="nav-link"
+              href="https://ttti.cc"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="极限博客"
+              aria-label="极限博客"
+              ><svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" /></svg
+              ><span>极限博客</span></a
+            ><a class="nav-link" href="./paint.html"
+              ><svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z" /></svg
+              ><span>图像编辑</span></a
+            ><a class="nav-link" href="./watermark.html"
+              ><svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" /></svg
+              ><span>批量水印</span></a
+            ><button
+              class="nav-link nav-icon"
+              id="helpBtn"
+              type="button"
+              title="使用方法"
+              aria-label="使用方法"
+            >
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </button>
+          </nav>
+        </div>
+      </header>
+      <div class="wm-pop" id="bsPop" role="dialog" aria-label="边框与阴影" hidden>
+        <div class="wm-head">
+          <span class="wm-title">边框与阴影</span
+          ><button class="dialog-close" id="bsClose" type="button" aria-label="Close">✕</button>
+        </div>
+        <div class="wm-body">
+          <div class="wm-field">
+            <span class="wm-label">边框</span>
+            <div class="range">
+              <input
+                type="range"
+                id="bsBorder"
+                min="0"
+                max="10"
+                step="0.5"
+                value="0"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field wm-inline">
+            <span class="wm-label">边框颜色</span
+            ><input
+              class="wm-color"
+              id="bsBorderColor"
+              type="color"
+              value="#ffffff"
+              title="边框颜色"
+              aria-label="边框颜色"
+            />
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">圆角</span>
+            <div class="range">
+              <input
+                type="range"
+                id="bsRadius"
+                min="0"
+                max="10"
+                step="0.5"
+                value="0"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">旋转角度</span>
+            <div class="range">
+              <input
+                type="range"
+                id="bsAngle"
+                min="-180"
+                max="180"
+                step="1"
+                value="0"
+                data-unit="°"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-sep"></div>
+          <div class="wm-field">
+            <span class="wm-label">阴影</span>
+            <div class="range">
+              <input
+                type="range"
+                id="bsShadow"
+                min="0"
+                max="10"
+                step="0.5"
+                value="0"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">阴影浓度</span>
+            <div class="range">
+              <input
+                type="range"
+                id="bsOpacity"
+                min="0"
+                max="100"
+                step="1"
+                value="55"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field wm-inline">
+            <span class="wm-label">阴影颜色</span
+            ><input
+              class="wm-color"
+              id="bsShadowColor"
+              type="color"
+              value="#000000"
+              title="阴影颜色"
+              aria-label="阴影颜色"
+            />
+          </div>
+          <div class="wm-field wm-inline">
+            <span class="wm-label">底色</span>
+            <div class="wm-inline-ctrl">
+              <button class="wm-chip active" id="bsBgClear" type="button">透明</button
+              ><input
+                class="wm-color"
+                id="bsBg"
+                type="color"
+                value="#ffffff"
+                title="底色"
+                aria-label="底色"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wm-pop" id="fxPop" role="dialog" aria-label="滤镜" hidden>
+        <div class="wm-head">
+          <span class="wm-title">滤镜</span
+          ><button class="dialog-close" id="fxClose" type="button" aria-label="Close">✕</button>
+        </div>
+        <div class="wm-body">
+          <div class="wm-fxbox" id="fxBox">
+            <div class="wm-field">
+              <span class="wm-label">预设滤镜</span>
+              <div class="fx-presets" id="fxPresets">
+                <button type="button" data-preset="orig">原图</button
+                ><button type="button" data-preset="vivid">鲜艳</button
+                ><button type="button" data-preset="film">电影</button
+                ><button type="button" data-preset="retro">怀旧</button
+                ><button type="button" data-preset="bw">黑白</button
+                ><button type="button" data-preset="warm">暖调</button
+                ><button type="button" data-preset="soft">柔和</button
+                ><button type="button" data-preset="punch">高对比</button>
+              </div>
+            </div>
+            <div class="wm-field">
+              <span class="wm-label">亮度</span>
+              <div class="range">
+                <input
+                  type="range"
+                  id="fxBrightness"
+                  min="50"
+                  max="150"
+                  step="1"
+                  value="100"
+                  data-unit="%"
+                /><output class="range-tip"></output>
+              </div>
+            </div>
+            <div class="wm-field">
+              <span class="wm-label">对比度</span>
+              <div class="range">
+                <input
+                  type="range"
+                  id="fxContrast"
+                  min="50"
+                  max="150"
+                  step="1"
+                  value="100"
+                  data-unit="%"
+                /><output class="range-tip"></output>
+              </div>
+            </div>
+            <div class="wm-field">
+              <span class="wm-label">饱和度</span>
+              <div class="range">
+                <input
+                  type="range"
+                  id="fxSaturate"
+                  min="0"
+                  max="200"
+                  step="1"
+                  value="100"
+                  data-unit="%"
+                /><output class="range-tip"></output>
+              </div>
+            </div>
+            <div class="wm-field">
+              <span class="wm-label">黑白</span>
+              <div class="range">
+                <input
+                  type="range"
+                  id="fxGrayscale"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value="0"
+                  data-unit="%"
+                /><output class="range-tip"></output>
+              </div>
+            </div>
+            <div class="wm-field">
+              <span class="wm-label">怀旧</span>
+              <div class="range">
+                <input
+                  type="range"
+                  id="fxSepia"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value="0"
+                  data-unit="%"
+                /><output class="range-tip"></output>
+              </div>
+            </div>
+            <div class="wm-field">
+              <span class="wm-label">色相</span>
+              <div class="range">
+                <input
+                  type="range"
+                  id="fxHue"
+                  min="-180"
+                  max="180"
+                  step="1"
+                  value="0"
+                  data-unit="°"
+                /><output class="range-tip"></output>
+              </div>
+            </div>
+          </div>
+          <p class="wm-note" id="fxNote" hidden>
+            当前浏览器不支持滤镜，建议使用 Chrome / Edge / Firefox
+          </p>
+        </div>
+      </div>
+      <div class="wm-pop" id="wmPop" role="dialog" aria-label="设置" hidden>
+        <div class="wm-head">
+          <span class="wm-title">设置</span
+          ><button class="dialog-close" id="wmClose" type="button" aria-label="Close">✕</button>
+        </div>
+        <div class="wm-body">
+          <label class="wm-field"
+            ><span class="wm-label">水印文字</span
+            ><input
+              class="wm-input"
+              id="wmText"
+              type="text"
+              maxlength="80"
+              autocomplete="off"
+              placeholder="输入水印文字，留空则不添加"
+          /></label>
+          <div class="wm-field">
+            <span class="wm-label">水印角</span>
+            <div class="wm-pos" id="wmPos">
+              <div class="wm-seg">
+                <button type="button" data-v="t">上</button
+                ><button type="button" data-v="b">下</button>
+              </div>
+              <div class="wm-seg">
+                <button type="button" data-h="l">左</button
+                ><button type="button" data-h="r">右</button>
+              </div>
+            </div>
+          </div>
+          <div class="wm-field">
+            <div class="wm-fontrow">
+              <select class="wm-select" id="wmFont" aria-label="字体">
+                <option value="default">默认</option>
+                <option value="hei">黑体</option>
+                <option value="song">宋体</option>
+                <option value="__load">载入</option></select
+              ><input
+                class="wm-color"
+                id="wmColor"
+                type="color"
+                value="#ffea00"
+                title="文字颜色"
+                aria-label="文字颜色"
+              /><input
+                class="wm-color"
+                id="wmBg"
+                type="color"
+                value="#4B0071"
+                title="背景颜色"
+                aria-label="背景颜色"
+              />
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">字透明</span>
+            <div class="range">
+              <input
+                type="range"
+                id="wmTextAlpha"
+                min="0"
+                max="100"
+                step="1"
+                value="100"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">背透明</span>
+            <div class="range">
+              <input
+                type="range"
+                id="wmBgAlpha"
+                min="0"
+                max="100"
+                step="1"
+                value="100"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">文字大小</span>
+            <div class="range">
+              <input
+                type="range"
+                id="wmSize"
+                min="1"
+                max="8"
+                step="0.5"
+                value="3.5"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-sep"></div>
+          <div class="wm-field">
+            <span class="wm-label">保存格式</span>
+            <div class="wm-pos" id="fmtSeg">
+              <div class="wm-seg">
+                <button type="button" data-fmt="jpg">JPG</button
+                ><button type="button" data-fmt="webp">WEBP</button
+                ><button type="button" data-fmt="png">PNG</button>
+              </div>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">画质</span>
+            <div class="range">
+              <input
+                type="range"
+                id="wmQuality"
+                min="10"
+                max="100"
+                step="1"
+                value="80"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">尺寸</span>
+            <div class="range">
+              <input
+                type="range"
+                id="wmScale"
+                min="10"
+                max="100"
+                step="1"
+                value="100"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+        </div>
+      </div>
+      <main class="main is-empty">
+        <section class="panel">
+          <div class="screenshot-list" id="screenshotList">
+            <div class="empty-state" id="emptyState">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="m21 15-5-5L5 21" /></svg
+              ><span>添加截图</span>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="preview-area" id="previewArea">
+            <div class="empty-state">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                <circle cx="12" cy="12" r="3" /></svg
+              ><span>实时预览</span>
+            </div>
+            <canvas id="previewCanvas" class="is-empty"></canvas>
+          </div>
+        </section>
+      </main>
+    </div>
+    <dialog id="helpDialog">
+      <div class="dialog-header">
+        <div class="dialog-title" id="helpDialogTitle">使用方法</div>
+        <button class="dialog-close" id="helpDialogClose" type="button" aria-label="Close">
+          ✕
+        </button>
+      </div>
+      <div class="dialog-body" id="helpDialogBody"></div>
+    </dialog>
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+      <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close">✕</button
+      ><canvas id="lightboxCanvas"></canvas>
+    </div>
+    <script>
+      (() => {
+        "use strict";
+        const FX_PRESETS = {
+          orig: { brightness: 100, contrast: 100, saturate: 100, grayscale: 0, sepia: 0, hue: 0 },
+          vivid: { brightness: 102, contrast: 112, saturate: 140, grayscale: 0, sepia: 0, hue: 0 },
+          film: { brightness: 96, contrast: 115, saturate: 85, grayscale: 0, sepia: 18, hue: 0 },
+          retro: { brightness: 105, contrast: 92, saturate: 90, grayscale: 0, sepia: 55, hue: 0 },
+          bw: { brightness: 100, contrast: 115, saturate: 100, grayscale: 100, sepia: 0, hue: 0 },
+          warm: { brightness: 102, contrast: 100, saturate: 120, grayscale: 0, sepia: 22, hue: -8 },
+          soft: { brightness: 106, contrast: 88, saturate: 92, grayscale: 0, sepia: 0, hue: 0 },
+          punch: { brightness: 100, contrast: 135, saturate: 110, grayscale: 0, sepia: 0, hue: 0 },
+        };
+        const TEXT = {
+          help_title: "使用步骤",
+          help_body:
+            "<ol><li>点击「添加截图」，多选想要拼接的图片；也可直接拖拽图片到窗口，或粘贴（Ctrl+V）快速添加</li><li>拖动上下手柄选择字幕区域，拖动左右手柄裁剪左右边缘（默认在最边缘），松开后自动更新预览</li><li>点击「保存拼图」下载结果</li><li>点击设置图标可添加水印（文字、位置、颜色、透明度、大小），预览区实时显示，保存时一并写入；保存格式可选 JPG / WEBP / PNG（PNG 无损，其余可调画质）</li><li>点击闪亮图标可选预设滤镜并微调，边框与阴影按钮可给整张拼图加边框、圆角、阴影并调节旋转角度；点击预览放大后可用滚轮缩放、拖动平移、双击复原</li></ol><br>双击手柄可为单张截图单独设置区域（脱离全局控制）",
+          joined_screenshot: "拼接截图",
+          moveUp: "上移",
+          moveDown: "下移",
+          remove: "删除",
+        };
+        function loadImage(file) {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            const url = URL.createObjectURL(file);
+            img.onload = () => {
+              URL.revokeObjectURL(url);
+              resolve(img);
+            };
+            img.onerror = (err) => {
+              URL.revokeObjectURL(url);
+              reject(err);
+            };
+            img.src = url;
+          });
+        }
+        const IMAGE_EXT = {
+          "image/jpeg": "jpg",
+          "image/webp": "webp",
+          "image/png": "png",
+        };
+        function downloadCanvas(canvas, basename, type, quality) {
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) return;
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = basename + "." + (IMAGE_EXT[blob.type] || "png");
+              a.click();
+              setTimeout(() => URL.revokeObjectURL(url), 1000);
+            },
+            type,
+            quality,
+          );
+        }
+        class DoubleClickDetector {
+          constructor() {
+            this.lastTime = 0;
+            this.lastX = 0;
+            this.lastY = 0;
+          }
+          check(e) {
+            const dt = e.timeStamp - this.lastTime;
+            const dx = e.clientX - this.lastX;
+            const dy = e.clientY - this.lastY;
+            const isDbl = dt < 280 && dx * dx + dy * dy < 100;
+            this.lastTime = e.timeStamp;
+            this.lastX = e.clientX;
+            this.lastY = e.clientY;
+            return isDbl;
+          }
+        }
+        class ScreenshotItem {
+          constructor(
+            image,
+            index,
+            total,
+            globalTop,
+            globalBottom,
+            globalLeft,
+            globalRight,
+            state,
+            callbacks,
+          ) {
+            this.image = image;
+            this.index = index;
+            this.total = total;
+            this.globalTop = globalTop;
+            this.globalBottom = globalBottom;
+            this.globalLeft = globalLeft;
+            this.globalRight = globalRight;
+            this.state = state;
+            this.callbacks = callbacks;
+            this.dbl = new DoubleClickDetector();
+            this.el = this._build();
+            this._draw();
+            this.updateVisuals();
+          }
+          _build() {
+            const div = document.createElement("div");
+            div.className = "screenshot-item";
+            div.innerHTML = `<canvas></canvas><div class="shadow-layer"><div class="top-shadow"></div><div class="bottom-shadow"></div><div class="left-shadow"></div><div class="right-shadow"></div></div><div class="handle-layer"><div class="handle top-handle" data-type="top"><span class="handle-tooltip"></span></div><div class="handle bottom-handle" data-type="bottom"><span class="handle-tooltip"></span></div><div class="handle v v-left left-handle" data-type="left"><span class="handle-tooltip"></span></div><div class="handle v v-right right-handle" data-type="right"><span class="handle-tooltip"></span></div></div><div class="action-layer">${this.index > 0 ? `<button class="icon-btn" data-action="up" title="${TEXT.moveUp}">↑</button>` : ""}${this.index < this.total - 1 ? `<button class="icon-btn" data-action="down" title="${TEXT.moveDown}">↓</button>` : ""}<button class="icon-btn" data-action="remove" title="${TEXT.remove}">✕</button></div>`;
+            this.canvas = div.querySelector("canvas");
+            this.topShadow = div.querySelector(".top-shadow");
+            this.bottomShadow = div.querySelector(".bottom-shadow");
+            this.topHandle = div.querySelector(".top-handle");
+            this.bottomHandle = div.querySelector(".bottom-handle");
+            this.topTooltip = div.querySelector(".top-handle .handle-tooltip");
+            this.bottomTooltip = div.querySelector(".bottom-handle .handle-tooltip");
+            this.leftShadow = div.querySelector(".left-shadow");
+            this.rightShadow = div.querySelector(".right-shadow");
+            this.leftHandle = div.querySelector(".left-handle");
+            this.rightHandle = div.querySelector(".right-handle");
+            this.leftTooltip = div.querySelector(".left-handle .handle-tooltip");
+            this.rightTooltip = div.querySelector(".right-handle .handle-tooltip");
+            this._bindDrag(this.topHandle, "top");
+            this._bindDrag(this.bottomHandle, "bottom");
+            this._bindDrag(this.leftHandle, "left");
+            this._bindDrag(this.rightHandle, "right");
+            div
+              .querySelector('[data-action="up"]')
+              ?.addEventListener("click", () => this.callbacks.onMoveUp(this.index));
+            div
+              .querySelector('[data-action="down"]')
+              ?.addEventListener("click", () => this.callbacks.onMoveDown(this.index));
+            div
+              .querySelector('[data-action="remove"]')
+              .addEventListener("click", () => this.callbacks.onRemove(this.index));
+            return div;
+          }
+          _bindDrag(handle, type) {
+            handle.addEventListener("pointerdown", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (this.dbl.check(e)) {
+                this._toggleLocal();
+                return;
+              }
+              handle.setPointerCapture(e.pointerId);
+              const dragClass =
+                type === "left" || type === "right" ? "dragging-global-x" : "dragging-global";
+              handle.classList.add("dragging");
+              document.body.classList.add(dragClass);
+              const onMove = (ev) => {
+                ev.preventDefault();
+                const rect = this.el.getBoundingClientRect();
+                const horizontal = type === "left" || type === "right";
+                let val = horizontal
+                  ? (ev.clientX - rect.left) / rect.width
+                  : (ev.clientY - rect.top) / rect.height;
+                val = Math.max(0, Math.min(1, val));
+                const s = this.state;
+                if (type === "top") val = Math.min(val, s.localBottom - 0.02);
+                else if (type === "bottom") val = Math.max(val, s.localTop + 0.02);
+                else if (type === "left") val = Math.min(val, s.localRight - 0.02);
+                else val = Math.max(val, s.localLeft + 0.02);
+                s["local" + type.charAt(0).toUpperCase() + type.slice(1)] = val;
+                this.updateVisuals();
+                if (!s.useLocal) {
+                  this.callbacks.onChange(type, val);
+                }
+              };
+              const onUp = () => {
+                handle.classList.remove("dragging");
+                document.body.classList.remove(dragClass);
+                try {
+                  handle.releasePointerCapture(e.pointerId);
+                } catch (_) {}
+                handle.removeEventListener("pointermove", onMove);
+                handle.removeEventListener("pointerup", onUp);
+                handle.removeEventListener("pointercancel", onUp);
+                this.callbacks.onDragEnd?.();
+              };
+              handle.addEventListener("pointermove", onMove);
+              handle.addEventListener("pointerup", onUp);
+              handle.addEventListener("pointercancel", onUp);
+            });
+          }
+          _toggleLocal() {
+            this.state.useLocal = !this.state.useLocal;
+            if (!this.state.useLocal) {
+              this.state.localTop = this.globalTop;
+              this.state.localBottom = this.globalBottom;
+              this.state.localLeft = this.globalLeft;
+              this.state.localRight = this.globalRight;
+              this.callbacks.onChange("top", this.state.localTop);
+              this.callbacks.onChange("bottom", this.state.localBottom);
+              this.callbacks.onChange("left", this.state.localLeft);
+              this.callbacks.onChange("right", this.state.localRight);
+            }
+            this.updateVisuals();
+            this.callbacks.onDragEnd?.();
+          }
+          updateGlobals(top, bottom, left, right) {
+            this.globalTop = top;
+            this.globalBottom = bottom;
+            this.globalLeft = left;
+            this.globalRight = right;
+            if (!this.state.useLocal) {
+              this.state.localTop = top;
+              this.state.localBottom = bottom;
+              this.state.localLeft = left;
+              this.state.localRight = right;
+              this.updateVisuals();
+            }
+          }
+          updateVisuals() {
+            const top = this.state.localTop;
+            const bottom = this.state.localBottom;
+            const left = this.state.localLeft;
+            const right = this.state.localRight;
+            this.topShadow.style.height = `${top * 100}%`;
+            this.bottomShadow.style.height = `${(1 - bottom) * 100}%`;
+            this.topHandle.style.top = `${top * 100}%`;
+            this.topHandle.classList.toggle("local", this.state.useLocal);
+            this.topTooltip.textContent = Math.round(top * 100) + "%";
+            this.bottomHandle.style.top = `${bottom * 100}%`;
+            this.bottomHandle.classList.toggle("local", this.state.useLocal);
+            this.bottomTooltip.textContent = Math.round(bottom * 100) + "%";
+            this.topShadow.style.left = `${left * 100}%`;
+            this.topShadow.style.right = `${(1 - right) * 100}%`;
+            this.bottomShadow.style.left = `${left * 100}%`;
+            this.bottomShadow.style.right = `${(1 - right) * 100}%`;
+            this.leftShadow.style.width = `${left * 100}%`;
+            this.rightShadow.style.width = `${(1 - right) * 100}%`;
+            this.leftHandle.style.left = `${left * 100}%`;
+            this.rightHandle.style.left = `${right * 100}%`;
+            this.leftHandle.classList.toggle("local", this.state.useLocal);
+            this.rightHandle.classList.toggle("local", this.state.useLocal);
+            this.leftTooltip.textContent = Math.round(left * 100) + "%";
+            this.rightTooltip.textContent = Math.round(right * 100) + "%";
+          }
+          _draw() {
+            this.canvas.width = this.image.width;
+            this.canvas.height = this.image.height;
+            this.canvas.getContext("2d").drawImage(this.image, 0, 0);
+          }
+          getExportState() {
+            return {
+              image: this.image,
+              topRatio: this.state.useLocal ? this.state.localTop : this.globalTop,
+              bottomRatio: this.state.useLocal ? this.state.localBottom : this.globalBottom,
+              leftRatio: this.state.useLocal ? this.state.localLeft : this.globalLeft,
+              rightRatio: this.state.useLocal ? this.state.localRight : this.globalRight,
+            };
+          }
+        }
+        class App {
+          constructor() {
+            this.images = [];
+            this.states = [];
+            this.topRatio = 0.8;
+            this.bottomRatio = 0.95;
+            this.leftRatio = 0;
+            this.rightRatio = 1;
+            this.items = [];
+            this.$ = {
+              main: document.querySelector(".main"),
+              list: document.getElementById("screenshotList"),
+              empty: document.getElementById("emptyState"),
+              preview: document.getElementById("previewCanvas"),
+              previewArea: document.getElementById("previewArea"),
+              addBtn: document.getElementById("addBtn"),
+              captureBtn: document.getElementById("captureBtn"),
+              bsBtn: document.getElementById("bsBtn"),
+              bsPop: document.getElementById("bsPop"),
+              bsClose: document.getElementById("bsClose"),
+              fxBtn: document.getElementById("fxBtn"),
+              fxPop: document.getElementById("fxPop"),
+              fxClose: document.getElementById("fxClose"),
+              downloadBtn: document.getElementById("downloadBtn"),
+              helpBtn: document.getElementById("helpBtn"),
+              helpDialog: document.getElementById("helpDialog"),
+              helpDialogClose: document.getElementById("helpDialogClose"),
+              helpDialogBody: document.getElementById("helpDialogBody"),
+              lightbox: document.getElementById("lightbox"),
+              lightboxCanvas: document.getElementById("lightboxCanvas"),
+              lightboxClose: document.getElementById("lightboxClose"),
+              settingsBtn: document.getElementById("settingsBtn"),
+              wmPop: document.getElementById("wmPop"),
+              wmClose: document.getElementById("wmClose"),
+              wmText: document.getElementById("wmText"),
+              wmPos: document.getElementById("wmPos"),
+              wmColor: document.getElementById("wmColor"),
+              wmBg: document.getElementById("wmBg"),
+              wmFont: document.getElementById("wmFont"),
+              wmTextAlpha: document.getElementById("wmTextAlpha"),
+              wmBgAlpha: document.getElementById("wmBgAlpha"),
+              wmSize: document.getElementById("wmSize"),
+              fmtSeg: document.getElementById("fmtSeg"),
+              wmQuality: document.getElementById("wmQuality"),
+              wmScale: document.getElementById("wmScale"),
+            };
+            this.hasPreview = false;
+            this.wm = {
+              text: "",
+              pos: "tr",
+              color: "#ffea00",
+              bg: "#4B0071",
+              font: "default",
+              textAlpha: 100,
+              bgAlpha: 100,
+              size: 3.5,
+            };
+            this._raf = 0;
+            this.out = { format: "jpg", quality: 80, scale: 100 };
+            this.fx = { ...FX_PRESETS.orig };
+            this.bd = { size: 0, color: "#ffffff", radius: 0, angle: 0 };
+            this.sh = { size: 0, opacity: 55, color: "#000000", bg: "#ffffff", transparent: true };
+            this._fxSupported =
+              typeof CanvasRenderingContext2D !== "undefined" &&
+              "filter" in CanvasRenderingContext2D.prototype;
+            this._pops = [];
+            this._initUI();
+            this._bindEvents();
+            this._clearPreview();
+          }
+          _initUI() {
+            document.getElementById("helpDialogTitle").textContent = TEXT.help_title;
+            this.$.helpDialogBody.innerHTML = TEXT.help_body;
+          }
+          _bindEvents() {
+            this._bindWatermark();
+            this._bindFx();
+            this._bindFrame();
+            this._bindBg();
+            this._bindLightboxZoom();
+            this.$.addBtn.addEventListener("click", () => this._addScreenshots());
+            this.$.captureBtn.addEventListener("click", () => this._captureScreen());
+            this.$.empty.addEventListener("click", () => this._addScreenshots());
+            this.$.downloadBtn.addEventListener("click", () => this._download());
+            this.$.helpBtn.addEventListener("click", () => this.$.helpDialog.showModal());
+            this.$.helpDialogClose.addEventListener("click", () => this.$.helpDialog.close());
+            this.$.helpDialog.addEventListener("click", (e) => {
+              if (e.target === this.$.helpDialog) this.$.helpDialog.close();
+            });
+            this.$.preview.addEventListener("click", () => this._openLightbox());
+            this.$.lightboxClose.addEventListener("click", (e) => {
+              e.stopPropagation();
+              this._closeLightbox();
+            });
+            this.$.lightbox.addEventListener("click", (e) => {
+              if (e.target === this.$.lightbox) this._closeLightbox();
+            });
+            document.addEventListener("keydown", (e) => {
+              if (e.key === "Escape" && this.$.lightbox.classList.contains("open")) {
+                this._closeLightbox();
+              }
+            });
+            document.addEventListener("paste", (e) => {
+              const items = e.clipboardData?.items;
+              if (!items) return;
+              const files = [];
+              for (const item of items) {
+                if (item.kind === "file") {
+                  const f = item.getAsFile();
+                  if (f) files.push(f);
+                }
+              }
+              if (files.length) {
+                e.preventDefault();
+                this._addFiles(files);
+              }
+            });
+            let dragDepth = 0;
+            const appEl = document.querySelector(".app");
+            const hasFiles = (e) =>
+              !!e.dataTransfer && Array.from(e.dataTransfer.types || []).includes("Files");
+            document.addEventListener("dragenter", (e) => {
+              if (!hasFiles(e)) return;
+              e.preventDefault();
+              dragDepth++;
+              appEl.classList.add("drag-over");
+            });
+            document.addEventListener("dragover", (e) => {
+              if (!hasFiles(e)) return;
+              e.preventDefault();
+            });
+            document.addEventListener("dragleave", (e) => {
+              if (!hasFiles(e)) return;
+              dragDepth = Math.max(0, dragDepth - 1);
+              if (dragDepth === 0) appEl.classList.remove("drag-over");
+            });
+            document.addEventListener("drop", (e) => {
+              if (!hasFiles(e)) return;
+              e.preventDefault();
+              dragDepth = 0;
+              appEl.classList.remove("drag-over");
+              this._addFiles(e.dataTransfer.files);
+            });
+          }
+          _addScreenshots() {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "image/*";
+            input.multiple = true;
+            input.style.cssText = "position:fixed;top:-9999px;left:-9999px;";
+            document.body.appendChild(input);
+            input.addEventListener("cancel", () => input.remove());
+            input.onchange = () => {
+              const files = input.files;
+              input.remove();
+              this._addFiles(files);
+            };
+            input.click();
+          }
+          async _captureScreen() {
+            if (!navigator.mediaDevices?.getDisplayMedia) {
+              alert("当前浏览器或页面环境不支持屏幕截图（需要 https 或 localhost 访问）");
+              return;
+            }
+            let stream;
+            try {
+              stream = await navigator.mediaDevices.getDisplayMedia({
+                video: true,
+                audio: false,
+                selfBrowserSurface: "exclude",
+              });
+            } catch (_) {
+              return;
+            }
+            try {
+              const video = document.createElement("video");
+              video.muted = true;
+              video.playsInline = true;
+              video.srcObject = stream;
+              await video.play();
+              await new Promise((resolve) =>
+                video.requestVideoFrameCallback
+                  ? video.requestVideoFrameCallback(() => resolve())
+                  : setTimeout(resolve, 300),
+              );
+              await new Promise((resolve) => setTimeout(resolve, 300));
+              const c = document.createElement("canvas");
+              c.width = video.videoWidth;
+              c.height = video.videoHeight;
+              c.getContext("2d").drawImage(video, 0, 0);
+              const blob = await new Promise((resolve) => c.toBlob(resolve, "image/png"));
+              if (blob) {
+                await this._addFiles([new File([blob], "screenshot.png", { type: "image/png" })]);
+              }
+            } catch (err) {
+              console.error("Screen capture failed", err);
+            } finally {
+              stream.getTracks().forEach((t) => t.stop());
+            }
+          }
+          async _addFiles(fileList) {
+            const files = Array.from(fileList || []).filter((f) => f.type.startsWith("image/"));
+            if (files.length === 0) return;
+            const results = await Promise.allSettled(files.map((file) => loadImage(file)));
+            let failed = 0;
+            results.forEach((r) => {
+              if (r.status === "fulfilled") {
+                this.images.push(r.value);
+                this.states.push({
+                  useLocal: false,
+                  localTop: this.topRatio,
+                  localBottom: this.bottomRatio,
+                  localLeft: this.leftRatio,
+                  localRight: this.rightRatio,
+                });
+              } else {
+                failed++;
+                console.error("Failed to load image", r.reason);
+              }
+            });
+            if (failed > 0) console.warn(`${failed} image(s) failed to load`);
+            this._renderList();
+            this._generate();
+          }
+          _renderList() {
+            this.$.list.querySelectorAll(".screenshot-item").forEach((el) => el.remove());
+            this.items = [];
+            this.$.main.classList.toggle("is-empty", this.images.length === 0);
+            if (this.images.length === 0) {
+              this.$.empty.style.display = "flex";
+              return;
+            }
+            this.$.empty.style.display = "none";
+            this.images.forEach((img, idx) => {
+              const item = new ScreenshotItem(
+                img,
+                idx,
+                this.images.length,
+                this.topRatio,
+                this.bottomRatio,
+                this.leftRatio,
+                this.rightRatio,
+                this.states[idx],
+                {
+                  onMoveUp: (i) => this._move(i, -1),
+                  onMoveDown: (i) => this._move(i, 1),
+                  onRemove: (i) => this._remove(i),
+                  onChange: (type, val) => this._onHandleChange(type, val),
+                  onDragEnd: () => this._generate(),
+                },
+              );
+              this.items.push(item);
+              this.$.list.appendChild(item.el);
+            });
+          }
+          _onHandleChange(type, val) {
+            if (type === "top") this.topRatio = val;
+            else if (type === "bottom") this.bottomRatio = val;
+            else if (type === "left") this.leftRatio = val;
+            else this.rightRatio = val;
+            this.items.forEach((item) =>
+              item.updateGlobals(this.topRatio, this.bottomRatio, this.leftRatio, this.rightRatio),
+            );
+          }
+          _move(idx, dir) {
+            const target = idx + dir;
+            if (target < 0 || target >= this.images.length) return;
+            [this.images[idx], this.images[target]] = [this.images[target], this.images[idx]];
+            [this.states[idx], this.states[target]] = [this.states[target], this.states[idx]];
+            this._renderList();
+            this._generate();
+          }
+          _remove(idx) {
+            this.images.splice(idx, 1);
+            this.states.splice(idx, 1);
+            this._renderList();
+            if (this.images.length === 0) {
+              this.$.downloadBtn.disabled = true;
+              this._clearPreview();
+            } else {
+              this._generate();
+            }
+          }
+          _clearPreview() {
+            const c = this.$.preview;
+            c.width = 16;
+            c.height = 9;
+            c.classList.add("is-empty");
+            this.$.previewArea.classList.remove("has-preview");
+            this.hasPreview = false;
+          }
+          _generate() {
+            if (this.images.length === 0) return;
+            const slices = this.items.map((item) => {
+              const {
+                image: img,
+                topRatio,
+                bottomRatio,
+                leftRatio,
+                rightRatio,
+              } = item.getExportState();
+              return {
+                img,
+                sx: leftRatio * img.width,
+                sy: topRatio * img.height,
+                sw: Math.max(1, (rightRatio - leftRatio) * img.width),
+                sh: Math.max(1, (bottomRatio - topRatio) * img.height),
+              };
+            });
+            const outW = Math.max(1, Math.round(Math.min(...slices.map((s) => s.sw))));
+            let totalHeight = 0;
+            slices.forEach((s) => {
+              s.dy = totalHeight;
+              s.dh = (s.sh / s.sw) * outW;
+              totalHeight += s.dh;
+            });
+            const c = this.$.preview;
+            const innerH = Math.round(totalHeight);
+            const bw = Math.round((outW * this.bd.size) / 100);
+            const radius = Math.round((outW * this.bd.radius) / 100);
+            const blur = Math.round((outW * this.sh.size) / 100);
+            const offY = Math.round(blur * 0.35);
+            const pad = blur > 0 ? Math.round(blur * 1.5 + offY) : 0;
+            const bodyW = outW + bw * 2;
+            const bodyH = innerH + bw * 2;
+            const ang = (this.bd.angle * Math.PI) / 180;
+            const cos = Math.abs(Math.cos(ang));
+            const sin = Math.abs(Math.sin(ang));
+            const rotW = Math.ceil(bodyW * cos + bodyH * sin - 1e-6);
+            const rotH = Math.ceil(bodyW * sin + bodyH * cos - 1e-6);
+            c.width = rotW + pad * 2;
+            c.height = rotH + pad * 2;
+            const ctx = c.getContext("2d");
+            const shape = (x, y, w, h, r) => {
+              ctx.beginPath();
+              if (ctx.roundRect) ctx.roundRect(x, y, w, h, r);
+              else ctx.rect(x, y, w, h);
+            };
+            if (!this.sh.transparent && (pad > 0 || radius > 0 || ang !== 0)) {
+              ctx.fillStyle = this.sh.bg;
+              ctx.fillRect(0, 0, c.width, c.height);
+            }
+            ctx.save();
+            ctx.translate(c.width / 2, c.height / 2);
+            ctx.rotate(ang);
+            const x0 = -bodyW / 2;
+            const y0 = -bodyH / 2;
+            if (pad > 0) {
+              ctx.save();
+              ctx.shadowColor = this._rgba(this.sh.color, this.sh.opacity / 100);
+              ctx.shadowBlur = blur;
+              ctx.shadowOffsetY = offY;
+              ctx.fillStyle = "#000";
+              shape(x0 + 1, y0 + 1, bodyW - 2, bodyH - 2, Math.max(0, radius - 1));
+              ctx.fill();
+              ctx.restore();
+            }
+            if (bw > 0) {
+              ctx.fillStyle = this.bd.color;
+              shape(x0, y0, bodyW, bodyH, radius);
+              ctx.fill();
+            }
+            const innerRadius = Math.max(0, radius - bw);
+            ctx.save();
+            if (innerRadius > 0) {
+              shape(x0 + bw, y0 + bw, outW, innerH, innerRadius);
+              ctx.clip();
+            }
+            ctx.translate(x0 + bw, y0 + bw);
+            if (this._fxSupported) ctx.filter = this._filterString();
+            slices.forEach((s) => {
+              ctx.drawImage(s.img, s.sx, s.sy, s.sw, s.sh, 0, s.dy, outW, s.dh);
+            });
+            if (this._fxSupported) ctx.filter = "none";
+            this._drawWatermark(ctx, outW, innerH, innerRadius * 0.3);
+            ctx.restore();
+            ctx.restore();
+            c.classList.remove("is-empty");
+            this.$.previewArea.classList.add("has-preview");
+            this.hasPreview = true;
+            this.$.downloadBtn.disabled = false;
+          }
+          _scheduleGenerate() {
+            if (this._raf) return;
+            this._raf = requestAnimationFrame(() => {
+              this._raf = 0;
+              this._generate();
+            });
+          }
+          _bindWatermark() {
+            const $ = this.$;
+            const wm = this.wm;
+            const update = () => this._scheduleGenerate();
+            this._bindPopover($.settingsBtn, $.wmPop, $.wmClose);
+            $.wmText.addEventListener("input", () => {
+              wm.text = $.wmText.value;
+              update();
+            });
+            const syncPos = () => {
+              $.wmPos.querySelectorAll("button").forEach((b) => {
+                b.classList.toggle(
+                  "active",
+                  b.dataset.v ? b.dataset.v === wm.pos[0] : b.dataset.h === wm.pos[1],
+                );
+              });
+            };
+            $.wmPos.addEventListener("click", (e) => {
+              const btn = e.target.closest("button");
+              if (!btn) return;
+              wm.pos = btn.dataset.v ? btn.dataset.v + wm.pos[1] : wm.pos[0] + btn.dataset.h;
+              syncPos();
+              update();
+            });
+            syncPos();
+            $.wmColor.addEventListener("input", () => {
+              wm.color = $.wmColor.value;
+              update();
+            });
+            $.wmBg.addEventListener("input", () => {
+              wm.bg = $.wmBg.value;
+              update();
+            });
+            $.wmFont.addEventListener("change", () => {
+              if ($.wmFont.value === "__load") {
+                $.wmFont.value = wm.font;
+                this._loadFonts();
+                return;
+              }
+              wm.font = $.wmFont.value;
+              update();
+            });
+            this._initRange($.wmTextAlpha, "textAlpha", wm, update);
+            this._initRange($.wmBgAlpha, "bgAlpha", wm, update);
+            this._initRange($.wmSize, "size", wm, update);
+            this._initRange($.wmQuality, "quality", this.out);
+            this._initRange($.wmScale, "scale", this.out);
+            const releaseRanges = () =>
+              document
+                .querySelectorAll(".range.active")
+                .forEach((el) => el.classList.remove("active"));
+            document.addEventListener("pointerup", releaseRanges);
+            document.addEventListener("pointercancel", releaseRanges);
+            const syncFmt = () => {
+              const png = this.out.format === "png";
+              $.fmtSeg
+                .querySelectorAll("button")
+                .forEach((b) => b.classList.toggle("active", b.dataset.fmt === this.out.format));
+              $.wmQuality.disabled = png;
+              $.wmQuality.parentElement.classList.toggle("disabled", png);
+            };
+            ["webp"].forEach((fmt) => {
+              const type = "image/" + fmt;
+              const probe = document.createElement("canvas");
+              probe.width = probe.height = 1;
+              probe.toBlob((blob) => {
+                if (blob && blob.type === type) return;
+                const b = $.fmtSeg.querySelector(`[data-fmt="${fmt}"]`);
+                b.disabled = true;
+                b.title = "当前浏览器不支持";
+              }, type);
+            });
+            $.fmtSeg.addEventListener("click", (e) => {
+              const b = e.target.closest("button[data-fmt]");
+              if (!b || b.disabled) return;
+              this.out.format = b.dataset.fmt;
+              syncFmt();
+            });
+            syncFmt();
+          }
+          _bindPopover(btn, pop, closeBtn) {
+            this._pops.push(pop);
+            const place = () => {
+              const r = btn.getBoundingClientRect();
+              const w = pop.offsetWidth;
+              pop.style.left = Math.max(8, Math.min(r.left, window.innerWidth - w - 8)) + "px";
+              pop.style.top = r.bottom + 8 + "px";
+            };
+            const open = () => {
+              this._pops.forEach((p) => p !== pop && p._close && p._close());
+              pop.hidden = false;
+              place();
+              btn.classList.add("is-active");
+              btn.setAttribute("aria-expanded", "true");
+            };
+            const close = () => {
+              pop.hidden = true;
+              btn.classList.remove("is-active");
+              btn.setAttribute("aria-expanded", "false");
+            };
+            pop._close = close;
+            btn.addEventListener("click", () => (pop.hidden ? open() : close()));
+            closeBtn.addEventListener("click", close);
+            document.addEventListener("pointerdown", (e) => {
+              if (pop.hidden || pop.contains(e.target) || btn.contains(e.target)) return;
+              close();
+            });
+            document.addEventListener("keydown", (e) => {
+              if (e.key === "Escape" && !pop.hidden) close();
+            });
+            window.addEventListener("resize", () => {
+              if (!pop.hidden) place();
+            });
+          }
+          _initRange(input, key, target, onInput) {
+            const wrap = input.parentElement;
+            const tip = wrap.querySelector(".range-tip");
+            const sync = () => {
+              const min = +input.min;
+              const max = +input.max;
+              const pct = ((+input.value - min) / (max - min)) * 100;
+              tip.textContent = input.value + (input.dataset.unit || "");
+              tip.style.left = `calc(${pct}% + ${8 - pct * 0.16}px)`;
+            };
+            input.addEventListener("input", () => {
+              target[key] = +input.value;
+              sync();
+              if (onInput) onInput();
+            });
+            input.addEventListener("pointerdown", () => wrap.classList.add("active"));
+            input.syncTip = sync;
+            sync();
+          }
+          _bindFx() {
+            const el = (id) => document.getElementById(id);
+            const fx = this.fx;
+            const update = () => this._scheduleGenerate();
+            this._bindPopover(this.$.fxBtn, this.$.fxPop, this.$.fxClose);
+            const presetsEl = el("fxPresets");
+            const sliders = {
+              fxBrightness: "brightness",
+              fxContrast: "contrast",
+              fxSaturate: "saturate",
+              fxGrayscale: "grayscale",
+              fxSepia: "sepia",
+              fxHue: "hue",
+            };
+            const syncPresets = () => {
+              const cur = Object.keys(FX_PRESETS).find((k) =>
+                Object.keys(FX_PRESETS[k]).every((p) => FX_PRESETS[k][p] === fx[p]),
+              );
+              presetsEl
+                .querySelectorAll("button")
+                .forEach((b) => b.classList.toggle("active", b.dataset.preset === cur));
+            };
+            Object.entries(sliders).forEach(([id, key]) =>
+              this._initRange(el(id), key, fx, () => {
+                syncPresets();
+                update();
+              }),
+            );
+            presetsEl.addEventListener("click", (e) => {
+              const b = e.target.closest("button[data-preset]");
+              if (!b) return;
+              Object.assign(fx, FX_PRESETS[b.dataset.preset]);
+              Object.entries(sliders).forEach(([id, key]) => {
+                el(id).value = fx[key];
+                el(id).syncTip();
+              });
+              syncPresets();
+              update();
+            });
+            syncPresets();
+            if (!this._fxSupported) {
+              el("fxBox").classList.add("disabled");
+              el("fxNote").hidden = false;
+            }
+          }
+          _bindFrame() {
+            const el = (id) => document.getElementById(id);
+            const bd = this.bd;
+            const sh = this.sh;
+            const update = () => this._scheduleGenerate();
+            this._bindPopover(this.$.bsBtn, this.$.bsPop, this.$.bsClose);
+            this._initRange(el("bsBorder"), "size", bd, update);
+            this._initRange(el("bsRadius"), "radius", bd, update);
+            this._initRange(el("bsAngle"), "angle", bd, update);
+            this._initRange(el("bsShadow"), "size", sh, update);
+            this._initRange(el("bsOpacity"), "opacity", sh, update);
+            [
+              ["bsBorderColor", bd, "color"],
+              ["bsShadowColor", sh, "color"],
+            ].forEach(([id, obj, key]) =>
+              el(id).addEventListener("input", (e) => {
+                obj[key] = e.target.value;
+                update();
+              }),
+            );
+          }
+          _bindBg() {
+            const clear = document.getElementById("bsBgClear");
+            const picker = document.getElementById("bsBg");
+            const sh = this.sh;
+            clear.addEventListener("click", () => {
+              sh.transparent = !sh.transparent;
+              clear.classList.toggle("active", sh.transparent);
+              this._scheduleGenerate();
+            });
+            picker.addEventListener("input", () => {
+              sh.bg = picker.value;
+              sh.transparent = false;
+              clear.classList.remove("active");
+              this._scheduleGenerate();
+            });
+          }
+          _rgba(hex, alpha) {
+            const n = parseInt(hex.slice(1), 16);
+            return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${alpha})`;
+          }
+          _filterString() {
+            const f = this.fx;
+            const parts = [];
+            if (f.brightness !== 100) parts.push(`brightness(${f.brightness}%)`);
+            if (f.contrast !== 100) parts.push(`contrast(${f.contrast}%)`);
+            if (f.saturate !== 100) parts.push(`saturate(${f.saturate}%)`);
+            if (f.grayscale !== 0) parts.push(`grayscale(${f.grayscale}%)`);
+            if (f.sepia !== 0) parts.push(`sepia(${f.sepia}%)`);
+            if (f.hue !== 0) parts.push(`hue-rotate(${f.hue}deg)`);
+            return parts.length ? parts.join(" ") : "none";
+          }
+          _bindLightboxZoom() {
+            const lb = this.$.lightbox;
+            const img = this.$.lightboxCanvas;
+            const z = { s: 1, x: 0, y: 0 };
+            const apply = () => {
+              img.style.transform = `translate(${z.x}px, ${z.y}px) scale(${z.s})`;
+              lb.classList.toggle("zoomed", z.s > 1);
+            };
+            this._resetZoom = () => {
+              z.s = 1;
+              z.x = 0;
+              z.y = 0;
+              apply();
+            };
+            lb.addEventListener(
+              "wheel",
+              (e) => {
+                e.preventDefault();
+                if (!lb.classList.contains("open")) return;
+                const dy = e.deltaMode === 1 ? e.deltaY * 33 : e.deltaY;
+                const max = Math.max(4, (2 * img.width) / Math.max(1, img.clientWidth));
+                const next = Math.min(max, Math.max(1, z.s * Math.exp(-dy * 0.002)));
+                if (next === z.s) return;
+                const px = e.clientX - window.innerWidth / 2;
+                const py = e.clientY - window.innerHeight / 2;
+                const k = next / z.s;
+                z.x = px - (px - z.x) * k;
+                z.y = py - (py - z.y) * k;
+                z.s = next;
+                if (z.s === 1) {
+                  z.x = 0;
+                  z.y = 0;
+                }
+                apply();
+              },
+              { passive: false },
+            );
+            let drag = null;
+            img.addEventListener("pointerdown", (e) => {
+              if (z.s <= 1) return;
+              e.preventDefault();
+              img.setPointerCapture(e.pointerId);
+              drag = { id: e.pointerId, x: e.clientX - z.x, y: e.clientY - z.y };
+              lb.classList.add("panning");
+            });
+            img.addEventListener("pointermove", (e) => {
+              if (!drag || e.pointerId !== drag.id) return;
+              z.x = e.clientX - drag.x;
+              z.y = e.clientY - drag.y;
+              apply();
+            });
+            const end = (e) => {
+              if (!drag || e.pointerId !== drag.id) return;
+              drag = null;
+              lb.classList.remove("panning");
+            };
+            img.addEventListener("pointerup", end);
+            img.addEventListener("pointercancel", end);
+            img.addEventListener("dblclick", () => this._resetZoom());
+          }
+          _addFontOptions(families) {
+            const sel = this.$.wmFont;
+            const loadOpt = sel.querySelector('option[value="__load"]');
+            const have = new Set(Array.from(sel.options).map((o) => o.value));
+            families.forEach((f) => {
+              const v = "local:" + f;
+              if (have.has(v)) return;
+              const o = document.createElement("option");
+              o.value = v;
+              o.textContent = f;
+              sel.insertBefore(o, loadOpt);
+            });
+          }
+          async _loadFonts() {
+            if (typeof window.queryLocalFonts === "function") {
+              try {
+                const list = await window.queryLocalFonts();
+                const families = Array.from(new Set(list.map((f) => f.family))).sort((a, b) =>
+                  a.localeCompare(b, "zh"),
+                );
+                if (families.length) {
+                  this._addFontOptions(families);
+                  try {
+                    this.$.wmFont.showPicker?.();
+                  } catch (_) {}
+                  return;
+                }
+              } catch (err) {
+                console.warn("queryLocalFonts failed", err);
+              }
+            }
+            this._pickFontFile();
+          }
+          _pickFontFile() {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = ".ttf,.otf,.woff,.woff2,.ttc";
+            input.style.cssText = "position:fixed;top:-9999px;left:-9999px;";
+            document.body.appendChild(input);
+            input.addEventListener("cancel", () => input.remove());
+            input.onchange = async () => {
+              const file = input.files && input.files[0];
+              input.remove();
+              if (!file) return;
+              const name = file.name.replace(/\.[^.]+$/, "");
+              try {
+                const face = new FontFace(name, await file.arrayBuffer());
+                await face.load();
+                document.fonts.add(face);
+                this._addFontOptions([name]);
+                this.$.wmFont.value = "local:" + name;
+                this.wm.font = this.$.wmFont.value;
+                this._scheduleGenerate();
+              } catch (err) {
+                console.error("Failed to load font", err);
+              }
+            };
+            input.click();
+          }
+          _fontStack(key) {
+            if (key === "hei")
+              return '"Microsoft YaHei","PingFang SC","Heiti SC","SimHei","Noto Sans CJK SC",sans-serif';
+            if (key === "song") return '"SimSun","Songti SC","STSong","Noto Serif CJK SC",serif';
+            if (key.startsWith("local:")) return `"${key.slice(6).replace(/"/g, "")}",sans-serif`;
+            return 'system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif';
+          }
+          _drawWatermark(ctx, w, h, inset = 0) {
+            const wm = this.wm;
+            const text = wm.text.trim();
+            if (!text) return;
+            const fs = Math.max(8, Math.round((w * wm.size) / 100));
+            ctx.save();
+            ctx.font = `600 ${fs}px ${this._fontStack(wm.font)}`;
+            ctx.textBaseline = "alphabetic";
+            ctx.textAlign = "left";
+            const m = ctx.measureText(text);
+            const inkL = m.actualBoundingBoxLeft ?? 0;
+            const inkR = m.actualBoundingBoxRight ?? m.width;
+            const ascent = m.actualBoundingBoxAscent ?? fs * 0.8;
+            const descent = m.actualBoundingBoxDescent ?? fs * 0.2;
+            const padX = fs * 0.5;
+            const padY = fs * 0.45;
+            const margin = Math.max(fs * 0.6, inset);
+            const bw = inkL + inkR + padX * 2;
+            const bh = ascent + descent + padY * 2;
+            const x = Math.max(0, wm.pos[1] === "l" ? margin : w - bw - margin);
+            const y = Math.max(0, wm.pos[0] === "t" ? margin : h - bh - margin);
+            ctx.globalAlpha = wm.bgAlpha / 100;
+            ctx.fillStyle = wm.bg;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(x, y, bw, bh, fs * 0.25);
+            else ctx.rect(x, y, bw, bh);
+            ctx.fill();
+            ctx.globalAlpha = wm.textAlpha / 100;
+            ctx.fillStyle = wm.color;
+            ctx.fillText(text, x + padX + inkL, y + padY + ascent);
+            ctx.restore();
+          }
+          _openLightbox() {
+            if (!this.hasPreview) return;
+            const src = this.$.preview;
+            const c = this.$.lightboxCanvas;
+            c.width = src.width;
+            c.height = src.height;
+            c.getContext("2d").drawImage(src, 0, 0);
+            this._resetZoom();
+            this.$.lightbox.classList.add("open");
+            document.body.style.overflow = "hidden";
+          }
+          _closeLightbox() {
+            this.$.lightbox.classList.remove("open");
+            document.body.style.overflow = "";
+            setTimeout(() => {
+              if (!this.$.lightbox.classList.contains("open")) {
+                this.$.lightboxCanvas.width = 1;
+                this.$.lightboxCanvas.height = 1;
+              }
+            }, 200);
+          }
+          _download() {
+            const fmt = this.out.format;
+            const src = this.$.preview;
+            const k = this.out.scale / 100;
+            const flatten = fmt === "jpg" && this.sh.transparent;
+            let canvas = src;
+            if (k < 1 || flatten) {
+              canvas = document.createElement("canvas");
+              canvas.width = Math.max(1, Math.round(src.width * k));
+              canvas.height = Math.max(1, Math.round(src.height * k));
+              const ctx = canvas.getContext("2d");
+              if (flatten) {
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+              }
+              ctx.imageSmoothingQuality = "high";
+              ctx.drawImage(src, 0, 0, canvas.width, canvas.height);
+            }
+            downloadCanvas(
+              canvas,
+              TEXT.joined_screenshot,
+              "image/" + (fmt === "jpg" ? "jpeg" : fmt),
+              fmt === "png" ? undefined : this.out.quality / 100,
+            );
+          }
+        }
+        new App();
+      })();
+    </script>
+  </body>
+</html>

@@ -21,10 +21,12 @@ tags: ["Windows"]
 - 关闭服务：运行 `services.msc`，找到如下服务停止并禁用
 	- 搜索索引：Windows Search
 	- 软件预载：SysMain
+	- 遥测服务：Connected User Experiences and Telemetry
 	- 兼容助手：Program Compatibility Assistant Service
 - 设置免密登陆：运行 `netplwiz` - 去勾“要使用本机，必须输入密码”
 	- 无勾选框？运行 `regedit` - 定位到`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device`
 	  将右侧 `DevicePasswordLessBuildVersion` 值改为 `0`
+	- 或使用 [Autologon](https://learn.microsoft.com/zh-cn/sysinternals/downloads/autologon)：右键以管理员身份运行选启用或禁用填入用户名和密码
 - 关闭网卡和蓝牙节约电源：右键开始 - 设备管理器 - 右键网络适配器中的网卡和蓝牙属性 - 电源管理 - 去掉节约电源
 - 设置睡眠：右键开始 - 电源选项 -屏幕和睡眠 - 都改成从不
 - 取消快速启动：开始 - 控制面板 - 系统和安全 - 电源选项 - 选择电源按钮功能 - 更改不可用设置
@@ -32,9 +34,10 @@ tags: ["Windows"]
 - 麦克风增强：右键托盘声音 - 声音设置 - 麦克风 - 增强音频“高级” - 级别
 - 关闭休眠与快速启动：`powercfg -h off`
 - 关闭无操作时行为：系统 - 电源 - 屏墓睡眠和休眠超时都改为“从不”
+- 外观性能：开始 - 外观和性能 - 先“调为最佳性能”，再勾选“平滑屏幕字体、拖动时显示内容、显示缩略图、在窗口下显示阴影”
 - 登录 OneDrive ；更改文档、图片、视频、下载的默认目录路径
 - 设置Pin密码登录：账户 - 登录选项 - PIN
-- 隐私和安全性 - 不用的都关闭
+- 隐私和安全性 - 诊断和反馈 - 不用的都关闭
 - 个性化
 	- 主题 - 选深色；桌面图标设置 - 去勾“回收站”
 	- 开始 - 关闭“最近使用、全部”
@@ -42,6 +45,7 @@ tags: ["Windows"]
 - 系统 - 多任务处理 - 贴靠窗口 - 将窗口拖动到屏幕顶部时显示贴靠布局去勾
 - 关闭传递优化：Windows 更新 - 高级选项 - 允许从其他设备下载
 - 系统 - 高级 - 终端分类 - Powershell 开启允许本地脚本，启用sudo
+- 时间和语言 - 输入 - 高级键盘设置 - 允许为每个应用使用不同的输入法
 
 ## 个性化
 
