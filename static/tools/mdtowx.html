@@ -29,7 +29,6 @@
   --danger-soft: #fff0f0;
   --radius-sm: 6px;
   --radius-md: 8px;
-  --radius-lg: 12px;
   --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
   --shadow-md: 0 4px 16px rgba(0,0,0,.06);
   --shadow-device: 0 8px 28px rgba(0,0,0,.08);
@@ -49,57 +48,6 @@ html, body {
   flex-direction: column;
   height: 100dvh;
   overflow: hidden;
-}
-
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.select-control-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--bg-subtle);
-  padding: 3px 4px 3px 10px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-}
-.select-control-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--text-muted);
-  user-select: none;
-  white-space: nowrap;
-}
-.theme-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.header-select {
-  min-width: 148px;
-  padding: 5px 8px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 550;
-  cursor: pointer;
-  outline: none;
-  transition: border-color .15s;
-}
-.header-select:hover { border-color: var(--border-strong); }
-.header-select:focus-visible {
-  outline: 2px solid var(--brand);
-  outline-offset: 1px;
 }
 
 /* Icon button base */
@@ -127,7 +75,7 @@ html, body {
   background: var(--bg-hover);
   color: var(--text-primary);
 }
-.icon-btn:active { background: #e4e6ea; }
+.icon-btn:active { background: var(--border-color); }
 .icon-btn:focus-visible {
   outline: 2px solid var(--brand);
   outline-offset: 1px;
@@ -139,39 +87,6 @@ html, body {
 .icon-btn.active {
   background: var(--bg-hover);
   color: var(--text-primary);
-}
-
-/* Primary copy button */
-.btn-copy-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: none;
-  border-radius: 9px;
-  background: linear-gradient(135deg, #07c160, #059669);
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(7, 193, 96, .28);
-  transition: transform .12s, box-shadow .12s, background .15s;
-  flex-shrink: 0;
-}
-.btn-copy-primary:hover {
-  background: linear-gradient(135deg, #06ad56, #047857);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(7, 193, 96, .35);
-}
-.btn-copy-primary:active { transform: translateY(0); }
-.btn-copy-primary.copied {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, .3);
-}
-.btn-copy-primary svg {
-  width: 18px;
-  height: 18px;
-  pointer-events: none;
 }
 
 /* ── Workspace ── */
@@ -219,54 +134,6 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Quote dropdown */
-.snippet-dropdown-trigger {
-  anchor-name: --quote-menu-anchor;
-}
-.snippet-popover-panel {
-  position-anchor: --quote-menu-anchor;
-  position-area: block-end span-inline-end;
-  position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
-  inset: auto;
-  margin: 4px 0 0;
-  padding: 4px;
-  min-width: 220px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-}
-[popover]:is(:popover-open, .\:popover-open).snippet-popover-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-.snippet-popover-divider {
-  height: 1px;
-  margin: 3px 4px;
-  background: var(--border-color);
-}
-.snippet-popover-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 7px 8px;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-primary);
-  font-size: 12.5px;
-  font-weight: 500;
-  text-align: left;
-  cursor: pointer;
-  transition: background .1s;
-}
-.snippet-popover-item:hover,
-.snippet-popover-item:focus-visible {
-  background: var(--bg-subtle);
-  outline: none;
-}
 .alert-badge {
   display: inline-flex;
   align-items: center;
@@ -293,6 +160,68 @@ html, body {
   border-radius: 4px;
   border: 1px solid var(--border-color);
 }
+
+/* ── Popover 面板（引用菜单 / 菜单 / 设置） ── */
+.snippet-popover-panel,
+.menu-popover-panel,
+.settings-popover-panel {
+  position: fixed;
+  inset: unset;
+  margin: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  z-index: 1000;
+}
+.snippet-popover-panel:popover-open,
+.menu-popover-panel:popover-open,
+.settings-popover-panel:popover-open {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.snippet-popover-panel { padding: 4px; min-width: 220px; }
+.menu-popover-panel {
+  padding: 6px;
+  min-width: 220px;
+  max-height: min(70vh, 420px);
+  overflow-y: auto;
+}
+.settings-popover-panel { padding: 10px; min-width: 180px; }
+.settings-popover-panel:popover-open { gap: 8px; }
+
+.snippet-popover-item,
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 8px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background .1s;
+}
+.snippet-popover-item:hover, .snippet-popover-item:focus-visible,
+.menu-item:hover, .menu-item:focus-visible {
+  background: var(--bg-subtle);
+  outline: none;
+}
+.snippet-popover-divider,
+.menu-divider,
+.settings-popover-divider {
+  height: 1px;
+  background: var(--border-color);
+}
+.snippet-popover-divider { margin: 3px 4px; }
+.menu-divider { margin: 4px 6px; }
+.settings-popover-divider { margin: 2px 0; }
 
 /* Scrollbar */
 .scroller {
@@ -460,39 +389,7 @@ html, body {
   align-items: center;
   gap: 4px;
 }
-.view-mode-switch {
-  display: inline-flex;
-  background: var(--bg-hover);
-  padding: 2px;
-  border-radius: 7px;
-  gap: 1px;
-}
-.view-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 26px;
-  padding: 0;
-  border: none;
-  border-radius: 5px;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: background .12s, color .12s;
-}
-.view-btn svg { width: 15px; height: 15px; pointer-events: none; }
-.view-btn:hover { color: var(--text-primary); }
-.view-btn.active {
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  box-shadow: var(--shadow-sm);
-}
 
-.pane-toolbar-preview {
-  justify-content: space-between;
-  gap: 8px;
-}
 .preview-toolbar-left {
   display: flex;
   align-items: center;
@@ -500,32 +397,7 @@ html, body {
   flex-wrap: wrap;
   min-width: 0;
 }
-.settings-popover-divider {
-  height: 1px;
-  background: var(--border-color);
-  margin: 2px 0;
-}
 
-
-.menu-popover-panel {
-  position: fixed;
-  inset: unset;
-  margin: 0;
-  padding: 6px;
-  min-width: 220px;
-  max-height: min(70vh, 420px);
-  overflow-y: auto;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-  z-index: 1000;
-}
-[popover]:is(:popover-open, .\:popover-open).menu-popover-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
 .menu-popover-title {
   font-size: 11px;
   font-weight: 650;
@@ -537,31 +409,6 @@ html, body {
   font-weight: 650;
   color: var(--text-muted);
   padding: 6px 8px 2px;
-}
-.menu-divider {
-  height: 1px;
-  background: var(--border-color);
-  margin: 4px 6px;
-}
-.menu-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 7px 8px;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-primary);
-  font-size: 12.5px;
-  font-weight: 500;
-  text-align: left;
-  cursor: pointer;
-  transition: background .1s;
-}
-.menu-item:hover, .menu-item:focus-visible {
-  background: var(--bg-subtle);
-  outline: none;
 }
 .menu-item.active {
   background: var(--brand-soft);
@@ -627,34 +474,9 @@ html, body {
   color: #047857;
 }
 
-
-
-
-
 .settings-trigger {
-  anchor-name: --settings-menu-anchor;
   border: 1px solid var(--border-color);
   background: var(--bg-surface);
-}
-.settings-trigger:hover {
-  border-color: var(--border-strong);
-}
-.settings-popover-panel {
-  position: fixed;
-  inset: unset;
-  margin: 0;
-  padding: 10px;
-  min-width: 180px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-  z-index: 1000;
-}
-[popover]:is(:popover-open, .\:popover-open).settings-popover-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 }
 .settings-popover-title {
   font-size: 11px;
@@ -910,7 +732,7 @@ html, body {
       </section>
 
       <section class="pane pane-preview" aria-label="微信公众号实时预览区">
-        <div class="pane-toolbar pane-toolbar-preview">
+        <div class="pane-toolbar">
           <div class="preview-toolbar-left">
             <button type="button" class="icon-btn" id="btn-theme-menu" popovertarget="theme-menu-panel" title="排版风格">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1066,11 +888,11 @@ html, body {
 - *斜体文字*：使用 \`*文字*\` 实现 *术语补充或外文引述*。
 - ~~删除线~~：使用 \`~~文字~~\` 标记 ~~已废弃的旧版方案~~。
 - 行内代码：使用反引号包裹如 \`npm run build\` 或 \`WeChatConverter.convert()\`。
-- 外部超链接：例如查阅 [微信公众号编辑器排版规范](https://developers.weixin.qq.com/doc/service/guide/product/plugin_spec.html) 或访问 [GitHub 官方首页](https://github.com/)，开启顶部「外链转文末引用」后会自动生成右上角标并在文末汇总。
+- 外部超链接：例如查阅 [微信公众号编辑器排版规范](https://developers.weixin.qq.com/doc/service/guide/product/plugin_spec.html) 或访问 [GitHub 官方首页](https://github.com/)，开启设置中的「脚注」后会自动生成右上角标并在文末汇总。
 
 ## 标题层级与自动序号
 
-上方展示了二级标题（\`##\`）的样式。勾选右侧工具栏的 **「标题自动序号」** 时，系统会自动按主题风格生成 \`01\`、\`02\` 章节角标；若取消勾选，则立即恢复为纯净无序号标题。下面是三级与四级标题层次：
+上方展示了二级标题（\`##\`）的样式。勾选预览设置中的 **「序号」** 时，系统会自动按主题风格生成 \`01\`、\`02\` 章节角标；若取消勾选，则立即恢复为纯净无序号标题。下面是三级与四级标题层次：
 
 ### 三级标题（H3）：适合小节核心观点
 
@@ -1103,7 +925,7 @@ html, body {
 
 **任务复选框清单：**
 - [x] 完成文章核心结构与 Markdown 语法编写
-- [x] 通过底部状态栏「✓ 微信排版规范校验通过」实时检测
+- [x] 通过底部状态栏「规范校验」徽标实时检测
 - [ ] 一键复制富文本并粘贴至微信公众号后台发布
 
 ## 代码块与语法高亮
@@ -1138,7 +960,7 @@ function publishArticle(markdownText, themeId = 'editorial-sspai') {
 
 ---
 
-现在，你可以点击编辑器右上角的 **「清空」** 按钮开始创作，或在顶部 **「📄 示例模板」** 下拉框中体验完整场景模板！`},"editorial-article":{id:"editorial-article",name:"📰 深度专栏与产品评论模板",recommendedTheme:"editorial-latepost",content:`# 当工具回归直觉：重新思考 AI 时代的创作者工作流
+现在，你可以点击编辑器工具栏右侧的 **垃圾桶图标** 清空内容开始创作，或在预览工具栏的 **示例模板** 菜单中体验完整场景模板！`},"editorial-article":{id:"editorial-article",name:"📰 深度专栏与产品评论模板",recommendedTheme:"editorial-latepost",content:`# 当工具回归直觉：重新思考 AI 时代的创作者工作流
 
 在过去十年的软件演进史中，生产力工具经历了从**「功能堆叠」**到**「结构克制」**的钟摆回落。当大多数编辑器试图把数百个排版按钮塞进工具栏时，真正高频产出的写作者却在重新拥抱纯文本。
 
@@ -1178,7 +1000,7 @@ function publishArticle(markdownText, themeId = 'editorial-sspai') {
 
 1. **在本地笔记软件中沉浸完稿**：使用 Obsidian、Notion 或 Typora 专注打磨内容逻辑与章节结构。
 2. **一键注入结构化主题滤镜**：将 Markdown 原文粘贴至工作台，根据文章调性选择「商业深度·晚点风」「数字生活·少数派风」或「人文随笔·松烟墨」。
-3. **零微调直接发布**：开启「标题自动序号」与「外链转文末引用」，一键复制并粘贴至公众号草稿箱。
+3. **零微调直接发布**：开启「序号」与「脚注」，一键复制并粘贴至公众号草稿箱。
 
 ---
 
@@ -1309,53 +1131,513 @@ export class BoundedScheduler {
 
 ---
 
-**🙌 席位有限，期待周六在线下与各位开发者朋友见面畅聊！**`}};T.WeChatSamples=y})(window);(function(T){"use strict";function y(d){return String(d).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function f(d){let x=d.replace(/\t/g,"  ").split(/(<[^>]+>)/g);for(let n=0;n<x.length;n++)n%2===0&&(x[n]=x[n].replace(/ /g,"&nbsp;"));return x.join("").replace(/\n/g,"<br />")}function oe(d,s,x){let n=x||{keyword:"#c084fc",string:"#86efac",comment:"#94a3b8",number:"#fb923c",function:"#60a5fa",type:"#fcd34d",operator:"#38bdf8"},r=[];function e(i){let g=`TOK_${r.length}_`;return r.push(i),g}function a(i){return i.replace(/\u0002TOK_(\d+)_\u0003/g,(g,v)=>r[Number(v)]).replace(/\u0002TOK_(\d+)_\u0003/g,(g,v)=>r[Number(v)])}let t=y(d),l=(s||"").toLowerCase().trim();if(["json","jsonc","jsonl"].includes(l))return t=t.replace(/\/\*[\s\S]*?\*\//g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),t=t.replace(/(\/\/[^\n]*)/g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),t=t.replace(/(&quot;(?:\\&quot;|[^&]|&(?!quot;))*?&quot;)(\s*:)/g,(i,g,v)=>e(`<span style="color: ${n.function}; font-weight: 600;">${g}</span>`)+v),t=t.replace(/(&quot;(?:\\&quot;|[^&]|&(?!quot;))*?&quot;)/g,i=>e(`<span style="color: ${n.string};">${i}</span>`)),t=t.replace(/\b(true|false|null)\b/g,i=>e(`<span style="color: ${n.keyword}; font-weight: 600;">${i}</span>`)),t=t.replace(/(-?\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b)/g,i=>e(`<span style="color: ${n.number};">${i}</span>`)),f(a(t));if(["html","htm","xml","svg","vue"].includes(l))return t=t.replace(/(&lt;!--[\s\S]*?--&gt;|&lt;!DOCTYPE[\s\S]*?&gt;)/gi,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),t=t.replace(/(&lt;\/?[a-zA-Z][\w:-]*(?:[^&]|&(?!gt;))*?\/?&gt;)/g,i=>{let g=i;return g=g.replace(/(&quot;(?:\\&quot;|[^&]|&(?!quot;))*?&quot;|&#39;(?:\\&#39;|[^&]|&(?!#39;))*?&#39;)/g,v=>e(`<span style="color: ${n.string};">${v}</span>`)),g=g.replace(/^(&lt;\/?)([a-zA-Z][\w:-]*)/,(v,H,P)=>e(`<span style="color: ${n.comment};">${H}</span>`)+e(`<span style="color: ${n.keyword}; font-weight: 600;">${P}</span>`)),g=g.replace(/(\/?&gt;)$/,v=>e(`<span style="color: ${n.comment};">${v}</span>`)),g=g.replace(/(\s+)([a-zA-Z_:@][\w:.-]*)/g,(v,H,P)=>H+e(`<span style="color: ${n.type};">${P}</span>`)),e(g)}),f(a(t));if(["css","scss","less"].includes(l))return t=t.replace(/\/\*[\s\S]*?\*\//g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),l!=="css"&&(t=t.replace(/(\/\/[^\n]*)/g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`))),t=t.replace(/(&quot;(?:\\&quot;|[^&]|&(?!quot;))*?&quot;|&#39;(?:\\&#39;|[^&]|&(?!#39;))*?&#39;)/g,i=>e(`<span style="color: ${n.string};">${i}</span>`)),t=t.replace(/(@[a-zA-Z-]+)/g,i=>e(`<span style="color: ${n.keyword}; font-weight: 600;">${i}</span>`)),t=t.replace(/(^[\t ]*|[;{(][\t ]*)([a-zA-Z-]+|--[\w-]+)(\s*:(?!:))/gm,(i,g,v,H)=>g+e(`<span style="color: ${n.function};">${v}</span>`)+H),t=t.replace(/(:\s*|\s)(#[0-9a-fA-F]{3,8})\b/g,(i,g,v)=>g+e(`<span style="color: ${n.number};">${v}</span>`)),t=t.replace(/([.#][a-zA-Z_][\w-]*|::?[a-zA-Z-]+(?:\([^)]*\))?)(?=[^{};]*\{)/g,i=>e(`<span style="color: ${n.type}; font-weight: 600;">${i}</span>`)),t=t.replace(/\b(var|calc|rgb|rgba|hsl|hsla|url|linear-gradient|radial-gradient|clamp|min|max|minmax|repeat|translate[XY3d]*|scale[XY3d]*|rotate[XYZ3d]*|cubic-bezier)(?=\()/g,i=>e(`<span style="color: ${n.type};">${i}</span>`)),t=t.replace(/(-?\b\d+(?:\.\d+)?(?:px|rem|em|vh|vw|dvh|vmin|vmax|%|s|ms|deg|rad|turn|fr|ch|ex)?\b)/g,i=>e(`<span style="color: ${n.number};">${i}</span>`)),t=t.replace(/(!important|\b(?:none|auto|inherit|initial|unset|solid|dashed|dotted|flex|grid|block|inline|inline-block|inline-flex|relative|absolute|fixed|sticky|hidden|visible|scroll|pointer|center|left|right|justify|bold|normal|italic|nowrap|pre|pre-wrap|break-word|border-box|content-box)\b)/g,i=>e(`<span style="color: ${n.keyword};">${i}</span>`)),f(a(t));let c=["py","python","sh","bash","zsh","shell","yaml","yml","toml","dockerfile","ruby","rb","conf","ini"].includes(l);t=t.replace(/\/\*[\s\S]*?\*\//g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),t=t.replace(/(\/\/[^\n]*)/g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),c&&(t=t.replace(/(^|\s)(#[^\n]*)/gm,(i,g,v)=>g+e(`<span style="color: ${n.comment}; font-style: italic;">${v}</span>`))),t=t.replace(/(`(?:\\[\s\S]|[^\\`])*`|&quot;(?:\\&quot;|[^&]|&(?!quot;))*?&quot;|&#39;(?:\\&#39;|[^&]|&(?!#39;))*?&#39;)/g,i=>e(`<span style="color: ${n.string};">${i}</span>`));let h=/\b(async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|false|finally|for|from|function|func|go|if|implements|import|in|instanceof|interface|let|new|nil|null|package|private|protected|public|readonly|return|select|static|struct|super|switch|this|throw|true|try|type|typeof|undefined|var|void|while|with|yield|def|elif|except|lambda|nonlocal|pass|raise|Self|impl|fn|pub|mut|use|mod|match|where)\b/g;t=t.replace(h,i=>e(`<span style="color: ${n.keyword}; font-weight: 600;">${i}</span>`));let E=/\b(Promise|Array|Map|Set|Record|Partial|Required|Error|String|Number|Boolean|Object|Symbol|BigInt|Date|RegExp|AbortSignal|console|Math|JSON|window|document)\b/g;return t=t.replace(E,i=>e(`<span style="color: ${n.type};">${i}</span>`)),t=t.replace(/\b(\d+(?:_\d+)*(?:\.\d+)?)\b/g,i=>e(`<span style="color: ${n.number};">${i}</span>`)),t=t.replace(/\b([a-zA-Z_$][\w$]*)(?=\s*(?:&lt;[^&]*&gt;)?\s*\()/g,i=>e(`<span style="color: ${n.function};">${i}</span>`)),f(a(t))}let o=[25,25,25],G=9.8039,V=25,D=127;function L(d){if(!d)return null;let s=String(d).trim(),x=s.match(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/);if(x){let r=x[1].length===3?x[1].split("").map(a=>a+a).join(""):x[1],e=parseInt(r,16);return[e>>16&255,e>>8&255,e&255]}let n=s.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);return n?[Math.min(255,parseInt(n[1],10)),Math.min(255,parseInt(n[2],10)),Math.min(255,parseInt(n[3],10))]:null}function F(d){return"#"+d.map(s=>Math.max(0,Math.min(255,Math.round(s))).toString(16).padStart(2,"0")).join("")}function O(d){return(d[0]*299+d[1]*587+d[2]*114)/1e3}function q(d){let s=d[0]/255,x=d[1]/255,n=d[2]/255,r=Math.min(s,x,n),e=Math.max(s,x,n),a=e-r,t=0,l=(r+e)/2;e!==r&&(s===e?t=(x-n)/a:x===e?t=2+(n-s)/a:t=4+(s-x)/a,t=Math.min(t*60,360),t<0&&(t+=360));let c=e===r?0:l<=.5?a/(e+r):a/(2-e-r);return[t,c*100,l*100]}function B(d){let s=d[0]/360,x=d[1]/100,n=d[2]/100;if(x===0){let t=n*255;return[t,t,t]}let r=n<.5?n*(1+x):n+x-n*x,e=2*n-r,a=[0,0,0];for(let t=0;t<3;t++){let l=s+.3333333333333333*-(t-1);l<0&&l++,l>1&&l--;let c;6*l<1?c=e+(r-e)*6*l:2*l<1?c=r:3*l<2?c=e+(r-e)*(2/3-l)*6:c=e,a[t]=c*255}return a}function R(d,s){let x=O(s);if(x<=0)return[d,d,d];let n=d/x,r=Math.min(255,s[0]*n),e=Math.min(255,s[1]*n),a=Math.min(255,s[2]*n);return e===0||r===255||a===255?e=(d*1e3-r*299-a*114)/587:r===0?r=(d*1e3-e*587-a*114)/299:(a===0||e===255)&&(a=(d*1e3-r*299-e*587)/114),[Math.max(0,Math.min(255,r)),Math.max(0,Math.min(255,e)),Math.max(0,Math.min(255,a))]}function re(d,s){let x=e=>{let[a,t,l]=e.map(c=>{let h=c/255;return h<=.03928?h/12.92:Math.pow((h+.055)/1.055,2.4)});return .2126*a+.7152*t+.0722*l},n=x(d),r=x(s);return(Math.max(n,r)+.05)/(Math.min(n,r)+.05)}function Y(d){if(!d)return o;let s=q(d),x=O(d);return s[1]===0&&s[2]>40||x>250?B([0,0,Math.min(100,100+G-s[2])]):x>190?R(190,d):s[2]<22?B([s[0],s[1],22]):d}function I(d,s){if(!d)return[163,163,163];let x=s||o,n=O(x),r=q(d),e=O(d),a=Math.abs(n-e);return e>=250?d:a>D&&n<=V+2?R(D+n,d):a>=65?d:n>=100?r[2]>50?(r[2]=90-r[2],I(B(r),x)):R(Math.min(D,n-65),d):r[2]<=40?(r[2]=90-r[2],I(B(r),x)):R(Math.min(D,n+65),d)}function Z(d,s,x){if(!d)return d;let n=q(d),r=O(d),e=O(x||[255,255,255]);if(r<60&&e<=80)return B([n[0],n[1],Math.max(n[2],28)]);if(r>180&&n[2]>70){let a=Math.max(22,Math.min(36,100+G-n[2]+5));return B([n[0],Math.min(n[1],35),a])}return I(d,s)}function ne(d,s){let x=s?Y(L(s)):o,n=L(d||"#191919")||[163,163,163],r=I(n,x);return re(r,x)}function Q(d){if(!d)return;function s(n,r,e){if(!n||n.nodeType!==1)return;let a=r,t=e,l=n.getAttribute("style");if(l){let h=l;h=h.replace(/(^|;\s*)(background(?:-color)?\s*:\s*)(#[0-9a-fA-F]{3,6}|rgba?\([^)]+\))/gi,(E,i,g,v)=>{let H=L(v);return H?(t=H,a=Y(H),`${i}${g}${F(a)}`):E}),h=h.replace(/(^|;\s*)(color\s*:\s*)(#[0-9a-fA-F]{3,6}|rgba?\([^)]+\))/gi,(E,i,g,v)=>{let H=L(v);if(!H)return E;let P=I(H,a);return`${i}${g}${F(P)}`}),h=h.replace(/(^|;\s*)(border(?:-(?:top|right|bottom|left))?(?:-color)?\s*:\s*)([^;]+)/gi,(E,i,g,v)=>{let H=v.replace(/#[0-9a-fA-F]{3,6}|rgba?\([^)]+\)/gi,P=>{let m=L(P);if(!m)return P;let N=Z(m,a,t);return F(N)});return`${i}${g}${H}`}),h!==l&&n.setAttribute("style",h)}let c=n.children||[];for(let h=0;h<c.length;h++)s(c[h],a,t)}let x=d.children||[];for(let n=0;n<x.length;n++)s(x[n],o,[255,255,255])}function X(d){let s=[];return d?(d.querySelectorAll("*").forEach(n=>{let r=n.tagName.toLowerCase(),e=n.getAttribute("style")||"";if(/\bfont-family\s*:/i.test(e)){let l=e.match(/font-family\s*:\s*([^;]+)/i);(l?l[1].replace(/["']/g,"").replace(/\s+/g," ").trim():"").startsWith("mp-quote, PingFang SC, system-ui, -apple-system")||s.push({rule:"#3 font-family",message:"检测到非微信规范 font-family 属性",tag:r})}r==="pre"&&s.push({rule:"#1.8 pre",message:"检测到 <pre> 标签，可能触发微信编辑器预格式化溢出提示",tag:r}),r==="blockquote"&&s.push({rule:"wx-editor blockquote",message:"检测到 <blockquote> 标签，微信草稿箱会叠加内置浅灰左边框，建议使用 <section>",tag:r}),(r==="thead"||r==="th")&&s.push({rule:"#1.4 table-thead",message:"检测到 thead/th，可能触发微信跨屏列宽/居中误报",tag:r});let a=e.match(/(?:^|;)\s*width\s*:\s*([^;]+)/i);if(a&&r!=="img"&&r!=="svg"&&!/^(?:auto|100%)$/i.test(a[1].trim())&&s.push({rule:"#1.4 width",message:`检测到固定内联宽度 (${a[1].trim()})`,tag:r}),/\btext-align\s*:\s*(?:start|end)\b/i.test(e)&&s.push({rule:"#1.6 text-align",message:"text-align 使用了 start 或 end",tag:r}),/\bopacity\s*:\s*0(?:\b|;|$)/i.test(e)&&s.push({rule:"#1.1 opacity",message:"检测到 opacity: 0",tag:r}),/\bheight\s*:\s*0(?:px)?(?:\b|;|$)/i.test(e)&&s.push({rule:"#1.5.1 height:0",message:"检测到 height: 0",tag:r}),/linear-gradient|radial-gradient/i.test(e)&&(n.textContent||"").trim().length>0&&((n.getAttribute("data-ignore-dm")||"").includes("text-bg-gradient")||s.push({rule:"#4.1.2 darkmode-no-gradient",message:"含文字节点使用了渐变背景",tag:r})),Array.prototype.some.call(n.childNodes||[],l=>l.nodeType===3&&(l.nodeValue||"").replace(/\s/g,"").length>0)&&!(n.getAttribute("data-ignore-dm")||"").includes("low-contrast")){let c=n,h=null,E=null;for(;c&&c!==d&&c.getAttribute;){let g=c.getAttribute("style")||"";if(!h){let v=g.match(/(?:^|;\s*)color\s*:\s*(#[0-9a-fA-F]{3,6})/i);v&&(h=v[1])}if(!E){let v=g.match(/(?:^|;\s*)background-color\s*:\s*(#[0-9a-fA-F]{3,6})/i);v&&(E=v[1])}c=c.parentNode}let i=ne(h,E);i<1.5&&s.push({rule:"#4.1.1 darkmode-low-contrast",message:`暗色转换后文字(${h||"默认"})与背景(${E||"默认"})对比度过低 (${i.toFixed(2)})`,tag:r})}/!important/i.test(e)&&s.push({rule:"#4.5.2 !important",message:"内联样式中使用了 !important",tag:r}),r==="img"&&!n.getAttribute("data-w")&&s.push({rule:"#1.4.3 img[data-w]",message:"图片缺少 data-w 原始宽度属性",tag:r})}),{isValid:s.length===0,violations:s}):{isValid:!0,violations:s}}let J={NOTE:{icon:"ℹ️",defaultTitle:"提示",borderColor:"#2563eb",bgColor:"#f0f6ff",titleColor:"#1d4ed8",textColor:"#334155"},TIP:{icon:"💡",defaultTitle:"技巧",borderColor:"#059669",bgColor:"#eefbf3",titleColor:"#047857",textColor:"#334155"},IMPORTANT:{icon:"📌",defaultTitle:"重要",borderColor:"#7c3aed",bgColor:"#f5f2ff",titleColor:"#6d28d9",textColor:"#334155"},WARNING:{icon:"⚠️",defaultTitle:"注意",borderColor:"#d97706",bgColor:"#fffbeb",titleColor:"#b45309",textColor:"#334155"},CAUTION:{icon:"🚨",defaultTitle:"警告",borderColor:"#dc2626",bgColor:"#fef2f2",titleColor:"#b91c1c",textColor:"#334155"}};function ie(d,s){let x=Object.assign({themeId:"dev-tech-blue",linkToFootnote:!0,macCodeBlock:!0,h2Numbering:!0,h2Center:!1},s||{}),n=T.WeChatThemes||{},r=n[x.themeId]||n["dev-tech-blue"],e=r.styles,a=0,t=[],l=new Map;function c(z,p){let S=p.trim();if(l.has(S))return l.get(S);let C=t.length+1;return t.push({index:C,title:z||S,url:S}),l.set(S,C),C}let h=[];function E(z){let p=`INL_${h.length}_`;return h.push(z),p}function i(z){let p=z;for(;/\u0002INL_\d+_\u0003/.test(p);)p=p.replace(/\u0002INL_(\d+)_\u0003/g,(S,C)=>h[Number(C)]);return p}function g(z){if(!z)return"";let p=String(z),S="",C=0;for(;C<p.length;){let M=p[C];if(M==="\\"&&C+1<p.length&&/[!-/:-@[-`{-~]/.test(p[C+1])){S+=E(y(p[C+1])),C+=2;continue}if(M==="`"){let b=0;for(;C+b<p.length&&p[C+b]==="`";)b++;let k=C+b,$=-1;for(;k<p.length&&p[k]!==`
-`;){if(p[k]==="\\"&&k+1<p.length&&p[k+1]==="`"){k+=2;continue}if(p[k]==="`"){let u=0;for(;k+u<p.length&&p[k+u]==="`";)u++;if(u===b){$=k;break}k+=u;continue}k++}if($!==-1){let u=p.slice(C+b,$).replace(/\\`/g,"`");u.length>=2&&u.startsWith(" ")&&u.endsWith(" ")&&u.trim().length>0&&(u=u.slice(1,-1)),S+=E(`<code style="${e.codespan}">${y(u)}</code>`),C=$+b;continue}S+=p.slice(C,C+b),C+=b;continue}S+=M,C++}return p=S,p=p.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g,(M,b,k,$)=>{let u=i(b).replace(/<[^>]+>/g,""),A=$||u,_=A?`<figcaption style="${e.figcaption}">${y(A)}</figcaption>`:"";return E(`<figure data-ignore-width style="${e.imgWrap}"><img data-w="677" src="${y(k)}" alt="${y(u)}" style="${e.img}" />${_}</figure>`)}),p=p.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g,(M,b,k)=>{let $=k.trim(),u=/^https?:\/\//i.test($)&&!/mp\.weixin\.qq\.com/i.test($),A=g(b),_=i(A).replace(/<[^>]+>/g,"");if(x.linkToFootnote&&u){let W=c(_,$);return E(`<span style="${e.link}">${A}<sup style="${e.footnoteSup}">[${W}]</sup></span>`)}return E(`<a href="${y($)}" target="_blank" rel="noopener noreferrer" style="${e.link}">${A}</a>`)}),p=y(p),p=p.replace(/\*\*([^*]+)\*\*/g,(M,b)=>`<strong style="${e.strong}">${b}</strong>`),p=p.replace(/__([^_]+)__/g,(M,b)=>`<strong style="${e.strong}">${b}</strong>`),p=p.replace(/~~([^~]+)~~/g,(M,b)=>`<del style="${e.del}">${b}</del>`),p=p.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g,(M,b,k)=>`${b}<em style="${e.em}">${k}</em>`),p=p.replace(/(^|[^_a-zA-Z0-9])_([^_\n]+)_(?![_a-zA-Z0-9])/g,(M,b,k)=>`${b}<em style="${e.em}">${k}</em>`),i(p)}function v(z,p){let S=p.trim();if(z===1)return`<h1 style="${e.h1}">${g(S)}</h1>`;if(z===2){a++;let C="",M=S;if(x.h2Numbering&&e.h2Num){let A=S.match(/^0?(\d{1,2})\s*(?:[.、．|｜:：-]|—)\s*(.+)$/),_;A?(_=String(parseInt(A[1],10)).padStart(2,"0"),M=A[2].trim()):_=String(a).padStart(2,"0");let W=r.h2NumSuffix?_+r.h2NumSuffix:_;C=`<span style="${e.h2Num}">${y(W)}</span>`}let b=r.h2AlignSupport||"both",$=(b==="center"?!0:b==="left"?!1:!!x.h2Center)?e.h2Center||e.h2Left||e.h2:e.h2Left||e.h2Center||e.h2,u=g(M);return e.h2Inner?`<h2 style="${$}"><span style="${e.h2Inner}">${C}${u}</span></h2>`:`<h2 style="${$}">${C}${u}</h2>`}return z===3?`<h3 style="${e.h3}">${g(S)}</h3>`:`<h4 style="${e.h4}">${g(S)}</h4>`}function H(z,p){let S=z.join(`
+**🙌 席位有限，期待周六在线下与各位开发者朋友见面畅聊！**`}};T.WeChatSamples=y})(window);(function(T){"use strict";function y(d){return String(d).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function f(d){let x=d.replace(/\t/g,"  ").split(/(<[^>]+>)/g);for(let n=0;n<x.length;n++)n%2===0&&(x[n]=x[n].replace(/ /g,"&nbsp;"));return x.join("").replace(/\n/g,"<br />")}function oe(d,s,x){let n=x||{keyword:"#c084fc",string:"#86efac",comment:"#94a3b8",number:"#fb923c",function:"#60a5fa",type:"#fcd34d",operator:"#38bdf8"},r=[];function e(i){let g=`TOK_${r.length}_`;return r.push(i),g}function a(i){return i.replace(/\u0002TOK_(\d+)_\u0003/g,(g,v)=>r[Number(v)]).replace(/\u0002TOK_(\d+)_\u0003/g,(g,v)=>r[Number(v)])}let t=y(d),l=(s||"").toLowerCase().trim();if(["json","jsonc","jsonl"].includes(l))return t=t.replace(/\/\*[\s\S]*?\*\//g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),t=t.replace(/(\/\/[^\n]*)/g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),t=t.replace(/(&quot;(?:\\&quot;|[^&]|&(?!quot;))*?&quot;)(\s*:)/g,(i,g,v)=>e(`<span style="color: ${n.function}; font-weight: 600;">${g}</span>`)+v),t=t.replace(/(&quot;(?:\\&quot;|[^&]|&(?!quot;))*?&quot;)/g,i=>e(`<span style="color: ${n.string};">${i}</span>`)),t=t.replace(/\b(true|false|null)\b/g,i=>e(`<span style="color: ${n.keyword}; font-weight: 600;">${i}</span>`)),t=t.replace(/(-?\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b)/g,i=>e(`<span style="color: ${n.number};">${i}</span>`)),f(a(t));if(["html","htm","xml","svg","vue"].includes(l))return t=t.replace(/(&lt;!--[\s\S]*?--&gt;|&lt;!DOCTYPE[\s\S]*?&gt;)/gi,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),t=t.replace(/(&lt;\/?[a-zA-Z][\w:-]*(?:[^&]|&(?!gt;))*?\/?&gt;)/g,i=>{let g=i;return g=g.replace(/(&quot;(?:\\&quot;|[^&]|&(?!quot;))*?&quot;|&#39;(?:\\&#39;|[^&]|&(?!#39;))*?&#39;)/g,v=>e(`<span style="color: ${n.string};">${v}</span>`)),g=g.replace(/^(&lt;\/?)([a-zA-Z][\w:-]*)/,(v,H,P)=>e(`<span style="color: ${n.comment};">${H}</span>`)+e(`<span style="color: ${n.keyword}; font-weight: 600;">${P}</span>`)),g=g.replace(/(\/?&gt;)$/,v=>e(`<span style="color: ${n.comment};">${v}</span>`)),g=g.replace(/(\s+)([a-zA-Z_:@][\w:.-]*)/g,(v,H,P)=>H+e(`<span style="color: ${n.type};">${P}</span>`)),e(g)}),f(a(t));if(["css","scss","less"].includes(l))return t=t.replace(/\/\*[\s\S]*?\*\//g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),l!=="css"&&(t=t.replace(/(\/\/[^\n]*)/g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`))),t=t.replace(/(&quot;(?:\\&quot;|[^&]|&(?!quot;))*?&quot;|&#39;(?:\\&#39;|[^&]|&(?!#39;))*?&#39;)/g,i=>e(`<span style="color: ${n.string};">${i}</span>`)),t=t.replace(/(@[a-zA-Z-]+)/g,i=>e(`<span style="color: ${n.keyword}; font-weight: 600;">${i}</span>`)),t=t.replace(/(^[\t ]*|[;{(][\t ]*)([a-zA-Z-]+|--[\w-]+)(\s*:(?!:))/gm,(i,g,v,H)=>g+e(`<span style="color: ${n.function};">${v}</span>`)+H),t=t.replace(/(:\s*|\s)(#[0-9a-fA-F]{3,8})\b/g,(i,g,v)=>g+e(`<span style="color: ${n.number};">${v}</span>`)),t=t.replace(/([.#][a-zA-Z_][\w-]*|::?[a-zA-Z-]+(?:\([^)]*\))?)(?=[^{};]*\{)/g,i=>e(`<span style="color: ${n.type}; font-weight: 600;">${i}</span>`)),t=t.replace(/\b(var|calc|rgb|rgba|hsl|hsla|url|linear-gradient|radial-gradient|clamp|min|max|minmax|repeat|translate[XY3d]*|scale[XY3d]*|rotate[XYZ3d]*|cubic-bezier)(?=\()/g,i=>e(`<span style="color: ${n.type};">${i}</span>`)),t=t.replace(/(-?\b\d+(?:\.\d+)?(?:px|rem|em|vh|vw|dvh|vmin|vmax|%|s|ms|deg|rad|turn|fr|ch|ex)?\b)/g,i=>e(`<span style="color: ${n.number};">${i}</span>`)),t=t.replace(/(!important|\b(?:none|auto|inherit|initial|unset|solid|dashed|dotted|flex|grid|block|inline|inline-block|inline-flex|relative|absolute|fixed|sticky|hidden|visible|scroll|pointer|center|left|right|justify|bold|normal|italic|nowrap|pre|pre-wrap|break-word|border-box|content-box)\b)/g,i=>e(`<span style="color: ${n.keyword};">${i}</span>`)),f(a(t));let c=["py","python","sh","bash","zsh","shell","yaml","yml","toml","dockerfile","ruby","rb","conf","ini"].includes(l);t=t.replace(/\/\*[\s\S]*?\*\//g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),t=t.replace(/(\/\/[^\n]*)/g,i=>e(`<span style="color: ${n.comment}; font-style: italic;">${i}</span>`)),c&&(t=t.replace(/(^|\s)(#[^\n]*)/gm,(i,g,v)=>g+e(`<span style="color: ${n.comment}; font-style: italic;">${v}</span>`))),t=t.replace(/(`(?:\\[\s\S]|[^\\`])*`|&quot;(?:\\&quot;|[^&]|&(?!quot;))*?&quot;|&#39;(?:\\&#39;|[^&]|&(?!#39;))*?&#39;)/g,i=>e(`<span style="color: ${n.string};">${i}</span>`));let h=/\b(async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|false|finally|for|from|function|func|go|if|implements|import|in|instanceof|interface|let|new|nil|null|package|private|protected|public|readonly|return|select|static|struct|super|switch|this|throw|true|try|type|typeof|undefined|var|void|while|with|yield|def|elif|except|lambda|nonlocal|pass|raise|Self|impl|fn|pub|mut|use|mod|match|where)\b/g;t=t.replace(h,i=>e(`<span style="color: ${n.keyword}; font-weight: 600;">${i}</span>`));let E=/\b(Promise|Array|Map|Set|Record|Partial|Required|Error|String|Number|Boolean|Object|Symbol|BigInt|Date|RegExp|AbortSignal|console|Math|JSON|window|document)\b/g;return t=t.replace(E,i=>e(`<span style="color: ${n.type};">${i}</span>`)),t=t.replace(/\b(\d+(?:_\d+)*(?:\.\d+)?)\b/g,i=>e(`<span style="color: ${n.number};">${i}</span>`)),t=t.replace(/\b([a-zA-Z_$][\w$]*)(?=\s*(?:&lt;[^&]*&gt;)?\s*\()/g,i=>e(`<span style="color: ${n.function};">${i}</span>`)),f(a(t))}let o=[25,25,25],G=9.8039,V=25,D=127;function L(d){if(!d)return null;let s=String(d).trim(),x=s.match(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/);if(x){let r=x[1].length===3?x[1].split("").map(a=>a+a).join(""):x[1],e=parseInt(r,16);return[e>>16&255,e>>8&255,e&255]}let n=s.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);return n?[Math.min(255,parseInt(n[1],10)),Math.min(255,parseInt(n[2],10)),Math.min(255,parseInt(n[3],10))]:null}function F(d){return"#"+d.map(s=>Math.max(0,Math.min(255,Math.round(s))).toString(16).padStart(2,"0")).join("")}function O(d){return(d[0]*299+d[1]*587+d[2]*114)/1e3}function q(d){let s=d[0]/255,x=d[1]/255,n=d[2]/255,r=Math.min(s,x,n),e=Math.max(s,x,n),a=e-r,t=0,l=(r+e)/2;e!==r&&(s===e?t=(x-n)/a:x===e?t=2+(n-s)/a:t=4+(s-x)/a,t=Math.min(t*60,360),t<0&&(t+=360));let c=e===r?0:l<=.5?a/(e+r):a/(2-e-r);return[t,c*100,l*100]}function B(d){let s=d[0]/360,x=d[1]/100,n=d[2]/100;if(x===0){let t=n*255;return[t,t,t]}let r=n<.5?n*(1+x):n+x-n*x,e=2*n-r,a=[0,0,0];for(let t=0;t<3;t++){let l=s+.3333333333333333*-(t-1);l<0&&l++,l>1&&l--;let c;6*l<1?c=e+(r-e)*6*l:2*l<1?c=r:3*l<2?c=e+(r-e)*(2/3-l)*6:c=e,a[t]=c*255}return a}function R(d,s){let x=O(s);if(x<=0)return[d,d,d];let n=d/x,r=Math.min(255,s[0]*n),e=Math.min(255,s[1]*n),a=Math.min(255,s[2]*n);return e===0||r===255||a===255?e=(d*1e3-r*299-a*114)/587:r===0?r=(d*1e3-e*587-a*114)/299:(a===0||e===255)&&(a=(d*1e3-r*299-e*587)/114),[Math.max(0,Math.min(255,r)),Math.max(0,Math.min(255,e)),Math.max(0,Math.min(255,a))]}function re(d,s){let x=e=>{let[a,t,l]=e.map(c=>{let h=c/255;return h<=.03928?h/12.92:Math.pow((h+.055)/1.055,2.4)});return .2126*a+.7152*t+.0722*l},n=x(d),r=x(s);return(Math.max(n,r)+.05)/(Math.min(n,r)+.05)}function Y(d){if(!d)return o;let s=q(d),x=O(d);return s[1]===0&&s[2]>40||x>250?B([0,0,Math.min(100,100+G-s[2])]):x>190?R(190,d):s[2]<22?B([s[0],s[1],22]):d}function I(d,s){if(!d)return[163,163,163];let x=s||o,n=O(x),r=q(d),e=O(d),a=Math.abs(n-e);return e>=250?d:a>D&&n<=V+2?R(D+n,d):a>=65?d:n>=100?r[2]>50?(r[2]=90-r[2],I(B(r),x)):R(Math.min(D,n-65),d):r[2]<=40?(r[2]=90-r[2],I(B(r),x)):R(Math.min(D,n+65),d)}function Z(d,s,x){if(!d)return d;let n=q(d),r=O(d),e=O(x||[255,255,255]);if(r<60&&e<=80)return B([n[0],n[1],Math.max(n[2],28)]);if(r>180&&n[2]>70){let a=Math.max(22,Math.min(36,100+G-n[2]+5));return B([n[0],Math.min(n[1],35),a])}return I(d,s)}function ne(d,s){let x=s?Y(L(s)):o,n=L(d||"#191919")||[163,163,163],r=I(n,x);return re(r,x)}function Q(d){if(!d)return;function s(n,r,e){if(!n||n.nodeType!==1)return;let a=r,t=e,l=n.getAttribute("style");if(l){let h=l;h=h.replace(/(^|;\s*)(background(?:-color)?\s*:\s*)(#[0-9a-fA-F]{3,6}|rgba?\([^)]+\))/gi,(E,i,g,v)=>{let H=L(v);return H?(t=H,a=Y(H),`${i}${g}${F(a)}`):E}),h=h.replace(/(^|;\s*)(color\s*:\s*)(#[0-9a-fA-F]{3,6}|rgba?\([^)]+\))/gi,(E,i,g,v)=>{let H=L(v);if(!H)return E;let P=I(H,a);return`${i}${g}${F(P)}`}),h=h.replace(/(^|;\s*)(border(?:-(?:top|right|bottom|left))?(?:-color)?\s*:\s*)([^;]+)/gi,(E,i,g,v)=>{let H=v.replace(/#[0-9a-fA-F]{3,6}|rgba?\([^)]+\)/gi,P=>{let m=L(P);if(!m)return P;let N=Z(m,a,t);return F(N)});return`${i}${g}${H}`}),h!==l&&n.setAttribute("style",h)}let c=n.children||[];for(let h=0;h<c.length;h++)s(c[h],a,t)}let x=d.children||[];for(let n=0;n<x.length;n++)s(x[n],o,[255,255,255])}function X(d){let s=[];return d?(d.querySelectorAll("*").forEach(n=>{let r=n.tagName.toLowerCase(),e=n.getAttribute("style")||"";if(/\bfont-family\s*:/i.test(e)){let l=e.match(/font-family\s*:\s*([^;]+)/i);(l?l[1].replace(/["']/g,"").replace(/\s+/g," ").trim():"").startsWith("mp-quote, PingFang SC, system-ui, -apple-system")||s.push({rule:"#3 font-family",message:"检测到非微信规范 font-family 属性",tag:r})}r==="pre"&&s.push({rule:"#1.8 pre",message:"检测到 <pre> 标签，可能触发微信编辑器预格式化溢出提示",tag:r}),r==="blockquote"&&s.push({rule:"wx-editor blockquote",message:"检测到 <blockquote> 标签，微信草稿箱会叠加内置浅灰左边框，建议使用 <section>",tag:r}),(r==="thead"||r==="th")&&s.push({rule:"#1.4 table-thead",message:"检测到 thead/th，可能触发微信跨屏列宽/居中误报",tag:r});let a=e.match(/(?:^|;)\s*width\s*:\s*([^;]+)/i);if(a&&r!=="img"&&r!=="svg"&&!/^(?:auto|100%)$/i.test(a[1].trim())&&s.push({rule:"#1.4 width",message:`检测到固定内联宽度 (${a[1].trim()})`,tag:r}),/\btext-align\s*:\s*(?:start|end)\b/i.test(e)&&s.push({rule:"#1.6 text-align",message:"text-align 使用了 start 或 end",tag:r}),/\bopacity\s*:\s*0(?:\b|;|$)/i.test(e)&&s.push({rule:"#1.1 opacity",message:"检测到 opacity: 0",tag:r}),/\bheight\s*:\s*0(?:px)?(?:\b|;|$)/i.test(e)&&s.push({rule:"#1.5.1 height:0",message:"检测到 height: 0",tag:r}),/linear-gradient|radial-gradient/i.test(e)&&(n.textContent||"").trim().length>0&&((n.getAttribute("data-ignore-dm")||"").includes("text-bg-gradient")||s.push({rule:"#4.1.2 darkmode-no-gradient",message:"含文字节点使用了渐变背景",tag:r})),Array.prototype.some.call(n.childNodes||[],l=>l.nodeType===3&&(l.nodeValue||"").replace(/\s/g,"").length>0)&&!(n.getAttribute("data-ignore-dm")||"").includes("low-contrast")){let c=n,h=null,E=null;for(;c&&c!==d&&c.getAttribute;){let g=c.getAttribute("style")||"";if(!h){let v=g.match(/(?:^|;\s*)color\s*:\s*(#[0-9a-fA-F]{3,6})/i);v&&(h=v[1])}if(!E){let v=g.match(/(?:^|;\s*)background-color\s*:\s*(#[0-9a-fA-F]{3,6})/i);v&&(E=v[1])}c=c.parentNode}let i=ne(h,E);i<1.5&&s.push({rule:"#4.1.1 darkmode-low-contrast",message:`暗色转换后文字(${h||"默认"})与背景(${E||"默认"})对比度过低 (${i.toFixed(2)})`,tag:r})}/!important/i.test(e)&&s.push({rule:"#4.5.2 !important",message:"内联样式中使用了 !important",tag:r}),r==="img"&&!n.getAttribute("data-w")&&s.push({rule:"#1.4.3 img[data-w]",message:"图片缺少 data-w 原始宽度属性",tag:r})}),{isValid:s.length===0,violations:s}):{isValid:!0,violations:s}}let J={NOTE:{icon:"ℹ️",defaultTitle:"提示",borderColor:"#2563eb",bgColor:"#f0f6ff",titleColor:"#1d4ed8",textColor:"#334155"},TIP:{icon:"💡",defaultTitle:"技巧",borderColor:"#059669",bgColor:"#eefbf3",titleColor:"#047857",textColor:"#334155"},IMPORTANT:{icon:"📌",defaultTitle:"重要",borderColor:"#7c3aed",bgColor:"#f5f2ff",titleColor:"#6d28d9",textColor:"#334155"},WARNING:{icon:"⚠️",defaultTitle:"注意",borderColor:"#d97706",bgColor:"#fffbeb",titleColor:"#b45309",textColor:"#334155"},CAUTION:{icon:"🚨",defaultTitle:"警告",borderColor:"#dc2626",bgColor:"#fef2f2",titleColor:"#b91c1c",textColor:"#334155"}};function ie(d,s){let x=Object.assign({themeId:"dev-tech-blue",linkToFootnote:!0,macCodeBlock:!0,h2Numbering:!0,h2Center:!1},s||{}),n=T.WeChatThemes||{},r=n[x.themeId]||n["dev-tech-blue"],e=r.styles,a=0,t=[],l=new Map;function c(z,p){let S=p.trim();if(l.has(S))return l.get(S);let C=t.length+1;return t.push({index:C,title:z||y(S),url:S}),l.set(S,C),C}let h=[];function E(z){let p=`INL_${h.length}_`;return h.push(z),p}function i(z){let p=z;for(;/\u0002INL_\d+_\u0003/.test(p);)p=p.replace(/\u0002INL_(\d+)_\u0003/g,(S,C)=>h[Number(C)]);return p}function g(z){if(!z)return"";let p=String(z),S="",C=0;for(;C<p.length;){let M=p[C];if(M==="\\"&&C+1<p.length&&/[!-/:-@[-`{-~]/.test(p[C+1])){S+=E(y(p[C+1])),C+=2;continue}if(M==="`"){let b=0;for(;C+b<p.length&&p[C+b]==="`";)b++;let k=C+b,$=-1;for(;k<p.length&&p[k]!==`
+`;){if(p[k]==="\\"&&k+1<p.length&&p[k+1]==="`"){k+=2;continue}if(p[k]==="`"){let u=0;for(;k+u<p.length&&p[k+u]==="`";)u++;if(u===b){$=k;break}k+=u;continue}k++}if($!==-1){let u=p.slice(C+b,$).replace(/\\`/g,"`");u.length>=2&&u.startsWith(" ")&&u.endsWith(" ")&&u.trim().length>0&&(u=u.slice(1,-1)),S+=E(`<code style="${e.codespan}">${y(u)}</code>`),C=$+b;continue}S+=p.slice(C,C+b),C+=b;continue}S+=M,C++}return p=S,p=p.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g,(M,b,k,$)=>{let u=i(b).replace(/<[^>]+>/g,""),A=$||u,_=A?`<figcaption style="${e.figcaption}">${y(A)}</figcaption>`:"";return E(`<figure data-ignore-width style="${e.imgWrap}"><img data-w="677" src="${y(k)}" alt="${y(u)}" style="${e.img}" />${_}</figure>`)}),p=p.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g,(M,b,k)=>{let $=k.trim(),u=/^https?:\/\//i.test($)&&!/mp\.weixin\.qq\.com/i.test($),A=g(b),_=i(A).replace(/<[^>]+>/g,"");if(x.linkToFootnote&&u){let W=c(_,$);return E(`<span style="${e.link}">${A}<sup style="${e.footnoteSup}">[${W}]</sup></span>`)}return/^(?:https?:|mailto:|tel:|#|\/|\.{1,2}\/|[^:]*$)/i.test($)?E(`<a href="${y($)}" target="_blank" rel="noopener noreferrer" style="${e.link}">${A}</a>`):E(`<span style="${e.link}">${A}</span>`)}),p=y(p),p=p.replace(/\*\*(.+?)\*\*/g,(M,b)=>`<strong style="${e.strong}">${b}</strong>`),p=p.replace(/__([^_]+)__/g,(M,b)=>`<strong style="${e.strong}">${b}</strong>`),p=p.replace(/~~([^~]+)~~/g,(M,b)=>`<del style="${e.del}">${b}</del>`),p=p.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g,(M,b,k)=>`${b}<em style="${e.em}">${k}</em>`),p=p.replace(/(^|[^_a-zA-Z0-9])_([^_\n]+)_(?![_a-zA-Z0-9])/g,(M,b,k)=>`${b}<em style="${e.em}">${k}</em>`),i(p)}function v(z,p){let S=p.trim();if(z===1)return`<h1 style="${e.h1}">${g(S)}</h1>`;if(z===2){a++;let C="",M=S;if(x.h2Numbering&&e.h2Num){let A=S.match(/^0?(\d{1,2})\s*(?:[.．](?!\d)|[、|｜:：—]|-(?=\s))\s*(.+)$/),_;A?(_=String(parseInt(A[1],10)).padStart(2,"0"),M=A[2].trim()):_=String(a).padStart(2,"0");let W=r.h2NumSuffix?_+r.h2NumSuffix:_;C=`<span style="${e.h2Num}">${y(W)}</span>`}let b=r.h2AlignSupport||"both",$=(b==="center"?!0:b==="left"?!1:!!x.h2Center)?e.h2Center||e.h2Left||e.h2:e.h2Left||e.h2Center||e.h2,u=g(M);return e.h2Inner?`<h2 style="${$}"><span style="${e.h2Inner}">${C}${u}</span></h2>`:`<h2 style="${$}">${C}${u}</h2>`}return z===3?`<h3 style="${e.h3}">${g(S)}</h3>`:`<h4 style="${e.h4}">${g(S)}</h4>`}function H(z,p){let S=z.join(`
 `),C=oe(S,p,r.codeTokens),M=(p||"CODE").toUpperCase(),b="";return x.macCodeBlock&&(b=`<section style="${e.codeHeader}"><span style="line-height: 1.4;"><span style="color: #ff5f56; font-size: 13px; margin-right: 6px;">●</span><span style="color: #ffbd2e; font-size: 13px; margin-right: 6px;">●</span><span style="color: #27c93f; font-size: 13px;">●</span></span><span style="font-size: 11.5px; line-height: 1.4; font-weight: 600; letter-spacing: 0.5px;">${y(M)}</span></section>`),`<section data-ignore-width style="${e.codeWrapper}">`+b+`<code style="${e.codeBlock}">${C}</code></section>`}function P(z){if(z.length<2)return"";let p=$=>$.trim().replace(/^\|/,"").replace(/\|$/,"").replace(/\\\|/g,"PIPE").split("|").map(u=>u.replace(/\u0002PIPE\u0003/g,"|").trim()),S=p(z[0]),M=p(z[1]).map($=>/^:-+:$/.test($)?"center":/^-+:$/.test($)?"right":"left"),b="<tr>"+S.map(($,u)=>{let A=M[u]||"left";return`<td style="${e.th} text-align: ${A};">${g($)}</td>`}).join("")+"</tr>",k=z.slice(2).map(($,u)=>{let A=p($),_=u%2===1&&e.trEven?` style="${e.trEven}"`:"",W=S.map((ee,U)=>{let ae=M[U]||"left",j=A[U]!==void 0?A[U]:"";return`<td style="${e.td} text-align: ${ae};">${g(j)}</td>`}).join("");return`<tr${_}>${W}</tr>`});return`<section data-ignore-width style="${e.tableWrap}"><table style="${e.table}"><tbody>${b}${k.join("")}</tbody></table></section>`}let m=String(d||"").replace(/\r\n/g,`
 `).split(`
-`),N=[],w=0;for(;w<m.length;){let z=m[w],p=z.trim();if(!p){w++;continue}let S=p.match(/^```(.*)$/);if(S){let b=(S[1]||"").trim().split(/\s+/)[0]||"",k=[];for(w++;w<m.length&&!m[w].trim().startsWith("```");)k.push(m[w]),w++;w<m.length&&w++,N.push(H(k,b));continue}if(/^(?:---|\*\*\*|___)\s*$/.test(p)){N.push(`<hr style="${e.hr}" />`),w++;continue}let C=z.match(/^(#{1,6})\s+(.*)$/);if(C&&C[2].trim()!==""){N.push(v(C[1].length,C[2])),w++;continue}if(p.includes("|")&&w+1<m.length&&/^\s*\|?\s*:?-+/.test(m[w+1])&&m[w+1].includes("|")){let b=[m[w],m[w+1]];for(w+=2;w<m.length&&m[w].trim().includes("|")&&m[w].trim()!=="";)b.push(m[w]),w++;N.push(P(b));continue}if(/^\s*>\s?/.test(z)){let b=[];for(;w<m.length&&/^\s*>\s?/.test(m[w]);)b.push(m[w].replace(/^\s*>\s?/,"")),w++;let k=b.length>0&&b[0].trim().match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\](?:[ \t]+(.*))?$/i);if(k){let _=k[1].toUpperCase(),W=J[_],ee=k[2]?k[2].trim():"",U=ee?g(ee):W.defaultTitle,ae=b.slice(1),j=[],K=[];ae.forEach(te=>{te.trim()?K.push(g(te)):K.length&&(j.push(K),K=[])}),K.length&&j.push(K);let le=`<p style="margin: ${j.length>0?"0 0 6px 0":"0"}; font-size: 15px; font-weight: 700; line-height: 1.5; color: ${W.titleColor}; text-align: left; word-break: break-word;"><span style="margin-right: 6px;">${W.icon}</span>${U}</p>`,de=j.map((te,ce)=>`<p style="margin: ${ce===j.length-1?"0":"0 0 8px 0"}; font-size: 15px; line-height: 1.75; color: ${W.textColor}; text-align: left; word-break: break-word;">${te.join("<br />")}</p>`).join(""),pe=`margin: 18px 0; padding: 14px 16px; background-color: ${W.bgColor}; border-left: 4px solid ${W.borderColor}; border-radius: 0 8px 8px 0; text-align: left;`;N.push(`<section data-wx-role="alert-box" data-alert-type="${_.toLowerCase()}" style="${pe}">${le}${de}</section>`);continue}let $=[],u=[];b.forEach(_=>{_.trim()?u.push(g(_)):u.length&&($.push(u),u=[])}),u.length&&$.push(u);let A=$.map((_,W)=>`<p style="${W===$.length-1?`${e.blockquoteP} margin-bottom: 0;`:e.blockquoteP}">${_.join("<br />")}</p>`).join("");N.push(`<section style="${e.blockquote}">${A}</section>`);continue}if(/^\s*[-*+]\s+/.test(z)){let b=[];for(;w<m.length&&/^\s*[-*+]\s+/.test(m[w]);){let k=m[w].replace(/^\s*[-*+]\s+/,""),$=k.match(/^\[([ xX])\]\s+(.*)$/);if($){let u=$[1].toLowerCase()==="x",A=u?`<span style="color: ${r.accentColor}; font-weight: 700; margin-right: 6px;">☑</span>`:'<span style="color: #64748b; font-weight: 700; margin-right: 6px;">☐</span>',_=u?`<span style="color: #64748b;">${g($[2])}</span>`:g($[2]);b.push(`<li style="${e.li} list-style: none;">`+A+_+"</li>")}else b.push(`<li style="${e.li}">${g(k)}</li>`);w++}N.push(`<ul style="${e.ul}">${b.join("")}</ul>`);continue}if(/^\s*\d+\.\s+/.test(z)){let b=[];for(;w<m.length&&/^\s*\d+\.\s+/.test(m[w]);){let k=m[w].replace(/^\s*\d+\.\s+/,"");b.push(`<li style="${e.li}">${g(k)}</li>`),w++}N.push(`<ol style="${e.ol}">${b.join("")}</ol>`);continue}if(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)\s*$/.test(p)){N.push(g(p)),w++;continue}let M=[];for(;w<m.length&&m[w].trim()!==""&&!/^```/.test(m[w].trim())&&!/^(#{1,6})\s+\S/.test(m[w])&&!/^(?:---|\*\*\*|___)\s*$/.test(m[w].trim())&&!/^\s*>\s?/.test(m[w])&&!/^\s*[-*+]\s+/.test(m[w])&&!/^\s*\d+\.\s+/.test(m[w]);)M.push(g(m[w].trim())),w++;M.length?N.push(`<p style="${e.p}">${M.join("<br />")}</p>`):(N.push(`<p style="${e.p}">${g(p)}</p>`),w++)}if(x.linkToFootnote&&t.length>0){let z=t.map(p=>`<p style="${e.footnoteItem}"><span style="font-weight: 600; color: ${r.accentColor};">[${p.index}]</span> ${y(p.title)}：<em>${y(p.url)}</em></p>`).join("");N.push(`<section style="${e.footnotesSection}"><h4 style="${e.footnotesTitle}">参考资料与相关链接</h4>`+z+"</section>")}return{html:N.join(`
-`),footnotesCount:t.length,theme:r}}T.WeChatConverter={convert:ie,validateSpec:X,applyDarkMode:Q}})(window);(function(T){"use strict";let y={CONTENT:"wx_md_studio_content_v2",THEME:"wx_md_studio_theme_v1",H2_NUMBER:"wx_md_studio_h2_number_v1",H2_CENTER:"wx_md_studio_h2_center_v1",FOOTNOTE:"wx_md_studio_footnote_v1",MAC_CODE:"wx_md_studio_mac_code_v1",VIEW_MODE:"wx_md_studio_view_mode_v1",DARK_MODE:"wx_md_studio_dark_mode_v1",EDITOR_FONT:"wx_md_studio_editor_font_v1",EDITOR_SIZE:"wx_md_studio_editor_size_v1"},f={themeId:"editorial-sspai",activeSampleId:"basic-guide",h2Numbering:!0,h2Center:!1,linkToFootnote:!0,macCodeBlock:!0,syncScroll:!0,viewMode:"mobile",darkMode:!1},oe=180,o={},G=!1,V=!1,D=!1,L=null,F=null,O="";function q(r,e){try{let a=localStorage.getItem(r);return a!==null?a:e}catch{return e}}function B(r,e){try{localStorage.setItem(r,e)}catch{}}function R(r,e){o.toast&&(o.toast.textContent=r,o.toast.className="toast show "+(e||"success"),F&&clearTimeout(F),F=setTimeout(()=>{o.toast.className="toast"},3200))}function re(r,e){let t=String(r||"").replace(/```[\s\S]*?```/g,"").replace(/[#>*`~\-\[\]()!|]/g,"").replace(/\s+/g,"").length,l=Math.max(1,Math.ceil(t/350));o.statChars&&(o.statChars.textContent=`${t} 字`),o.statReadTime&&(o.statReadTime.textContent=`预计阅读 ${l} 分钟`),o.statFootnotes&&(o.statFootnotes.textContent=`外链引用 ${e} 处`)}function Y(r){let e=T.WeChatSamples||{},a=String(r||"").trim(),t=Object.values(e).find(l=>l&&typeof l.content=="string"&&l.content.trim()===a);f.activeSampleId=t?t.id:"",o.sampleSelect&&(o.sampleSelect.value=f.activeSampleId),document.querySelectorAll("[data-sample-btn]").forEach(b=>b.classList.toggle("active",b.getAttribute("data-sample-btn")===f.activeSampleId))}function I(){L&&(clearTimeout(L),L=null);let r=o.editor?o.editor.value:"",e=T.WeChatConverter.convert(r,{themeId:f.themeId,h2Numbering:f.h2Numbering,h2Center:f.h2Center,linkToFootnote:f.linkToFootnote,macCodeBlock:f.macCodeBlock});if(O=e.html,o.previewOutput){if(o.previewOutput.innerHTML=e.html,o.statSpecCheck&&typeof T.WeChatConverter.validateSpec=="function"){let a=T.WeChatConverter.validateSpec(o.previewOutput);a.isValid?(o.statSpecCheck.className="spec-badge pass",o.statSpecCheck.textContent="规范校验",o.statSpecCheck.title="100% 符合微信公众号编辑器插件排版规范（字体、暗色模式、盒模型与层级）"):(o.statSpecCheck.className="spec-badge warn",o.statSpecCheck.textContent=`规范提示 (${a.violations.length})`,o.statSpecCheck.title=a.violations.map(t=>`${t.rule}: ${t.message}`).join(`
-`))}f.darkMode&&typeof T.WeChatConverter.applyDarkMode=="function"&&T.WeChatConverter.applyDarkMode(o.previewOutput)}Y(r),re(r,e.footnotesCount),B(y.CONTENT,r)}function Z(){L&&clearTimeout(L),L=setTimeout(()=>{L=null,I()},oe)}function ne(r){if(!o.toggleH2Center)return;let e=r&&r.h2AlignSupport||"both";e==="center"?(o.toggleH2Center.checked=!0,o.toggleH2Center.disabled=!0,o.labelH2Center&&(o.labelH2Center.classList.add("is-disabled"),o.labelH2Center.title="当前主题采用居中胶囊标题设计，已固定为居中对齐")):e==="left"?(o.toggleH2Center.checked=!1,o.toggleH2Center.disabled=!0,o.labelH2Center&&(o.labelH2Center.classList.add("is-disabled"),o.labelH2Center.title="当前主题遵循原生左对齐规范，已固定为左对齐")):(o.toggleH2Center.disabled=!1,o.toggleH2Center.checked=f.h2Center,o.labelH2Center&&(o.labelH2Center.classList.remove("is-disabled"),o.labelH2Center.title="切换二级标题（H2）为居中或左对齐排版"))}function Q(r){let e=T.WeChatThemes&&T.WeChatThemes[r];e&&(f.themeId=r,B(y.THEME,r),o.themeSelect&&(o.themeSelect.value=r,e.description&&(o.themeSelect.title=e.description)),o.themeDot&&e.accentColor&&(o.themeDot.style.backgroundColor=e.accentColor),ne(e),document.querySelectorAll("[data-theme-btn]").forEach(a=>{let t=a.getAttribute("data-theme-btn")===r;a.classList.toggle("active",t),a.setAttribute("aria-pressed",t?"true":"false")}),I())}function X(r){f.viewMode=r==="desktop"?"desktop":"mobile",B(y.VIEW_MODE,f.viewMode),o.previewDevice&&(o.previewDevice.classList.toggle("desktop-mode",f.viewMode==="desktop"),o.previewDevice.classList.toggle("mobile-mode",f.viewMode==="mobile")),document.querySelectorAll("[data-view-btn]").forEach(e=>{let a=e.getAttribute("data-view-btn")===f.viewMode;e.classList.toggle("active",a)})}function J(r){f.darkMode=!!r,B(y.DARK_MODE,String(f.darkMode)),o.previewDevice&&o.previewDevice.classList.toggle("wx-dark-mode",f.darkMode),o.toggleDarkmode&&(o.toggleDarkmode.checked=f.darkMode),o.mockStatusTitle&&(o.mockStatusTitle.textContent=f.darkMode?"微信公众号图文预览 · 模拟微信暗色效果":"微信公众号图文预览"),I()}function ie(r,e){let a=T.WeChatSamples||{},t=a[r];if(!t||!o.editor)return;let l=o.editor.value.trim(),c=Object.values(a).some(h=>h.content.trim()===l);if(!e&&l!==""&&!c&&!window.confirm(`加载「${t.name}」将覆盖当前编辑区内容，是否继续？`)){o.sampleSelect&&(o.sampleSelect.value=f.activeSampleId||"");return}o.editor.value=t.content,t.recommendedTheme?Q(t.recommendedTheme):I(),o.editor.scrollTop=0,o.previewScroll&&(o.previewScroll.scrollTop=0),R(`已载入「${t.name}」，并自动切换至推荐排版样式`,"info")}function d(r){let e=o.editor;if(!e)return;let a=e.selectionStart,t=e.selectionEnd,l=e.value.substring(a,t),c="",h=0;switch(r){case"h2":c=`
-## ${l||"章节二级标题"}
-`,h=c.length;break;case"h3":c=`
-### ${l||"小节三级标题"}
-`,h=c.length;break;case"bold":c=`**${l||"重点高亮文字"}**`,h=l?c.length:2;break;case"quote":c=`
-> **📌 核心信息 / 活动卡片**
-> ⏰ **时间**：2026 年 10 月 24 日 14:00
-> 📍 **地点**：在此填写活动地点或核心提示
-`,h=c.length;break;case"alert-note":c=`
-> [!NOTE]
-> ${l||"在此填写背景补充说明或概念解释（也可在 [!NOTE] 后空格添加自定义标题）。"}
-`,h=c.length;break;case"alert-tip":c=`
-> [!TIP]
-> ${l||"在此填写实用技巧、效率窍门或推荐的最佳实践。"}
-`,h=c.length;break;case"alert-important":c=`
-> [!IMPORTANT]
-> ${l||"在此填写读者不可错过的核心结论或关键前置条件。"}
-`,h=c.length;break;case"alert-warning":c=`
-> [!WARNING]
-> ${l||"在此填写需要格外留意的易错点、兼容性限制或潜在风险。"}
-`,h=c.length;break;case"alert-caution":c=`
-> [!CAUTION]
-> ${l||"在此填写高风险警告、破坏性操作提示或严禁事项。"}
-`,h=c.length;break;case"inline-code":c=`\`${l||"code"}\``,h=c.length;break;case"codeblock":c=`
-\`\`\`typescript
-${l||`// 在此输入代码
-const greeting = "Hello WeChat!";
-console.log(greeting);`}
-\`\`\`
-`,h=c.length;break;case"table":c=`
-| 时间 / 维度 | 内容说明 | 备注 / 嘉宾 |
-| :--- | :--- | :--- |
-| 14:00 - 14:45 | **主题分享一** | 嘉宾 A |
-| 14:45 - 15:30 | **主题分享二** | 嘉宾 B |
-`,h=c.length;break;case"link":c=`[${l||"链接名称"}](https://github.com/)`,h=c.length;break;case"hr":c=`
----
-`,h=c.length;break;default:return}e.setRangeText(c,a,t,"end"),e.focus(),I()}async function s(){if(!o.previewOutput)return;L&&I();let r=O||o.previewOutput.innerHTML,e=o.previewOutput.innerText||o.previewOutput.textContent||"",a=!1;if(navigator.clipboard&&window.ClipboardItem)try{let t=new Blob([r],{type:"text/html"}),l=new Blob([e],{type:"text/plain"});await navigator.clipboard.write([new ClipboardItem({"text/html":t,"text/plain":l})]),a=!0}catch{a=!1}if(!a)try{let t=document.createElement("div");t.setAttribute("contenteditable","true"),t.style.cssText='position: fixed; left: -99999px; top: 0; width: 677px; pointer-events: none; background-color: #ffffff; color: #334155; text-align: left; font-family: "mp-quote", "PingFang SC", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif;',t.innerHTML=r,document.body.appendChild(t);let l=window.getSelection(),c=document.createRange();c.selectNodeContents(t),l.removeAllRanges(),l.addRange(c),a=document.execCommand("copy"),l.removeAllRanges(),document.body.removeChild(t)}catch{a=!1}if(a){if(o.copyBtn){let t=o.copyBtn.innerHTML;o.copyBtn.classList.add("copied"),o.copyBtn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>' ,setTimeout(()=>{o.copyBtn.classList.remove("copied"),o.copyBtn.innerHTML=t},2400)}R("已复制符合微信排版规范的富文本！请前往公众号后台按 Cmd+V / Ctrl+V 粘贴","success")}else R("自动复制受浏览器限制，请点击右侧预览区按 Cmd+A 全选后复制","warn")}function x(){let r=o.editor,e=o.previewScroll;!r||!e||(r.addEventListener("scroll",()=>{if(!f.syncScroll||G){G=!1;return}let a=r.scrollHeight-r.clientHeight,t=e.scrollHeight-e.clientHeight;if(a<=0||t<=0)return;V=!0;let l=r.scrollTop/a;e.scrollTop=l*t}),e.addEventListener("scroll",()=>{if(!f.syncScroll||V){V=!1;return}let a=r.scrollHeight-r.clientHeight,t=e.scrollHeight-e.clientHeight;if(a<=0||t<=0)return;G=!0;let l=e.scrollTop/t;r.scrollTop=l*a}))}function n(){o={editor:document.getElementById("md-editor"),previewOutput:document.getElementById("wx-output"),previewScroll:document.getElementById("preview-scroll-container"),previewDevice:document.getElementById("preview-device-wrapper"),mockStatusTitle:document.getElementById("wx-mock-status-title"),toggleDarkmode:document.getElementById("toggle-darkmode"),themeSelect:document.getElementById("theme-select"),themeDot:document.getElementById("active-theme-dot"),sampleSelect:document.getElementById("sample-select"),copyBtn:document.getElementById("btn-copy-wx"),toggleH2Number:document.getElementById("toggle-h2-number"),toggleH2Center:document.getElementById("toggle-h2-center"),labelH2Center:document.getElementById("label-h2-center"),toggleFootnote:document.getElementById("toggle-footnote"),toggleMacCode:document.getElementById("toggle-mac-code"),toggleSyncScroll:document.getElementById("toggle-sync-scroll"),statChars:document.getElementById("stat-chars"),statReadTime:document.getElementById("stat-read-time"),statFootnotes:document.getElementById("stat-footnotes"),statSpecCheck:document.getElementById("stat-spec-check"),toast:document.getElementById("app-toast"),editorFontFamily:document.getElementById("editor-font-family"),editorFontSize:document.getElementById("editor-font-size")};let r=q(y.THEME,"editorial-sspai");T.WeChatThemes&&T.WeChatThemes[r]&&(f.themeId=r),f.h2Numbering=q(y.H2_NUMBER,"true")!=="false",f.h2Center=q(y.H2_CENTER,"false")==="true",f.linkToFootnote=q(y.FOOTNOTE,"true")!=="false",f.macCodeBlock=q(y.MAC_CODE,"true")!=="false",f.viewMode=q(y.VIEW_MODE,"mobile"),f.darkMode=q(y.DARK_MODE,"false")==="true",o.toggleH2Number&&(o.toggleH2Number.checked=f.h2Numbering),o.toggleH2Center&&(o.toggleH2Center.checked=f.h2Center),o.toggleFootnote&&(o.toggleFootnote.checked=f.linkToFootnote),o.toggleMacCode&&(o.toggleMacCode.checked=f.macCodeBlock),o.toggleSyncScroll&&(o.toggleSyncScroll.checked=f.syncScroll);
-function applyEditorFont(){if(!o.editor)return;let ff=o.editorFontFamily&&o.editorFontFamily.value,fs=o.editorFontSize&&o.editorFontSize.value;o.editor.style.fontFamily=ff||"";o.editor.style.fontSize=fs?fs+"px":""}if(o.editorFontFamily){let savedF=q(y.EDITOR_FONT,"");o.editorFontFamily.value=savedF;o.editorFontFamily.addEventListener("change",()=>{B(y.EDITOR_FONT,o.editorFontFamily.value);applyEditorFont()})}if(o.editorFontSize){let savedS=q(y.EDITOR_SIZE,"14");o.editorFontSize.value=savedS;o.editorFontSize.addEventListener("change",()=>{B(y.EDITOR_SIZE,o.editorFontSize.value);applyEditorFont()})}applyEditorFont();let e=q(y.CONTENT,"");e&&e.trim()!==""?o.editor.value=e:T.WeChatSamples&&T.WeChatSamples["basic-guide"]&&(o.editor.value=T.WeChatSamples["basic-guide"].content),o.editor.addEventListener("compositionstart",()=>{D=!0}),o.editor.addEventListener("compositionend",()=>{D=!1,Z()}),o.editor.addEventListener("input",()=>{D||Z()}),o.editor.addEventListener("keydown",i=>{if(i.key==="Tab"){i.preventDefault();let g=o.editor.selectionStart,v=o.editor.selectionEnd;o.editor.setRangeText("  ",g,v,"end"),Z()}}),o.themeSelect&&(o.themeSelect.querySelectorAll("option").forEach(i=>{let g=T.WeChatThemes&&T.WeChatThemes[i.value];g&&g.description&&(i.title=g.description)}),o.themeSelect.addEventListener("change",i=>{Q(i.target.value)})),o.sampleSelect&&o.sampleSelect.addEventListener("change",i=>{i.target.value&&ie(i.target.value,!1)});let a=document.getElementById("quote-menu-trigger"),t=document.getElementById("quote-menu-panel"),l="popover"in HTMLElement.prototype,c="anchorName"in document.documentElement.style;function h(){if(!a||!t||c)return;let i=a.getBoundingClientRect();t.style.position="fixed",t.style.top=`${Math.round(i.bottom+4)}px`,t.style.left=`${Math.round(Math.max(8,Math.min(i.left,window.innerWidth-240)))}px`,t.style.margin="0"}t&&l?t.addEventListener("beforetoggle",i=>{i.newState==="open"&&h()}):a&&t&&!l&&(a.addEventListener("click",i=>{i.stopPropagation();let g=t.classList.toggle(":popover-open");t.style.display=g?"flex":"none",g&&h()}),document.addEventListener("click",i=>{!t.contains(i.target)&&i.target!==a&&(t.classList.remove(":popover-open"),t.style.display="none")}));(function(){function bindMenu(triggerId,panelId,align){let st=document.getElementById(triggerId),sp=document.getElementById(panelId);function sh(){if(!st||!sp)return;let r=st.getBoundingClientRect(),pw=Math.min(240,window.innerWidth-16),left=align==="right"?r.right-pw:r.left;left=Math.max(8,Math.min(left,window.innerWidth-pw-8));sp.style.position="fixed";sp.style.inset="unset";sp.style.margin="0";sp.style.top=Math.round(r.bottom+4)+"px";sp.style.left=Math.round(left)+"px";sp.style.right="auto";sp.style.bottom="auto";sp.style.zIndex="1000"}if(sp&&l){sp.addEventListener("beforetoggle",i=>{i.newState==="open"&&requestAnimationFrame(sh)})}else if(st&&sp){st.addEventListener("click",i=>{i.stopPropagation();let g=sp.classList.toggle(":popover-open");sp.style.display=g?"flex":"none";g&&sh()});document.addEventListener("click",i=>{!sp.contains(i.target)&&i.target!==st&&(sp.classList.remove(":popover-open"),sp.style.display="none")})}window.addEventListener("resize",()=>{if(sp&&(sp.matches(":popover-open")||sp.classList.contains(":popover-open")))sh()})}bindMenu("btn-theme-menu","theme-menu-panel","left");bindMenu("btn-sample-menu","sample-menu-panel","left");bindMenu("btn-preview-settings","preview-settings-panel","right")})();document.querySelectorAll("[data-snippet]").forEach(i=>{i.addEventListener("click",()=>{if(t&&t.contains(i))if(l&&typeof t.hidePopover=="function")try{t.hidePopover()}catch{}else t.classList.remove(":popover-open"),t.style.display="none";d(i.getAttribute("data-snippet"))})}),document.querySelectorAll("[data-view-btn]").forEach(i=>{i.addEventListener("click",()=>{X(i.getAttribute("data-view-btn"))})});
-document.querySelectorAll("[data-theme-btn]").forEach(i=>{i.addEventListener("click",()=>{Q(i.getAttribute("data-theme-btn"));let p=document.getElementById("theme-menu-panel");if(p&&typeof p.hidePopover=="function")try{p.hidePopover()}catch{}else if(p){p.classList.remove(":popover-open");p.style.display="none"}})});
-document.querySelectorAll("[data-sample-btn]").forEach(i=>{i.addEventListener("click",()=>{ie(i.getAttribute("data-sample-btn"),!1);document.querySelectorAll("[data-sample-btn]").forEach(b=>b.classList.toggle("active",b.getAttribute("data-sample-btn")===i.getAttribute("data-sample-btn")));let p=document.getElementById("sample-menu-panel");if(p&&typeof p.hidePopover=="function")try{p.hidePopover()}catch{}else if(p){p.classList.remove(":popover-open");p.style.display="none"}})}),o.toggleDarkmode&&o.toggleDarkmode.addEventListener("change",i=>{J(i.target.checked)});let E=document.getElementById("btn-clear-editor");E&&E.addEventListener("click",()=>{o.editor.value.trim()&&window.confirm("确定要清空当前编辑区的全部 Markdown 内容吗？")&&(o.editor.value="",I(),o.editor.focus(),R("编辑区已清空","info"))}),o.toggleH2Number&&o.toggleH2Number.addEventListener("change",i=>{f.h2Numbering=i.target.checked,B(y.H2_NUMBER,String(f.h2Numbering)),I()}),o.toggleH2Center&&o.toggleH2Center.addEventListener("change",i=>{o.toggleH2Center.disabled||(f.h2Center=i.target.checked,B(y.H2_CENTER,String(f.h2Center)),I())}),o.toggleFootnote&&o.toggleFootnote.addEventListener("change",i=>{f.linkToFootnote=i.target.checked,B(y.FOOTNOTE,String(f.linkToFootnote)),I()}),o.toggleMacCode&&o.toggleMacCode.addEventListener("change",i=>{f.macCodeBlock=i.target.checked,B(y.MAC_CODE,String(f.macCodeBlock)),I()}),o.toggleSyncScroll&&o.toggleSyncScroll.addEventListener("change",i=>{f.syncScroll=i.target.checked}),o.copyBtn&&o.copyBtn.addEventListener("click",s),x(),X(f.viewMode),J(f.darkMode),Q(f.themeId)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",n):n()})(window);})();
+`),N=[],w=0;for(;w<m.length;){let z=m[w],p=z.trim();if(!p){w++;continue}let S=p.match(/^```(.*)$/);if(S){let b=(S[1]||"").trim().split(/\s+/)[0]||"",k=[];for(w++;w<m.length&&!m[w].trim().startsWith("```");)k.push(m[w]),w++;w<m.length&&w++,N.push(H(k,b));continue}if(/^(?:---|\*\*\*|___)\s*$/.test(p)){N.push(`<hr style="${e.hr}" />`),w++;continue}let C=z.match(/^(#{1,6})\s+(.*)$/);if(C&&C[2].trim()!==""){N.push(v(C[1].length,C[2])),w++;continue}if(p.includes("|")&&w+1<m.length&&/^\s*\|?\s*:?-+/.test(m[w+1])&&m[w+1].includes("|")){let b=[m[w],m[w+1]];for(w+=2;w<m.length&&m[w].trim().includes("|")&&m[w].trim()!=="";)b.push(m[w]),w++;N.push(P(b));continue}if(/^\s*>\s?/.test(z)){let b=[];for(;w<m.length&&/^\s*>\s?/.test(m[w]);)b.push(m[w].replace(/^\s*>\s?/,"")),w++;let k=b.length>0&&b[0].trim().match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\](?:[ \t]+(.*))?$/i);if(k){let _=k[1].toUpperCase(),W=J[_],ee=k[2]?k[2].trim():"",U=ee?g(ee):W.defaultTitle,ae=b.slice(1),j=[],K=[];ae.forEach(te=>{te.trim()?K.push(g(te)):K.length&&(j.push(K),K=[])}),K.length&&j.push(K);let le=`<p style="margin: ${j.length>0?"0 0 6px 0":"0"}; font-size: 15px; font-weight: 700; line-height: 1.5; color: ${W.titleColor}; text-align: left; word-break: break-word;"><span style="margin-right: 6px;">${W.icon}</span>${U}</p>`,de=j.map((te,ce)=>`<p style="margin: ${ce===j.length-1?"0":"0 0 8px 0"}; font-size: 15px; line-height: 1.75; color: ${W.textColor}; text-align: left; word-break: break-word;">${te.join("<br />")}</p>`).join(""),pe=`margin: 18px 0; padding: 14px 16px; background-color: ${W.bgColor}; border-left: 4px solid ${W.borderColor}; border-radius: 0 8px 8px 0; text-align: left;`;N.push(`<section data-wx-role="alert-box" data-alert-type="${_.toLowerCase()}" style="${pe}">${le}${de}</section>`);continue}let $=[],u=[];b.forEach(_=>{_.trim()?u.push(g(_)):u.length&&($.push(u),u=[])}),u.length&&$.push(u);let A=$.map((_,W)=>`<p style="${W===$.length-1?`${e.blockquoteP} margin-bottom: 0;`:e.blockquoteP}">${_.join("<br />")}</p>`).join("");N.push(`<section style="${e.blockquote}">${A}</section>`);continue}if(/^\s*[-*+]\s+/.test(z)){let b=[];for(;w<m.length&&/^\s*[-*+]\s+/.test(m[w]);){let k=m[w].replace(/^\s*[-*+]\s+/,""),$=k.match(/^\[([ xX])\]\s+(.*)$/);if($){let u=$[1].toLowerCase()==="x",A=u?`<span style="color: ${r.accentColor}; font-weight: 700; margin-right: 6px;">☑</span>`:'<span style="color: #64748b; font-weight: 700; margin-right: 6px;">☐</span>',_=u?`<span style="color: #64748b;">${g($[2])}</span>`:g($[2]);b.push(`<li style="${e.li} list-style: none;">`+A+_+"</li>")}else b.push(`<li style="${e.li}">${g(k)}</li>`);w++}N.push(`<ul style="${e.ul}">${b.join("")}</ul>`);continue}if(/^\s*\d+\.\s+/.test(z)){let b=[],st=parseInt(z.trim(),10);for(;w<m.length&&/^\s*\d+\.\s+/.test(m[w]);){let k=m[w].replace(/^\s*\d+\.\s+/,"");b.push(`<li style="${e.li}">${g(k)}</li>`),w++}N.push(`<ol${st>1?` start="${st}"`:""} style="${e.ol}">${b.join("")}</ol>`);continue}if(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)\s*$/.test(p)){N.push(g(p)),w++;continue}let M=[];for(;w<m.length&&m[w].trim()!==""&&!/^```/.test(m[w].trim())&&!/^(#{1,6})\s+\S/.test(m[w])&&!/^(?:---|\*\*\*|___)\s*$/.test(m[w].trim())&&!/^\s*>\s?/.test(m[w])&&!/^\s*[-*+]\s+/.test(m[w])&&!/^\s*\d+\.\s+/.test(m[w]);)M.push(g(m[w].trim())),w++;M.length?N.push(`<p style="${e.p}">${M.join("<br />")}</p>`):(N.push(`<p style="${e.p}">${g(p)}</p>`),w++)}if(x.linkToFootnote&&t.length>0){let z=t.map(p=>`<p style="${e.footnoteItem}"><span style="font-weight: 600; color: ${r.accentColor};">[${p.index}]</span> ${p.title}：<em>${y(p.url)}</em></p>`).join("");N.push(`<section style="${e.footnotesSection}"><h4 style="${e.footnotesTitle}">参考资料与相关链接</h4>`+z+"</section>")}return{html:N.join(`
+`),footnotesCount:t.length,theme:r}}T.WeChatConverter={convert:ie,validateSpec:X,applyDarkMode:Q}})(window);
+(function (T) {
+  "use strict";
 
+  /* ───────────── 常量与状态 ───────────── */
+  const KEYS = {
+    CONTENT: "wx_md_studio_content_v2",
+    THEME: "wx_md_studio_theme_v1",
+    H2_NUMBER: "wx_md_studio_h2_number_v1",
+    H2_CENTER: "wx_md_studio_h2_center_v1",
+    FOOTNOTE: "wx_md_studio_footnote_v1",
+    MAC_CODE: "wx_md_studio_mac_code_v1",
+    VIEW_MODE: "wx_md_studio_view_mode_v1",
+    DARK_MODE: "wx_md_studio_dark_mode_v1",
+    EDITOR_FONT: "wx_md_studio_editor_font_v1",
+    EDITOR_SIZE: "wx_md_studio_editor_size_v1"
+  };
+  const DEFAULT_THEME = "editorial-sspai";
+  const DEFAULT_SAMPLE = "basic-guide";
+  const RENDER_DELAY = 180;
+  const HAS_POPOVER = "popover" in HTMLElement.prototype;
+  const CHECK_ICON =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>';
+
+  const state = {
+    themeId: DEFAULT_THEME,
+    h2Numbering: true,
+    h2Center: false,
+    linkToFootnote: true,
+    macCodeBlock: true,
+    syncScroll: true,
+    viewMode: "mobile",
+    darkMode: false
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const els = {};
+  let lastHtml = "";          // 最近一次转换结果（亮色），复制时使用
+  let renderTimer = null;
+  let toastTimer = null;
+  let composing = false;      // 输入法组合中
+
+  const store = {
+    get(key, fallback) {
+      try {
+        const v = localStorage.getItem(key);
+        return v !== null ? v : fallback;
+      } catch { return fallback; }
+    },
+    set(key, value) {
+      try { localStorage.setItem(key, value); } catch { /* 隐私模式 / 配额已满 */ }
+    }
+  };
+
+  const themes = () => T.WeChatThemes || {};
+  const samples = () => T.WeChatSamples || {};
+
+  /* ───────────── 通用 UI ───────────── */
+  function toast(message, type) {
+    if (!els.toast) return;
+    els.toast.textContent = message;
+    els.toast.className = "toast show " + (type || "success");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { els.toast.className = "toast"; }, 3200);
+  }
+
+  function updateStats(text, footnotes) {
+    const chars = String(text || "")
+      .replace(/```[\s\S]*?```/g, "")
+      .replace(/[#>*`~\-\[\]()!|]/g, "")
+      .replace(/\s+/g, "").length;
+    const minutes = Math.max(1, Math.ceil(chars / 350));
+    els.statChars.textContent = `${chars} 字`;
+    els.statReadTime.textContent = `预计阅读 ${minutes} 分钟`;
+    els.statFootnotes.textContent = `外链引用 ${footnotes} 处`;
+  }
+
+  function markActiveSample(text) {
+    const current = String(text || "").trim();
+    const hit = Object.values(samples()).find((s) => s.content.trim() === current);
+    const id = hit ? hit.id : "";
+    document.querySelectorAll("[data-sample-btn]").forEach((b) => {
+      b.classList.toggle("active", b.dataset.sampleBtn === id);
+    });
+  }
+
+  function updateSpecBadge() {
+    const result = T.WeChatConverter.validateSpec(els.preview);
+    const badge = els.statSpecCheck;
+    if (result.isValid) {
+      badge.className = "spec-badge pass";
+      badge.textContent = "规范校验";
+      badge.title = "100% 符合微信公众号编辑器插件排版规范（字体、暗色模式、盒模型与层级）";
+    } else {
+      badge.className = "spec-badge warn";
+      badge.textContent = `规范提示 (${result.violations.length})`;
+      badge.title = result.violations.map((v) => `${v.rule}: ${v.message}`).join("\n");
+    }
+  }
+
+  /* ───────────── 渲染 ───────────── */
+  function render() {
+    clearTimeout(renderTimer);
+    renderTimer = null;
+    const text = els.editor.value;
+    const result = T.WeChatConverter.convert(text, {
+      themeId: state.themeId,
+      h2Numbering: state.h2Numbering,
+      h2Center: state.h2Center,
+      linkToFootnote: state.linkToFootnote,
+      macCodeBlock: state.macCodeBlock
+    });
+    lastHtml = result.html;
+    els.preview.innerHTML = result.html;
+    updateSpecBadge();
+    if (state.darkMode) T.WeChatConverter.applyDarkMode(els.preview);
+    markActiveSample(text);
+    updateStats(text, result.footnotesCount);
+    store.set(KEYS.CONTENT, text);
+  }
+
+  function scheduleRender() {
+    clearTimeout(renderTimer);
+    renderTimer = setTimeout(render, RENDER_DELAY);
+  }
+
+  /* ───────────── 主题 / 视图 / 暗色 ───────────── */
+  function syncH2CenterToggle(theme) {
+    const input = els.toggleH2Center;
+    const label = els.labelH2Center;
+    const support = (theme && theme.h2AlignSupport) || "both";
+    const locked = support !== "both";
+    input.disabled = locked;
+    input.checked = support === "center" ? true : support === "left" ? false : state.h2Center;
+    label.classList.toggle("is-disabled", locked);
+    label.title =
+      support === "center" ? "当前主题采用居中胶囊标题设计，已固定为居中对齐" :
+      support === "left" ? "当前主题遵循原生左对齐规范，已固定为左对齐" :
+      "切换二级标题（H2）为居中或左对齐排版";
+  }
+
+  function setTheme(id, silent) {
+    const theme = themes()[id];
+    if (!theme) return;
+    state.themeId = id;
+    store.set(KEYS.THEME, id);
+    syncH2CenterToggle(theme);
+    document.querySelectorAll("[data-theme-btn]").forEach((b) => {
+      const active = b.dataset.themeBtn === id;
+      b.classList.toggle("active", active);
+      b.setAttribute("aria-pressed", String(active));
+    });
+    if (!silent) render();
+  }
+
+  function setViewMode(mode) {
+    state.viewMode = mode === "desktop" ? "desktop" : "mobile";
+    store.set(KEYS.VIEW_MODE, state.viewMode);
+    els.device.classList.toggle("desktop-mode", state.viewMode === "desktop");
+    els.device.classList.toggle("mobile-mode", state.viewMode === "mobile");
+    document.querySelectorAll("[data-view-btn]").forEach((b) => {
+      b.classList.toggle("active", b.dataset.viewBtn === state.viewMode);
+    });
+  }
+
+  function setDarkMode(on, silent) {
+    state.darkMode = !!on;
+    store.set(KEYS.DARK_MODE, String(state.darkMode));
+    els.device.classList.toggle("wx-dark-mode", state.darkMode);
+    els.toggleDarkmode.checked = state.darkMode;
+    els.mockTitle.textContent = state.darkMode
+      ? "微信公众号图文预览 · 模拟微信暗色效果"
+      : "微信公众号图文预览";
+    if (!silent) render();
+  }
+
+  function loadSample(id) {
+    const sample = samples()[id];
+    if (!sample) return;
+    const current = els.editor.value.trim();
+    const isUntouched = current === "" || Object.values(samples()).some((s) => s.content.trim() === current);
+    if (!isUntouched && !window.confirm(`加载「${sample.name}」将覆盖当前编辑区内容，是否继续？`)) return;
+    els.editor.value = sample.content;
+    els.editor.scrollTop = 0;
+    els.scroll.scrollTop = 0;
+    if (sample.recommendedTheme && themes()[sample.recommendedTheme]) setTheme(sample.recommendedTheme);
+    else render();
+    toast(`已载入「${sample.name}」，并自动切换至推荐排版样式`, "info");
+  }
+
+  /* ───────────── 编辑器：插入片段（保留撤销栈） ───────────── */
+  const ALERT_HINTS = {
+    "alert-note": ["NOTE", "在此填写背景补充说明或概念解释（也可在 [!NOTE] 后空格添加自定义标题）。"],
+    "alert-tip": ["TIP", "在此填写实用技巧、效率窍门或推荐的最佳实践。"],
+    "alert-important": ["IMPORTANT", "在此填写读者不可错过的核心结论或关键前置条件。"],
+    "alert-warning": ["WARNING", "在此填写需要格外留意的易错点、兼容性限制或潜在风险。"],
+    "alert-caution": ["CAUTION", "在此填写高风险警告、破坏性操作提示或严禁事项。"]
+  };
+  const FIXED_SNIPPETS = {
+    quote:
+      "\n> **📌 核心信息 / 活动卡片**\n> ⏰ **时间**：2026 年 10 月 24 日 14:00\n> 📍 **地点**：在此填写活动地点或核心提示\n",
+    table:
+      "\n| 时间 / 维度 | 内容说明 | 备注 / 嘉宾 |\n| :--- | :--- | :--- |\n" +
+      "| 14:00 - 14:45 | **主题分享一** | 嘉宾 A |\n| 14:45 - 15:30 | **主题分享二** | 嘉宾 B |\n",
+    hr: "\n---\n"
+  };
+
+  /** 返回 { text, from, to }：from/to 为插入后需要选中的区间（无选区时选中占位文本） */
+  function buildSnippet(kind, selected) {
+    const wrap = (prefix, placeholder, suffix) => {
+      const body = selected || placeholder;
+      const text = prefix + body + suffix;
+      return selected
+        ? { text, from: text.length, to: text.length }
+        : { text, from: prefix.length, to: prefix.length + body.length };
+    };
+    const fixed = (text) => ({ text, from: text.length, to: text.length });
+
+    if (kind in FIXED_SNIPPETS) return fixed(FIXED_SNIPPETS[kind]);
+    if (kind in ALERT_HINTS) {
+      const [type, hint] = ALERT_HINTS[kind];
+      return wrap(`\n> [!${type}]\n> `, hint, "\n");
+    }
+    switch (kind) {
+      case "h2": return wrap("\n## ", "章节二级标题", "\n");
+      case "h3": return wrap("\n### ", "小节三级标题", "\n");
+      case "bold": return wrap("**", "重点高亮文字", "**");
+      case "inline-code": return wrap("`", "code", "`");
+      case "link": return wrap("[", "链接名称", "](https://github.com/)");
+      case "codeblock":
+        return wrap("\n```typescript\n", '// 在此输入代码\nconst greeting = "Hello WeChat!";\nconsole.log(greeting);', "\n```\n");
+      default: return null;
+    }
+  }
+
+  /** 优先走 execCommand 以保留 Ctrl+Z 撤销；不支持时退回 setRangeText */
+  function insertText(text, start, end) {
+    const ed = els.editor;
+    ed.focus();
+    ed.setSelectionRange(start, end);
+    let ok = false;
+    try { ok = document.execCommand("insertText", false, text); } catch { /* ignore */ }
+    if (!ok) {
+      ed.setRangeText(text, start, end, "end");
+      ed.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+  }
+
+  function applySnippet(kind) {
+    const ed = els.editor;
+    const start = ed.selectionStart;
+    const end = ed.selectionEnd;
+    const snippet = buildSnippet(kind, ed.value.substring(start, end));
+    if (!snippet) return;
+    insertText(snippet.text, start, end);
+    ed.setSelectionRange(start + snippet.from, start + snippet.to);
+  }
+
+  function applyEditorFont() {
+    els.editor.style.fontFamily = els.editorFontFamily.value || "";
+    els.editor.style.fontSize = els.editorFontSize.value ? els.editorFontSize.value + "px" : "";
+  }
+
+  /* ───────────── 复制到公众号 ───────────── */
+  function legacyCopy(html) {
+    const box = document.createElement("div");
+    box.contentEditable = "true";
+    box.style.cssText =
+      "position:fixed;left:-99999px;top:0;width:677px;pointer-events:none;background:#fff;color:#334155;text-align:left;" +
+      'font-family:"mp-quote","PingFang SC",system-ui,-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;';
+    box.innerHTML = html;
+    document.body.appendChild(box);
+    const sel = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(box);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch { /* ignore */ }
+    sel.removeAllRanges();
+    document.body.removeChild(box);
+    return ok;
+  }
+
+  let copyIdleHtml = "";
+  let copyResetTimer = null;
+  function flashCopied() {
+    const btn = els.copyBtn;
+    btn.classList.add("copied");
+    btn.innerHTML = CHECK_ICON;
+    clearTimeout(copyResetTimer);
+    copyResetTimer = setTimeout(() => {
+      btn.classList.remove("copied");
+      btn.innerHTML = copyIdleHtml;
+    }, 2400);
+  }
+
+  async function copyToWeChat() {
+    if (renderTimer) render();   // 先落盘尚未渲染的输入
+    const html = lastHtml || els.preview.innerHTML;
+    const text = els.preview.innerText || els.preview.textContent || "";
+    let ok = false;
+    if (navigator.clipboard && window.ClipboardItem) {
+      try {
+        await navigator.clipboard.write([new ClipboardItem({
+          "text/html": new Blob([html], { type: "text/html" }),
+          "text/plain": new Blob([text], { type: "text/plain" })
+        })]);
+        ok = true;
+      } catch { /* 回退到 execCommand */ }
+    }
+    if (!ok) ok = legacyCopy(html);
+    if (ok) {
+      flashCopied();
+      toast("已复制符合微信排版规范的富文本！请前往公众号后台按 Cmd+V / Ctrl+V 粘贴", "success");
+    } else {
+      toast("自动复制受浏览器限制，请点击右侧预览区按 Cmd+A 全选后复制", "warn");
+    }
+  }
+
+  /* ───────────── 同步滚动 ───────────── */
+  function bindSyncScroll() {
+    let owner = null;       // 当前主动滚动的一侧，避免两侧互相触发回环
+    let releaseTimer = null;
+    const link = (from, to) => {
+      from.addEventListener("scroll", () => {
+        if (!state.syncScroll || (owner && owner !== from)) return;
+        const fromMax = from.scrollHeight - from.clientHeight;
+        const toMax = to.scrollHeight - to.clientHeight;
+        if (fromMax <= 0 || toMax <= 0) return;
+        owner = from;
+        to.scrollTop = (from.scrollTop / fromMax) * toMax;
+        clearTimeout(releaseTimer);
+        releaseTimer = setTimeout(() => { owner = null; }, 80);
+      }, { passive: true });
+    };
+    link(els.editor, els.scroll);
+    link(els.scroll, els.editor);
+  }
+
+  /* ───────────── 弹出菜单 ───────────── */
+  function bindMenu(triggerId, panelId, align) {
+    const trigger = $(triggerId);
+    const panel = $(panelId);
+    if (!trigger || !panel) return;
+    const place = () => {
+      const r = trigger.getBoundingClientRect();
+      const width = panel.offsetWidth || 240;
+      let left = align === "right" ? r.right - width : r.left;
+      left = Math.max(8, Math.min(left, window.innerWidth - width - 8));
+      panel.style.top = Math.round(r.bottom + 4) + "px";
+      panel.style.left = Math.round(left) + "px";
+    };
+    panel.addEventListener("beforetoggle", (e) => {
+      if (e.newState === "open") requestAnimationFrame(place);
+    });
+    window.addEventListener("resize", () => {
+      if (panel.matches(":popover-open")) place();
+    });
+  }
+
+  function closeParentPopover(el) {
+    const panel = el.closest("[popover]");
+    if (panel && panel.matches(":popover-open")) panel.hidePopover();
+  }
+
+  /* ───────────── 初始化 ───────────── */
+  function cacheElements() {
+    Object.assign(els, {
+      editor: $("md-editor"),
+      preview: $("wx-output"),
+      scroll: $("preview-scroll-container"),
+      device: $("preview-device-wrapper"),
+      mockTitle: $("wx-mock-status-title"),
+      toggleDarkmode: $("toggle-darkmode"),
+      copyBtn: $("btn-copy-wx"),
+      toggleH2Number: $("toggle-h2-number"),
+      toggleH2Center: $("toggle-h2-center"),
+      labelH2Center: $("label-h2-center"),
+      toggleFootnote: $("toggle-footnote"),
+      toggleMacCode: $("toggle-mac-code"),
+      toggleSyncScroll: $("toggle-sync-scroll"),
+      statChars: $("stat-chars"),
+      statReadTime: $("stat-read-time"),
+      statFootnotes: $("stat-footnotes"),
+      statSpecCheck: $("stat-spec-check"),
+      toast: $("app-toast"),
+      editorFontFamily: $("editor-font-family"),
+      editorFontSize: $("editor-font-size"),
+      clearBtn: $("btn-clear-editor")
+    });
+  }
+
+  function restorePreferences() {
+    const theme = store.get(KEYS.THEME, DEFAULT_THEME);
+    if (themes()[theme]) state.themeId = theme;
+    state.h2Numbering = store.get(KEYS.H2_NUMBER, "true") !== "false";
+    state.h2Center = store.get(KEYS.H2_CENTER, "false") === "true";
+    state.linkToFootnote = store.get(KEYS.FOOTNOTE, "true") !== "false";
+    state.macCodeBlock = store.get(KEYS.MAC_CODE, "true") !== "false";
+    state.viewMode = store.get(KEYS.VIEW_MODE, "mobile");
+    state.darkMode = store.get(KEYS.DARK_MODE, "false") === "true";
+
+    els.toggleH2Number.checked = state.h2Numbering;
+    els.toggleH2Center.checked = state.h2Center;
+    els.toggleFootnote.checked = state.linkToFootnote;
+    els.toggleMacCode.checked = state.macCodeBlock;
+    els.toggleSyncScroll.checked = state.syncScroll;
+
+    els.editorFontFamily.value = store.get(KEYS.EDITOR_FONT, "");
+    els.editorFontSize.value = store.get(KEYS.EDITOR_SIZE, "14");
+    applyEditorFont();
+
+    const saved = store.get(KEYS.CONTENT, "");
+    const fallback = samples()[DEFAULT_SAMPLE];
+    els.editor.value = saved.trim() !== "" ? saved : fallback ? fallback.content : "";
+  }
+
+  function bindToggle(input, key, prop) {
+    input.addEventListener("change", () => {
+      if (input.disabled) return;
+      state[prop] = input.checked;
+      store.set(key, String(state[prop]));
+      render();
+    });
+  }
+
+  function bindEvents() {
+    // 编辑器
+    els.editor.addEventListener("compositionstart", () => { composing = true; });
+    els.editor.addEventListener("compositionend", () => { composing = false; scheduleRender(); });
+    els.editor.addEventListener("input", () => { if (!composing) scheduleRender(); });
+    els.editor.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab" || e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
+      e.preventDefault();
+      insertText("  ", els.editor.selectionStart, els.editor.selectionEnd);
+    });
+    els.editorFontFamily.addEventListener("change", () => {
+      store.set(KEYS.EDITOR_FONT, els.editorFontFamily.value);
+      applyEditorFont();
+    });
+    els.editorFontSize.addEventListener("change", () => {
+      store.set(KEYS.EDITOR_SIZE, els.editorFontSize.value);
+      applyEditorFont();
+    });
+    els.clearBtn.addEventListener("click", () => {
+      if (!els.editor.value.trim()) return;
+      if (!window.confirm("确定要清空当前编辑区的全部 Markdown 内容吗？")) return;
+      els.editor.value = "";
+      render();
+      els.editor.focus();
+      toast("编辑区已清空", "info");
+    });
+
+    // 菜单项（事件委托：片段 / 主题 / 示例 / 视图）
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-snippet],[data-theme-btn],[data-sample-btn],[data-view-btn]");
+      if (!btn) return;
+      if (btn.dataset.snippet) { closeParentPopover(btn); applySnippet(btn.dataset.snippet); }
+      else if (btn.dataset.themeBtn) { closeParentPopover(btn); setTheme(btn.dataset.themeBtn); }
+      else if (btn.dataset.sampleBtn) { closeParentPopover(btn); loadSample(btn.dataset.sampleBtn); }
+      else if (btn.dataset.viewBtn) { setViewMode(btn.dataset.viewBtn); }
+    });
+
+    // 预览设置
+    els.toggleDarkmode.addEventListener("change", () => setDarkMode(els.toggleDarkmode.checked));
+    bindToggle(els.toggleH2Number, KEYS.H2_NUMBER, "h2Numbering");
+    bindToggle(els.toggleH2Center, KEYS.H2_CENTER, "h2Center");
+    bindToggle(els.toggleFootnote, KEYS.FOOTNOTE, "linkToFootnote");
+    bindToggle(els.toggleMacCode, KEYS.MAC_CODE, "macCodeBlock");
+    els.toggleSyncScroll.addEventListener("change", () => { state.syncScroll = els.toggleSyncScroll.checked; });
+    els.copyBtn.addEventListener("click", copyToWeChat);
+
+    bindSyncScroll();
+    bindMenu("quote-menu-trigger", "quote-menu-panel", "left");
+    bindMenu("btn-theme-menu", "theme-menu-panel", "left");
+    bindMenu("btn-sample-menu", "sample-menu-panel", "left");
+    bindMenu("btn-preview-settings", "preview-settings-panel", "right");
+  }
+
+  function init() {
+    cacheElements();
+    copyIdleHtml = els.copyBtn.innerHTML;
+    document.querySelectorAll("button[title]:not([aria-label])").forEach((b) => b.setAttribute("aria-label", b.title));
+
+    if (!HAS_POPOVER) {
+      document.querySelectorAll("[popover]").forEach((p) => { p.hidden = true; });
+      toast("当前浏览器版本过低，菜单不可用，请升级浏览器", "warn");
+    }
+
+    restorePreferences();
+    bindEvents();
+    setViewMode(state.viewMode);
+    setDarkMode(state.darkMode, true);
+    setTheme(state.themeId);     // 初始化只渲染一次
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})(window);
+})();
 </script>
 </body>
 </html>
