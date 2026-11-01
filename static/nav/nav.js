@@ -21,13 +21,13 @@ const NAV_DATA = [
       },
       {
         "name": "极限搜索",
-        "url": "https://so.ttti.cc",
-        "desc": "极限玩家快捷搜索集合"
+        "url": "https://ttti.cc/so",
+        "desc": "快捷的搜索引擎聚合"
       },
       {
-        "name": "极限软件",
+        "name": "软件导航",
         "url": "https://app.ttti.cc",
-        "desc": "极限玩家软件推荐"
+        "desc": "极限玩家的软件推荐"
       },
       {
         "name": "Github",
@@ -160,28 +160,38 @@ const NAV_DATA = [
           },
           {
             "name": "Google 翻译",
-            "url": "https://translate.google.cn",
+            "url": "https://translate.google.com",
             "desc": "谷歌出品全球最好的翻译"
           },
           {
             "name": "Deepl 翻译",
-            "url": "https://www.deepl.com/translator",
+            "url": "https://deepl.com/translator",
             "desc": "不错的自然语义翻译"
           },
           {
-            "name": "彩云翻译",
+            "name": "Papago 翻译",
+            "url": "https://papago.naver.com",
+            "desc": "在线翻译更适合韩语"
+          },
+          {
+            "name": "彩云小译",
             "url": "https://fanyi.caiyunapp.com",
             "desc": "国内专注翻译的服务"
           },
           {
             "name": "腾讯交互翻译",
             "url": "https://transmart.qq.com",
-            "desc": "腾讯出品的交互翻译"
+            "desc": "腾讯的在线翻译"
+          },
+          {
+            "name": "阿里翻译",
+            "url": "https://translate.alibaba.com",
+            "desc": "阿里的在线翻译"
           },
           {
             "name": "Mirai",
             "url": "https://miraitranslate.com/en/trial",
-            "desc": "来自日本 Mirai 的翻译服务"
+            "desc": "日语翻译"
           },
           {
             "name": "搜狗翻译",
@@ -191,7 +201,7 @@ const NAV_DATA = [
           {
             "name": "欧路词典",
             "url": "https://dict.eudic.net",
-            "desc": "好用快速的英文词典"
+            "desc": "英文词典"
           },
           {
             "name": "繁化姬",
@@ -326,7 +336,7 @@ const NAV_DATA = [
           {
             "name": "Filen",
             "url": "https://drive.filen.io",
-            "desc": "端到端加密云存储平台"
+            "desc": "端到端加密网盘"
           },
           {
             "name": "MultCloud",
@@ -997,6 +1007,172 @@ const NAV_DATA = [
             "name": "Webtor",
             "url": "https://webtor.io",
             "desc": "种子与磁力链接解析和播放"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "taxonomy": "人工智能",
+    "icon": "fa-microchip",
+    "list": [
+      {
+        "term": "国际AI",
+        "links": [
+          {
+            "name": "ChatGPT",
+            "url": "https://chatgpt.com",
+            "desc": "始祖AI"
+          },
+          {
+            "name": "Gemini",
+            "url": "https://gemini.google.com",
+            "desc": "谷歌旗下AI"
+          },
+          {
+            "name": "Claude",
+            "url": "https://claude.ai",
+            "desc": "目前最好的编程AI"
+          },
+          {
+            "name": "Grok",
+            "url": "http://grok.com",
+            "desc": "SpaceX旗下AI"
+          },
+          {
+            "name": "Copilot",
+            "url": "https://copilot.microsoft.com",
+            "desc": "微软旗下AI"
+          },
+          {
+            "name": "DuckGoAI",
+            "url": "https://duck.ai",
+            "desc": "DuckDuckGo旗下AI"
+          },
+          {
+            "name": "MetaAI",
+            "url": "https://meta.ai",
+            "desc": "Facebook旗下AI"
+          }
+        ]
+      },
+      {
+        "term": "国内AI",
+        "links": [
+          {
+            "name": "Deepseek",
+            "url": "https://chat.deepseek.com",
+            "desc": "开源AI"
+          },
+          {
+            "name": "Kimi",
+            "url": "https://kimi.com",
+            "desc": "开源AI"
+          },
+          {
+            "name": "豆包",
+            "url": "https://doubao.com",
+            "desc": "抖音旗下AI"
+          },
+          {
+            "name": "文心",
+            "url": "https://wenxin.baidu.com",
+            "desc": "百度旗下AI"
+          },
+          {
+            "name": "Z.AI",
+            "url": "https://chat.z.ai",
+            "desc": "智谱旗下AI"
+          },
+          {
+            "name": "元宝",
+            "url": "https://yuanbao.tencent.com",
+            "desc": "腾讯旗下AI"
+          },
+          {
+            "name": "千问",
+            "url": "https://qianwen.com",
+            "desc": "阿里巴巴旗下AI"
+          },
+          {
+            "name": "火山",
+            "url": "https://volcengine.com",
+            "desc": "火山AI模型"
+          },
+          {
+            "name": "秘塔",
+            "url": "https://metaso.cn",
+            "desc": "秘塔写作猫旗下AI"
+          },
+          {
+            "name": "小艺",
+            "url": "https://xiaoyi.huawei.com",
+            "desc": "华为旗下AI"
+          }
+        ]
+      },
+      {
+        "term": "AI生成",
+        "links": [
+          {
+            "name": "Bing imgs",
+            "url": "https://bing.com/images/create",
+            "desc": "微软的AI图像生成"
+          },
+          {
+            "name": "Raphael",
+            "url": "https://raphael.app/zh",
+            "desc": "免费的AI图像生成"
+          },
+          {
+            "name": "DomoAI",
+            "url": "https://domoai.app/zh-Hant",
+            "desc": "动漫风AI图像生成和视频生成"
+          },
+          {
+            "name": "拍我AI",
+            "url": "https://pai.video",
+            "desc": "低门槛AI视频创作平台"
+          },
+          {
+            "name": "Hailuo",
+            "url": "https://hailuoai.video",
+            "desc": "高画质AI图像生成和视频生成"
+          },
+          {
+            "name": "Dreamina",
+            "url": "https://dreamina.capcut.com/zh-tw",
+            "desc": "剪映旗下AI图像生成视频生成"
+          },
+          {
+            "name": "Midjourney",
+            "url": "https://midjourney.com",
+            "desc": "业界专业的AI图像生成"
+          },
+          {
+            "name": "Argil",
+            "url": "https://argil.ai",
+            "desc": "AI数字人视频生成"
+          },
+          {
+            "name": "DiffArt",
+            "url": "https://diffusionart.ai",
+            "desc": "AI艺术图像生成"
+          },
+          {
+            "name": "Designer",
+            "url": "https://designer.microsoft.com",
+            "desc": "微软AI平面与海报设计"
+          },
+          {
+            "name": "改图鸭",
+            "url": "https://gaituya.com/aiimg",
+            "desc": "在线AI生成与图像处理"
+          },
+          {
+            "name": "Puppetry",
+            "url": "https://puppetry.com",
+            "desc": "静态头像AI生成数字人"
           }
         ]
       }
@@ -4961,8 +5137,13 @@ const NAV_DATA = [
             "desc": "轻松生成动态渐变效果"
           },
           {
+            "name": "Icomoon",
+            "url": "https://icomoon.io",
+            "desc": "SVG图标生成与选择"
+          },
+          {
             "name": "Iconfont",
-            "url": "http://www.iconfont.cn",
+            "url": "https://www.iconfont.cn",
             "desc": "阿里出品的图标库"
           },
           {
@@ -8975,14 +9156,14 @@ const NAV_DATA = [
         "term": "生活相关",
         "links": [
           {
-            "name": "计算器",
-            "url": "https://www.desmos.com/fourfunction",
-            "desc": "在线计算器"
+            "name": "在线计算器",
+            "url": "https://desmos.com/fourfunction",
+            "desc": "计算器及其它数学工具"
           },
           {
-            "name": "度量衡转换器",
+            "name": "Metric Converter",
             "url": "https://metric-converter.com/zh/",
-            "desc": "文件与单位转换器"
+            "desc": "上千个文件单位转换器"
           },
           {
             "name": "计时器",

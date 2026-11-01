@@ -110,24 +110,26 @@ body::after {
 .search-box input {
   width: 100%;
   background: var(--panel);
-  border: 1px solid var(--panel-border);
+  border: none;
+  border-bottom: 2px solid var(--panel-border);
+  border-radius: 0;
   color: var(--cyan);
-  padding: 14px 20px 14px 48px;
+  padding: 14px 20px 14px 30px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.9rem;
   outline: none;
-  transition: all 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .search-box input:focus {
-  border-color: var(--cyan);
-  box-shadow: var(--glow-cyan);
+  border-bottom-color: var(--cyan);
+  box-shadow: 0 6px 12px -8px rgba(0,240,255,0.7);
 }
 
 .search-box::before {
   content: '>';
   position: absolute;
-  left: 18px;
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--cyan);
@@ -146,27 +148,129 @@ body::after {
 
 .no-results.show { display: block; }
 
-.datetime {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
+/* Logo */
+.logo {
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
-  min-width: 140px;
+  display: block;
+  margin-right: -10px;
 }
 
-.datetime .date {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.85rem;
-  color: var(--cyan);
-  letter-spacing: 2px;
+/* Category picker */
+.cat-picker {
+  position: relative;
+  flex-shrink: 0;
+  align-self: stretch;
 }
 
-.datetime .time {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.1rem;
+.picker-btn {
+  --accent: var(--cyan);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 100%;
+  min-height: 46px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  color: var(--text-dim);
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.picker-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.picker-btn:hover,
+.picker-btn.open,
+.picker-btn.filtered,
+.picker-btn:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  outline: none;
+}
+
+.picker-btn.filtered::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.picker-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 200px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+  display: none;
+  z-index: 200;
+}
+
+.picker-menu.show { display: block; }
+
+.picker-item {
+  --c: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 16px;
+  background: transparent;
+  border: none;
   color: var(--text);
-  letter-spacing: 3px;
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", 'JetBrains Mono', sans-serif;
+  font-size: 0.88rem;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.picker-item:hover,
+.picker-item:focus-visible {
+  background: rgba(255,255,255,0.05);
+  outline: none;
+}
+
+.picker-item.active {
+  color: var(--c);
+  background: rgba(255,255,255,0.04);
+}
+
+.picker-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 6px var(--c);
+  flex-shrink: 0;
+}
+
+.picker-num {
+  margin-left: auto;
+  padding-left: 16px;
+  font-size: 0.7rem;
+  color: var(--text-dim);
 }
 
 /* Main content */
@@ -530,16 +634,14 @@ body::after {
     padding: 12px 16px;
     gap: 12px;
   }
-  .datetime {
-    min-width: 110px;
-  }
-  .datetime .date { font-size: 0.7rem; letter-spacing: 1px; }
-  .datetime .time { font-size: 0.85rem; letter-spacing: 1px; }
+  .logo { width: 28px; height: 28px; margin-right: -6px; }
+  .picker-btn { width: 42px; min-height: 42px; }
+  .picker-menu { min-width: 170px; }
   .search-box input {
-    padding: 12px 14px 12px 38px;
+    padding: 12px 14px 12px 26px;
     font-size: 0.85rem;
   }
-  .search-box::before { left: 14px; font-size: 0.85rem; }
+  .search-box::before { left: 8px; font-size: 0.85rem; }
   .container { padding: 90px 16px 16px; }
   .cmd-grid { grid-template-columns: 1fr; }
   .cat-title { font-size: 0.85rem; }
@@ -555,12 +657,15 @@ body::after {
 
 <div class="sticky-header">
   <div class="header-inner">
+    <img class="logo" src="https://ttti.cc/favicon-32x32.png" alt="极限玩家" width="32" height="32">
     <div class="search-box">
       <input type="text" id="search" placeholder="" autocomplete="off">
     </div>
-    <div class="datetime">
-      <div class="date" id="date" onclick="location.reload()">2026-08-15</div>
-      <div class="time" id="time" onclick="location.reload()">17:00:00</div>
+    <div class="cat-picker" id="catPicker">
+      <button type="button" class="picker-btn" id="pickerBtn" aria-haspopup="listbox" aria-expanded="false" title="分类：全部分类" aria-label="选择分类">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18l-7 8.5V19l-4 2v-8.5L3 4z"/></svg>
+      </button>
+      <div class="picker-menu" id="pickerMenu" role="listbox"></div>
     </div>
   </div>
 </div>
@@ -590,7 +695,7 @@ body::after {
 
 <div class="toast" id="toast">COMMAND COPIED TO CLIPBOARD</div>
 
-<script src="cmdsheet.js"></script>
+<script src="sheet.js"></script>
 <script>
 function render() {
   const main = document.getElementById('main');
@@ -660,21 +765,6 @@ function render() {
 function escapeHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
-
-function updateClock() {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, '0');
-  const d = String(now.getDate()).padStart(2, '0');
-  const h = String(now.getHours()).padStart(2, '0');
-  const min = String(now.getMinutes()).padStart(2, '0');
-  const s = String(now.getSeconds()).padStart(2, '0');
-
-  document.getElementById('date').textContent = y + '-' + m + '-' + d;
-  document.getElementById('time').textContent = h + ':' + min + ':' + s;
-}
-setInterval(updateClock, 1000);
-updateClock();
 
 function toggleCat(header) {
   const cat = header.closest('.category');
@@ -783,14 +873,67 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Search
-document.getElementById('search').addEventListener('input', function() {
-  const q = this.value.toLowerCase().trim();
+// Category picker
+let currentCat = 'all';
+const pickerBtn = document.getElementById('pickerBtn');
+const pickerMenu = document.getElementById('pickerMenu');
+
+function buildPicker() {
+  const items = [{ id: 'all', name: '全部分类', color: 'text', count: CMDSHEET.categories.reduce((n, c) => n + c.commands.length, 0) }]
+    .concat(CMDSHEET.categories.map(c => ({ id: c.id, name: c.titleZh || c.title, color: c.color, count: c.commands.length })));
+  pickerMenu.innerHTML = items.map(it =>
+    '<button type="button" class="picker-item' + (it.id === currentCat ? ' active' : '') + '" role="option" data-id="' + escapeHtml(it.id) + '" style="--c: var(--' + it.color + ')">' +
+      '<span class="picker-dot"></span><span>' + escapeHtml(it.name) + '</span><span class="picker-num">' + it.count + '</span>' +
+    '</button>'
+  ).join('');
+  pickerMenu.querySelectorAll('.picker-item').forEach(function(btn) {
+    btn.addEventListener('click', function() { selectCat(this.dataset.id); });
+  });
+}
+
+function setPickerOpen(open) {
+  pickerMenu.classList.toggle('show', open);
+  pickerBtn.classList.toggle('open', open);
+  pickerBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+function selectCat(id) {
+  currentCat = id;
+  const cat = CMDSHEET.categories.find(c => c.id === id);
+  const name = cat ? (cat.titleZh || cat.title) : '全部分类';
+  pickerBtn.title = '分类：' + name;
+  pickerBtn.setAttribute('aria-label', '选择分类，当前：' + name);
+  pickerBtn.classList.toggle('filtered', !!cat);
+  pickerBtn.style.setProperty('--accent', cat ? 'var(--' + cat.color + ')' : 'var(--cyan)');
+  pickerMenu.querySelectorAll('.picker-item').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.id === id);
+  });
+  setPickerOpen(false);
+  applyFilter();
+  window.scrollTo({ top: 0 });
+}
+
+pickerBtn.addEventListener('click', function(e) {
+  e.stopPropagation();
+  setPickerOpen(!pickerMenu.classList.contains('show'));
+});
+document.addEventListener('click', function(e) {
+  if (!document.getElementById('catPicker').contains(e.target)) setPickerOpen(false);
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') setPickerOpen(false);
+});
+
+// Filter (category + search)
+function applyFilter() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
   let totalVisible = 0;
 
-  document.querySelectorAll('.category').forEach((cat, ci) => {
+  document.querySelectorAll('.category').forEach(cat => {
+    const inScope = currentCat === 'all' || cat.dataset.cat === currentCat;
+    const cards = cat.querySelectorAll('.cmd-card');
     let visibleInCat = 0;
-    cat.querySelectorAll('.cmd-card').forEach(card => {
+    cards.forEach(card => {
       const text = (card.querySelector('.cmd-name').textContent + ' ' +
                     card.querySelector('.cmd-code').textContent + ' ' +
                     (card.dataset.more || '')).toLowerCase();
@@ -799,27 +942,28 @@ document.getElementById('search').addEventListener('input', function() {
       if (isMatch) visibleInCat++;
     });
 
-    const header = cat.querySelector('.cat-header');
-    if (q.length > 0) {
-      cat.classList.toggle('collapsed', visibleInCat === 0);
-      header.setAttribute('aria-expanded', visibleInCat > 0 ? 'true' : 'false');
-    } else {
-      // Search cleared: back to default state, all collapsed
-      cat.classList.add('collapsed');
-      header.setAttribute('aria-expanded', 'false');
-    }
+    let expand;
+    if (!inScope) expand = false;
+    else if (q.length > 0) expand = visibleInCat > 0;
+    else expand = currentCat !== 'all';
+
+    cat.classList.toggle('collapsed', !expand);
+    cat.querySelector('.cat-header').setAttribute('aria-expanded', expand ? 'true' : 'false');
     cat.querySelector('.cat-count').textContent = q.length > 0
-      ? visibleInCat + ' / ' + cat.querySelectorAll('.cmd-card').length
-      : cat.querySelectorAll('.cmd-card').length;
-    cat.style.display = visibleInCat > 0 || q.length === 0 ? 'block' : 'none';
-    totalVisible += visibleInCat;
+      ? visibleInCat + ' / ' + cards.length
+      : cards.length;
+    cat.style.display = inScope && (visibleInCat > 0 || q.length === 0) ? 'block' : 'none';
+    if (inScope) totalVisible += visibleInCat;
   });
 
   document.getElementById('noResults').classList.toggle('show', q.length > 0 && totalVisible === 0);
-});
+}
+
+document.getElementById('search').addEventListener('input', applyFilter);
 
 // Init
 render();
+buildPicker();
 </script>
 
 </body>

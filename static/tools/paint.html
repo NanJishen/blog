@@ -62,6 +62,13 @@ html, body {
   position:absolute; display:none; pointer-events:none; border:1px solid #fff;
   box-shadow:0 0 0 9999px rgba(0,0,0,.55);
 }
+/* 宫格模式（4 / 6 / 9）：框内显示分割参考线，隐藏中心十字 */
+#crop.grid::before, #crop.grid::after { display:none; }
+#cropGrid {
+  position:absolute; inset:0; pointer-events:none; display:none;
+  filter:drop-shadow(0 0 1px rgba(0,0,0,.9));
+}
+#crop.grid #cropGrid { display:block; }
 /* 剪裁框中心十字瞄准 */
 #crop::before, #crop::after { content:''; position:absolute; left:50%; top:50%; pointer-events:none; }
 #crop::before {
@@ -211,6 +218,22 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 #cropBar .ratio button:hover { background:#3a3d44; }
 #cropBar .ratio button.on { background:var(--accent); color:#fff; }
+#cropBar .ratio { flex-wrap:wrap; justify-content:center; max-width:100%; }
+#cropBar #cropGrids { padding-left:8px; border-left:1px solid rgba(255,255,255,.12); }
+/* 手机：比例 / 宫格各占一行，按钮收紧，保证不超出屏幕 */
+@media (max-width:640px) {
+  #cropBar { gap:4px 8px; }
+  #cropBar .rot { flex:1 1 100%; }
+  #cropBar #cropRatio { flex:1 1 100%; gap:0; }
+  #cropBar #cropGrids { flex:0 1 auto; padding-left:0; border-left:none; gap:0; }
+  #cropBar .ratio button { min-width:0; padding:0 8px; flex:0 1 auto; }
+  #cropBar #cropRatio button { flex:1 1 0; padding:0 4px; }
+}
+/* 更窄的屏幕（≤340px）：旋转滑杆单独一行，其余按钮居中，避免翻转按钮被挤出 */
+@media (max-width:340px) {
+  #cropBar .rot { flex-wrap:wrap; justify-content:center; }
+  #cropBar .rot > #rotRange { order:-1; flex:1 1 100%; margin:0 4px 2px; }
+}
 #cropBar .ratio button:disabled { opacity:.35; cursor:default; background:transparent; }
 @media (pointer:coarse) { #cropBar .ratio button { height:40px; } }
 #cropBar .rot input[type=range] {
@@ -253,6 +276,31 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 
 #settingsModal .dialog { width:min(380px, 100%); }
+
+/* 九宫格导出弹窗 */
+#gridModal .dialog { width:min(460px, 100%); }
+#gridPreview {
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:4px; margin:0 0 16px; border-radius:10px; overflow:hidden;
+}
+#gridPreview button {
+  position:relative; padding:0; border:none; background:#111; cursor:pointer; display:block; line-height:0;
+  outline:2px solid transparent; outline-offset:-2px;
+}
+#gridPreview button:hover { outline-color:var(--accent); }
+#gridPreview img { width:100%; height:auto; display:block; pointer-events:none; }
+#gridPreview span {
+  position:absolute; left:6px; top:6px; min-width:20px; height:20px; padding:0 5px; border-radius:10px; line-height:20px;
+  text-align:center; font-size:12px; color:#fff; background:rgba(0,0,0,.55);
+}
+.grid-tip { margin:0 0 14px; font-size:13px; color:#9ca3af; line-height:1.6; }
+.grid-act { display:flex; gap:10px; justify-content:flex-end; }
+.grid-act button {
+  height:38px; padding:0 18px; border:none; border-radius:10px; background:#3a3d44; color:var(--text); font-size:14px; cursor:pointer;
+}
+.grid-act button:hover { background:#4a4d55; }
+.grid-act button.primary { background:var(--accent); color:#fff; }
+.grid-act button.primary:hover { filter:brightness(1.1); }
+.grid-act button:disabled { opacity:.5; cursor:default; }
 
 /* 触屏：更大的点击区域，16px 字号避免 iOS 聚焦时自动放大 */
 @media (pointer:coarse) {
@@ -878,7 +926,7 @@ select.wm-field option { background:#26282d; color:var(--text); }
     <div id="stage">
       <canvas id="cv"></canvas>
       <div id="marquee"></div>
-      <div id="crop"></div>
+      <div id="crop"><div id="cropGrid"></div></div>
       <div class="handle" id="hT" data-edge="t"></div>
       <div class="handle" id="hB" data-edge="b"></div>
       <div class="handle" id="hL" data-edge="l"></div>
@@ -899,10 +947,16 @@ select.wm-field option { background:#26282d; color:var(--text); }
       </div>
       <div class="ratio" id="cropRatio">
         <button data-r="free" class="on" title="自由比例">自由</button>
+        <button data-r="1:1" title="1:1">1:1</button>
         <button data-r="4:3" title="4:3">4:3</button>
         <button data-r="16:9" title="16:9">16:9</button>
         <button data-r="21:9" title="21:9">21:9</button>
         <button id="ratioSwap" title="切换横 / 竖" disabled>⇄</button>
+      </div>
+      <div class="ratio" id="cropGrids">
+        <button class="gridBtn" data-n="4" title="四宫格：2×2 切成 4 张图">四宫格</button>
+        <button class="gridBtn" data-n="6" title="六宫格：3×2（竖框为 2×3）切成 6 张图">六宫格</button>
+        <button class="gridBtn" data-n="9" title="九宫格：3×3 切成 9 张图（适合朋友圈 / 社交平台发图）">九宫格</button>
       </div>
       <div class="act">
         <button id="applyCrop" title="应用剪裁 (Enter)">
@@ -1052,6 +1106,21 @@ select.wm-field option { background:#26282d; color:var(--text); }
   </div>
 </div>
 
+<!-- 九宫格导出弹窗 -->
+<div class="modal" id="gridModal">
+  <div class="dialog">
+    <button class="x-btn" title="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h3 id="gridTitle">九宫格切图</h3>
+    <div id="gridPreview"></div>
+    <p class="grid-tip" id="gridTip"></p>
+    <div class="grid-act">
+      <button id="gridClose">返回调整</button>
+      <button id="gridApply" title="只保留剪裁范围，不切图">仅应用剪裁</button>
+      <button id="gridZip" class="primary">下载全部 (ZIP)</button>
+    </div>
+  </div>
+</div>
+
 <!-- 操作说明弹窗 -->
 <div class="modal" id="helpModal">
   <div class="dialog">
@@ -1060,7 +1129,7 @@ select.wm-field option { background:#26282d; color:var(--text); }
     <ul>
       <li><b>Ctrl+V</b>：无图片时粘贴为新图；已有图片时粘贴为图层，可拖动移动，拖四角缩放（默认等比，按住 Shift 自由拉伸），点图层外或按 Esc 确认</li>
       <li><b>选区</b>：上方可切换矩形 / 圆形，拖动选区可移动其中的图片，按住 Shift 为正方形 / 正圆</li>
-      <li><b>剪裁</b>：拖动边缘调整范围，滑杆可任意度旋转，双击滑杆复位，可水平 / 垂直翻转</li>
+      <li><b>剪裁</b>：拖动边缘调整范围，滑杆可任意度旋转，双击滑杆复位，可水平 / 垂直翻转；开启「四宫格 / 六宫格 / 九宫格」后框内显示分割线，确认时切成 4 / 6 / 9 张图，可逐张或打包 ZIP 下载</li>
       <li><b>标注</b>：按住 Shift 可吸附 45° / 画正圆</li>
       <li><b>调色盘</b>：常用颜色点一下即可加入自定义颜色，支持导入导出</li>
       <li><b>滤镜</b>：支持几种预设，可用滑杆微调</li>
@@ -1168,12 +1237,12 @@ select.wm-field option { background:#26282d; color:var(--text); }
 const $ = s => document.querySelector(s);
 const view = $('#view'), stage = $('#stage'), cv = $('#cv'), ctx = cv.getContext('2d');
 const empty = $('#empty'), marquee = $('#marquee'), cropBox = $('#crop'), cropBar = $('#cropBar'), selBar = $('#selBar'), selRect = $('#selRect'), selEllipse = $('#selEllipse'), zoomTip = $('#zoomTip'), zoomBox = $('#zoomBox');
-const ratioBtns = [...document.querySelectorAll('#cropRatio button[data-r]')], ratioSwap = $('#ratioSwap');
+const ratioBtns = [...document.querySelectorAll('#cropRatio button[data-r]')], ratioSwap = $('#ratioSwap'), gridBtns = [...document.querySelectorAll('#cropGrids .gridBtn')], cropGridEl = $('#cropGrid');
 const handles = { t: $('#hT'), b: $('#hB'), l: $('#hL'), r: $('#hR') };
 const cornerHandles = [...document.querySelectorAll('.handle.corner')];
 const btnHome = $('#btnHome'), btnSelect = $('#btnSelect'), btnSettings = $('#btnSettings'), btnCrop = $('#btnCrop');
 const btnUndo = $('#btnUndo'), btnSave = $('#btnSave');
-const paletteModal = $('#paletteModal'), settingsModal = $('#settingsModal'), helpModal = $('#helpModal');
+const paletteModal = $('#paletteModal'), settingsModal = $('#settingsModal'), helpModal = $('#helpModal'), gridModal = $('#gridModal');
 const cwInput = $('#cw'), chInput = $('#ch'), lockRatio = $('#lockRatio');
 const btnMark = $('#btnMark'), optBar = $('#optBar'), textEd = $('#textEdit');
 const fontSel = $('#fontSel'), fSize = $('#fSize'), tColor = $('#tColor'), bgColor = $('#bgColor'), bgAlpha = $('#bgAlpha'), fAlpha = $('#fAlpha');
@@ -1198,7 +1267,11 @@ let selShape = 'rect';           // 新建选区的形状
 let tool = 'none';               // 'none'（无工具）| 'select' | 'crop' | 'mark' | 'filter' | 'wm' | 'deco'
 let crop = null;                 // 剪裁框 {l, t, r, b}
 let cropKey = 'free', cropPortrait = false, cropHover = false;   // 剪裁比例预设 / 是否竖向 / 鼠标是否在框内
-const RATIOS = { '4:3': 4 / 3, '16:9': 16 / 9, '21:9': 21 / 9 };
+const RATIOS = { '1:1': 1, '3:2': 3 / 2, '4:3': 4 / 3, '16:9': 16 / 9, '21:9': 21 / 9 };
+let gridN = 0;                   // 宫格模式：0 关闭，4 / 6 / 9 = 切成几张（六宫格按框横竖排成 3×2 或 2×3）
+// 当前剪裁框尺寸下的 [列, 行]
+const gridDims = (w, h) => gridN === 4 ? [2, 2] : gridN === 6 ? (w >= h ? [3, 2] : [2, 3]) : [3, 3];
+const GRID_NAME = { 4: '四宫格', 6: '六宫格', 9: '九宫格' };
 const curRatio = () => cropKey === 'free' ? 0 : (cropPortrait ? 1 / RATIOS[cropKey] : RATIOS[cropKey]);
 let drag = null, panDrag = null;
 let fp = [0, 0, 0, 0, 0];         // 滤镜参数：亮度、对比度、饱和度、暖度、清晰度（-100~100）
@@ -1438,10 +1511,9 @@ function commit() {
 }
 
 /* ---------- 剪裁 ---------- */
-function applyCrop() {
-  if (!crop) return;
+// 按当前剪裁框（含旋转 / 翻转）生成剪裁后的画布
+function cropCanvas() {
   const { l, t, r, b } = crop, w = r - l, h = b - t;
-  snapshot();
   const c = makeCanvas(w, h), g = c.getContext('2d');
   if (rot || flipX || flipY) {   // 图像翻转、绕中心旋转后，截取剪裁框内的部分
     g.imageSmoothingQuality = 'high';
@@ -1452,8 +1524,95 @@ function applyCrop() {
   } else {
     g.drawImage(base, l, t, w, h, 0, 0, w, h);
   }
+  return c;
+}
+
+function applyCrop() {
+  if (!crop) return;
+  if (gridN) { openGrid(); return; }
+  snapshot();
+  const c = cropCanvas();
   crop = null; tool = 'none';
   setBase(c);
+}
+
+/* ---------- 宫格：把剪裁范围切成 4 / 6 / 9 张 ---------- */
+let gridTiles = [];              // [{ name, blob, url }]
+function revokeGrid() { gridTiles.forEach(t => URL.revokeObjectURL(t.url)); gridTiles = []; }
+
+async function openGrid() {
+  if (!crop) return;
+  const src = cropCanvas(), w = src.width, h = src.height, [cols, rows] = gridDims(w, h), n = cols * rows;
+  if (w < cols || h < rows) { alert(`剪裁范围太小，无法切成${GRID_NAME[gridN]}`); return; }
+  let fmt = outFormat;                                   // ICO 不适合切图，改用 PNG；不支持 AVIF 时同样退回 PNG
+  if (fmt === 'ico' || (fmt === 'avif' && !canEncode('image/avif'))) fmt = 'png';
+  const stamp = Date.now();
+  revokeGrid();
+  try {
+    for (let i = 0; i < n; i++) {
+      const col = i % cols, row = (i / cols) | 0;
+      const x0 = Math.round(col * w / cols), x1 = Math.round((col + 1) * w / cols);
+      const y0 = Math.round(row * h / rows), y1 = Math.round((row + 1) * h / rows);
+      const c = makeCanvas(x1 - x0, y1 - y0), g = c.getContext('2d');
+      if (fmt === 'jpg') { g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); }
+      g.drawImage(src, x0, y0, x1 - x0, y1 - y0, 0, 0, x1 - x0, y1 - y0);
+      const blob = await toBlobAsync(c, MIME[fmt], fmt === 'png' ? undefined : 0.92);
+      if (!blob) throw new Error('编码失败');
+      gridTiles.push({ name: `grid_${stamp}_${i + 1}.${fmt}`, blob, url: URL.createObjectURL(blob) });
+    }
+  } catch (err) {
+    revokeGrid();
+    alert('切图失败：' + err.message);
+    return;
+  }
+  const box = $('#gridPreview');
+  box.innerHTML = '';
+  box.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  box.style.width = rows > cols ? '66%' : '100%';          // 竖向 2×3 时预览收窄，避免过高
+  box.style.marginInline = 'auto';
+  $('#gridTitle').textContent = `${GRID_NAME[gridN]}切图（${cols}×${rows}）`;
+  gridTiles.forEach((t, i) => {
+    const b = document.createElement('button');
+    b.title = `下载第 ${i + 1} 张`;
+    b.innerHTML = `<img alt=""><span>${i + 1}</span>`;
+    b.firstChild.src = t.url;
+    b.onclick = () => download(t.blob, t.name);
+    box.appendChild(b);
+  });
+  $('#gridTip').textContent = `每张约 ${Math.round(w / cols)} × ${Math.round(h / rows)} px，格式 ${fmt.toUpperCase()}（跟随设置里的保存格式）。点击单张可单独下载，编号按从左到右、从上到下。`;
+  openModal(gridModal);
+}
+
+/* 极简 ZIP（仅存储，不压缩；图片本身已是压缩格式） */
+const CRC_T = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+const crc32 = u8 => { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+async function makeZip(files) {   // files: [{ name, blob }]
+  const enc = new TextEncoder(), parts = [], central = [];
+  let offset = 0;
+  const d = new Date();
+  const dosTime = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+  const dosDate = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  for (const f of files) {
+    const data = new Uint8Array(await f.blob.arrayBuffer()), name = enc.encode(f.name), crc = crc32(data);
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true);
+    lh.setUint16(10, dosTime, true); lh.setUint16(12, dosDate, true);
+    lh.setUint32(14, crc, true); lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true);
+    lh.setUint16(26, name.length, true);
+    parts.push(lh.buffer, name, data);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true);
+    ch.setUint16(12, dosTime, true); ch.setUint16(14, dosDate, true);
+    ch.setUint32(16, crc, true); ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true);
+    ch.setUint16(28, name.length, true); ch.setUint32(42, offset, true);
+    central.push(ch.buffer, name);
+    offset += 30 + name.length + data.length;
+  }
+  const cdSize = central.reduce((n, b) => n + (b.byteLength !== undefined ? b.byteLength : b.length), 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
+  end.setUint32(12, cdSize, true); end.setUint32(16, offset, true);
+  return new Blob([...parts, ...central, end.buffer], { type: 'application/zip' });
 }
 
 function cancelCrop() {
@@ -1540,7 +1699,7 @@ function setTool(t) {
   commit();
   tool = t; resetRot();
   crop = t === 'crop' ? { l: 0, t: 0, r: CW, b: CH } : null;
-  if (t === 'crop') { cropKey = 'free'; cropPortrait = false; }
+  if (t === 'crop') { cropKey = 'free'; cropPortrait = false; gridN = 0; }
   if (t === 'filter') startFilter();
   if (t === 'deco') startDeco();
   if (t === 'wm') startWm();
@@ -1988,7 +2147,7 @@ function resizeImage() {
 }
 
 /* ---------- 弹窗 ---------- */
-const ALL_MODALS = [settingsModal, helpModal, paletteModal];
+const ALL_MODALS = [settingsModal, helpModal, paletteModal, gridModal];
 function openModal(m) { m.classList.add('show'); }
 function closeModal(m) { m.classList.remove('show'); }
 const anyModalOpen = () => ALL_MODALS.some(m => m.classList.contains('show'));
@@ -2114,6 +2273,14 @@ function updateUI() {
     Object.assign(handles.r.style, { left: pct(r, CW), top: pct((t + b) / 2, CH) });
     ratioBtns.forEach(bt => bt.classList.toggle('on', bt.dataset.r === cropKey));
     ratioSwap.disabled = cropKey === 'free';
+    cropBox.classList.toggle('grid', !!gridN);
+    gridBtns.forEach(bt => bt.classList.toggle('on', +bt.dataset.n === gridN));
+    if (gridN) {                                            // 按当前框尺寸画 cols×rows 分割线
+      const [cols, rows] = gridDims(crop.r - crop.l, crop.b - crop.t), bg = [];
+      for (let i = 1; i < cols; i++) bg.push(`linear-gradient(#fff,#fff) ${(i / cols * 100).toFixed(4)}% 0/1px 100% no-repeat`);
+      for (let i = 1; i < rows; i++) bg.push(`linear-gradient(#fff,#fff) 0 ${(i / rows * 100).toFixed(4)}%/100% 1px no-repeat`);
+      cropGridEl.style.background = bg.join(',');
+    }
   }
 
   const inLayer = !!(flt && flt.src && sel && tool === 'select' && base);   // 粘贴的图层：四角显示缩放手柄
@@ -2871,6 +3038,25 @@ ratioSwap.onclick = () => {
   cropPortrait = !cropPortrait;
   fitRatio(curRatio(), true);
   ratioSwap.blur(); render(); updateUI();
+};
+gridBtns.forEach(bt => bt.onclick = () => {
+  if (!crop) return;
+  const n = +bt.dataset.n;
+  gridN = gridN === n ? 0 : n;                              // 再点一次关闭
+  if (gridN) {                                              // 默认让每格接近正方形：六宫格 3:2，其余 1:1
+    const want = gridN === 6 ? '3:2' : '1:1', other = gridN === 6 ? '1:1' : '3:2';
+    if (cropKey === 'free' || cropKey === other) { cropKey = want; fitRatio(curRatio(), true); }
+  }
+  bt.blur(); render(); updateUI();
+});
+$('#gridClose').onclick = () => closeModal(gridModal);
+$('#gridApply').onclick = () => { closeModal(gridModal); gridN = 0; applyCrop(); };
+$('#gridZip').onclick = async () => {
+  if (!gridTiles.length) return;
+  const btn = $('#gridZip'); btn.disabled = true;
+  try { download(await makeZip(gridTiles), `grid_${Date.now()}.zip`); }
+  catch (err) { alert('打包失败：' + err.message); }
+  btn.disabled = false;
 };
 $('#flipH').onclick = () => flipCrop('x');
 $('#flipV').onclick = () => flipCrop('y');

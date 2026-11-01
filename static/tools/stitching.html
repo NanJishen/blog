@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="color-scheme" content="dark" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>电影字幕截图拼接</title>
+    <title>极限拼图</title>
     <link rel="icon" href="/favicon.ico" />
     <style>
       :root {
@@ -38,6 +38,30 @@
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+      }
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: #404040 transparent;
+      }
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #404040;
+        border-radius: 10px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #5a5a5a;
+        background-clip: content-box;
+      }
+      ::-webkit-scrollbar-corner {
+        background: transparent;
       }
       html,
       body {
@@ -97,50 +121,294 @@
         gap: 4px;
         margin-left: auto;
       }
-      .nav-links {
+      .menu-wrap {
+        position: relative;
+      }
+      .menu-wrap > .btn {
+        height: 34px;
+        width: 34px;
+        padding: 0;
+        font-size: 13px;
+        border-radius: 8px;
+      }
+      .menu-wrap > .btn[aria-expanded="true"] {
+        background: var(--header-hover);
+      }
+      .menu-pop {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        min-width: 150px;
+        padding: 6px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        box-shadow: 0 8px 28px rgb(0 0 0 / 0.5);
+        z-index: 120;
+      }
+      .menu-pop[hidden] {
+        display: none;
+      }
+      .menu-item[aria-checked="true"] {
+        background: var(--header-hover);
+      }
+      .size-row {
+        display: flex;
+        gap: 8px;
+      }
+      .size-row .wm-input {
+        width: auto;
+        flex: 1;
+        min-width: 0;
+      }
+      .size-row select.wm-input {
+        flex: none;
+        width: 96px;
+        cursor: pointer;
+      }
+      .ratio-row {
         display: flex;
         align-items: center;
-        gap: 2px;
+        gap: 8px;
       }
-      .nav-link {
-        display: inline-flex;
+      .ratio-row .orient-btn {
+        height: 32px;
+        padding: 0 12px;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+      .tpl-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      .tpl-item {
+        display: flex;
         align-items: center;
-        gap: 5px;
-        padding: 6px 12px;
-        border: none;
+        justify-content: center;
+        padding: 5px;
+        border: 1px solid var(--border);
         border-radius: 8px;
         background: transparent;
         color: var(--text-muted);
-        font-size: 13px;
-        font-weight: 500;
-        font-family: inherit;
-        text-decoration: none;
         cursor: pointer;
         transition:
           background 0.15s,
+          border-color 0.15s,
           color 0.15s;
-        white-space: nowrap;
       }
-      .nav-link:hover {
+      .tpl-item:hover {
+        background: var(--header-hover);
+      }
+      .tpl-item.active {
+        border-color: var(--primary);
         background: var(--header-hover);
         color: var(--text);
       }
-      .nav-link svg {
+      .tpl-item svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 60px;
+      }
+      .ann-tools {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+      }
+      .ann-tool {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        height: 52px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+        font-size: 11px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s,
+          border-color 0.15s;
+      }
+      .ann-tool:hover {
+        background: var(--header-hover);
+      }
+      .ann-tool.active {
+        background: var(--primary);
+        color: var(--primary-fg);
+        border-color: var(--primary);
+      }
+      .ann-colors {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .ann-swatch {
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        border: 1px solid rgb(255 255 255 / 0.25);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .ann-swatch.active {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+      }
+      .ann-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .ann-actions .btn {
+        flex: 1;
+        height: 32px;
+        padding: 0 8px;
+        font-size: 12px;
+      }
+      .preview-area canvas.annotating {
+        cursor: crosshair;
+        touch-action: none;
+      }
+      .preview-area canvas.annotating.ann-select {
+        cursor: default;
+      }
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 9px 12px;
+        border: none;
+        border-radius: 7px;
+        background: transparent;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 500;
+        font-family: inherit;
+        text-align: left;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.15s;
+      }
+      .menu-item:hover,
+      .menu-item:focus-visible {
+        background: var(--header-hover);
+        outline: none;
+      }
+      .menu-item svg {
         flex-shrink: 0;
         opacity: 0.75;
       }
-      .nav-icon {
-        padding: 0;
-        width: 36px;
-        height: 36px;
-        justify-content: center;
-      }
       .main {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        grid-template-columns:
+          minmax(280px, min(var(--left-w, calc(50% - 10px)), calc(100% - 340px)))
+          20px
+          minmax(320px, 1fr);
+        gap: 0;
         padding: 20px;
         align-items: start;
+      }
+      .main > .panel {
+        position: relative;
+      }
+      .splitter {
+        align-self: stretch;
+        position: relative;
+        cursor: col-resize;
+        touch-action: none;
+        outline: none;
+      }
+      .splitter::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 4px;
+        margin-left: -2px;
+        border-radius: 4px;
+        background: transparent;
+        transition: background 0.15s;
+      }
+      .splitter:hover::before,
+      .splitter:focus-visible::before,
+      .splitter.dragging::before {
+        background: var(--primary);
+        opacity: 0.55;
+      }
+      body.is-resizing {
+        cursor: col-resize;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .zoom-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateX(-50%);
+        z-index: 5;
+        display: flex;
+        gap: 5px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      .zoom-bar.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .zoom-bar[hidden] {
+        display: none;
+      }
+      .zoom-bar .icon-btn {
+        width: 30px;
+        padding: 0;
+      }
+      .zoom-bar .icon-btn.active {
+        background: rgba(255, 255, 255, 0.28);
+      }
+      .preview-area.is-actual canvas {
+        max-height: none;
+      }
+      .main.preview-actual > .panel:nth-of-type(2) {
+        position: relative;
+        top: auto;
+      }
+      .screenshot-list.is-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        align-content: start;
+        align-items: start;
+        gap: 10px;
+      }
+      .screenshot-list.is-grid .screenshot-item::after {
+        content: attr(data-n);
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 5px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        background: rgb(0 0 0 / 0.6);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 600;
+        pointer-events: none;
       }
       .panel {
         background: var(--surface);
@@ -231,6 +499,38 @@
         background: var(--handle);
         border-radius: 5px;
         transform: translateY(-50%);
+      }
+      .top-handle {
+        transform: none;
+      }
+      .bottom-handle {
+        transform: translateY(-100%);
+      }
+      .top-handle::after {
+        top: 0;
+        transform: none;
+      }
+      .bottom-handle::after {
+        top: auto;
+        bottom: 0;
+        transform: none;
+      }
+      .handle:not(.v)::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -6px;
+        bottom: -6px;
+      }
+      .top-handle .handle-tooltip {
+        top: 10px;
+        transform: none;
+      }
+      .bottom-handle .handle-tooltip {
+        top: auto;
+        bottom: 10px;
+        transform: none;
       }
       .handle.local {
         background: var(--handle-local);
@@ -396,7 +696,8 @@
       }
       .preview-area canvas {
         max-width: 100%;
-        max-height: 100%;
+        max-height: calc(100vh - 130px);
+        max-height: calc(100dvh - 130px);
         width: auto;
         height: auto;
         object-fit: contain;
@@ -670,6 +971,40 @@
       .wm-input:focus {
         border-color: var(--primary);
       }
+      .wm-group {
+        display: contents;
+      }
+      .wm-group[hidden] {
+        display: none;
+      }
+      .wm-field[hidden] {
+        display: none;
+      }
+      .wm-tog {
+        flex: none;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+        font-size: 14px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s,
+          border-color 0.15s;
+      }
+      .wm-tog:hover {
+        background: var(--header-hover);
+      }
+      .wm-tog.active {
+        background: var(--primary);
+        color: var(--primary-fg);
+        border-color: var(--primary);
+      }
       .wm-fontrow {
         display: flex;
         align-items: center;
@@ -694,11 +1029,11 @@
       }
       .wm-color {
         flex: none;
-        width: 32px;
-        height: 32px;
+        width: 26px;
+        height: 26px;
         padding: 0;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        border: 1px solid rgb(255 255 255 / 0.25);
+        border-radius: 50%;
         background: transparent;
         cursor: pointer;
         overflow: hidden;
@@ -708,9 +1043,27 @@
       }
       .wm-color::-webkit-color-swatch {
         border: none;
+        border-radius: 50%;
       }
       .wm-color::-moz-color-swatch {
         border: none;
+        border-radius: 50%;
+      }
+      .ann-text-input {
+        position: fixed;
+        z-index: 130;
+        min-width: 140px;
+        margin: 0;
+        padding: 0 4px;
+        border: 1px dashed #4da3ff;
+        border-radius: 2px;
+        background: rgb(0 0 0 / 0.35);
+        outline: none;
+        font-weight: 700;
+        font-family: "Microsoft YaHei", system-ui, sans-serif;
+        line-height: 1.2;
+        user-select: text;
+        -webkit-user-select: text;
       }
       .wm-pos {
         display: flex;
@@ -916,8 +1269,11 @@
           gap: 14px;
         }
         .main > .panel:nth-of-type(2) {
-          position: static;
+          position: relative;
           align-self: auto;
+        }
+        .splitter {
+          display: none;
         }
         .preview-area {
           min-height: 200px;
@@ -951,22 +1307,9 @@
           width: 32px;
           padding: 0;
         }
-        .nav-link {
-          padding: 6px 8px;
-          font-size: 12px;
-          gap: 4px;
-        }
-        .nav-icon {
-          padding: 0;
+        .menu-wrap > .btn {
           width: 32px;
           height: 32px;
-        }
-        .nav-link span {
-          display: none;
-        }
-        .nav-link svg {
-          width: 14px;
-          height: 14px;
         }
         .main {
           grid-template-columns: 1fr;
@@ -1064,6 +1407,28 @@
             </svg></button
           ><button
             class="btn btn-secondary btn-icon"
+            id="annBtn"
+            type="button"
+            title="标注与水印"
+            aria-label="标注与水印"
+            aria-expanded="false"
+            aria-controls="annPop"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+              <path d="m15 5 4 4" />
+            </svg></button
+          ><button
+            class="btn btn-secondary btn-icon"
             id="bsBtn"
             type="button"
             title="边框与阴影"
@@ -1110,6 +1475,31 @@
               <path d="M22 5h-4" />
               <path d="M4 17v2" />
               <path d="M5 18H3" />
+            </svg></button
+          ><button
+            class="btn btn-secondary btn-icon"
+            id="markBtn"
+            type="button"
+            title="水印"
+            aria-label="水印"
+            aria-expanded="false"
+            aria-controls="markPop"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-6 0c0 2 1 2 1 3.5V13" />
+              <path
+                d="M20 15.5a2.5 2.5 0 0 0-2.5-2.5h-11A2.5 2.5 0 0 0 4 15.5V17a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1z"
+              />
+              <path d="M5 22h14" />
             </svg></button
           ><button
             class="btn btn-secondary btn-icon"
@@ -1160,63 +1550,20 @@
           </button>
         </div>
         <div class="header-right">
-          <nav class="nav-links">
-            <a
-              class="nav-link"
-              href="https://ttti.cc"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="极限博客"
-              aria-label="极限博客"
-              ><svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" /></svg
-              ><span>极限博客</span></a
-            ><a class="nav-link" href="./paint.html"
-              ><svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M12 20h9" />
-                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z" /></svg
-              ><span>图像编辑</span></a
-            ><a class="nav-link" href="./watermark.html"
-              ><svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" /></svg
-              ><span>批量水印</span></a
-            ><button
-              class="nav-link nav-icon"
-              id="helpBtn"
+          <div class="menu-wrap">
+            <button
+              class="btn btn-secondary btn-icon"
+              id="menuBtn"
               type="button"
-              title="使用方法"
-              aria-label="使用方法"
+              title="菜单"
+              aria-label="菜单"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="navMenu"
             >
               <svg
-                width="17"
-                height="17"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -1224,12 +1571,65 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                <line x1="12" y1="17" x2="12.01" y2="17" />
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="18" x2="20" y2="18" />
               </svg>
             </button>
-          </nav>
+            <div class="menu-pop" id="navMenu" role="menu" hidden>
+              <a
+                class="menu-item"
+                role="menuitem"
+                href="https://ttti.cc"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" /></svg
+                ><span>极限博客</span>
+              </a>
+              <a class="menu-item" role="menuitem" href="./paint.html">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 20h9" />
+                  <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z" /></svg
+                ><span>图像编辑</span>
+              </a>
+              <button class="menu-item" role="menuitem" id="helpBtn" type="button">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" /></svg
+                ><span>使用帮助</span>
+              </button>
+            </div>
+          </div>
         </div>
       </header>
       <div class="wm-pop" id="bsPop" role="dialog" aria-label="边框与阴影" hidden>
@@ -1330,20 +1730,6 @@
               title="阴影颜色"
               aria-label="阴影颜色"
             />
-          </div>
-          <div class="wm-field wm-inline">
-            <span class="wm-label">底色</span>
-            <div class="wm-inline-ctrl">
-              <button class="wm-chip active" id="bsBgClear" type="button">透明</button
-              ><input
-                class="wm-color"
-                id="bsBg"
-                type="color"
-                value="#ffffff"
-                title="底色"
-                aria-label="底色"
-              />
-            </div>
           </div>
         </div>
       </div>
@@ -1463,93 +1849,92 @@
           ><button class="dialog-close" id="wmClose" type="button" aria-label="Close">✕</button>
         </div>
         <div class="wm-body">
-          <label class="wm-field"
-            ><span class="wm-label">水印文字</span
-            ><input
-              class="wm-input"
-              id="wmText"
-              type="text"
-              maxlength="80"
-              autocomplete="off"
-              placeholder="输入水印文字，留空则不添加"
-          /></label>
           <div class="wm-field">
-            <span class="wm-label">水印角</span>
-            <div class="wm-pos" id="wmPos">
-              <div class="wm-seg">
-                <button type="button" data-v="t">上</button
-                ><button type="button" data-v="b">下</button>
+            <span class="wm-label">模式</span>
+            <div class="wm-seg" id="modeSeg">
+              <button type="button" data-appmode="movie">电影字幕</button
+              ><button type="button" data-appmode="free">自由拼图</button>
+            </div>
+          </div>
+          <div class="wm-group" id="layoutGroup" hidden>
+            <div class="wm-field">
+              <span class="wm-label">画面比例</span>
+              <div class="ratio-row">
+                <div class="wm-seg" id="ratioSeg">
+                  <button type="button" data-ratio="1:1">1:1</button
+                  ><button type="button" data-ratio="3:4">3:4</button
+                  ><button type="button" data-ratio="4:5">4:5</button
+                  ><button type="button" data-ratio="16:9">16:9</button>
+                </div>
+                <button
+                  class="btn btn-secondary orient-btn"
+                  id="orientBtn"
+                  type="button"
+                  title="切换横竖"
+                >
+                  竖向
+                </button>
               </div>
-              <div class="wm-seg">
-                <button type="button" data-h="l">左</button
-                ><button type="button" data-h="r">右</button>
-              </div>
+            </div>
+            <div class="wm-field">
+              <span class="wm-label">布局模板</span>
+              <div class="tpl-grid" id="tplGrid"></div>
             </div>
           </div>
           <div class="wm-field">
-            <div class="wm-fontrow">
-              <select class="wm-select" id="wmFont" aria-label="字体">
-                <option value="default">默认</option>
-                <option value="hei">黑体</option>
-                <option value="song">宋体</option>
-                <option value="__load">载入</option></select
+            <span class="wm-label">图片间距</span>
+            <div class="range">
+              <input
+                type="range"
+                id="lyGap"
+                min="0"
+                max="10"
+                step="0.5"
+                value="1.5"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">外边距</span>
+            <div class="range">
+              <input
+                type="range"
+                id="lyMargin"
+                min="0"
+                max="10"
+                step="0.5"
+                value="1.5"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">图片圆角</span>
+            <div class="range">
+              <input
+                type="range"
+                id="lyRadius"
+                min="0"
+                max="10"
+                step="0.5"
+                value="0"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field wm-inline">
+            <span class="wm-label">底色</span>
+            <div class="wm-inline-ctrl">
+              <button class="wm-chip active" id="bsBgClear" type="button">透明</button
               ><input
                 class="wm-color"
-                id="wmColor"
+                id="bsBg"
                 type="color"
-                value="#ffea00"
-                title="文字颜色"
-                aria-label="文字颜色"
-              /><input
-                class="wm-color"
-                id="wmBg"
-                type="color"
-                value="#4B0071"
-                title="背景颜色"
-                aria-label="背景颜色"
+                value="#ffffff"
+                title="底色"
+                aria-label="底色"
               />
-            </div>
-          </div>
-          <div class="wm-field">
-            <span class="wm-label">字透明</span>
-            <div class="range">
-              <input
-                type="range"
-                id="wmTextAlpha"
-                min="0"
-                max="100"
-                step="1"
-                value="100"
-                data-unit="%"
-              /><output class="range-tip"></output>
-            </div>
-          </div>
-          <div class="wm-field">
-            <span class="wm-label">背透明</span>
-            <div class="range">
-              <input
-                type="range"
-                id="wmBgAlpha"
-                min="0"
-                max="100"
-                step="1"
-                value="100"
-                data-unit="%"
-              /><output class="range-tip"></output>
-            </div>
-          </div>
-          <div class="wm-field">
-            <span class="wm-label">文字大小</span>
-            <div class="range">
-              <input
-                type="range"
-                id="wmSize"
-                min="1"
-                max="8"
-                step="0.5"
-                value="3.5"
-                data-unit="%"
-              /><output class="range-tip"></output>
             </div>
           </div>
           <div class="wm-sep"></div>
@@ -1578,18 +1963,462 @@
             </div>
           </div>
           <div class="wm-field">
-            <span class="wm-label">尺寸</span>
+            <span class="wm-label">输出宽度（px）</span>
+            <div class="size-row">
+              <input
+                class="wm-input"
+                id="outWidth"
+                type="number"
+                min="16"
+                max="16384"
+                step="1"
+                inputmode="numeric"
+                placeholder="默认"
+              />
+              <select class="wm-input" id="outPreset" aria-label="预设宽度">
+                <option value="">默认</option>
+                <option value="750">750</option>
+                <option value="1080">1080</option>
+                <option value="1242">1242</option>
+                <option value="1440">1440</option>
+                <option value="2048">2048</option>
+                <option value="custom" hidden>自定义</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wm-pop" id="markPop" role="dialog" aria-label="水印" hidden>
+        <div class="wm-head">
+          <span class="wm-title">水印</span
+          ><button class="dialog-close" id="markClose" type="button" aria-label="Close">✕</button>
+        </div>
+        <div class="wm-body">
+          <label class="wm-field"
+            ><span class="wm-label">水印文字</span
+            ><input
+              class="wm-input"
+              id="wmText"
+              type="text"
+              maxlength="60"
+              autocomplete="off"
+              placeholder="输入水印文字，留空则不添加"
+          /></label>
+          <div class="wm-field">
+            <span class="wm-label">布局</span>
+            <div class="wm-seg" id="mkLayout">
+              <button type="button" data-mode="tile">平铺</button
+              ><button type="button" data-mode="single">单个</button
+              ><button type="button" data-mode="custom">自定义</button>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">应用方式</span>
+            <div class="wm-seg" id="mkScope">
+              <button type="button" data-scope="each">逐张</button
+              ><button type="button" data-scope="all">整张</button>
+            </div>
+          </div>
+          <div class="wm-field" id="mkPosField" hidden>
+            <span class="wm-label">位置</span>
+            <div class="wm-seg" id="mkPos">
+              <button type="button" data-pos="center">居中</button
+              ><button type="button" data-pos="tl">左上</button
+              ><button type="button" data-pos="tr">右上</button
+              ><button type="button" data-pos="bl">左下</button
+              ><button type="button" data-pos="br">右下</button>
+            </div>
+          </div>
+          <div class="wm-field" id="mkCountField" hidden>
+            <span class="wm-label">水印数量</span>
             <div class="range">
               <input
                 type="range"
-                id="wmScale"
-                min="10"
+                id="mkCount"
+                min="1"
+                max="30"
+                step="1"
+                value="6"
+                data-unit=""
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">字体与样式</span>
+            <div class="wm-fontrow">
+              <select class="wm-select" id="wmFont" aria-label="字体">
+                <option value="default">默认</option>
+                <option value="hei">黑体</option>
+                <option value="song">宋体</option>
+                <option value="fang">仿宋</option>
+                <option value="kai">楷体</option>
+                <option value="li">隶书</option>
+                <option value="you">幼圆</option>
+                <option value="arial">Arial</option>
+                <option value="georgia">Georgia</option>
+                <option value="times">Times New Roman</option>
+                <option value="__load">载入</option></select
+              ><input
+                class="wm-color"
+                id="wmColor"
+                type="color"
+                value="#ffea00"
+                title="文字颜色"
+                aria-label="文字颜色"
+              /><button
+                class="wm-tog"
+                id="mkBold"
+                type="button"
+                title="加粗"
+                aria-label="加粗"
+                aria-pressed="false"
+              >
+                <b>B</b></button
+              ><button
+                class="wm-tog"
+                id="mkItalic"
+                type="button"
+                title="斜体"
+                aria-label="斜体"
+                aria-pressed="false"
+              >
+                <i>I</i>
+              </button>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">背景</span>
+            <div class="wm-fontrow">
+              <div class="range" style="flex: 1; min-width: 0">
+                <input
+                  type="range"
+                  id="wmBgAlpha"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value="100"
+                  data-unit="%"
+                /><output class="range-tip"></output>
+              </div>
+              <input
+                class="wm-color"
+                id="wmBg"
+                type="color"
+                value="#4B0071"
+                title="背景颜色"
+                aria-label="背景颜色"
+              />
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">字号</span>
+            <div class="range">
+              <input
+                type="range"
+                id="wmSize"
+                min="0.5"
+                max="8"
+                step="0.05"
+                value="1.75"
+                data-unit="x"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field" id="mkGapField" hidden>
+            <span class="wm-label">间隔</span>
+            <div class="range">
+              <input
+                type="range"
+                id="mkGap"
+                min="0"
+                max="8"
+                step="0.2"
+                value="4"
+                data-unit=""
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">文字不透明度</span>
+            <div class="range">
+              <input
+                type="range"
+                id="wmTextAlpha"
+                min="0"
                 max="100"
                 step="1"
                 value="100"
                 data-unit="%"
               /><output class="range-tip"></output>
             </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">旋转角度</span>
+            <div class="range">
+              <input
+                type="range"
+                id="mkAngle"
+                min="-90"
+                max="90"
+                step="1"
+                value="0"
+                data-unit="°"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-sep"></div>
+          <div class="wm-field">
+            <button
+              class="btn btn-secondary"
+              id="mkZip"
+              type="button"
+              style="width: 100%; height: 34px; font-size: 13px"
+              disabled
+            >
+              打包下载各张截图（ZIP）
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="wm-pop" id="annPop" role="dialog" aria-label="标注与水印" hidden>
+        <div class="wm-head">
+          <span class="wm-title">标注与水印</span
+          ><button class="dialog-close" id="annClose" type="button" aria-label="Close">✕</button>
+        </div>
+        <div class="wm-body">
+          <div class="wm-field">
+            <span class="wm-label">标注工具</span>
+            <div class="ann-tools" id="annTools">
+              <button class="ann-tool" type="button" data-tool="select" title="选择">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"
+                  /></svg
+                ><span>选择</span>
+              </button>
+              <button class="ann-tool" type="button" data-tool="arrow" title="箭头">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="6" y1="18" x2="18" y2="6" />
+                  <polyline points="9 6 18 6 18 15" /></svg
+                ><span>箭头</span>
+              </button>
+              <button
+                class="ann-tool"
+                type="button"
+                data-tool="rect"
+                title="方形（按住 Shift 为正方形）"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="4" y="5" width="16" height="14" rx="1" /></svg
+                ><span>方形</span>
+              </button>
+              <button
+                class="ann-tool"
+                type="button"
+                data-tool="ellipse"
+                title="圆形（按住 Shift 为正圆）"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <ellipse cx="12" cy="12" rx="9" ry="6" /></svg
+                ><span>圆形</span>
+              </button>
+              <button
+                class="ann-tool"
+                type="button"
+                data-tool="pen"
+                title="画笔（按住 Shift 画直线）"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 17c3-7 5-7 7-3s4 3 7-4c1.5-3 3-2 4-1" /></svg
+                ><span>画笔</span>
+              </button>
+              <button class="ann-tool" type="button" data-tool="text" title="文字">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M5 7V4h14v3M12 4v16M9 20h6" /></svg
+                ><span>文字</span>
+              </button>
+              <button class="ann-tool" type="button" data-tool="mosaic" title="马赛克">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="4" y="4" width="8" height="8" fill="currentColor" />
+                  <rect x="12" y="12" width="8" height="8" fill="currentColor" />
+                  <rect x="12" y="4" width="8" height="8" />
+                  <rect x="4" y="12" width="8" height="8" /></svg
+                ><span>马赛克</span>
+              </button>
+              <button class="ann-tool" type="button" data-tool="blur" title="模糊">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" /></svg
+                ><span>模糊</span>
+              </button>
+              <button class="ann-tool" type="button" data-tool="num" title="序号">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M10.5 9.5 12.5 8v8" /></svg
+                ><span>序号</span>
+              </button>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">粗细（马赛克 / 模糊为强度）</span>
+            <div class="range">
+              <input
+                type="range"
+                id="annWidth"
+                min="1"
+                max="20"
+                step="1"
+                value="4"
+                data-unit=""
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">颜色</span>
+            <div class="ann-colors" id="annColors">
+              <button
+                class="ann-swatch"
+                type="button"
+                data-color="#ff3b30"
+                style="background: #ff3b30"
+                aria-label="#ff3b30"
+              ></button
+              ><button
+                class="ann-swatch"
+                type="button"
+                data-color="#ff9500"
+                style="background: #ff9500"
+                aria-label="#ff9500"
+              ></button
+              ><button
+                class="ann-swatch"
+                type="button"
+                data-color="#ffcc00"
+                style="background: #ffcc00"
+                aria-label="#ffcc00"
+              ></button
+              ><button
+                class="ann-swatch"
+                type="button"
+                data-color="#34c759"
+                style="background: #34c759"
+                aria-label="#34c759"
+              ></button
+              ><button
+                class="ann-swatch"
+                type="button"
+                data-color="#0a84ff"
+                style="background: #0a84ff"
+                aria-label="#0a84ff"
+              ></button
+              ><button
+                class="ann-swatch"
+                type="button"
+                data-color="#ffffff"
+                style="background: #ffffff"
+                aria-label="#ffffff"
+              ></button
+              ><button
+                class="ann-swatch"
+                type="button"
+                data-color="#000000"
+                style="background: #000000"
+                aria-label="#000000"
+              ></button
+              ><input
+                class="wm-color"
+                id="annColor"
+                type="color"
+                value="#ff3b30"
+                title="自定义颜色"
+                aria-label="自定义颜色"
+              />
+            </div>
+          </div>
+          <div class="ann-actions">
+            <button class="btn btn-secondary" id="annUndo" type="button">撤销</button>
+            <button class="btn btn-secondary" id="annDelete" type="button">删除所选</button>
+            <button class="btn btn-secondary" id="annClear" type="button">清空</button>
           </div>
         </div>
       </div>
@@ -1614,6 +2443,14 @@
             </div>
           </div>
         </section>
+        <div
+          class="splitter"
+          id="splitter"
+          role="separator"
+          aria-orientation="vertical"
+          tabindex="0"
+          title="拖动调整左右宽度，双击恢复默认"
+        ></div>
         <section class="panel">
           <div class="preview-area" id="previewArea">
             <div class="empty-state">
@@ -1632,6 +2469,54 @@
               ><span>实时预览</span>
             </div>
             <canvas id="previewCanvas" class="is-empty"></canvas>
+            <div class="zoom-bar" id="zoomBar" hidden>
+              <button
+                type="button"
+                class="icon-btn active"
+                data-zoom="fit"
+                title="适应窗口"
+                aria-label="适应窗口"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                  <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+                  <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+                  <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+                </svg></button
+              ><button
+                type="button"
+                class="icon-btn"
+                data-zoom="actual"
+                title="100%（原始大小，宽度不超过预览区）"
+                aria-label="100%，原始大小"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 5v14" />
+                  <path d="M21 5v14" />
+                  <path d="M7 12h10" />
+                  <path d="m10 9-3 3 3 3" />
+                  <path d="m14 9 3 3-3 3" />
+                </svg>
+              </button>
+            </div>
           </div>
         </section>
       </main>
@@ -1665,11 +2550,12 @@
         const TEXT = {
           help_title: "使用步骤",
           help_body:
-            "<ol><li>点击「添加截图」，多选想要拼接的图片；也可直接拖拽图片到窗口，或粘贴（Ctrl+V）快速添加</li><li>拖动上下手柄选择字幕区域，拖动左右手柄裁剪左右边缘（默认在最边缘），松开后自动更新预览</li><li>点击「保存拼图」下载结果</li><li>点击设置图标可添加水印（文字、位置、颜色、透明度、大小），预览区实时显示，保存时一并写入；保存格式可选 JPG / WEBP / PNG（PNG 无损，其余可调画质）</li><li>点击闪亮图标可选预设滤镜并微调，边框与阴影按钮可给整张拼图加边框、圆角、阴影并调节旋转角度；点击预览放大后可用滚轮缩放、拖动平移、双击复原</li></ol><br>双击手柄可为单张截图单独设置区域（脱离全局控制）",
+            "<ol><li>点击「添加截图」，多选想要拼接的图片；也可直接拖拽图片到窗口，或粘贴（Ctrl+V）快速添加</li><li>拖动上下手柄选择字幕区域，拖动左右手柄裁剪左右边缘（默认在最边缘），拖动时右侧预览实时更新</li><li>点击「保存拼图」下载结果</li><li>点击水印图标可添加水印（平铺 / 单个 / 自定义，可调位置、字体、颜色、字号、间隔、透明度和旋转角度；「逐张」让每张截图各自带水印，「整张」整张拼图只加一次；面板底部可把每张截图打包下载为 ZIP）；点击设置图标可切换模式（电影字幕 / 自由拼图），自由拼图下还可设置画面比例与布局，以及保存格式、画质和输出宽度；点击标注图标可添加标注（选择、箭头、方/圆形状、画笔、文字、马赛克/模糊、序号；画笔按住 Shift 为直线，方形/圆形按住 Shift 为正方形/正圆），预览区实时显示，保存时一并写入；保存格式 JPG / WEBP / PNG（PNG 无损，其余可调画质）</li><li>点击闪亮图标可选预设滤镜并微调，边框与阴影按钮可给整张拼图加边框、圆角、阴影并调节旋转角度；点击预览放大后可用滚轮缩放、拖动平移、双击复原</li></ol><br>双击或右键手柄可为单张截图单独设置区域（脱离全局控制），再次双击或右键恢复全局<br><br>设置里可切换模式：「电影字幕」用于拼接字幕；「自由拼图」可按布局模板和画面比例（1:1 / 3:4 / 4:5 / 16:9，可横竖切换）把多张图排成一张，裁剪线用于选取每张图使用的范围。图片间距、外边距、图片圆角和底色（可设为透明）在两个模式下通用，两个模式各自记住自己的数值。设置里的输出宽度可输入数值，也可在右侧选择预设宽度。<br><br>拖动左右栏之间的分隔条可调整宽度（双击恢复默认）；鼠标悬停预览图时，右上角可在「适应」与「100%」（原始大小，宽度不超过预览区）之间切换；自由拼图模式下左侧以紧凑网格显示，右上角的数字对应布局模板里的格子序号。",
           joined_screenshot: "拼接截图",
           moveUp: "上移",
           moveDown: "下移",
           remove: "删除",
+          rotate: "顺时针旋转 90°",
         };
         function loadImage(file) {
           return new Promise((resolve, reject) => {
@@ -1752,7 +2638,7 @@
           _build() {
             const div = document.createElement("div");
             div.className = "screenshot-item";
-            div.innerHTML = `<canvas></canvas><div class="shadow-layer"><div class="top-shadow"></div><div class="bottom-shadow"></div><div class="left-shadow"></div><div class="right-shadow"></div></div><div class="handle-layer"><div class="handle top-handle" data-type="top"><span class="handle-tooltip"></span></div><div class="handle bottom-handle" data-type="bottom"><span class="handle-tooltip"></span></div><div class="handle v v-left left-handle" data-type="left"><span class="handle-tooltip"></span></div><div class="handle v v-right right-handle" data-type="right"><span class="handle-tooltip"></span></div></div><div class="action-layer">${this.index > 0 ? `<button class="icon-btn" data-action="up" title="${TEXT.moveUp}">↑</button>` : ""}${this.index < this.total - 1 ? `<button class="icon-btn" data-action="down" title="${TEXT.moveDown}">↓</button>` : ""}<button class="icon-btn" data-action="remove" title="${TEXT.remove}">✕</button></div>`;
+            div.innerHTML = `<canvas></canvas><div class="shadow-layer"><div class="top-shadow"></div><div class="bottom-shadow"></div><div class="left-shadow"></div><div class="right-shadow"></div></div><div class="handle-layer"><div class="handle top-handle" data-type="top"><span class="handle-tooltip"></span></div><div class="handle bottom-handle" data-type="bottom"><span class="handle-tooltip"></span></div><div class="handle v v-left left-handle" data-type="left"><span class="handle-tooltip"></span></div><div class="handle v v-right right-handle" data-type="right"><span class="handle-tooltip"></span></div></div><div class="action-layer">${this.index > 0 ? `<button class="icon-btn" data-action="up" title="${TEXT.moveUp}">↑</button>` : ""}${this.index < this.total - 1 ? `<button class="icon-btn" data-action="down" title="${TEXT.moveDown}">↓</button>` : ""}<button class="icon-btn" data-action="rotate" title="${TEXT.rotate}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8" /><path d="M21 3v5h-5" /></svg></button><button class="icon-btn" data-action="remove" title="${TEXT.remove}">✕</button></div>`;
             this.canvas = div.querySelector("canvas");
             this.topShadow = div.querySelector(".top-shadow");
             this.bottomShadow = div.querySelector(".bottom-shadow");
@@ -1777,14 +2663,23 @@
               .querySelector('[data-action="down"]')
               ?.addEventListener("click", () => this.callbacks.onMoveDown(this.index));
             div
+              .querySelector('[data-action="rotate"]')
+              .addEventListener("click", () => this.callbacks.onRotate(this.index));
+            div
               .querySelector('[data-action="remove"]')
               .addEventListener("click", () => this.callbacks.onRemove(this.index));
             return div;
           }
           _bindDrag(handle, type) {
+            handle.addEventListener("contextmenu", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              this._toggleLocal();
+            });
             handle.addEventListener("pointerdown", (e) => {
               e.preventDefault();
               e.stopPropagation();
+              if (e.pointerType === "mouse" && e.button !== 0) return;
               if (this.dbl.check(e)) {
                 this._toggleLocal();
                 return;
@@ -1812,6 +2707,7 @@
                 if (!s.useLocal) {
                   this.callbacks.onChange(type, val);
                 }
+                this.callbacks.onDrag?.();
               };
               const onUp = () => {
                 handle.classList.remove("dragging");
@@ -1898,17 +2794,146 @@
             };
           }
         }
+        const TPL_SPECS = {
+          1: [["r", [1]]],
+          2: [
+            ["r", [1, 1]],
+            ["c", [1, 1]],
+            ["r", [1, 1], [2, 1]],
+            ["c", [1, 1], [2, 1]],
+          ],
+          3: [
+            ["r", [1, 2]],
+            ["r", [2, 1]],
+            ["c", [1, 2]],
+            ["c", [2, 1]],
+            ["r", [1, 1, 1]],
+            ["c", [1, 1, 1]],
+            ["c", [1, 2], [3, 2]],
+          ],
+          4: [
+            ["r", [2, 2]],
+            ["r", [1, 3]],
+            ["r", [3, 1]],
+            ["c", [1, 3]],
+            ["c", [3, 1]],
+            ["r", [1, 1, 1, 1]],
+            ["c", [1, 1, 1, 1]],
+          ],
+          5: [
+            ["r", [2, 3]],
+            ["r", [3, 2]],
+            ["c", [2, 3]],
+            ["c", [3, 2]],
+            ["r", [1, 2, 2]],
+            ["r", [1, 4]],
+          ],
+          6: [
+            ["r", [2, 2, 2]],
+            ["r", [3, 3]],
+            ["c", [2, 2, 2]],
+            ["c", [3, 3]],
+            ["r", [1, 2, 3]],
+          ],
+          7: [
+            ["r", [2, 2, 3]],
+            ["r", [2, 3, 2]],
+            ["r", [1, 3, 3]],
+            ["r", [3, 4]],
+          ],
+          8: [
+            ["r", [2, 3, 3]],
+            ["r", [4, 4]],
+            ["r", [3, 2, 3]],
+            ["r", [2, 2, 2, 2]],
+          ],
+          9: [
+            ["r", [3, 3, 3]],
+            ["r", [2, 3, 4]],
+            ["r", [1, 4, 4]],
+            ["r", [2, 2, 2, 3]],
+          ],
+        };
+        const buildTpl = (type, counts, weights) => {
+          const wts = weights || counts.map(() => 1);
+          const total = wts.reduce((a, b) => a + b, 0);
+          const cells = [];
+          let pos = 0;
+          counts.forEach((cnt, i) => {
+            const span = wts[i] / total;
+            for (let j = 0; j < cnt; j++) {
+              const a = j / cnt;
+              const b = 1 / cnt;
+              cells.push(
+                type === "r" ? { x: a, y: pos, w: b, h: span } : { x: pos, y: a, w: span, h: b },
+              );
+            }
+            pos += span;
+          });
+          return cells;
+        };
+        const getTemplates = (n) => {
+          n = Math.max(1, n);
+          if (n > 9) {
+            const cols = Math.ceil(Math.sqrt(n));
+            const rows = Math.ceil(n / cols);
+            const counts = Array(rows - 1).fill(cols);
+            counts.push(n - cols * (rows - 1));
+            return [buildTpl("r", counts)];
+          }
+          return TPL_SPECS[n].map((sp) => buildTpl(...sp));
+        };
         class App {
           constructor() {
             this.images = [];
-            this.states = [];
-            this.topRatio = 0.8;
-            this.bottomRatio = 0.95;
-            this.leftRatio = 0;
-            this.rightRatio = 1;
+            this.mode = "movie";
+            this.glob = {
+              movie: { t: 0.8, b: 0.95, l: 0, r: 1 },
+              free: { t: 0, b: 1, l: 0, r: 1 },
+            };
+            this.stateSets = { movie: [], free: [] };
+            this.layout = { ratio: "3:4", landscape: false, tpl: 0 };
+            this.lay = {
+              movie: { gap: 0, margin: 0, radius: 0 },
+              free: { gap: 1.5, margin: 1.5, radius: 0 },
+            };
+            const app = this;
+            this.sp = {
+              get gap() {
+                return app.lay[app.mode].gap;
+              },
+              set gap(v) {
+                app.lay[app.mode].gap = v;
+              },
+              get margin() {
+                return app.lay[app.mode].margin;
+              },
+              set margin(v) {
+                app.lay[app.mode].margin = v;
+              },
+              get radius() {
+                return app.lay[app.mode].radius;
+              },
+              set radius(v) {
+                app.lay[app.mode].radius = v;
+              },
+            };
+            this._tplN = -1;
+            this.annSets = { movie: [], free: [] };
+            this.ann = {
+              tool: "rect",
+              color: "#ff3b30",
+              width: 4,
+              sel: -1,
+              open: false,
+              drag: null,
+            };
+            this._m = null;
             this.items = [];
             this.$ = {
               main: document.querySelector(".main"),
+              splitter: document.getElementById("splitter"),
+              zoomBar: document.getElementById("zoomBar"),
               list: document.getElementById("screenshotList"),
               empty: document.getElementById("emptyState"),
               preview: document.getElementById("previewCanvas"),
@@ -1932,8 +2957,22 @@
               settingsBtn: document.getElementById("settingsBtn"),
               wmPop: document.getElementById("wmPop"),
               wmClose: document.getElementById("wmClose"),
+              markBtn: document.getElementById("markBtn"),
+              markPop: document.getElementById("markPop"),
+              markClose: document.getElementById("markClose"),
+              mkLayout: document.getElementById("mkLayout"),
+              mkPos: document.getElementById("mkPos"),
+              mkPosField: document.getElementById("mkPosField"),
+              mkCount: document.getElementById("mkCount"),
+              mkCountField: document.getElementById("mkCountField"),
+              mkGap: document.getElementById("mkGap"),
+              mkGapField: document.getElementById("mkGapField"),
+              mkAngle: document.getElementById("mkAngle"),
+              mkScope: document.getElementById("mkScope"),
+              mkZip: document.getElementById("mkZip"),
+              mkBold: document.getElementById("mkBold"),
+              mkItalic: document.getElementById("mkItalic"),
               wmText: document.getElementById("wmText"),
-              wmPos: document.getElementById("wmPos"),
               wmColor: document.getElementById("wmColor"),
               wmBg: document.getElementById("wmBg"),
               wmFont: document.getElementById("wmFont"),
@@ -1942,21 +2981,47 @@
               wmSize: document.getElementById("wmSize"),
               fmtSeg: document.getElementById("fmtSeg"),
               wmQuality: document.getElementById("wmQuality"),
-              wmScale: document.getElementById("wmScale"),
+              annBtn: document.getElementById("annBtn"),
+              annPop: document.getElementById("annPop"),
+              annClose: document.getElementById("annClose"),
+              annTools: document.getElementById("annTools"),
+              annWidth: document.getElementById("annWidth"),
+              annColors: document.getElementById("annColors"),
+              annColor: document.getElementById("annColor"),
+              annUndo: document.getElementById("annUndo"),
+              annDelete: document.getElementById("annDelete"),
+              annClear: document.getElementById("annClear"),
+              outWidth: document.getElementById("outWidth"),
+              outPreset: document.getElementById("outPreset"),
+              modeSeg: document.getElementById("modeSeg"),
+              layoutGroup: document.getElementById("layoutGroup"),
+              ratioSeg: document.getElementById("ratioSeg"),
+              orientBtn: document.getElementById("orientBtn"),
+              tplGrid: document.getElementById("tplGrid"),
+              lyGap: document.getElementById("lyGap"),
+              lyMargin: document.getElementById("lyMargin"),
+              lyRadius: document.getElementById("lyRadius"),
             };
             this.hasPreview = false;
             this.wm = {
               text: "",
+              layout: "single",
+              scope: "all",
               pos: "tr",
               color: "#ffea00",
               bg: "#4B0071",
               font: "default",
+              bold: true,
+              italic: false,
               textAlpha: 100,
               bgAlpha: 100,
-              size: 3.5,
+              size: 1.75,
+              gap: 4,
+              angle: 0,
+              count: 6,
             };
             this._raf = 0;
-            this.out = { format: "jpg", quality: 80, scale: 100 };
+            this.out = { format: "jpg", quality: 80, width: 0 };
             this.fx = { ...FX_PRESETS.orig };
             this.bd = { size: 0, color: "#ffffff", radius: 0, angle: 0 };
             this.sh = { size: 0, opacity: 55, color: "#000000", bg: "#ffffff", transparent: true };
@@ -1968,6 +3033,36 @@
             this._bindEvents();
             this._clearPreview();
           }
+          get anns() {
+            return this.annSets[this.mode];
+          }
+          get states() {
+            return this.stateSets[this.mode];
+          }
+          get topRatio() {
+            return this.glob[this.mode].t;
+          }
+          set topRatio(v) {
+            this.glob[this.mode].t = v;
+          }
+          get bottomRatio() {
+            return this.glob[this.mode].b;
+          }
+          set bottomRatio(v) {
+            this.glob[this.mode].b = v;
+          }
+          get leftRatio() {
+            return this.glob[this.mode].l;
+          }
+          set leftRatio(v) {
+            this.glob[this.mode].l = v;
+          }
+          get rightRatio() {
+            return this.glob[this.mode].r;
+          }
+          set rightRatio(v) {
+            this.glob[this.mode].r = v;
+          }
           _initUI() {
             document.getElementById("helpDialogTitle").textContent = TEXT.help_title;
             this.$.helpDialogBody.innerHTML = TEXT.help_body;
@@ -1977,6 +3072,12 @@
             this._bindFx();
             this._bindFrame();
             this._bindBg();
+            this._bindOutWidth();
+            this._bindMode();
+            this._bindLayout();
+            this._bindAnnotate();
+            this._bindSplitter();
+            this._bindZoom();
             this._bindLightboxZoom();
             this.$.addBtn.addEventListener("click", () => this._addScreenshots());
             this.$.captureBtn.addEventListener("click", () => this._captureScreen());
@@ -1987,7 +3088,9 @@
             this.$.helpDialog.addEventListener("click", (e) => {
               if (e.target === this.$.helpDialog) this.$.helpDialog.close();
             });
-            this.$.preview.addEventListener("click", () => this._openLightbox());
+            this.$.preview.addEventListener("click", () => {
+              if (!this.ann.open) this._openLightbox();
+            });
             this.$.lightboxClose.addEventListener("click", (e) => {
               e.stopPropagation();
               this._closeLightbox();
@@ -2106,12 +3209,15 @@
             results.forEach((r) => {
               if (r.status === "fulfilled") {
                 this.images.push(r.value);
-                this.states.push({
-                  useLocal: false,
-                  localTop: this.topRatio,
-                  localBottom: this.bottomRatio,
-                  localLeft: this.leftRatio,
-                  localRight: this.rightRatio,
+                ["movie", "free"].forEach((m) => {
+                  const g = this.glob[m];
+                  this.stateSets[m].push({
+                    useLocal: false,
+                    localTop: g.t,
+                    localBottom: g.b,
+                    localLeft: g.l,
+                    localRight: g.r,
+                  });
                 });
               } else {
                 failed++;
@@ -2123,9 +3229,11 @@
             this._generate();
           }
           _renderList() {
+            this._syncLayoutUI();
             this.$.list.querySelectorAll(".screenshot-item").forEach((el) => el.remove());
             this.items = [];
             this.$.main.classList.toggle("is-empty", this.images.length === 0);
+            this.$.list.classList.toggle("is-grid", this.mode === "free");
             if (this.images.length === 0) {
               this.$.empty.style.display = "flex";
               return;
@@ -2145,10 +3253,13 @@
                   onMoveUp: (i) => this._move(i, -1),
                   onMoveDown: (i) => this._move(i, 1),
                   onRemove: (i) => this._remove(i),
+                  onRotate: (i) => this._rotate(i),
                   onChange: (type, val) => this._onHandleChange(type, val),
+                  onDrag: () => this._scheduleGenerate(),
                   onDragEnd: () => this._generate(),
                 },
               );
+              item.el.dataset.n = String(idx + 1);
               this.items.push(item);
               this.$.list.appendChild(item.el);
             });
@@ -2166,13 +3277,42 @@
             const target = idx + dir;
             if (target < 0 || target >= this.images.length) return;
             [this.images[idx], this.images[target]] = [this.images[target], this.images[idx]];
-            [this.states[idx], this.states[target]] = [this.states[target], this.states[idx]];
+            Object.values(this.stateSets).forEach(
+              (a) => ([a[idx], a[target]] = [a[target], a[idx]]),
+            );
+            this._renderList();
+            this._generate();
+          }
+          _rotate(idx) {
+            const src = this.images[idx];
+            const w = src.width;
+            const h = src.height;
+            const c = document.createElement("canvas");
+            c.width = h;
+            c.height = w;
+            const ctx = c.getContext("2d");
+            ctx.translate(h, 0);
+            ctx.rotate(Math.PI / 2);
+            ctx.drawImage(src, 0, 0);
+            ["movie", "free"].forEach((m) => {
+              const st = this.stateSets[m][idx];
+              const g = this.glob[m];
+              const cur = st.useLocal
+                ? { t: st.localTop, b: st.localBottom, l: st.localLeft, r: st.localRight }
+                : { t: g.t, b: g.b, l: g.l, r: g.r };
+              st.localTop = cur.l;
+              st.localBottom = cur.r;
+              st.localLeft = 1 - cur.b;
+              st.localRight = 1 - cur.t;
+              st.useLocal = true;
+            });
+            this.images[idx] = c;
             this._renderList();
             this._generate();
           }
           _remove(idx) {
             this.images.splice(idx, 1);
-            this.states.splice(idx, 1);
+            Object.values(this.stateSets).forEach((a) => a.splice(idx, 1));
             this._renderList();
             if (this.images.length === 0) {
               this.$.downloadBtn.disabled = true;
@@ -2187,34 +3327,63 @@
             c.height = 9;
             c.classList.add("is-empty");
             this.$.previewArea.classList.remove("has-preview");
+            this.$.zoomBar.hidden = true;
             this.hasPreview = false;
           }
-          _generate() {
+          _generate(target, exportW) {
             if (this.images.length === 0) return;
-            const slices = this.items.map((item) => {
-              const {
-                image: img,
-                topRatio,
-                bottomRatio,
-                leftRatio,
-                rightRatio,
-              } = item.getExportState();
-              return {
-                img,
-                sx: leftRatio * img.width,
-                sy: topRatio * img.height,
-                sw: Math.max(1, (rightRatio - leftRatio) * img.width),
-                sh: Math.max(1, (bottomRatio - topRatio) * img.height),
-              };
-            });
-            const outW = Math.max(1, Math.round(Math.min(...slices.map((s) => s.sw))));
+            const c = target || this.$.preview;
+            let slices;
+            let outW;
             let totalHeight = 0;
-            slices.forEach((s) => {
-              s.dy = totalHeight;
-              s.dh = (s.sh / s.sw) * outW;
-              totalHeight += s.dh;
-            });
-            const c = this.$.preview;
+            if (this.mode === "free") {
+              const W = this._freeInnerWidth(
+                exportW || Math.max(360, Math.min(this.out.width || 1080, 1440)),
+              );
+              const cv = this._renderCollage(W);
+              slices = [{ img: cv, sx: 0, sy: 0, sw: cv.width, sh: cv.height }];
+              outW = cv.width;
+              slices.forEach((sl) => {
+                sl.dx = 0;
+                sl.dw = outW;
+                sl.dy = 0;
+                sl.dh = (sl.sh / sl.sw) * outW;
+                sl.rad = 0;
+                totalHeight += sl.dh;
+              });
+            } else {
+              slices = this.items.map((item) => {
+                const {
+                  image: img,
+                  topRatio,
+                  bottomRatio,
+                  leftRatio,
+                  rightRatio,
+                } = item.getExportState();
+                return {
+                  img,
+                  sx: leftRatio * img.width,
+                  sy: topRatio * img.height,
+                  sw: Math.max(1, (rightRatio - leftRatio) * img.width),
+                  sh: Math.max(1, (bottomRatio - topRatio) * img.height),
+                };
+              });
+              const contentW = Math.max(1, Math.round(Math.min(...slices.map((s) => s.sw))));
+              const mg = Math.round((contentW * this.sp.margin) / 100);
+              const gp = Math.round((contentW * this.sp.gap) / 100);
+              const rd = (contentW * this.sp.radius) / 100;
+              outW = contentW + mg * 2;
+              let yy = mg;
+              slices.forEach((sl) => {
+                sl.dx = mg;
+                sl.dw = contentW;
+                sl.dy = yy;
+                sl.dh = (sl.sh / sl.sw) * contentW;
+                sl.rad = rd;
+                yy += sl.dh + gp;
+              });
+              totalHeight = yy - gp + mg;
+            }
             const innerH = Math.round(totalHeight);
             const bw = Math.round((outW * this.bd.size) / 100);
             const radius = Math.round((outW * this.bd.radius) / 100);
@@ -2236,7 +3405,7 @@
               if (ctx.roundRect) ctx.roundRect(x, y, w, h, r);
               else ctx.rect(x, y, w, h);
             };
-            if (!this.sh.transparent && (pad > 0 || radius > 0 || ang !== 0)) {
+            if (!this.sh.transparent) {
               ctx.fillStyle = this.sh.bg;
               ctx.fillRect(0, 0, c.width, c.height);
             }
@@ -2267,18 +3436,970 @@
               ctx.clip();
             }
             ctx.translate(x0 + bw, y0 + bw);
-            if (this._fxSupported) ctx.filter = this._filterString();
-            slices.forEach((s) => {
-              ctx.drawImage(s.img, s.sx, s.sy, s.sw, s.sh, 0, s.dy, outW, s.dh);
+            const inner = document.createElement("canvas");
+            inner.width = outW;
+            inner.height = innerH;
+            const ictx = inner.getContext("2d");
+            if (!this.sh.transparent) {
+              ictx.fillStyle = this.sh.bg;
+              ictx.fillRect(0, 0, outW, innerH);
+            }
+            slices.forEach((sl) => {
+              ictx.save();
+              if (sl.rad > 0) {
+                ictx.beginPath();
+                const rr = Math.min(sl.rad, sl.dw / 2, sl.dh / 2);
+                if (ictx.roundRect) ictx.roundRect(sl.dx, sl.dy, sl.dw, sl.dh, rr);
+                else ictx.rect(sl.dx, sl.dy, sl.dw, sl.dh);
+                ictx.clip();
+              }
+              if (this._fxSupported) ictx.filter = this._filterString();
+              ictx.drawImage(sl.img, sl.sx, sl.sy, sl.sw, sl.sh, sl.dx, sl.dy, sl.dw, sl.dh);
+              ictx.restore();
             });
-            if (this._fxSupported) ctx.filter = "none";
-            this._drawWatermark(ctx, outW, innerH, innerRadius * 0.3);
+            this._drawAnnotations(ictx, inner, outW, innerH);
+            if (this.wm.scope === "each") {
+              if (this.mode === "movie") {
+                slices.forEach((sl) => {
+                  ictx.save();
+                  ictx.beginPath();
+                  ictx.rect(sl.dx, sl.dy, sl.dw, sl.dh);
+                  ictx.clip();
+                  ictx.translate(sl.dx, sl.dy);
+                  this._drawWatermark(ictx, sl.dw, sl.dh, 0);
+                  ictx.restore();
+                });
+              }
+            } else {
+              this._drawWatermark(ictx, outW, innerH, innerRadius * 0.3);
+            }
+            ctx.drawImage(inner, 0, 0);
             ctx.restore();
+            if (!target && this.ann.open && this.ann.sel >= 0 && this.anns[this.ann.sel]) {
+              ctx.save();
+              ctx.translate(-bodyW / 2 + bw, -bodyH / 2 + bw);
+              this._drawSelection(ctx, this.anns[this.ann.sel], outW, innerH, c);
+              ctx.restore();
+            }
             ctx.restore();
-            c.classList.remove("is-empty");
-            this.$.previewArea.classList.add("has-preview");
-            this.hasPreview = true;
-            this.$.downloadBtn.disabled = false;
+            if (!target) {
+              this._m = { outW, innerH, bw, bodyW, bodyH, ang };
+              c.classList.remove("is-empty");
+              this.$.zoomBar.hidden = false;
+              this.$.previewArea.classList.add("has-preview");
+              this.hasPreview = true;
+              this.$.downloadBtn.disabled = false;
+            }
+          }
+          _drawAnnotations(ictx, inner, W, H) {
+            this.anns.forEach((a) => {
+              const lw = Math.max(1, (W * a.w) / 1000);
+              if (a.t === "mosaic" || a.t === "blur") {
+                this._regionEffect(ictx, inner, a, W, H);
+                return;
+              }
+              ictx.save();
+              ictx.lineCap = "round";
+              ictx.lineJoin = "round";
+              ictx.strokeStyle = a.color;
+              ictx.fillStyle = a.color;
+              ictx.lineWidth = lw;
+              if (a.t === "line") {
+                const x1 = a.x1 * W;
+                const y1 = a.y1 * H;
+                const x2 = a.x2 * W;
+                const y2 = a.y2 * H;
+                const len = Math.hypot(x2 - x1, y2 - y1);
+                if (a.arrow) {
+                  const ang = Math.atan2(y2 - y1, x2 - x1);
+                  const hl = lw * 3.5 + W * 0.008;
+                  const hw = hl * 0.6;
+                  const cs = Math.cos(ang);
+                  const sn = Math.sin(ang);
+                  const k = len > hl ? (len - hl * 0.8) / len : 0;
+                  ictx.beginPath();
+                  ictx.moveTo(x1, y1);
+                  ictx.lineTo(x1 + (x2 - x1) * k, y1 + (y2 - y1) * k);
+                  ictx.stroke();
+                  ictx.beginPath();
+                  ictx.moveTo(x2, y2);
+                  ictx.lineTo(x2 - hl * cs + hw * sn, y2 - hl * sn - hw * cs);
+                  ictx.lineTo(x2 - hl * cs - hw * sn, y2 - hl * sn + hw * cs);
+                  ictx.closePath();
+                  ictx.fill();
+                } else {
+                  ictx.beginPath();
+                  ictx.moveTo(x1, y1);
+                  ictx.lineTo(x2, y2);
+                  ictx.stroke();
+                }
+              } else if (a.t === "rect") {
+                ictx.strokeRect(
+                  Math.min(a.x1, a.x2) * W,
+                  Math.min(a.y1, a.y2) * H,
+                  Math.abs(a.x2 - a.x1) * W,
+                  Math.abs(a.y2 - a.y1) * H,
+                );
+              } else if (a.t === "ellipse") {
+                ictx.beginPath();
+                ictx.ellipse(
+                  ((a.x1 + a.x2) / 2) * W,
+                  ((a.y1 + a.y2) / 2) * H,
+                  Math.max(0.5, (Math.abs(a.x2 - a.x1) * W) / 2),
+                  Math.max(0.5, (Math.abs(a.y2 - a.y1) * H) / 2),
+                  0,
+                  0,
+                  Math.PI * 2,
+                );
+                ictx.stroke();
+              } else if (a.t === "pen") {
+                const pts = a.pts.map((q) => [q[0] * W, q[1] * H]);
+                if (pts.length === 1) {
+                  ictx.beginPath();
+                  ictx.arc(pts[0][0], pts[0][1], lw / 2, 0, Math.PI * 2);
+                  ictx.fill();
+                } else {
+                  ictx.beginPath();
+                  ictx.moveTo(pts[0][0], pts[0][1]);
+                  for (let i = 1; i < pts.length - 1; i++) {
+                    const mx = (pts[i][0] + pts[i + 1][0]) / 2;
+                    const my = (pts[i][1] + pts[i + 1][1]) / 2;
+                    ictx.quadraticCurveTo(pts[i][0], pts[i][1], mx, my);
+                  }
+                  const last = pts[pts.length - 1];
+                  ictx.lineTo(last[0], last[1]);
+                  ictx.stroke();
+                }
+              } else if (a.t === "num") {
+                const r = W * (0.012 + a.w * 0.002);
+                const cx = a.x * W;
+                const cy = a.y * H;
+                ictx.beginPath();
+                ictx.arc(cx, cy, r, 0, Math.PI * 2);
+                ictx.fill();
+                ictx.lineWidth = Math.max(1, r * 0.1);
+                ictx.strokeStyle = "rgb(255 255 255 / 0.85)";
+                ictx.stroke();
+                const rgb = this._rgba(a.color, 1)
+                  .match(/[\d.]+/g)
+                  .map(Number);
+                const lum = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
+                ictx.fillStyle = lum > 0.62 ? "#000" : "#fff";
+                ictx.font = `700 ${r * (a.n >= 10 ? 0.95 : 1.15)}px system-ui, sans-serif`;
+                ictx.textAlign = "center";
+                ictx.textBaseline = "middle";
+                ictx.fillText(String(a.n), cx, cy + r * 0.04);
+              } else if (a.t === "text") {
+                const fs = this._textSize(a, W);
+                ictx.font = this._textFont(fs);
+                ictx.textAlign = "left";
+                ictx.textBaseline = "top";
+                ictx.fillText(a.text, a.x * W, a.y * H);
+              }
+              ictx.restore();
+            });
+          }
+          _regionEffect(ictx, inner, a, W, H) {
+            let x = Math.min(a.x1, a.x2) * W;
+            let y = Math.min(a.y1, a.y2) * H;
+            let w = Math.abs(a.x2 - a.x1) * W;
+            let h = Math.abs(a.y2 - a.y1) * H;
+            x = Math.max(0, x);
+            y = Math.max(0, y);
+            w = Math.min(W - x, w);
+            h = Math.min(H - y, h);
+            if (w < 2 || h < 2) return;
+            const mk = (cw, ch) => {
+              const t = document.createElement("canvas");
+              t.width = Math.max(1, Math.round(cw));
+              t.height = Math.max(1, Math.round(ch));
+              return t;
+            };
+            if (a.t === "blur" && this._fxSupported) {
+              const r = Math.max(2, (W * a.w) / 400);
+              const pad = Math.ceil(r * 3);
+              const ex = Math.max(0, Math.floor(x - pad));
+              const ey = Math.max(0, Math.floor(y - pad));
+              const ew = Math.min(W, Math.ceil(x + w + pad)) - ex;
+              const eh = Math.min(H, Math.ceil(y + h + pad)) - ey;
+              const tmp = mk(ew, eh);
+              tmp.getContext("2d").drawImage(inner, ex, ey, ew, eh, 0, 0, ew, eh);
+              ictx.save();
+              ictx.beginPath();
+              ictx.rect(x, y, w, h);
+              ictx.clip();
+              ictx.filter = `blur(${r}px)`;
+              ictx.drawImage(tmp, ex, ey);
+              ictx.restore();
+              return;
+            }
+            const cell = Math.max(3, (W * a.w) / 200);
+            const tmp = mk(w / cell, h / cell);
+            const tctx = tmp.getContext("2d");
+            tctx.imageSmoothingEnabled = true;
+            tctx.imageSmoothingQuality = "high";
+            tctx.drawImage(inner, x, y, w, h, 0, 0, tmp.width, tmp.height);
+            ictx.save();
+            ictx.beginPath();
+            ictx.rect(x, y, w, h);
+            ictx.clip();
+            ictx.imageSmoothingEnabled = false;
+            ictx.drawImage(tmp, 0, 0, tmp.width, tmp.height, x, y, w, h);
+            ictx.restore();
+          }
+          _annBox(a, W, H) {
+            if (a.t === "pen") {
+              const xs = a.pts.map((q) => q[0] * W);
+              const ys = a.pts.map((q) => q[1] * H);
+              const x = Math.min(...xs);
+              const y = Math.min(...ys);
+              return { x, y, w: Math.max(...xs) - x, h: Math.max(...ys) - y };
+            }
+            if (a.t === "text") {
+              const fs = this._textSize(a, W);
+              const mc =
+                this._mctx || (this._mctx = document.createElement("canvas").getContext("2d"));
+              mc.font = this._textFont(fs);
+              return { x: a.x * W, y: a.y * H, w: mc.measureText(a.text).width, h: fs * 1.2 };
+            }
+            if (a.t === "num") {
+              const r = W * (0.012 + a.w * 0.002);
+              return { x: a.x * W - r, y: a.y * H - r, w: r * 2, h: r * 2 };
+            }
+            const x = Math.min(a.x1, a.x2) * W;
+            const y = Math.min(a.y1, a.y2) * H;
+            return { x, y, w: Math.abs(a.x2 - a.x1) * W, h: Math.abs(a.y2 - a.y1) * H };
+          }
+          _annHit(a, px, py, tol, W, H) {
+            const lw = (W * a.w) / 1000;
+            const segDist = (x1, y1, x2, y2) => {
+              const dx = x2 - x1;
+              const dy = y2 - y1;
+              const l2 = dx * dx + dy * dy;
+              const t = l2 ? Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / l2)) : 0;
+              return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+            };
+            const b = this._annBox(a, W, H);
+            switch (a.t) {
+              case "line":
+                return segDist(a.x1 * W, a.y1 * H, a.x2 * W, a.y2 * H) <= lw / 2 + tol;
+              case "rect": {
+                const t = lw / 2 + tol;
+                const outer =
+                  px >= b.x - t && px <= b.x + b.w + t && py >= b.y - t && py <= b.y + b.h + t;
+                const innerIn =
+                  px > b.x + t && px < b.x + b.w - t && py > b.y + t && py < b.y + b.h - t;
+                return outer && !innerIn;
+              }
+              case "ellipse": {
+                const rx = Math.max(1, b.w / 2);
+                const ry = Math.max(1, b.h / 2);
+                const d = Math.hypot((px - b.x - rx) / rx, (py - b.y - ry) / ry);
+                return Math.abs(d - 1) * Math.min(rx, ry) <= lw / 2 + tol;
+              }
+              case "pen": {
+                for (let i = 0; i < a.pts.length; i++) {
+                  const p0 = a.pts[i];
+                  const p1 = a.pts[i + 1] || p0;
+                  if (segDist(p0[0] * W, p0[1] * H, p1[0] * W, p1[1] * H) <= lw / 2 + tol)
+                    return true;
+                }
+                return false;
+              }
+              case "num":
+                return Math.hypot(px - (b.x + b.w / 2), py - (b.y + b.h / 2)) <= b.w / 2 + tol;
+              default:
+                return px >= b.x && px <= b.x + b.w && py >= b.y && py <= b.y + b.h;
+            }
+          }
+          _drawSelection(ctx, a, W, H, c) {
+            const b = this._annBox(a, W, H);
+            const rect = c.getBoundingClientRect();
+            const scale = rect.width > 0 ? rect.width / c.width : 1;
+            const pad = (W * a.w) / 2000 + 4 / scale;
+            ctx.save();
+            ctx.strokeStyle = "#4da3ff";
+            ctx.lineWidth = 1.5 / scale;
+            ctx.setLineDash([6 / scale, 4 / scale]);
+            ctx.strokeRect(b.x - pad, b.y - pad, b.w + pad * 2, b.h + pad * 2);
+            ctx.restore();
+          }
+          _textSize(a, W) {
+            return W * (0.02 + a.w * 0.004);
+          }
+          _textFont(fs) {
+            return `700 ${fs}px "Microsoft YaHei", system-ui, sans-serif`;
+          }
+          _fromInner(x, y) {
+            const c = this.$.preview;
+            const r = c.getBoundingClientRect();
+            const m = this._m;
+            const bx = x * m.outW - m.bodyW / 2 + m.bw;
+            const by = y * m.innerH - m.bodyH / 2 + m.bw;
+            const cos = Math.cos(m.ang);
+            const sin = Math.sin(m.ang);
+            const cx = bx * cos - by * sin + c.width / 2;
+            const cy = bx * sin + by * cos + c.height / 2;
+            return {
+              x: r.left + (cx * r.width) / c.width,
+              y: r.top + (cy * r.height) / c.height,
+              scale: r.width / c.width,
+            };
+          }
+          _closeTextEditor(commit = true) {
+            if (this._textFinish) this._textFinish(commit);
+          }
+          _openTextEditor(nx, ny, a) {
+            this._closeTextEditor(true);
+            if (!this._m) return;
+            const A = this.ann;
+            const list = this.anns;
+            const pos = this._fromInner(nx, ny);
+            const w = a ? a.w : A.width;
+            const fs = Math.max(12, this._textSize({ w }, this._m.outW) * pos.scale);
+            const el = document.createElement("input");
+            el.type = "text";
+            el.className = "ann-text-input";
+            el.value = a ? a.text : "";
+            el.maxLength = 120;
+            el.setAttribute("autocomplete", "off");
+            el.style.left = pos.x + "px";
+            el.style.top = pos.y + "px";
+            el.style.fontSize = fs + "px";
+            el.style.color = a ? a.color : A.color;
+            let done = false;
+            const finish = (commit) => {
+              if (done) return;
+              done = true;
+              const v = el.value.trim();
+              el.remove();
+              this._textFinish = null;
+              this._textEl = null;
+              if (commit) {
+                if (a) {
+                  if (v) a.text = v;
+                  else {
+                    const i = list.indexOf(a);
+                    if (i >= 0) list.splice(i, 1);
+                    A.sel = -1;
+                  }
+                } else if (v) {
+                  list.push({ t: "text", x: nx, y: ny, text: v, color: A.color, w: A.width });
+                }
+              }
+              this._syncAnnUI();
+              this._scheduleGenerate();
+            };
+            el.addEventListener("keydown", (e) => {
+              e.stopPropagation();
+              if (e.key === "Enter") {
+                e.preventDefault();
+                finish(true);
+              } else if (e.key === "Escape") {
+                e.preventDefault();
+                finish(false);
+              }
+            });
+            el.addEventListener("blur", () => finish(true));
+            this._textFinish = finish;
+            this._textEl = el;
+            document.body.appendChild(el);
+            el.focus();
+            el.select();
+          }
+          _toInner(e) {
+            const c = this.$.preview;
+            const r = c.getBoundingClientRect();
+            const m = this._m;
+            const cx = ((e.clientX - r.left) * c.width) / r.width;
+            const cy = ((e.clientY - r.top) * c.height) / r.height;
+            const dx = cx - c.width / 2;
+            const dy = cy - c.height / 2;
+            const cos = Math.cos(-m.ang);
+            const sin = Math.sin(-m.ang);
+            const ix = dx * cos - dy * sin + m.bodyW / 2 - m.bw;
+            const iy = dx * sin + dy * cos + m.bodyH / 2 - m.bw;
+            return { x: ix / m.outW, y: iy / m.innerH, scale: r.width / c.width };
+          }
+          _setAnnOpen(open) {
+            this.ann.open = open;
+            if (!open) this.ann.sel = -1;
+            this._syncAnnUI();
+            this._scheduleGenerate();
+          }
+          _syncAnnUI() {
+            const A = this.ann;
+            const $ = this.$;
+            $.annTools
+              .querySelectorAll(".ann-tool")
+              .forEach((b) => b.classList.toggle("active", b.dataset.tool === A.tool));
+            $.annWidth.value = A.width;
+            $.annWidth.syncTip && $.annWidth.syncTip();
+            $.annColor.value = A.color;
+            $.annColors
+              .querySelectorAll(".ann-swatch")
+              .forEach((b) =>
+                b.classList.toggle("active", b.dataset.color === A.color.toLowerCase()),
+              );
+            $.preview.classList.toggle("annotating", A.open);
+            $.preview.classList.toggle("ann-select", A.open && A.tool === "select");
+            $.annDelete.disabled = A.sel < 0;
+            $.annUndo.disabled = this.anns.length === 0;
+            $.annClear.disabled = this.anns.length === 0;
+          }
+          _annSelect(i) {
+            const A = this.ann;
+            A.sel = i;
+            const a = i >= 0 ? this.anns[i] : null;
+            if (a) {
+              if (a.color) A.color = a.color;
+              A.width = a.w;
+            }
+            this._syncAnnUI();
+          }
+          _bindAnnotate() {
+            const $ = this.$;
+            const A = this.ann;
+            this._bindPopover($.annBtn, $.annPop, $.annClose);
+            $.annPop._keep = (t) => t === $.preview || t === this._textEl;
+            $.annPop._onToggle = (open) => this._setAnnOpen(open);
+            const refresh = () => {
+              this._syncAnnUI();
+              this._scheduleGenerate();
+            };
+            const applySel = (fn) => {
+              const a = A.sel >= 0 ? this.anns[A.sel] : null;
+              if (a) fn(a);
+            };
+            this._initRange($.annWidth, "width", A, () => {
+              applySel((a) => (a.w = A.width));
+              this._scheduleGenerate();
+            });
+            $.annTools.addEventListener("click", (e) => {
+              const b = e.target.closest("[data-tool]");
+              if (!b) return;
+              A.tool = b.dataset.tool;
+              A.sel = -1;
+              refresh();
+            });
+            const setColor = (c) => {
+              A.color = c.toLowerCase();
+              applySel((a) => a.color && (a.color = A.color));
+              refresh();
+            };
+            $.annColors.addEventListener("click", (e) => {
+              const b = e.target.closest(".ann-swatch");
+              if (b) setColor(b.dataset.color);
+            });
+            $.annColor.addEventListener("input", () => setColor($.annColor.value));
+            $.annUndo.addEventListener("click", () => {
+              this.anns.pop();
+              A.sel = -1;
+              refresh();
+            });
+            const del = () => {
+              if (A.sel < 0) return;
+              this.anns.splice(A.sel, 1);
+              A.sel = -1;
+              refresh();
+            };
+            $.annDelete.addEventListener("click", del);
+            $.annClear.addEventListener("click", () => {
+              this.anns.length = 0;
+              A.sel = -1;
+              refresh();
+            });
+            document.addEventListener("keydown", (e) => {
+              if (!A.open) return;
+              const tag = (document.activeElement?.tagName || "").toLowerCase();
+              if (tag === "input" || tag === "textarea" || tag === "select") return;
+              if (e.key === "Delete" || e.key === "Backspace") {
+                e.preventDefault();
+                del();
+              } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+                e.preventDefault();
+                $.annUndo.click();
+              }
+            });
+            const c = $.preview;
+            const clamp = (v) => Math.max(0, Math.min(1, v));
+            c.addEventListener("pointerdown", (e) => {
+              if (!A.open || !this.hasPreview || !this._m) return;
+              if (e.pointerType === "mouse" && e.button !== 0) return;
+              e.preventDefault();
+              this._closeTextEditor(true);
+              const p = this._toInner(e);
+              const px = clamp(p.x);
+              const py = clamp(p.y);
+              const list = this.anns;
+              const base = { color: A.color, w: A.width };
+              if (A.tool === "select") {
+                const { outW, innerH } = this._m;
+                const tol = 8 / p.scale;
+                let hit = -1;
+                for (let i = list.length - 1; i >= 0; i--) {
+                  if (this._annHit(list[i], p.x * outW, p.y * innerH, tol, outW, innerH)) {
+                    hit = i;
+                    break;
+                  }
+                }
+                this._annSelect(hit);
+                A.drag = hit >= 0 ? { mode: "move", x: p.x, y: p.y } : null;
+              } else if (A.tool === "text") {
+                setTimeout(() => this._openTextEditor(px, py, null), 0);
+                return;
+              } else if (A.tool === "num") {
+                const n = list.reduce((m, a) => (a.t === "num" ? Math.max(m, a.n) : m), 0) + 1;
+                list.push({ t: "num", x: px, y: py, n, ...base });
+                this._syncAnnUI();
+                this._scheduleGenerate();
+                return;
+              } else if (A.tool === "pen") {
+                const a = { t: "pen", pts: [[px, py]], ...base };
+                list.push(a);
+                A.drag = { mode: "draw", a, free: a.pts };
+              } else {
+                const a = {
+                  t: A.tool === "arrow" ? "line" : A.tool,
+                  x1: px,
+                  y1: py,
+                  x2: px,
+                  y2: py,
+                  ...base,
+                };
+                if (A.tool === "arrow") a.arrow = true;
+                if (A.tool === "mosaic" || A.tool === "blur") delete a.color;
+                list.push(a);
+                A.drag = { mode: "draw", a };
+                this._annSelect(-1);
+              }
+              try {
+                c.setPointerCapture(e.pointerId);
+              } catch (_) {}
+              this._scheduleGenerate();
+            });
+            const onMove = (e) => {
+              const d = A.drag;
+              if (!d || !A.open) return;
+              d.last = { clientX: e.clientX, clientY: e.clientY };
+              const p = this._toInner(e);
+              if (d.mode === "move") {
+                const a = this.anns[A.sel];
+                if (!a) return;
+                const dx = p.x - d.x;
+                const dy = p.y - d.y;
+                d.x = p.x;
+                d.y = p.y;
+                if (a.pts) a.pts.forEach((q) => ((q[0] += dx), (q[1] += dy)));
+                else if (a.t === "num" || a.t === "text") ((a.x += dx), (a.y += dy));
+                else ((a.x1 += dx), (a.x2 += dx), (a.y1 += dy), (a.y2 += dy));
+              } else if (d.a.t === "pen") {
+                const x = clamp(p.x);
+                const y = clamp(p.y);
+                if (e.shiftKey) {
+                  d.a.pts = [d.free[0], [x, y]];
+                } else {
+                  d.a.pts = d.free;
+                  const last = d.free[d.free.length - 1];
+                  if (Math.hypot(x - last[0], y - last[1]) > 0.002) d.free.push([x, y]);
+                }
+              } else {
+                let x = clamp(p.x);
+                let y = clamp(p.y);
+                if (e.shiftKey && (d.a.t === "rect" || d.a.t === "ellipse") && this._m) {
+                  const { outW, innerH } = this._m;
+                  const sx = x >= d.a.x1 ? 1 : -1;
+                  const sy = y >= d.a.y1 ? 1 : -1;
+                  const maxX = (sx > 0 ? 1 - d.a.x1 : d.a.x1) * outW;
+                  const maxY = (sy > 0 ? 1 - d.a.y1 : d.a.y1) * innerH;
+                  const size = Math.min(
+                    Math.max(Math.abs(x - d.a.x1) * outW, Math.abs(y - d.a.y1) * innerH),
+                    maxX,
+                    maxY,
+                  );
+                  x = d.a.x1 + (sx * size) / outW;
+                  y = d.a.y1 + (sy * size) / innerH;
+                }
+                d.a.x2 = x;
+                d.a.y2 = y;
+              }
+              this._scheduleGenerate();
+            };
+            c.addEventListener("pointermove", onMove);
+            const onShift = (e) => {
+              if (e.key !== "Shift" || !A.drag || !A.drag.last) return;
+              onMove({ ...A.drag.last, shiftKey: e.type === "keydown" });
+            };
+            document.addEventListener("keydown", onShift);
+            document.addEventListener("keyup", onShift);
+            const end = () => {
+              const d = A.drag;
+              A.drag = null;
+              if (!d || d.mode !== "draw" || !this._m) {
+                this._syncAnnUI();
+                return;
+              }
+              const a = d.a;
+              if (a.t !== "pen") {
+                const { outW, innerH } = this._m;
+                const tiny = Math.hypot((a.x2 - a.x1) * outW, (a.y2 - a.y1) * innerH) < 4;
+                if (tiny) this.anns.splice(this.anns.indexOf(a), 1);
+              }
+              this._syncAnnUI();
+              this._scheduleGenerate();
+            };
+            c.addEventListener("dblclick", (e) => {
+              if (!A.open || A.tool !== "select" || !this._m) return;
+              const p = this._toInner(e);
+              const { outW, innerH } = this._m;
+              const tol = 8 / p.scale;
+              for (let i = this.anns.length - 1; i >= 0; i--) {
+                const a = this.anns[i];
+                if (
+                  a.t === "text" &&
+                  this._annHit(a, p.x * outW, p.y * innerH, tol, outW, innerH)
+                ) {
+                  this._annSelect(i);
+                  this._openTextEditor(a.x, a.y, a);
+                  return;
+                }
+              }
+            });
+            c.addEventListener("pointerup", end);
+            c.addEventListener("pointercancel", end);
+            this._syncAnnUI();
+          }
+          _bindSplitter() {
+            const sp = this.$.splitter;
+            const main = this.$.main;
+            const KEY = "jx-stitch-split";
+            const MIN = 0.25;
+            const MAX = 0.7;
+            let cur = null;
+            const apply = (f) => {
+              if (f == null) main.style.removeProperty("--left-w");
+              else main.style.setProperty("--left-w", (f * 100).toFixed(2) + "%");
+            };
+            const save = () => {
+              try {
+                if (cur == null) localStorage.removeItem(KEY);
+                else localStorage.setItem(KEY, String(cur));
+              } catch (_) {}
+            };
+            try {
+              const v = parseFloat(localStorage.getItem(KEY));
+              if (v >= MIN && v <= MAX) {
+                cur = v;
+                apply(v);
+              }
+            } catch (_) {}
+            const contentBox = () => {
+              const cs = getComputedStyle(main);
+              const r = main.getBoundingClientRect();
+              const pl = parseFloat(cs.paddingLeft) || 0;
+              const pr = parseFloat(cs.paddingRight) || 0;
+              return { left: r.left + pl, width: r.width - pl - pr };
+            };
+            const clampF = (f) => Math.max(MIN, Math.min(MAX, f));
+            sp.addEventListener("pointerdown", (e) => {
+              if (e.button !== 0) return;
+              e.preventDefault();
+              sp.setPointerCapture(e.pointerId);
+              sp.classList.add("dragging");
+              document.body.classList.add("is-resizing");
+            });
+            sp.addEventListener("pointermove", (e) => {
+              if (!sp.classList.contains("dragging")) return;
+              const b = contentBox();
+              cur = clampF((e.clientX - b.left - 10) / b.width);
+              apply(cur);
+            });
+            const end = () => {
+              if (!sp.classList.contains("dragging")) return;
+              sp.classList.remove("dragging");
+              document.body.classList.remove("is-resizing");
+              save();
+            };
+            sp.addEventListener("pointerup", end);
+            sp.addEventListener("pointercancel", end);
+            sp.addEventListener("dblclick", () => {
+              cur = null;
+              apply(null);
+              save();
+            });
+            sp.addEventListener("keydown", (e) => {
+              if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+              e.preventDefault();
+              const b = contentBox();
+              const base = cur ?? main.children[0].getBoundingClientRect().width / b.width;
+              cur = clampF(base + (e.key === "ArrowRight" ? 0.02 : -0.02));
+              apply(cur);
+              save();
+            });
+          }
+          _bindZoom() {
+            const bar = this.$.zoomBar;
+            const area = this.$.previewArea;
+            const canvas = this.$.preview;
+            const inside = (r, e) =>
+              e.clientX >= r.left &&
+              e.clientX <= r.right &&
+              e.clientY >= r.top &&
+              e.clientY <= r.bottom;
+            const place = () => {
+              const a = area.getBoundingClientRect();
+              const c = canvas.getBoundingClientRect();
+              bar.style.top = c.top - a.top - area.clientTop + 8 + "px";
+              bar.style.left = c.left - a.left - area.clientLeft + c.width / 2 + "px";
+            };
+            area.addEventListener("pointermove", (e) => {
+              if (!this.hasPreview || this.ann.open) {
+                bar.classList.remove("show");
+                return;
+              }
+              const overCanvas = inside(canvas.getBoundingClientRect(), e);
+              const overBar =
+                bar.classList.contains("show") && inside(bar.getBoundingClientRect(), e);
+              if (overCanvas || overBar) {
+                if (!bar.classList.contains("show")) place();
+                bar.classList.add("show");
+              } else {
+                bar.classList.remove("show");
+              }
+            });
+            area.addEventListener("pointerleave", () => bar.classList.remove("show"));
+            bar.addEventListener("click", (e) => {
+              const b = e.target.closest("[data-zoom]");
+              if (!b) return;
+              const actual = b.dataset.zoom === "actual";
+              area.classList.toggle("is-actual", actual);
+              this.$.main.classList.toggle("preview-actual", actual);
+              bar.querySelectorAll("button").forEach((x) => x.classList.toggle("active", x === b));
+              requestAnimationFrame(place);
+            });
+          }
+          _ratioDims() {
+            const [a, b] = this.layout.ratio.split(":").map(Number);
+            const lo = Math.min(a, b);
+            const hi = Math.max(a, b);
+            return this.layout.landscape ? [hi, lo] : [lo, hi];
+          }
+          _finalWidth(outW, innerH) {
+            const bw = Math.round((outW * this.bd.size) / 100);
+            const blur = Math.round((outW * this.sh.size) / 100);
+            const offY = Math.round(blur * 0.35);
+            const pad = blur > 0 ? Math.round(blur * 1.5 + offY) : 0;
+            const ang = (this.bd.angle * Math.PI) / 180;
+            const cos = Math.abs(Math.cos(ang));
+            const sin = Math.abs(Math.sin(ang));
+            return Math.ceil((outW + bw * 2) * cos + (innerH + bw * 2) * sin - 1e-6) + pad * 2;
+          }
+          _freeInnerWidth(targetFinal) {
+            const [rw, rh] = this._ratioDims();
+            let W = Math.max(16, targetFinal);
+            for (let i = 0; i < 3; i++) {
+              const f = this._finalWidth(W, Math.round((W * rh) / rw));
+              W = Math.max(16, Math.round((W * targetFinal) / f));
+            }
+            return Math.min(W, 8192);
+          }
+          _renderCollage(W) {
+            const [rw, rh] = this._ratioDims();
+            const H = Math.max(1, Math.round((W * rh) / rw));
+            const cv = document.createElement("canvas");
+            cv.width = W;
+            cv.height = H;
+            const ctx = cv.getContext("2d");
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = "high";
+            if (!this.sh.transparent) {
+              ctx.fillStyle = this.sh.bg;
+              ctx.fillRect(0, 0, W, H);
+            }
+            const L = this.layout;
+            const m = (W * this.sp.margin) / 100;
+            const g = (W * this.sp.gap) / 100;
+            const r = (W * this.sp.radius) / 100;
+            const tpls = getTemplates(this.images.length);
+            const cells = tpls[Math.min(L.tpl, tpls.length - 1)];
+            const x0 = m - g / 2;
+            const y0 = m - g / 2;
+            const aw = W - 2 * m + g;
+            const ah = H - 2 * m + g;
+            cells.forEach((cell, i) => {
+              const img = this.images[i];
+              if (!img) return;
+              const x = x0 + cell.x * aw + g / 2;
+              const y = y0 + cell.y * ah + g / 2;
+              const w = cell.w * aw - g;
+              const h = cell.h * ah - g;
+              if (w < 1 || h < 1) return;
+              const st = this.items[i].getExportState();
+              let sx = st.leftRatio * img.width;
+              let sy = st.topRatio * img.height;
+              let sw = Math.max(1, (st.rightRatio - st.leftRatio) * img.width);
+              let sh = Math.max(1, (st.bottomRatio - st.topRatio) * img.height);
+              const ar = w / h;
+              if (sw / sh > ar) {
+                const nw = sh * ar;
+                sx += (sw - nw) / 2;
+                sw = nw;
+              } else {
+                const nh = sw / ar;
+                sy += (sh - nh) / 2;
+                sh = nh;
+              }
+              ctx.save();
+              if (r > 0) {
+                ctx.beginPath();
+                if (ctx.roundRect) ctx.roundRect(x, y, w, h, Math.min(r, w / 2, h / 2));
+                else ctx.rect(x, y, w, h);
+                ctx.clip();
+              }
+              ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+              if (this.wm.scope === "each" && this.wm.text.trim()) {
+                ctx.beginPath();
+                ctx.rect(x, y, w, h);
+                ctx.clip();
+                ctx.translate(x, y);
+                this._drawWatermark(ctx, w, h, 0);
+              }
+              ctx.restore();
+            });
+            return cv;
+          }
+          _syncLayoutUI() {
+            const n = this.images.length;
+            if (this.$.mkZip && !this._zipBusy) this.$.mkZip.disabled = n === 0;
+            if (this._tplN !== n) {
+              this._tplN = n;
+              this.layout.tpl = 0;
+            }
+            this._renderTplGrid();
+          }
+          _renderTplGrid() {
+            const grid = this.$.tplGrid;
+            if (!grid) return;
+            const n = this.images.length;
+            if (n === 0) {
+              grid.innerHTML =
+                '<span class="wm-label" style="grid-column: 1 / -1">添加截图后可选择布局模板</span>';
+              return;
+            }
+            const [rw, rh] = this._ratioDims();
+            const vw = rw * 20;
+            const vh = rh * 20;
+            const list = getTemplates(n);
+            const cur = Math.min(this.layout.tpl, list.length - 1);
+            grid.innerHTML = list
+              .map((cells, ti) => {
+                const rects = cells
+                  .map((c, i) => {
+                    const x = c.x * vw + 1;
+                    const y = c.y * vh + 1;
+                    const w = Math.max(1, c.w * vw - 2);
+                    const h = Math.max(1, c.h * vh - 2);
+                    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="currentColor" fill-opacity="0.35" /><text x="${(x + w / 2).toFixed(1)}" y="${(y + h / 2).toFixed(1)}" text-anchor="middle" dominant-baseline="central" font-size="${Math.min(14, Math.min(w, h) * 0.6).toFixed(1)}" fill="currentColor">${i + 1}</text>`;
+                  })
+                  .join("");
+                return `<button type="button" class="tpl-item${ti === cur ? " active" : ""}" data-tpl="${ti}" aria-label="模板 ${ti + 1}"><svg viewBox="0 0 ${vw} ${vh}">${rects}</svg></button>`;
+              })
+              .join("");
+          }
+          _bindOutWidth() {
+            const inp = this.$.outWidth;
+            const sel = this.$.outPreset;
+            const presets = ["750", "1080", "1242", "1440", "2048"];
+            const apply = (w) => {
+              this.out.width = w;
+              sel.value = w ? (presets.includes(String(w)) ? String(w) : "custom") : "";
+              if (this.mode === "free") this._scheduleGenerate();
+            };
+            inp.addEventListener("input", () => {
+              const v = parseInt(inp.value, 10);
+              apply(Number.isFinite(v) && v >= 16 ? Math.min(v, 16384) : 0);
+            });
+            inp.addEventListener("change", () => {
+              inp.value = this.out.width || "";
+            });
+            sel.addEventListener("change", () => {
+              if (sel.value === "custom") return;
+              const w = sel.value ? +sel.value : 0;
+              inp.value = w || "";
+              apply(w);
+            });
+          }
+          _bindMode() {
+            this.$.modeSeg.addEventListener("click", (e) => {
+              const b = e.target.closest("[data-appmode]");
+              if (b) this._setMode(b.dataset.appmode);
+            });
+            this._syncModeUI();
+          }
+          _setMode(mode) {
+            if (mode === this.mode) return;
+            this.mode = mode;
+            this.ann.sel = -1;
+            this._syncModeUI();
+            this._renderList();
+            this._generate();
+          }
+          _syncSpacingUI() {
+            [
+              ["lyGap", "gap"],
+              ["lyMargin", "margin"],
+              ["lyRadius", "radius"],
+            ].forEach(([id, key]) => {
+              const el = this.$[id];
+              el.value = this.sp[key];
+              if (el.syncTip) el.syncTip();
+            });
+          }
+          _syncModeUI() {
+            this._syncSpacingUI();
+            this.$.modeSeg
+              .querySelectorAll("button")
+              .forEach((b) => b.classList.toggle("active", b.dataset.appmode === this.mode));
+            this.$.layoutGroup.hidden = this.mode !== "free";
+          }
+          _bindLayout() {
+            const $ = this.$;
+            const L = this.layout;
+            const update = () => this._scheduleGenerate();
+            this._initRange($.lyGap, "gap", this.sp, update);
+            this._initRange($.lyMargin, "margin", this.sp, update);
+            this._initRange($.lyRadius, "radius", this.sp, update);
+            const syncRatio = () => {
+              $.ratioSeg
+                .querySelectorAll("button")
+                .forEach((b) => b.classList.toggle("active", b.dataset.ratio === L.ratio));
+              $.orientBtn.textContent = L.landscape ? "横向" : "竖向";
+              $.orientBtn.disabled = L.ratio === "1:1";
+            };
+            $.ratioSeg.addEventListener("click", (e) => {
+              const b = e.target.closest("button[data-ratio]");
+              if (!b) return;
+              L.ratio = b.dataset.ratio;
+              L.landscape = L.ratio === "16:9";
+              syncRatio();
+              this._renderTplGrid();
+              update();
+            });
+            $.orientBtn.addEventListener("click", () => {
+              L.landscape = !L.landscape;
+              syncRatio();
+              this._renderTplGrid();
+              update();
+            });
+            this._syncSpacingUI();
+            $.tplGrid.addEventListener("click", (e) => {
+              const b = e.target.closest("button[data-tpl]");
+              if (!b) return;
+              L.tpl = +b.dataset.tpl;
+              this._renderTplGrid();
+              update();
+            });
+            syncRatio();
           }
           _scheduleGenerate() {
             if (this._raf) return;
@@ -2287,31 +4408,63 @@
               this._generate();
             });
           }
-          _bindWatermark() {
+          _bindMark() {
             const $ = this.$;
             const wm = this.wm;
             const update = () => this._scheduleGenerate();
-            this._bindPopover($.settingsBtn, $.wmPop, $.wmClose);
+            this._bindPopover($.markBtn, $.markPop, $.markClose);
             $.wmText.addEventListener("input", () => {
               wm.text = $.wmText.value;
               update();
             });
-            const syncPos = () => {
-              $.wmPos.querySelectorAll("button").forEach((b) => {
-                b.classList.toggle(
-                  "active",
-                  b.dataset.v ? b.dataset.v === wm.pos[0] : b.dataset.h === wm.pos[1],
-                );
-              });
+            const syncSeg = (seg, attr, val) =>
+              seg
+                .querySelectorAll("button")
+                .forEach((b) => b.classList.toggle("active", b.dataset[attr] === val));
+            const syncLayout = () => {
+              syncSeg($.mkLayout, "mode", wm.layout);
+              $.mkPosField.hidden = wm.layout !== "single";
+              $.mkCountField.hidden = wm.layout !== "custom";
+              $.mkGapField.hidden = wm.layout !== "tile";
             };
-            $.wmPos.addEventListener("click", (e) => {
-              const btn = e.target.closest("button");
-              if (!btn) return;
-              wm.pos = btn.dataset.v ? btn.dataset.v + wm.pos[1] : wm.pos[0] + btn.dataset.h;
-              syncPos();
+            $.mkLayout.addEventListener("click", (e) => {
+              const b = e.target.closest("[data-mode]");
+              if (!b) return;
+              wm.layout = b.dataset.mode;
+              syncLayout();
               update();
             });
-            syncPos();
+            $.mkScope.addEventListener("click", (e) => {
+              const b = e.target.closest("[data-scope]");
+              if (!b) return;
+              wm.scope = b.dataset.scope;
+              syncSeg($.mkScope, "scope", wm.scope);
+              update();
+            });
+            $.mkZip.addEventListener("click", () => this._downloadZip());
+            $.mkPos.addEventListener("click", (e) => {
+              const b = e.target.closest("[data-pos]");
+              if (!b) return;
+              wm.pos = b.dataset.pos;
+              syncSeg($.mkPos, "pos", wm.pos);
+              update();
+            });
+            [
+              ["mkBold", "bold"],
+              ["mkItalic", "italic"],
+            ].forEach(([id, key]) => {
+              const btn = $[id];
+              const sync = () => {
+                btn.classList.toggle("active", wm[key]);
+                btn.setAttribute("aria-pressed", String(wm[key]));
+              };
+              btn.addEventListener("click", () => {
+                wm[key] = !wm[key];
+                sync();
+                update();
+              });
+              sync();
+            });
             $.wmColor.addEventListener("input", () => {
               wm.color = $.wmColor.value;
               update();
@@ -2332,8 +4485,18 @@
             this._initRange($.wmTextAlpha, "textAlpha", wm, update);
             this._initRange($.wmBgAlpha, "bgAlpha", wm, update);
             this._initRange($.wmSize, "size", wm, update);
+            this._initRange($.mkGap, "gap", wm, update);
+            this._initRange($.mkAngle, "angle", wm, update);
+            this._initRange($.mkCount, "count", wm, update);
+            syncLayout();
+            syncSeg($.mkPos, "pos", wm.pos);
+            syncSeg($.mkScope, "scope", wm.scope);
+          }
+          _bindWatermark() {
+            const $ = this.$;
+            this._bindPopover($.settingsBtn, $.wmPop, $.wmClose);
+            this._bindMark();
             this._initRange($.wmQuality, "quality", this.out);
-            this._initRange($.wmScale, "scale", this.out);
             const releaseRanges = () =>
               document
                 .querySelectorAll(".range.active")
@@ -2381,17 +4544,20 @@
               place();
               btn.classList.add("is-active");
               btn.setAttribute("aria-expanded", "true");
+              pop._onToggle?.(true);
             };
             const close = () => {
               pop.hidden = true;
               btn.classList.remove("is-active");
               btn.setAttribute("aria-expanded", "false");
+              pop._onToggle?.(false);
             };
             pop._close = close;
             btn.addEventListener("click", () => (pop.hidden ? open() : close()));
             closeBtn.addEventListener("click", close);
             document.addEventListener("pointerdown", (e) => {
               if (pop.hidden || pop.contains(e.target) || btn.contains(e.target)) return;
+              if (pop._keep && pop._keep(e.target)) return;
               close();
             });
             document.addEventListener("keydown", (e) => {
@@ -2640,6 +4806,13 @@
             if (key === "hei")
               return '"Microsoft YaHei","PingFang SC","Heiti SC","SimHei","Noto Sans CJK SC",sans-serif';
             if (key === "song") return '"SimSun","Songti SC","STSong","Noto Serif CJK SC",serif';
+            if (key === "fang") return '"FangSong","STFangsong","Noto Serif CJK SC",serif';
+            if (key === "kai") return '"KaiTi","Kaiti SC","STKaiti","Noto Serif CJK SC",serif';
+            if (key === "li") return '"LiSu","Libian SC","Noto Serif CJK SC",serif';
+            if (key === "you") return '"YouYuan","Yuanti SC","Microsoft YaHei",sans-serif';
+            if (key === "arial") return "Arial,Helvetica,sans-serif";
+            if (key === "georgia") return "Georgia,serif";
+            if (key === "times") return '"Times New Roman",Times,serif';
             if (key.startsWith("local:")) return `"${key.slice(6).replace(/"/g, "")}",sans-serif`;
             return 'system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif';
           }
@@ -2647,32 +4820,89 @@
             const wm = this.wm;
             const text = wm.text.trim();
             if (!text) return;
-            const fs = Math.max(8, Math.round((w * wm.size) / 100));
+            // 字号、间隔随图片尺寸缩放；过扁的长条图以宽度为参考，避免文字过小
+            const base = Math.max(Math.min(w, h), w * 0.35);
+            const unit = base * 0.02;
+            const fs = Math.max(8, wm.size * unit);
+            const gap = wm.gap * unit;
+            const ang = (wm.angle * Math.PI) / 180;
             ctx.save();
-            ctx.font = `600 ${fs}px ${this._fontStack(wm.font)}`;
-            ctx.textBaseline = "alphabetic";
+            ctx.font = `${wm.italic ? "italic " : ""}${wm.bold ? "700 " : "400 "}${fs}px ${this._fontStack(wm.font)}`;
             ctx.textAlign = "left";
-            const m = ctx.measureText(text);
-            const inkL = m.actualBoundingBoxLeft ?? 0;
-            const inkR = m.actualBoundingBoxRight ?? m.width;
-            const ascent = m.actualBoundingBoxAscent ?? fs * 0.8;
-            const descent = m.actualBoundingBoxDescent ?? fs * 0.2;
-            const padX = fs * 0.5;
-            const padY = fs * 0.45;
-            const margin = Math.max(fs * 0.6, inset);
-            const bw = inkL + inkR + padX * 2;
-            const bh = ascent + descent + padY * 2;
-            const x = Math.max(0, wm.pos[1] === "l" ? margin : w - bw - margin);
-            const y = Math.max(0, wm.pos[0] === "t" ? margin : h - bh - margin);
-            ctx.globalAlpha = wm.bgAlpha / 100;
-            ctx.fillStyle = wm.bg;
-            ctx.beginPath();
-            if (ctx.roundRect) ctx.roundRect(x, y, bw, bh, fs * 0.25);
-            else ctx.rect(x, y, bw, bh);
-            ctx.fill();
-            ctx.globalAlpha = wm.textAlpha / 100;
-            ctx.fillStyle = wm.color;
-            ctx.fillText(text, x + padX + inkL, y + padY + ascent);
+            ctx.textBaseline = "alphabetic";
+            // 以文字实际墨迹范围居中，避免 "middle" 基线造成的视觉偏上/偏下
+            const mt = ctx.measureText(text);
+            const hasInk = typeof mt.actualBoundingBoxAscent === "number";
+            const inkL = hasInk ? mt.actualBoundingBoxLeft : -mt.width / 2;
+            const inkR = hasInk ? mt.actualBoundingBoxRight : mt.width / 2;
+            const inkA = hasInk ? mt.actualBoundingBoxAscent : fs * 0.4;
+            const inkD = hasInk ? mt.actualBoundingBoxDescent : -fs * 0.4;
+            const tw = hasInk ? inkL + inkR : mt.width;
+            const textX = hasInk ? -(inkR - inkL) / 2 : -mt.width / 2;
+            const textY = hasInk ? (inkA - inkD) / 2 : 0;
+            const plate = wm.bgAlpha > 0;
+            const padX = plate ? fs * 0.5 : 0;
+            const boxW = tw + padX * 2;
+            const boxH = fs * 1.7;
+            // 绘制一个水印（以 0,0 为中心，不含旋转）
+            const stamp = () => {
+              if (plate) {
+                ctx.globalAlpha = wm.bgAlpha / 100;
+                ctx.fillStyle = wm.bg;
+                ctx.beginPath();
+                if (ctx.roundRect) ctx.roundRect(-boxW / 2, -boxH / 2, boxW, boxH, fs * 0.25);
+                else ctx.rect(-boxW / 2, -boxH / 2, boxW, boxH);
+                ctx.fill();
+              }
+              ctx.globalAlpha = wm.textAlpha / 100;
+              ctx.fillStyle = wm.color;
+              ctx.fillText(text, textX, textY);
+            };
+            const clamp = (v, lo, hi) => (lo > hi ? (lo + hi) / 2 : Math.min(Math.max(v, lo), hi));
+            if (wm.layout === "tile") {
+              const stepX = boxW + gap;
+              const stepY = boxH + gap;
+              const half = Math.hypot(w, h) / 2;
+              const reachX = Math.ceil(half / stepX) * stepX;
+              const reachY = Math.ceil(half / stepY) * stepY;
+              ctx.translate(w / 2, h / 2);
+              ctx.rotate(ang);
+              for (let x = -reachX; x <= reachX; x += stepX) {
+                for (let y = -reachY; y <= reachY; y += stepY) {
+                  ctx.save();
+                  ctx.translate(x, y);
+                  stamp();
+                  ctx.restore();
+                }
+              }
+            } else if (wm.layout === "custom") {
+              const count = Math.max(1, Math.round(wm.count));
+              const cols = Math.max(1, Math.round(Math.sqrt((count * w) / h)));
+              const rows = Math.ceil(count / cols);
+              for (let i = 0; i < count; i++) {
+                ctx.save();
+                ctx.translate(
+                  (w / cols) * ((i % cols) + 0.5),
+                  (h / rows) * (Math.floor(i / cols) + 0.5),
+                );
+                ctx.rotate(ang);
+                stamp();
+                ctx.restore();
+              }
+            } else {
+              const sin = Math.abs(Math.sin(ang));
+              const cos = Math.abs(Math.cos(ang));
+              const bw = boxW * cos + boxH * sin;
+              const bh = boxW * sin + boxH * cos;
+              const margin = Math.max(base * 0.03, inset);
+              const ALIGN = { center: [0, 0], tl: [-1, -1], tr: [1, -1], bl: [-1, 1], br: [1, 1] };
+              const [ax, ay] = ALIGN[wm.pos] || ALIGN.tr;
+              const x = clamp(w / 2 + ax * (w / 2 - margin - bw / 2), bw / 2, w - bw / 2);
+              const y = clamp(h / 2 + ay * (h / 2 - margin - bh / 2), bh / 2, h - bh / 2);
+              ctx.translate(x, y);
+              ctx.rotate(ang);
+              stamp();
+            }
             ctx.restore();
           }
           _openLightbox() {
@@ -2696,13 +4926,145 @@
               }
             }, 200);
           }
+          _makeZip(files) {
+            const enc = new TextEncoder();
+            if (!this._crcTable) {
+              this._crcTable = new Uint32Array(256).map((_, n) => {
+                let c = n;
+                for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+                return c >>> 0;
+              });
+            }
+            const table = this._crcTable;
+            const crc32 = (d) => {
+              let c = 0xffffffff;
+              for (let i = 0; i < d.length; i++) c = table[(c ^ d[i]) & 0xff] ^ (c >>> 8);
+              return (c ^ 0xffffffff) >>> 0;
+            };
+            const now = new Date();
+            const dosTime =
+              (now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1);
+            const dosDate =
+              ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+            const parts = [];
+            const central = [];
+            let offset = 0;
+            files.forEach((f) => {
+              const name = enc.encode(f.name);
+              const crc = crc32(f.data);
+              const size = f.data.length;
+              const lh = new DataView(new ArrayBuffer(30));
+              lh.setUint32(0, 0x04034b50, true);
+              lh.setUint16(4, 20, true);
+              lh.setUint16(6, 0x0800, true);
+              lh.setUint16(8, 0, true);
+              lh.setUint16(10, dosTime, true);
+              lh.setUint16(12, dosDate, true);
+              lh.setUint32(14, crc, true);
+              lh.setUint32(18, size, true);
+              lh.setUint32(22, size, true);
+              lh.setUint16(26, name.length, true);
+              parts.push(new Uint8Array(lh.buffer), name, f.data);
+              const ch = new DataView(new ArrayBuffer(46));
+              ch.setUint32(0, 0x02014b50, true);
+              ch.setUint16(4, 20, true);
+              ch.setUint16(6, 20, true);
+              ch.setUint16(8, 0x0800, true);
+              ch.setUint16(12, dosTime, true);
+              ch.setUint16(14, dosDate, true);
+              ch.setUint32(16, crc, true);
+              ch.setUint32(20, size, true);
+              ch.setUint32(24, size, true);
+              ch.setUint16(28, name.length, true);
+              ch.setUint32(42, offset, true);
+              central.push(new Uint8Array(ch.buffer), name);
+              offset += 30 + name.length + size;
+            });
+            const cdSize = central.reduce((a, c) => a + c.length, 0);
+            const end = new DataView(new ArrayBuffer(22));
+            end.setUint32(0, 0x06054b50, true);
+            end.setUint16(8, files.length, true);
+            end.setUint16(10, files.length, true);
+            end.setUint32(12, cdSize, true);
+            end.setUint32(16, offset, true);
+            return new Blob([...parts, ...central, new Uint8Array(end.buffer)], {
+              type: "application/zip",
+            });
+          }
+          async _downloadZip() {
+            if (!this.images.length || this._zipBusy) return;
+            const btn = this.$.mkZip;
+            const label = btn.textContent;
+            this._zipBusy = true;
+            btn.disabled = true;
+            btn.textContent = "打包中…";
+            try {
+              const fmt = this.out.format;
+              const mime = "image/" + (fmt === "jpg" ? "jpeg" : fmt);
+              const ext = fmt === "jpg" ? "jpg" : fmt;
+              const files = [];
+              for (let i = 0; i < this.images.length; i++) {
+                const img = this.images[i];
+                const st = this.items[i].getExportState();
+                const sx = st.leftRatio * img.width;
+                const sy = st.topRatio * img.height;
+                const sw = Math.max(1, (st.rightRatio - st.leftRatio) * img.width);
+                const sh = Math.max(1, (st.bottomRatio - st.topRatio) * img.height);
+                let k = this.out.width ? this.out.width / sw : 1;
+                k = Math.min(k, 16384 / sw, 16384 / sh);
+                const cw = Math.max(1, Math.round(sw * k));
+                const ch = Math.max(1, Math.round(sh * k));
+                const cv = document.createElement("canvas");
+                cv.width = cw;
+                cv.height = ch;
+                const ctx = cv.getContext("2d");
+                if (fmt === "jpg") {
+                  ctx.fillStyle = "#ffffff";
+                  ctx.fillRect(0, 0, cw, ch);
+                }
+                ctx.imageSmoothingQuality = "high";
+                if (this._fxSupported) ctx.filter = this._filterString();
+                ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+                if (this._fxSupported) ctx.filter = "none";
+                this._drawWatermark(ctx, cw, ch, 0);
+                const blob = await new Promise((res) =>
+                  cv.toBlob(res, mime, fmt === "png" ? undefined : this.out.quality / 100),
+                );
+                if (!blob) continue;
+                files.push({
+                  name: String(i + 1).padStart(2, "0") + "." + ext,
+                  data: new Uint8Array(await blob.arrayBuffer()),
+                });
+              }
+              if (files.length) {
+                const url = URL.createObjectURL(this._makeZip(files));
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "极限拼图-截图.zip";
+                a.click();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+              }
+            } finally {
+              this._zipBusy = false;
+              btn.textContent = label;
+              btn.disabled = this.images.length === 0;
+            }
+          }
           _download() {
             const fmt = this.out.format;
-            const src = this.$.preview;
-            const k = this.out.scale / 100;
+            const tw = this.out.width || 0;
+            const src = document.createElement("canvas");
+            let k = 1;
+            if (this.mode === "free") {
+              this._generate(src, tw || 1080);
+            } else {
+              this._generate(src);
+              if (tw) k = tw / src.width;
+            }
+            k = Math.min(k, 16384 / src.width, 16384 / src.height);
             const flatten = fmt === "jpg" && this.sh.transparent;
             let canvas = src;
-            if (k < 1 || flatten) {
+            if (Math.abs(k - 1) > 1e-6 || flatten) {
               canvas = document.createElement("canvas");
               canvas.width = Math.max(1, Math.round(src.width * k));
               canvas.height = Math.max(1, Math.round(src.height * k));
@@ -2723,6 +5085,32 @@
           }
         }
         new App();
+      })();
+    </script>
+    <script>
+      (() => {
+        const btn = document.getElementById("menuBtn");
+        const menu = document.getElementById("navMenu");
+        const setOpen = (open) => {
+          menu.hidden = !open;
+          btn.setAttribute("aria-expanded", String(open));
+        };
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          setOpen(menu.hidden);
+        });
+        menu.addEventListener("click", (e) => {
+          if (e.target.closest(".menu-item")) setOpen(false);
+        });
+        document.addEventListener("click", (e) => {
+          if (!menu.hidden && !menu.contains(e.target)) setOpen(false);
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !menu.hidden) {
+            setOpen(false);
+            btn.focus();
+          }
+        });
       })();
     </script>
   </body>

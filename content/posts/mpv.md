@@ -55,7 +55,7 @@ interpolation=yes # 运动插值（平滑运动）
 
 # 画质增强
 deband=yes # 去色带
-cale=ewa_lanczossharp # 高质量亮度
+scale=ewa_lanczossharp # 高质量亮度
 cscale=ewa_lanczossharp # 高质量色度
 # dither-depth=auto # 显示器颜色深度，<10|12> bit
 
@@ -94,7 +94,7 @@ snap-window=yes # 屏幕边缘吸附
 keep-open=yes # 播放结束后不退出
 volume=0 # 启动后的默认音量
 # ontop=yes # 始终置顶
-# border=no # 无边框
+border=no # 无边框
 save-position-on-quit=yes # 记忆上次播放位置
 autocreate-playlist=same # 自动加载同目录中的视频到播放列表
 directory-mode=ignore # 忽略子目录被加载到播放列表
@@ -183,7 +183,7 @@ ytdl-format=bestvideo+bestaudio/best # 最佳视频音频，如果没有，回�
 ## 键盘
 Ctrl+Shift+c script_binding commands/open
 ENTER cycle fullscreen # 全屏切换
-n set window-minimized yes # 最小化
+# n set window-minimized yes # 最小化
 UP add volume 5 # 键盘上键增加音量
 DOWN add volume -5 # 键盘下键减少音量
 HOME seek -2000 # 向开始跳转 2000 用来从头播放
@@ -196,6 +196,7 @@ PGDWN playlist-next # 播放列表下一个
 Ctrl+ALT+= add video-zoom 0.1 # 放大视频
 Ctrl+ALT+- add video-zoom -0.1 # 放大视频
 Ctrl+ALT+0 set video-zoom 0 ; set panscan 0 # 重设视频缩放与裁剪
+Ctrl+Shift+f run cmd /c "explorer /select," "${path}" # 打开文件所在目录
 Ctrl+UP add sub-scale +0.05 # 字幕放大5%
 Ctrl+DOWN add sub-scale -0.05 # 字幕缩小5%
 Ctrl+z set sub-delay 0 # 字幕延时复位

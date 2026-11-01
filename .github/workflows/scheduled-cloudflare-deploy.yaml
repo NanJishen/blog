@@ -1,0 +1,12 @@
+name: github-cron
+on:
+  schedule:
+    - cron: "17 4 * * *"
+      timezone: Etc/UTC
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare deploy hook
+        run: curl -X POST "${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}"

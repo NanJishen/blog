@@ -1,0 +1,21 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "我一直用的，觉得很方便，有浏览器的地方就可以用，所以分享出来，完全静态的页面，整体大小不过百KB，你也可以下载到电脑里自用",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NanJishen/blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/NanJishen/blog/issues"
+  },
+  "homepage": "https://github.com/NanJishen/blog#readme"
+}
