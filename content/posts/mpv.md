@@ -11,8 +11,9 @@ tags:
 
 ## 开始
 
-[MPV](https://mpv.io) 开源多媒体播放器，现代简洁高效，且可以便携化，目录结构：
+[MPV](https://mpv.io) 现代的开源多媒体播放器，且可便携化
 ```bash
+# 目录结构
 path/to/MPV
  ├─updater.bat # 升级版本
  ├─installer
@@ -40,33 +41,27 @@ C:/Users/用户名/AppData/Roaming/mpv/ # Windows
 
 ## 视频输出
 # vo=gpu-next # 视频输出驱动，<gpu-next|gpu>
-gpu-context=winvk # GPU渲染方案 <d3d11|winvk>，Linux <auto|wayland|waylandvk>
-# gpu-api=auto # GPUT渲染API <d3d11|vulkan>，只设置 gpu-context，该设置会自动判断
 hwdec=auto # 解码方式，<auto|no（软解）|yes（硬解）>，播放时可用 Ctrl+H 切换
 profile=high-quality # 启用内置的高质量预设 <默认平衡|high-quality>
 
 # 开启插帧，平滑播放
-video-sync=display-resample # 音频重采样保持 A/V 同步，减少丢帧
-interpolation=yes # 运动插值（平滑运动）
+# interpolation=yes # 运动插值（平滑运动）
 
 # 高质量反光晕/抗锯齿
 # sigmoid-upscaling=yes # 启用 Sigmoid 曲线，减少高对比度边缘的光晕
 # linear-upscaling=yes # 启用线性光照，改善缩放画质
 
 # 画质增强
-deband=yes # 去色带
-scale=ewa_lanczossharp # 高质量亮度
+# deband=yes # 去色带
+# scale=ewa_lanczossharp # 高质量亮度，上面 high-quality 已包含
 cscale=ewa_lanczossharp # 高质量色度
-# dither-depth=auto # 显示器颜色深度，<10|12> bit
 
 ## HDR
-target-colorspace-hint=auto # 自动 HDR（向显示器发送 HDR 元数据）
 # target-trc=pq # 指定色彩空间（PQ 为 HDR10 标准，HLG 为广播）
 # target-peak=auto # 显示器峰值亮度
 # target-prim=bt.2020 # 色域，通常为 HDR
 # target-colorspace=hdr # 强制 HDR（需先开启系统 HDR 开关)
 
-# sub-hdr-peak=100 # HDR 下的字幕亮度
 # image-subs-hdr-peak=10000 # HDR 下的图像字幕亮度
 # blend-subtitles=no # 字幕以其原始颜色和亮度独立渲染
 
@@ -79,17 +74,14 @@ target-colorspace-hint=auto # 自动 HDR（向显示器发送 HDR 元数据）
 # target-contrast=1000
 # target-prim=dci-p3
 # allow-delayed-peak-detect=no # 默认 yes ，禁止延迟检测峰值亮度（高质量渲染）
-# tone-mapping=reinhard # 色调映射算法，reinhard 算法为 HDR 转换 SDR
 
 ## 音频输出
 volume-max=200 # 最大音量
 ao=wasapi # Windows 音频API
-audio-device=auto # 指定音频输出色别
-audio-channels=stereo,7.1,5.1 # 需要与实际设备相符
 
 ## 播放
 title=${?pause==yes:⏸ }${?mute==yes:🔇}${?ontop==yes:📌 }${?demuxer-via-network==yes:${media-title}}${?demuxer-via-network==no:${filename}} # 自定义窗口标题
-geometry=60% # 启动时窗口大小（原视频的百分比）
+geometry=60% # 启动时相对显示器窗口大小
 snap-window=yes # 屏幕边缘吸附
 keep-open=yes # 播放结束后不退出
 volume=0 # 启动后的默认音量
@@ -104,7 +96,6 @@ directory-filter-types=video # 指定仅播放的文件类型
 ## 屏显
 osc=no # 是否使用原生屏控，使用第三方需设为 no
 osd-bar=no # 是否禁用原生播放进度条，使用第三方需设为 no
-no-osd-bar # 去掉快进时的进度栏
 osd-playing-msg="${filename}" # 开始播放时短暂显示文件名
 # osd-font-size=25 # 文本大小
 # osd-color="#FFF500" # 文本颜色
@@ -112,11 +103,11 @@ osd-playing-msg="${filename}" # 开始播放时短暂显示文件名
 ## 字幕
 sub-auto=fuzzy # 自动加载同名外置字幕
 slang=chs,cht,zh,eng,en,english,jp,ja # 字幕语言优先级
-alang=eng,en,ja,jp # 音频语言载入优先级
+alang=eng,en,ja,jp,zh,chi # 音频语言载入优先级
 # sub-margin-y=20 # 距离底部的像素数
 
 ## 字幕样式
-sub-font=阿里巴巴普惠体 3.0 75 SemiBold # 字体，默认 sans-serif
+sub-font=Source Han Sans CN # 字体
 sub-font-size=65 # 尺寸 40，默认 55
 # sub-bold=yes # 粗体
 sub-color="#FFE5A0" # 颜色，ass 为 &H00A0E5FF
@@ -130,17 +121,19 @@ screenshot-dir=T:/Downloads # 截图保存路径
 screenshot-format=jpg # 截屏图片格式
 
 ## 缓存与日志
-cache=yes # 开启缓存
-cache-on-disk=no # 用内存缓存而不用硬盘
-## cache-secs=20 # 缓存时间
-demuxer-cache-dir="T:/cache/mpv" # 指定缓存路径，需先创建好目录
+# cache=yes # 开启缓存，默认 auto 只对网络流缓存，开启则对本地也缓存
+# cache-on-disk=no # 用内存缓存而不用硬盘
+# cache-secs=20 # 缓存时间
+# demuxer-cache-dir="T:/cache/mpv" # 指定缓存路径，需先创建好目录
 gpu-shader-cache-dir="T:/cache/mpv" # 已编译的GLSL着色器缓存
-icc-cache-dir="T:/cache/mpv" # 保存缓存加速启动
 watch-later-dir="T:/cache/mpv/watch_later" # 保存稍后观看的记录
-log-file="T:/cache/mpv/mpv.log" # 日志记录
+# log-file="T:/cache/mpv/mpv.log" # 日志记录，不调试时注释掉
+```
 
-## 指定 yt-dlp 在线视频下载哪种格式
-ytdl-format=bestvideo+bestaudio/best # 最佳视频音频，如果没有，回退到下载综合最佳的单一文件
+判断是否为默认值
+```bash
+mpv --list-options | findstr osc # osc 设置项
+# 输出末尾的 (default: ...) 即为当前版本的默认值
 ```
 
 ## 快捷键
@@ -181,31 +174,32 @@ ytdl-format=bestvideo+bestaudio/best # 最佳视频音频，如果没有，回�
 
 ```bash
 ## 键盘
-Ctrl+Shift+c script_binding commands/open
 ENTER cycle fullscreen # 全屏切换
 # n set window-minimized yes # 最小化
 UP add volume 5 # 键盘上键增加音量
 DOWN add volume -5 # 键盘下键减少音量
-HOME seek -2000 # 向开始跳转 2000 用来从头播放
-RIGHT seek 3 exact # 快进3秒，精确的
-LEFT seek -3 exact # 后退3秒，精确的
-Ctrl+RIGHT seek 30 # 快进30秒
-Ctrl+LEFT seek -30 # 后退30秒
+HOME seek 0 absolute # 跳转到开始从头播放
+RIGHT seek 2 exact # 快进2秒，精确的
+LEFT seek -2 exact # 后退2秒，精确的
+Ctrl+RIGHT seek 20 # 快进20秒
+Ctrl+LEFT seek -20 # 后退20秒
 PGUP playlist-prev # 播放列表上一个
 PGDWN playlist-next # 播放列表下一个
 Ctrl+ALT+= add video-zoom 0.1 # 放大视频
-Ctrl+ALT+- add video-zoom -0.1 # 放大视频
-Ctrl+ALT+0 set video-zoom 0 ; set panscan 0 # 重设视频缩放与裁剪
-Ctrl+Shift+f run cmd /c "explorer /select," "${path}" # 打开文件所在目录
+Ctrl+ALT+- add video-zoom -0.1 # 缩小视频
+Ctrl+ALT+0 set video-zoom 0 ; set video-pan-x 0 ; set video-pan-y 0 ; set panscan 0 # 重设视频缩放与裁剪
+Ctrl+Shift+f run explorer.exe "/select,${path}" # 打开文件所在目录
 Ctrl+UP add sub-scale +0.05 # 字幕放大5%
 Ctrl+DOWN add sub-scale -0.05 # 字幕缩小5%
 Ctrl+z set sub-delay 0 # 字幕延时复位
-Ctrl+F11 cycle-values gpu-api d3d11 vulkan # 快捷键切换渲染器 API
+Ctrl+F7 sub-reload # 重载字幕
+F2 cycle-values sub-ass-override force no
 
-# 快捷键开关解决多声道音频声音太小的问题
-F1 af toggle "lavfi=[loudnorm=I=-16]"
-F2 af toggle 'pan="stereo|FL=0.707*FC+0.3*FL+0.1*BL+0.1*LFE|FR=0.707*FC+0.3*FR+0.1*BR+0.1*LFE"'
-F3 cycle-values sub-ass-override force no
+## UOSC 专用
+MBTN_RIGHT_DBL script-binding uosc/menu # 右键菜单
+F8 script-binding uosc/playlist # 播放列表
+# WHEEL_UP no-osd add volume 5 ; script-binding uosc/flash-volume # 右侧音量条增加音量5
+# WHEEL_DOWN no-osd add volume -5 ; script-binding uosc/flash-volume # 右侧音量条减少音量5
 
 # 微调字幕速度 (每次增减 0.001)
 Alt+[ add sub-speed -0.001
@@ -213,7 +207,7 @@ Alt+] add sub-speed +0.001
 Alt+r set sub-speed 1.0 # 重置
 
 ## 鼠标
-MBTN_RIGHT cycle pause; show-text "${?pause==yes:暂停}${!pause==yes:播放}"
+MBTN_LEFT cycle pause ; show-text "${?pause==yes:暂停}${!pause==yes:播放}" # 左键暂停/播放
 MBTN_MID cycle mute # 鼠标点击滚轮静音
 WHEEL_UP add volume 5 # 滚轮向上增加音量5
 WHEEL_DOWN add volume -5 # 滚轮向下减少音量5

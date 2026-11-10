@@ -1,13 +1,13 @@
-/* 普通透明卡片（无毛玻璃模糊） */
+/* 首页文章卡片：半透明 + 毛玻璃 */
 .article-link--card {
-  background-color: rgba(var(--color-neutral-50), 0.30) !important;
-  border-color: rgba(var(--color-neutral-300), 0.35) !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background-color: rgba(255, 255, 255, 0.3) !important; /* 浅色模式 */
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 
-/* 暗色模式 */
+/* 深色模式（你默认是 dark，主要看这条） */
 .dark .article-link--card {
-  background-color: rgba(var(--color-neutral-800), 0.2) !important;
-  border-color: rgba(var(--color-neutral-600), 0.4) !important;
+  backdrop-filter: blur(3px);
+  background-color: rgba(30, 30, 30, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
 }

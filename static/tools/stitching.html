@@ -17,8 +17,8 @@
         --text: #f5f5f5;
         --text-muted: #a3a3a3;
         --border: #262626;
-        --handle: #f87171;
-        --handle-local: #60a5fa;
+        --handle: #ff5c5c;
+        --handle-local: #4ea1ff;
         --shadow: 0 0 0 1px rgb(255 255 255 / 0.06);
         --shadow-md: 0 0 0 1px rgb(255 255 255 / 0.06), 0 8px 24px rgb(0 0 0 / 0.4);
         --radius: 14px;
@@ -478,102 +478,124 @@
         pointer-events: none;
       }
       .handle {
+        --hc: var(--handle);
         position: absolute;
         left: 0;
         right: 0;
-        height: 2px;
-        background: var(--handle);
-        transform: translateY(-50%);
+        height: 1px;
+        background: var(--hc);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
         cursor: row-resize;
         pointer-events: auto;
         touch-action: none;
         z-index: 2;
+        transition: box-shadow 0.15s;
+      }
+      .handle.local {
+        --hc: var(--handle-local);
+      }
+      .handle::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -8px;
+        bottom: -8px;
       }
       .handle::after {
         content: "";
         position: absolute;
-        right: 8px;
-        top: 50%;
-        width: 28px;
-        height: 10px;
-        background: var(--handle);
-        border-radius: 5px;
-        transform: translateY(-50%);
-      }
-      .top-handle {
-        transform: none;
+        right: 24px;
+        width: 26px;
+        height: 8px;
+        background-color: var(--hc);
+        box-shadow:
+          0 0 0 1px rgba(0, 0, 0, 0.4),
+          0 2px 6px rgba(0, 0, 0, 0.35);
       }
       .bottom-handle {
         transform: translateY(-100%);
       }
       .top-handle::after {
-        top: 0;
-        transform: none;
+        top: 1px;
+        border-radius: 0 0 5px 5px;
       }
       .bottom-handle::after {
-        top: auto;
-        bottom: 0;
-        transform: none;
+        bottom: 1px;
+        border-radius: 5px 5px 0 0;
       }
-      .handle:not(.v)::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: -6px;
-        bottom: -6px;
+      .handle:hover,
+      .handle.dragging {
+        box-shadow:
+          0 0 0 1px rgba(0, 0, 0, 0.45),
+          0 0 8px 1px color-mix(in srgb, var(--hc) 60%, transparent);
       }
-      .top-handle .handle-tooltip {
-        top: 10px;
-        transform: none;
-      }
-      .bottom-handle .handle-tooltip {
-        top: auto;
-        bottom: 10px;
-        transform: none;
-      }
-      .handle.local {
-        background: var(--handle-local);
-      }
-      .handle.local::after {
-        background: var(--handle-local);
+      .handle:hover::after,
+      .handle.dragging::after {
+        filter: brightness(1.12);
       }
       .handle.v {
         top: 0;
         bottom: 0;
         left: auto;
         right: auto;
-        width: 2px;
+        width: 1px;
         height: auto;
         cursor: col-resize;
         z-index: 3;
       }
       .handle.v::before {
-        content: "";
-        position: absolute;
         top: 0;
         bottom: 0;
-        left: -7px;
-        right: -7px;
+        left: -8px;
+        right: -8px;
       }
       .handle.v::after {
         right: auto;
-        left: 0;
+        left: 1px;
         top: 50%;
-        width: 10px;
-        height: 28px;
-        border-radius: 5px;
+        width: 8px;
+        height: 26px;
+        border-radius: 0 5px 5px 0;
         transform: translateY(-50%);
-      }
-      .handle.v-left {
-        transform: none;
       }
       .handle.v-right {
         transform: translateX(-100%);
       }
       .handle.v-right::after {
         left: auto;
-        right: 0;
+        right: 1px;
+        border-radius: 5px 0 0 5px;
+      }
+      .handle-tooltip {
+        position: absolute;
+        right: 66px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(17, 19, 24, 0.92);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.2px;
+        padding: 3px 8px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s;
+        white-space: nowrap;
+        z-index: 3;
+      }
+      .top-handle .handle-tooltip {
+        top: 16px;
+        transform: none;
+      }
+      .bottom-handle .handle-tooltip {
+        top: auto;
+        bottom: 16px;
+        transform: none;
       }
       .handle.v .handle-tooltip {
         right: auto;
@@ -584,26 +606,39 @@
         left: auto;
         right: 16px;
       }
-      .handle-tooltip {
-        position: absolute;
-        right: 42px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.8);
-        color: #fff;
-        font-size: 11px;
-        font-weight: 600;
-        padding: 2px 7px;
-        border-radius: 4px;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.15s;
-        white-space: nowrap;
-        z-index: 3;
-      }
       .handle:hover .handle-tooltip,
       .handle.dragging .handle-tooltip {
         opacity: 1;
+      }
+      @media (pointer: coarse) {
+        .handle::after {
+          width: 40px;
+          height: 13px;
+        }
+        .handle.v::after {
+          width: 13px;
+          height: 40px;
+        }
+        .handle::before {
+          top: -14px;
+          bottom: -14px;
+        }
+        .handle.v::before {
+          left: -14px;
+          right: -14px;
+        }
+        .top-handle .handle-tooltip {
+          top: 22px;
+        }
+        .bottom-handle .handle-tooltip {
+          bottom: 22px;
+        }
+        .handle.v .handle-tooltip {
+          left: 26px;
+        }
+        .handle.v-right .handle-tooltip {
+          right: 26px;
+        }
       }
       .action-layer {
         position: absolute;
@@ -968,6 +1003,13 @@
         user-select: text;
         -webkit-user-select: text;
       }
+      textarea.wm-input {
+        height: auto;
+        min-height: 64px;
+        padding: 8px 10px;
+        line-height: 1.5;
+        resize: vertical;
+      }
       .wm-input:focus {
         border-color: var(--primary);
       }
@@ -1113,6 +1155,9 @@
       .range {
         position: relative;
         padding-top: 14px;
+      }
+      .wm-field > .range {
+        margin-top: -6px;
       }
       .range input {
         -webkit-appearance: none;
@@ -1409,8 +1454,8 @@
             class="btn btn-secondary btn-icon"
             id="annBtn"
             type="button"
-            title="标注与水印"
-            aria-label="标注与水印"
+            title="标注与字幕"
+            aria-label="标注与字幕"
             aria-expanded="false"
             aria-controls="annPop"
           >
@@ -2180,9 +2225,9 @@
           </div>
         </div>
       </div>
-      <div class="wm-pop" id="annPop" role="dialog" aria-label="标注与水印" hidden>
+      <div class="wm-pop" id="annPop" role="dialog" aria-label="标注与字幕" hidden>
         <div class="wm-head">
-          <span class="wm-title">标注与水印</span
+          <span class="wm-title">标注与字幕</span
           ><button class="dialog-close" id="annClose" type="button" aria-label="Close">✕</button>
         </div>
         <div class="wm-body">
@@ -2420,6 +2465,79 @@
             <button class="btn btn-secondary" id="annDelete" type="button">删除所选</button>
             <button class="btn btn-secondary" id="annClear" type="button">清空</button>
           </div>
+          <div class="wm-sep"></div>
+          <label class="wm-field"
+            ><span class="wm-label">字幕内容</span
+            ><textarea
+              class="wm-input"
+              id="subText"
+              rows="3"
+              spellcheck="false"
+              placeholder="每行一条字幕，追加在拼图末尾（电影字幕模式）"
+            ></textarea>
+          </label>
+          <div class="wm-field">
+            <span class="wm-label">字体与样式</span>
+            <div class="wm-fontrow">
+              <select class="wm-select" id="subFont" aria-label="字幕字体">
+                <option value="default">默认</option>
+                <option value="hei">黑体</option>
+                <option value="song">宋体</option>
+                <option value="fang">仿宋</option>
+                <option value="kai">楷体</option>
+                <option value="li">隶书</option>
+                <option value="you">幼圆</option>
+                <option value="arial">Arial</option>
+                <option value="georgia">Georgia</option>
+                <option value="times">Times New Roman</option>
+                <option value="__load">载入</option>
+              </select>
+              <input
+                class="wm-color"
+                id="subColor"
+                type="color"
+                value="#ffc800"
+                title="字颜色"
+                aria-label="字颜色"
+              />
+              <input
+                class="wm-color"
+                id="subStroke"
+                type="color"
+                value="#191919"
+                title="描边颜色"
+                aria-label="描边颜色"
+              />
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">字号</span>
+            <div class="range">
+              <input
+                type="range"
+                id="subSize"
+                min="0.5"
+                max="8"
+                step="0.05"
+                value="2.25"
+                data-unit="x"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
+          <div class="wm-field">
+            <span class="wm-label">字幕条切片高度</span>
+            <div class="range">
+              <input
+                type="range"
+                id="subHeight"
+                min="2"
+                max="30"
+                step="0.5"
+                value="12"
+                data-unit="%"
+              /><output class="range-tip"></output>
+            </div>
+          </div>
         </div>
       </div>
       <main class="main is-empty">
@@ -2550,7 +2668,7 @@
         const TEXT = {
           help_title: "使用步骤",
           help_body:
-            "<ol><li>点击「添加截图」，多选想要拼接的图片；也可直接拖拽图片到窗口，或粘贴（Ctrl+V）快速添加</li><li>拖动上下手柄选择字幕区域，拖动左右手柄裁剪左右边缘（默认在最边缘），拖动时右侧预览实时更新</li><li>点击「保存拼图」下载结果</li><li>点击水印图标可添加水印（平铺 / 单个 / 自定义，可调位置、字体、颜色、字号、间隔、透明度和旋转角度；「逐张」让每张截图各自带水印，「整张」整张拼图只加一次；面板底部可把每张截图打包下载为 ZIP）；点击设置图标可切换模式（电影字幕 / 自由拼图），自由拼图下还可设置画面比例与布局，以及保存格式、画质和输出宽度；点击标注图标可添加标注（选择、箭头、方/圆形状、画笔、文字、马赛克/模糊、序号；画笔按住 Shift 为直线，方形/圆形按住 Shift 为正方形/正圆），预览区实时显示，保存时一并写入；保存格式 JPG / WEBP / PNG（PNG 无损，其余可调画质）</li><li>点击闪亮图标可选预设滤镜并微调，边框与阴影按钮可给整张拼图加边框、圆角、阴影并调节旋转角度；点击预览放大后可用滚轮缩放、拖动平移、双击复原</li></ol><br>双击或右键手柄可为单张截图单独设置区域（脱离全局控制），再次双击或右键恢复全局<br><br>设置里可切换模式：「电影字幕」用于拼接字幕；「自由拼图」可按布局模板和画面比例（1:1 / 3:4 / 4:5 / 16:9，可横竖切换）把多张图排成一张，裁剪线用于选取每张图使用的范围。图片间距、外边距、图片圆角和底色（可设为透明）在两个模式下通用，两个模式各自记住自己的数值。设置里的输出宽度可输入数值，也可在右侧选择预设宽度。<br><br>拖动左右栏之间的分隔条可调整宽度（双击恢复默认）；鼠标悬停预览图时，右上角可在「适应」与「100%」（原始大小，宽度不超过预览区）之间切换；自由拼图模式下左侧以紧凑网格显示，右上角的数字对应布局模板里的格子序号。",
+            "<ol><li>点击「添加截图」，多选想要拼接的图片；也可直接拖拽图片到窗口，或粘贴（Ctrl+V）快速添加</li><li>拖动上下手柄选择字幕区域，拖动左右手柄裁剪左右边缘（默认在最边缘），拖动时右侧预览实时更新</li><li>点击「保存拼图」下载结果</li><li>点击水印图标可添加水印（平铺 / 单个 / 自定义，可调位置、字体、颜色、字号、间隔、透明度和旋转角度；「逐张」让每张截图各自带水印，「整张」整张拼图只加一次；面板底部可把每张截图打包下载为 ZIP）；点击设置图标可切换模式（电影字幕 / 自由拼图），自由拼图下还可设置画面比例与布局，以及保存格式、画质和输出宽度；点击标注图标可添加标注（选择、箭头、方/圆形状、画笔、文字、马赛克/模糊、序号；画笔按住 Shift 为直线，方形/圆形按住 Shift 为正方形/正圆），预览区实时显示，保存时一并写入；面板下方可输入自定义字幕（电影字幕模式，每行一条，追加在拼图末尾，背景取自最后一张截图的底部），可调字体、字号、字颜色、描边颜色和字幕条切片高度；保存格式 JPG / WEBP / PNG（PNG 无损，其余可调画质）</li><li>点击闪亮图标可选预设滤镜并微调，边框与阴影按钮可给整张拼图加边框、圆角、阴影并调节旋转角度；点击预览放大后可用滚轮缩放、拖动平移、双击复原</li></ol><br>双击或右键手柄可为单张截图单独设置区域（脱离全局控制），再次双击或右键恢复全局<br><br>设置里可切换模式：「电影字幕」用于拼接字幕；「自由拼图」可按布局模板和画面比例（1:1 / 3:4 / 4:5 / 16:9，可横竖切换）把多张图排成一张，裁剪线用于选取每张图使用的范围。图片间距、外边距、图片圆角和底色（可设为透明）在两个模式下通用，两个模式各自记住自己的数值。设置里的输出宽度可输入数值，也可在右侧选择预设宽度。<br><br>拖动左右栏之间的分隔条可调整宽度（双击恢复默认）；鼠标悬停预览图时，右上角可在「适应」与「100%」（原始大小，宽度不超过预览区）之间切换；自由拼图模式下左侧以紧凑网格显示，右上角的数字对应布局模板里的格子序号。",
           joined_screenshot: "拼接截图",
           moveUp: "上移",
           moveDown: "下移",
@@ -2671,17 +2789,18 @@
             return div;
           }
           _bindDrag(handle, type) {
+            const horizontal = type === "left" || type === "right";
             handle.addEventListener("contextmenu", (e) => {
               e.preventDefault();
               e.stopPropagation();
-              this._toggleLocal();
+              this._toggleLocal(horizontal);
             });
             handle.addEventListener("pointerdown", (e) => {
               e.preventDefault();
               e.stopPropagation();
               if (e.pointerType === "mouse" && e.button !== 0) return;
               if (this.dbl.check(e)) {
-                this._toggleLocal();
+                this._toggleLocal(horizontal);
                 return;
               }
               handle.setPointerCapture(e.pointerId);
@@ -2692,7 +2811,6 @@
               const onMove = (ev) => {
                 ev.preventDefault();
                 const rect = this.el.getBoundingClientRect();
-                const horizontal = type === "left" || type === "right";
                 let val = horizontal
                   ? (ev.clientX - rect.left) / rect.width
                   : (ev.clientY - rect.top) / rect.height;
@@ -2704,7 +2822,7 @@
                 else val = Math.max(val, s.localLeft + 0.02);
                 s["local" + type.charAt(0).toUpperCase() + type.slice(1)] = val;
                 this.updateVisuals();
-                if (!s.useLocal) {
+                if (!(horizontal ? s.useLocalX : s.useLocalY)) {
                   this.callbacks.onChange(type, val);
                 }
                 this.callbacks.onDrag?.();
@@ -2725,17 +2843,22 @@
               handle.addEventListener("pointercancel", onUp);
             });
           }
-          _toggleLocal() {
-            this.state.useLocal = !this.state.useLocal;
-            if (!this.state.useLocal) {
-              this.state.localTop = this.globalTop;
-              this.state.localBottom = this.globalBottom;
-              this.state.localLeft = this.globalLeft;
-              this.state.localRight = this.globalRight;
-              this.callbacks.onChange("top", this.state.localTop);
-              this.callbacks.onChange("bottom", this.state.localBottom);
-              this.callbacks.onChange("left", this.state.localLeft);
-              this.callbacks.onChange("right", this.state.localRight);
+          _toggleLocal(horizontal) {
+            const s = this.state;
+            const key = horizontal ? "useLocalX" : "useLocalY";
+            s[key] = !s[key];
+            if (!s[key]) {
+              if (horizontal) {
+                s.localLeft = this.globalLeft;
+                s.localRight = this.globalRight;
+                this.callbacks.onChange("left", s.localLeft);
+                this.callbacks.onChange("right", s.localRight);
+              } else {
+                s.localTop = this.globalTop;
+                s.localBottom = this.globalBottom;
+                this.callbacks.onChange("top", s.localTop);
+                this.callbacks.onChange("bottom", s.localBottom);
+              }
             }
             this.updateVisuals();
             this.callbacks.onDragEnd?.();
@@ -2745,13 +2868,16 @@
             this.globalBottom = bottom;
             this.globalLeft = left;
             this.globalRight = right;
-            if (!this.state.useLocal) {
-              this.state.localTop = top;
-              this.state.localBottom = bottom;
-              this.state.localLeft = left;
-              this.state.localRight = right;
-              this.updateVisuals();
+            const s = this.state;
+            if (!s.useLocalY) {
+              s.localTop = top;
+              s.localBottom = bottom;
             }
+            if (!s.useLocalX) {
+              s.localLeft = left;
+              s.localRight = right;
+            }
+            this.updateVisuals();
           }
           updateVisuals() {
             const top = this.state.localTop;
@@ -2761,10 +2887,10 @@
             this.topShadow.style.height = `${top * 100}%`;
             this.bottomShadow.style.height = `${(1 - bottom) * 100}%`;
             this.topHandle.style.top = `${top * 100}%`;
-            this.topHandle.classList.toggle("local", this.state.useLocal);
+            this.topHandle.classList.toggle("local", this.state.useLocalY);
             this.topTooltip.textContent = Math.round(top * 100) + "%";
             this.bottomHandle.style.top = `${bottom * 100}%`;
-            this.bottomHandle.classList.toggle("local", this.state.useLocal);
+            this.bottomHandle.classList.toggle("local", this.state.useLocalY);
             this.bottomTooltip.textContent = Math.round(bottom * 100) + "%";
             this.topShadow.style.left = `${left * 100}%`;
             this.topShadow.style.right = `${(1 - right) * 100}%`;
@@ -2774,8 +2900,8 @@
             this.rightShadow.style.width = `${(1 - right) * 100}%`;
             this.leftHandle.style.left = `${left * 100}%`;
             this.rightHandle.style.left = `${right * 100}%`;
-            this.leftHandle.classList.toggle("local", this.state.useLocal);
-            this.rightHandle.classList.toggle("local", this.state.useLocal);
+            this.leftHandle.classList.toggle("local", this.state.useLocalX);
+            this.rightHandle.classList.toggle("local", this.state.useLocalX);
             this.leftTooltip.textContent = Math.round(left * 100) + "%";
             this.rightTooltip.textContent = Math.round(right * 100) + "%";
           }
@@ -2787,10 +2913,10 @@
           getExportState() {
             return {
               image: this.image,
-              topRatio: this.state.useLocal ? this.state.localTop : this.globalTop,
-              bottomRatio: this.state.useLocal ? this.state.localBottom : this.globalBottom,
-              leftRatio: this.state.useLocal ? this.state.localLeft : this.globalLeft,
-              rightRatio: this.state.useLocal ? this.state.localRight : this.globalRight,
+              topRatio: this.state.useLocalY ? this.state.localTop : this.globalTop,
+              bottomRatio: this.state.useLocalY ? this.state.localBottom : this.globalBottom,
+              leftRatio: this.state.useLocalX ? this.state.localLeft : this.globalLeft,
+              rightRatio: this.state.useLocalX ? this.state.localRight : this.globalRight,
             };
           }
         }
@@ -3020,6 +3146,7 @@
               angle: 0,
               count: 6,
             };
+            this.sub = { text: "", font: "default", size: 2.25, color: "#ffc800", stroke: "#191919", height: 12 };
             this._raf = 0;
             this.out = { format: "jpg", quality: 80, width: 0 };
             this.fx = { ...FX_PRESETS.orig };
@@ -3076,6 +3203,7 @@
             this._bindMode();
             this._bindLayout();
             this._bindAnnotate();
+            this._bindSub();
             this._bindSplitter();
             this._bindZoom();
             this._bindLightboxZoom();
@@ -3212,7 +3340,8 @@
                 ["movie", "free"].forEach((m) => {
                   const g = this.glob[m];
                   this.stateSets[m].push({
-                    useLocal: false,
+                    useLocalX: false,
+                    useLocalY: false,
                     localTop: g.t,
                     localBottom: g.b,
                     localLeft: g.l,
@@ -3297,14 +3426,18 @@
             ["movie", "free"].forEach((m) => {
               const st = this.stateSets[m][idx];
               const g = this.glob[m];
-              const cur = st.useLocal
-                ? { t: st.localTop, b: st.localBottom, l: st.localLeft, r: st.localRight }
-                : { t: g.t, b: g.b, l: g.l, r: g.r };
+              const cur = {
+                t: st.useLocalY ? st.localTop : g.t,
+                b: st.useLocalY ? st.localBottom : g.b,
+                l: st.useLocalX ? st.localLeft : g.l,
+                r: st.useLocalX ? st.localRight : g.r,
+              };
               st.localTop = cur.l;
               st.localBottom = cur.r;
               st.localLeft = 1 - cur.b;
               st.localRight = 1 - cur.t;
-              st.useLocal = true;
+              st.useLocalX = true;
+              st.useLocalY = true;
             });
             this.images[idx] = c;
             this._renderList();
@@ -3368,6 +3501,22 @@
                   sh: Math.max(1, (bottomRatio - topRatio) * img.height),
                 };
               });
+              const subLines = this._subLines();
+              if (subLines.length && slices.length) {
+                const last = slices[slices.length - 1];
+                const lastImg = last.img;
+                const sh = Math.min(lastImg.height, (last.sw * this.sub.height) / 100);
+                subLines.forEach((text) =>
+                  slices.push({
+                    img: lastImg,
+                    sx: last.sx,
+                    sy: lastImg.height - sh,
+                    sw: last.sw,
+                    sh,
+                    text,
+                  }),
+                );
+              }
               const contentW = Math.max(1, Math.round(Math.min(...slices.map((s) => s.sw))));
               const mg = Math.round((contentW * this.sp.margin) / 100);
               const gp = Math.round((contentW * this.sp.gap) / 100);
@@ -3455,12 +3604,14 @@
               }
               if (this._fxSupported) ictx.filter = this._filterString();
               ictx.drawImage(sl.img, sl.sx, sl.sy, sl.sw, sl.sh, sl.dx, sl.dy, sl.dw, sl.dh);
+              if (sl.text) this._drawSubText(ictx, sl);
               ictx.restore();
             });
             this._drawAnnotations(ictx, inner, outW, innerH);
             if (this.wm.scope === "each") {
               if (this.mode === "movie") {
                 slices.forEach((sl) => {
+                  if (sl.text) return;
                   ictx.save();
                   ictx.beginPath();
                   ictx.rect(sl.dx, sl.dy, sl.dw, sl.dh);
@@ -4586,6 +4737,72 @@
             input.syncTip = sync;
             sync();
           }
+          _bindSub() {
+            const el = (id) => document.getElementById(id);
+            const sub = this.sub;
+            const update = () => this._scheduleGenerate();
+            this.$.subFont = el("subFont");
+            el("subText").addEventListener("input", (e) => {
+              sub.text = e.target.value;
+              update();
+            });
+            this.$.subFont.addEventListener("change", () => {
+              const sel = this.$.subFont;
+              if (sel.value === "__load") {
+                sel.value = sub.font;
+                this._loadFonts(sel, (v) => {
+                  sub.font = v;
+                  update();
+                });
+                return;
+              }
+              sub.font = sel.value;
+              update();
+            });
+            el("subColor").addEventListener("input", (e) => {
+              sub.color = e.target.value;
+              update();
+            });
+            el("subStroke").addEventListener("input", (e) => {
+              sub.stroke = e.target.value;
+              update();
+            });
+            this._initRange(el("subSize"), "size", sub, update);
+            this._initRange(el("subHeight"), "height", sub, update);
+          }
+          _subLines() {
+            if (this.mode !== "movie") return [];
+            return this.sub.text
+              .split(/\r?\n/)
+              .map((t) => t.trim())
+              .filter(Boolean);
+          }
+          _drawSubText(ctx, sl) {
+            const sub = this.sub;
+            ctx.save();
+            ctx.filter = "none";
+            let fs = Math.max(8, sl.dw * 0.02 * sub.size);
+            const stack = this._fontStack(sub.font);
+            ctx.font = `700 ${fs}px ${stack}`;
+            const maxW = sl.dw * 0.94;
+            const tw = ctx.measureText(sl.text).width;
+            if (tw > maxW) {
+              fs = Math.max(8, (fs * maxW) / tw);
+              ctx.font = `700 ${fs}px ${stack}`;
+            }
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.lineJoin = "round";
+            ctx.miterLimit = 2;
+            ctx.lineWidth = fs * 0.16;
+            ctx.strokeStyle = sub.stroke;
+            ctx.fillStyle = sub.color;
+            const x = sl.dx + sl.dw / 2;
+            const y = sl.dy + sl.dh / 2;
+            ctx.strokeText(sl.text, x, y);
+            ctx.fillText(sl.text, x, y);
+            ctx.restore();
+          }
           _bindFx() {
             const el = (id) => document.getElementById(id);
             const fx = this.fx;
@@ -4744,19 +4961,21 @@
             img.addEventListener("dblclick", () => this._resetZoom());
           }
           _addFontOptions(families) {
-            const sel = this.$.wmFont;
-            const loadOpt = sel.querySelector('option[value="__load"]');
-            const have = new Set(Array.from(sel.options).map((o) => o.value));
-            families.forEach((f) => {
-              const v = "local:" + f;
-              if (have.has(v)) return;
-              const o = document.createElement("option");
-              o.value = v;
-              o.textContent = f;
-              sel.insertBefore(o, loadOpt);
+            [this.$.wmFont, this.$.subFont].forEach((sel) => {
+              if (!sel) return;
+              const loadOpt = sel.querySelector('option[value="__load"]');
+              const have = new Set(Array.from(sel.options).map((o) => o.value));
+              families.forEach((f) => {
+                const v = "local:" + f;
+                if (have.has(v)) return;
+                const o = document.createElement("option");
+                o.value = v;
+                o.textContent = f;
+                sel.insertBefore(o, loadOpt);
+              });
             });
           }
-          async _loadFonts() {
+          async _loadFonts(sel = this.$.wmFont, onPick = null) {
             if (typeof window.queryLocalFonts === "function") {
               try {
                 const list = await window.queryLocalFonts();
@@ -4766,7 +4985,7 @@
                 if (families.length) {
                   this._addFontOptions(families);
                   try {
-                    this.$.wmFont.showPicker?.();
+                    sel.showPicker?.();
                   } catch (_) {}
                   return;
                 }
@@ -4774,9 +4993,9 @@
                 console.warn("queryLocalFonts failed", err);
               }
             }
-            this._pickFontFile();
+            this._pickFontFile(sel, onPick);
           }
-          _pickFontFile() {
+          _pickFontFile(sel = this.$.wmFont, onPick = null) {
             const input = document.createElement("input");
             input.type = "file";
             input.accept = ".ttf,.otf,.woff,.woff2,.ttc";
@@ -4793,9 +5012,13 @@
                 await face.load();
                 document.fonts.add(face);
                 this._addFontOptions([name]);
-                this.$.wmFont.value = "local:" + name;
-                this.wm.font = this.$.wmFont.value;
-                this._scheduleGenerate();
+                sel.value = "local:" + name;
+                if (onPick) {
+                  onPick(sel.value);
+                } else {
+                  this.wm.font = sel.value;
+                  this._scheduleGenerate();
+                }
               } catch (err) {
                 console.error("Failed to load font", err);
               }

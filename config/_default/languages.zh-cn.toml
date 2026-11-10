@@ -1,6 +1,6 @@
 disabled = false
-languageCode = "zh-cn"
-languageName = "Chinese"
+locale = "zh-CN"
+languageName = "简体中文"
 weight = 1
 title = "极限玩家"
 
@@ -19,7 +19,7 @@ title = "极限玩家"
    email = "nanji_shen@qq.com"
    image = "https://avatars.githubusercontent.com/u/26486998?v=4"
    imageQuality = 96
-   headline = "极限玩家主页"
+   headline = "极限玩家博客"
    bio = "A little bit about you"
    links = [
      { email = "mailto:nanji_shen@qq.com" },

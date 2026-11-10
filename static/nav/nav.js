@@ -314,11 +314,6 @@ const NAV_DATA = [
             "desc": "非常好的私密网盘"
           },
           {
-            "name": "TeraCloud",
-            "url": "https://teracloud.jp/en/",
-            "desc": "日本的网盘支持Webdav"
-          },
-          {
             "name": "Koofr",
             "url": "https://app.koofr.net",
             "desc": "德国的网盘支持Webdav"
@@ -5527,11 +5522,6 @@ const NAV_DATA = [
             "desc": "开发者工具箱"
           },
           {
-            "name": "Codeset.io",
-            "url": "https://codeset.io",
-            "desc": "分享代码片段"
-          },
-          {
             "name": "Devhints",
             "url": "https://devhints.io",
             "desc": "开源的命令表单查阅"
@@ -6682,6 +6672,11 @@ const NAV_DATA = [
             "name": "Photo Resizer",
             "url": "https://www.photoresizer.com",
             "desc": "图像调整缩放剪裁"
+          },
+          {
+            "name": "CropDen",
+            "url": "https://cropden.com/zh",
+            "desc": "社交媒体图像尺寸剪裁"
           },
           {
             "name": "EasyResizer",
@@ -9173,7 +9168,7 @@ const NAV_DATA = [
           {
             "name": "Time.is",
             "url": "https://time.is",
-            "desc": "精确时钟"
+            "desc": "精确时间时钟"
           },
           {
             "name": "Datetime.app",

@@ -4,22 +4,22 @@
     "type": "split",
     "children": [
       {
-        "id": "d4d5aeea1fe970a7",
+        "id": "2d76583b981d8fa4",
         "type": "tabs",
         "children": [
           {
-            "id": "877987085f2b5a2f",
+            "id": "001ab42880f62f1c",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "posts/sayings.md",
+                "file": "posts/mpv.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "sayings"
+              "title": "mpv"
             }
           }
         ]
@@ -112,7 +112,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "posts/sayings.md",
+                "file": "posts/mpv.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -136,7 +136,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "877987085f2b5a2f",
+  "active": "001ab42880f62f1c",
   "lastOpenFiles": [
     "posts/mpv.md",
     "posts/sayings.md",

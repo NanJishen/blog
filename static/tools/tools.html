@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#000000">
-<meta name="description" content="极限工具：JSON、Base64、URL、时间戳、哈希、UUID、正则、JWT、文本对比、Cron、批量重命名、视频下载，纯本地运行的开发者工具">
+<meta name="description" content="极限工具：JSON、Base64、URL、时间戳、哈希、UUID、正则、JWT、文本对比、Cron、批量重命名、字幕处理、视频下载，纯本地运行的开发者工具">
 <title>极限工具</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -150,14 +150,6 @@ footer a{color: inherit}
 .st-row input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
 .st-row input[type=range]:disabled{opacity:.4}
 .st-val{flex:none;width:3.4em;text-align:right;font-family:var(--mono);font-size:12px;color:var(--text-dim)}
-.st-switch{
-  position:relative;flex:none;width:38px;height:22px;padding:0;
-  border:1px solid var(--border-strong);border-radius:999px;
-  transition:border-color .15s, background .15s;
-}
-.st-switch i{position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--text-dim);transition:transform .18s, background .15s}
-.st-switch[aria-checked="true"]{border-color:var(--accent);background:var(--accent-glow)}
-.st-switch[aria-checked="true"] i{transform:translateX(16px);background:var(--accent)}
 .st-foot{display:flex;justify-content:flex-end;gap:8px}
 .st-btn{
   padding:5px 14px;font-size:12px;color:var(--text);
@@ -167,7 +159,7 @@ footer a{color: inherit}
 .st-btn:hover,.st-btn:focus-visible{color:var(--accent-2);border-color:var(--border-strong);background:var(--accent-glow)}
 
 
-.st-switch,.st-btn{background:none;cursor:pointer}
+.st-btn{background:none;cursor:pointer}
 .st-wp__del{font:inherit;font-size:13px}
 
 /* Diff / Cron */
@@ -280,24 +272,7 @@ html.glass .tile::after{content:"";position:absolute;inset:0;z-index:-1;border-r
 .tile:hover b{color:var(--gold2)}
 .tile span{font-size:13px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 @media(max-width:640px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tile{min-height:92px;padding:14px 12px}}
-/* 视频下载器 */
 .ghost.pri{color:var(--gold);font-weight:600}.ghost.pri:hover{color:var(--gold2)}
-#vdlg{width:min(460px,92vw)}
-#vdlg .in{width:100%}
-.vi{display:grid;grid-template-columns:128px minmax(0,1fr);gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
-.vi:last-child{border-bottom:0}
-.vth{width:128px;aspect-ratio:16/9;border:1px solid var(--line);border-radius:8px;overflow:hidden;display:grid;place-items:center;color:var(--dim);font:12px var(--mono)}
-.vth img{width:100%;height:100%;object-fit:cover}
-.vtt{font-size:15px;color:var(--tx);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all}
-.vmt{font-size:13px;color:var(--mu);margin-top:2px}
-.vmt b{color:var(--gold);font-weight:500;margin-right:8px}
-.vac{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
-.vpg{height:2px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:8px;display:none}
-.vpg i{display:block;height:100%;width:0;background:var(--gold);transition:width .3s}
-.vi.run .vpg{display:block}
-.vms{font:13px var(--mono);color:var(--mu);margin-top:6px;word-break:break-all}.vms:empty{display:none}
-.vms.ok{color:var(--ok)}.vms.err{color:var(--err)}
-@media(max-width:720px){.vi{grid-template-columns:96px minmax(0,1fr);gap:10px}.vth{width:96px}}
 /* ===== 设置：主题选择 ===== */
 .st-themes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .st-th{display:flex;align-items:center;justify-content:center;gap:7px;background:none;border:1px solid var(--border);border-radius:8px;padding:9px 6px;color:var(--text);font-size:13px;cursor:pointer;transition:color .15s,border-color .15s,box-shadow .15s}
@@ -334,31 +309,8 @@ html[data-theme=term] .brand h1::after{content:"_";margin-left:2px;animation:tbl
 @keyframes tblink{50%{opacity:0}}
 html[data-theme=term] .tile b::before{content:"$ ";color:var(--accent)}
 html[data-theme=term] .brand h1,html[data-theme=term] .crumb,html[data-theme=term] .tile b{text-shadow:0 0 8px rgba(51,255,102,.35)}
-/* 计算器 */
-.cx{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);column-gap:36px;max-width:920px;margin:0 auto}
+/* 子选项卡条（计算器、字幕处理共用） */
 .cx-t{grid-column:1/-1;border-bottom:1px solid var(--line);margin-bottom:22px}.cx-t .bar{margin:0;gap:4px}.cx-t .btn{padding:9px 18px;font-size:15px}
-.cx-l,.cx-s{min-width:0}.cx-s{border-left:1px solid var(--line);padding-left:32px}.cx.one .cx-s{display:none}.cx-s .cx-r{margin:0}
-.cx .in{width:100%}.cx input[type=number]{-moz-appearance:textfield}.cx input::-webkit-inner-spin-button,.cx input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-.cx-d{padding:6px 4px 14px;margin-bottom:16px;min-height:116px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;justify-content:flex-end;text-align:right;overflow:hidden}
-.cx-p{font:14px var(--mono);color:var(--dim);min-height:22px;word-break:break-all}.cx-m{font:500 52px/1.15 var(--mono);color:var(--gold2);word-break:break-all;letter-spacing:-.02em}
-.cx-m.t1{font-size:36px}.cx-m.t2,.cx-m.er{font-size:22px}.cx-m.er{color:var(--err)}
-.cx-k{display:grid;gap:10px}.cx-k.n{grid-template-columns:repeat(4,1fr);grid-auto-rows:58px}.cx-k.s{grid-template-columns:repeat(5,1fr);grid-auto-rows:46px}
-.cx-k button{background:none;border:1px solid var(--line);border-radius:12px;color:var(--tx);font:500 20px var(--mono);cursor:pointer;transition:color .15s,border-color .15s,transform .1s}
-.cx-k button:hover{border-color:var(--gold);color:var(--gold2)}.cx-k button:active{transform:scale(.95)}
-.cx-k .fn{border-color:transparent;color:var(--mu);font:500 14px var(--sans)}.cx-k .op{color:var(--gold);border-color:var(--line2);font-size:22px}.cx-k .op.sel{border-color:var(--gold);color:var(--gold2)}
-.cx-k .eq{background:var(--accent-glow);border-color:var(--gold);color:var(--gold2);font-size:22px}.cx-k .clr{color:var(--err);border-color:transparent;font:600 15px var(--sans)}
-.cx-hi{display:flex;justify-content:space-between;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line);font:14px var(--mono);color:var(--mu);cursor:pointer;transition:color .15s}.cx-hi:hover{color:var(--gold2)}.cx-hi b{font-weight:500;color:var(--gold)}
-#cxH{max-height:460px;overflow:auto}
-.cx-dt{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:4px 0 16px}.cx-dt label{display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--line2);cursor:ns-resize;transition:border-color .15s}.cx-dt label:focus-within{border-color:var(--gold)}
-.cx-dt input{width:100%;min-width:0;text-align:center;background:none;border:0;outline:0;font:500 18px var(--mono);color:var(--tx);padding:2px 0 4px}.cx-dt small{color:var(--dim);font-size:11px}
-.cx-g{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.cx-g select{width:100%}.cx-r{margin-top:16px}
-.cx.one{grid-template-columns:minmax(0,1fr)}.cx-s .kv{grid-template-columns:1fr auto;gap:2px 12px}.cx-s .kv span{grid-column:1/-1}.cx-s .kv code{font-size:16px}
-.cx-cv{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:end;margin:20px 0 10px}.cx-cv>div{min-width:0}.cx-big{font:500 30px var(--mono);padding:8px 2px}.cx-cv select{width:100%;margin-top:10px}
-.cx-ua{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px 28px}.cx-ui{display:flex;justify-content:space-between;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line);cursor:pointer;transition:border-color .15s}
-.cx-ui:hover{border-color:var(--gold)}.cx-ui span{color:var(--mu);font-size:14px}.cx-ui code{font:14.5px var(--mono);word-break:break-all;text-align:right}
-@media(max-width:600px){.cx-cv{grid-template-columns:1fr}.cx-cv .ibtn{justify-self:center}}
-@media(max-width:820px){.cx{grid-template-columns:minmax(0,1fr)}.cx-s{border-left:0;border-top:1px solid var(--line);padding:18px 0 0;margin-top:24px}}
-@media(max-width:420px){.cx-m{font-size:38px}.cx-k.s button{font-size:16px}.cx-g{gap:10px}}
 </style>
 </head>
 <body>
@@ -367,9 +319,9 @@ html[data-theme=term] .brand h1,html[data-theme=term] .crumb,html[data-theme=ter
 <noscript>需要启用 JavaScript 才能使用极限工具。</noscript>
 <div class="wrap">
  <div class="top">
-  <div class="top-l"><a class="brand" href="./devbox.html" title="极限工具"><img id="logo" src="https://ttti.cc/favicon-32x32.png" width="36" height="36" alt="" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'◆'}))"><h1>极限工具</h1></a><button class="crumb" id="title" type="button" title="返回首页" aria-label="返回首页" hidden><span class="cn"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button></div>
+  <div class="top-l"><a class="brand" href="./index.html" title="极限工具"><img id="logo" src="https://ttti.cc/favicon-32x32.png" width="36" height="36" alt="" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'◆'}))"><h1>极限工具</h1></a><button class="crumb" id="title" type="button" title="返回首页" aria-label="返回首页" hidden><span class="cn"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button></div>
   <div class="top-actions">
-  <button class="menu" id="qb" title="搜索工具 (Ctrl+K)" aria-label="搜索工具"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="8"/><path d="m16.2 16.2 5.3 5.3"/></svg></button>
+  <button class="menu" id="qb" title="搜索工具 (/ 或 Ctrl+K)" aria-label="搜索工具"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="8"/><path d="m16.2 16.2 5.3 5.3"/></svg></button>
   <button class="menu" id="sb" title="主题与背景设置" aria-label="设置" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></button>
   </div>
  </div>
@@ -396,7 +348,6 @@ html[data-theme=term] .brand h1,html[data-theme=term] .crumb,html[data-theme=ter
   <section class="st-sec">
    <div class="st-heading">界面</div>
    <div class="st-row"><label for="stCard">透明度</label><input type="range" id="stCard" min="0" max="100" step="1"><span class="st-val" id="stCardVal"></span></div>
-   <div class="st-row"><label id="stGlassLabel">毛玻璃效果</label><button type="button" class="st-switch" id="stGlass" role="switch" aria-checked="false" aria-labelledby="stGlassLabel"><i></i></button></div>
    <div class="st-row"><label for="stBlur">模糊度</label><input type="range" id="stBlur" min="0" max="40" step="1"><span class="st-val" id="stBlurVal"></span></div>
   </section>
   <div class="st-foot"><button type="button" class="st-btn" id="stFetch">在线获取</button><button type="button" class="st-btn" id="stReset">恢复默认</button></div>
@@ -416,7 +367,213 @@ document.addEventListener('click',e=>{const c=e.target.closest('[data-c]');if(c)
 const pad=n=>String(n).padStart(2,'0');
 const uid=()=>crypto.randomUUID?crypto.randomUUID():'10000000-1000-4000-8000-100000000000'.replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));
 const fmtDate=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+const css=(id,t)=>{if($('#css-'+id))return;const e=document.createElement('style');e.id='css-'+id;e.textContent=t;document.head.append(e)};
 
+/* 极限工具 · 计算器  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).calc=(()=>{
+css('calc',String.raw`
+/* 计算器 */
+.cx{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);column-gap:36px;max-width:920px;margin:0 auto}
+
+.cx-l,.cx-s{min-width:0}.cx-s{border-left:1px solid var(--line);padding-left:32px}.cx.one .cx-s{display:none}.cx-s .cx-r{margin:0}
+.cx .in{width:100%}.cx input[type=number]{-moz-appearance:textfield}.cx input::-webkit-inner-spin-button,.cx input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.cx-d{padding:6px 4px 14px;margin-bottom:16px;min-height:116px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;justify-content:flex-end;text-align:right;overflow:hidden}
+.cx-p{font:14px var(--mono);color:var(--dim);min-height:22px;word-break:break-all}.cx-m{font:500 52px/1.15 var(--mono);color:var(--gold2);word-break:break-all;letter-spacing:-.02em}
+.cx-m.t1{font-size:36px}.cx-m.t2,.cx-m.er{font-size:22px}.cx-m.er{color:var(--err)}
+.cx-k{display:grid;gap:10px}.cx-k.n{grid-template-columns:repeat(4,1fr);grid-auto-rows:58px}.cx-k.s{grid-template-columns:repeat(5,1fr);grid-auto-rows:46px}
+.cx-k button{background:none;border:1px solid var(--line);border-radius:12px;color:var(--tx);font:500 20px var(--mono);cursor:pointer;transition:color .15s,border-color .15s,transform .1s}
+.cx-k button:hover{border-color:var(--gold);color:var(--gold2)}.cx-k button:active{transform:scale(.95)}
+.cx-k .fn{border-color:transparent;color:var(--mu);font:500 14px var(--sans)}.cx-k .op{color:var(--gold);border-color:var(--line2);font-size:22px}.cx-k .op.sel{border-color:var(--gold);color:var(--gold2)}
+.cx-k .eq{background:var(--accent-glow);border-color:var(--gold);color:var(--gold2);font-size:22px}.cx-k .clr{color:var(--err);border-color:transparent;font:600 15px var(--sans)}
+.cx-hi{display:flex;justify-content:space-between;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line);font:14px var(--mono);color:var(--mu);cursor:pointer;transition:color .15s}.cx-hi:hover{color:var(--gold2)}.cx-hi b{font-weight:500;color:var(--gold)}
+#cxH{max-height:460px;overflow:auto}
+.cx-dt{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:4px 0 16px}.cx-dt label{display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--line2);cursor:ns-resize;transition:border-color .15s}.cx-dt label:focus-within{border-color:var(--gold)}
+.cx-dt input{width:100%;min-width:0;text-align:center;background:none;border:0;outline:0;font:500 18px var(--mono);color:var(--tx);padding:2px 0 4px}.cx-dt small{color:var(--dim);font-size:11px}
+.cx-g{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.cx-g select{width:100%}.cx-r{margin-top:16px}
+.cx.one{grid-template-columns:minmax(0,1fr)}.cx-s .kv{grid-template-columns:1fr auto;gap:2px 12px}.cx-s .kv span{grid-column:1/-1}.cx-s .kv code{font-size:16px}
+.cx-cv{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:end;margin:20px 0 10px}.cx-cv>div{min-width:0}.cx-big{font:500 30px var(--mono);padding:8px 2px}.cx-cv select{width:100%;margin-top:10px}
+.cx-ua{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px 28px}.cx-ui{display:flex;justify-content:space-between;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line);cursor:pointer;transition:border-color .15s}
+.cx-ui:hover{border-color:var(--gold)}.cx-ui span{color:var(--mu);font-size:14px}.cx-ui code{font:14.5px var(--mono);word-break:break-all;text-align:right}
+.cx-cb{position:relative;margin-bottom:14px}.cx-cb .in{width:100%;font-family:var(--sans);font-size:15px}
+.cx-dd{position:absolute;left:0;right:0;top:100%;z-index:40;max-height:270px;overflow:auto;margin-top:4px;padding:4px;background:rgba(var(--card-rgb),.97);border:1px solid var(--border-strong);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.55);scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}.cx-dd[hidden]{display:none}
+.cx-do{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:14.5px;color:var(--tx)}.cx-do small{color:var(--dim);font:12.5px var(--mono);white-space:nowrap}.cx-do span small{font:12.5px var(--sans);margin-left:8px}
+.cx-do.on,.cx-do:not(.off):hover{background:var(--accent-glow);color:var(--gold2)}.cx-do.off{opacity:.45;cursor:default}
+.cx-z{display:grid;grid-template-columns:minmax(0,1fr) auto 22px;gap:12px;align-items:center;padding:11px 2px;border-bottom:1px solid var(--line);cursor:pointer;transition:border-color .15s}.cx-z:hover{border-color:var(--gold)}
+.cx-zn b{font-weight:500;font-size:16px;color:var(--tx)}.cx-zn em{font-style:normal;font-size:11px;color:var(--gold);border:1px solid var(--line2);border-radius:4px;padding:0 5px;margin-left:8px;vertical-align:2px}.cx-zn small,.cx-zt small{display:block;color:var(--dim);font:12.5px/1.5 var(--mono)}
+.cx-zt{text-align:right}.cx-zt code{font:500 20px var(--mono);color:var(--gold2)}
+.cx-z .ghost{font-size:18px;padding:0;opacity:.6}.cx-z .ghost:hover{opacity:1;color:var(--err)}
+@media(max-width:420px){.cx-z{grid-template-columns:minmax(0,1fr) auto 18px;gap:8px}.cx-zt code{font-size:18px}}
+@media(max-width:600px){.cx-cv{grid-template-columns:1fr}.cx-cv .ibtn{justify-self:center}}
+@media(max-width:820px){.cx{grid-template-columns:minmax(0,1fr)}.cx-s{border-left:0;border-top:1px solid var(--line);padding:18px 0 0;margin-top:24px}}
+@media(max-width:420px){.cx-m{font-size:38px}.cx-k.s button{font-size:16px}.cx-g{gap:10px}}
+`);
+/* ---------- 计算器 ---------- */
+const calc=(()=>{
+const OPN={'+':'+','-':'−','*':'×','/':'÷','^':'^'},$$=s=>[...root.querySelectorAll(s)],q=s=>root.querySelector(s);
+let root,tab='c',sub={d:'diff',f:'dep'},sci=false,deg=true,hist=[],S={cur:'0',prev:0,op:'',fresh:false,wait:false,done:false,err:'',rep:null};
+/* ----- 计算引擎 ----- */
+const R=x=>{if(!isFinite(x))throw Error('结果无效');return x===0?'0':String(parseFloat(x.toPrecision(15)))},snap=x=>Math.abs(x)<1e-14?0:x;
+const bin=(a,b,o)=>{if(o=='/'&&b==0)throw Error('不能除以 0');return{'+':a+b,'-':a-b,'*':a*b,'/':a/b,'^':a**b}[o]};
+const ang=x=>deg?x*Math.PI/180:x,inv=v=>deg?v*180/Math.PI:v;
+const F={sin:x=>snap(Math.sin(ang(x))),cos:x=>snap(Math.cos(ang(x))),tan:x=>{if(Math.abs(Math.cos(ang(x)))<1e-14)throw Error('tan 无定义');return snap(Math.tan(ang(x)))},
+ asin:x=>inv(Math.asin(x)),acos:x=>inv(Math.acos(x)),atan:x=>inv(Math.atan(x)),log:Math.log10,ln:Math.log,sqrt:Math.sqrt,cbrt:Math.cbrt,sq:x=>x*x,cube:x=>x**3,
+ rec:x=>{if(!x)throw Error('不能除以 0');return 1/x},abs:Math.abs,ten:x=>10**x,exp:Math.exp,fact:x=>{if(x<0||x>170||x%1)throw Error('阶乘仅支持 0–170 的整数');let r=1;for(let i=2;i<=x;i++)r*=i;return r}};
+const num=()=>parseFloat(S.cur),add=(e,r)=>{hist.unshift([e,r]);hist.length=Math.min(hist.length,30)};
+const A={
+ d(v){if(S.done||S.fresh){S.cur='0';S.done=S.fresh=S.wait=false;if(!S.op)S.rep=null}
+  if(v=='.'){if(!S.cur.includes('.'))S.cur+='.'}else if(S.cur.replace(/[-.]/g,'').length<15)S.cur=/^-?0$/.test(S.cur)?(S.cur[0]=='-'?'-':'')+v:S.cur+v},
+ op(o){if(S.op&&!S.wait){S.cur=R(bin(S.prev,num(),S.op));S.prev=num()}else if(!S.op)S.prev=num();S.op=o;S.fresh=S.wait=true;S.done=false;S.rep=null},
+ eq(){if(S.op){const b=S.wait?S.prev:num(),r=R(bin(S.prev,b,S.op));add(`${S.prev} ${OPN[S.op]} ${b}`,r);S.rep=[S.op,b];S.cur=r;S.op=''}
+  else if(S.rep){const r=R(bin(num(),S.rep[1],S.rep[0]));add(`${S.cur} ${OPN[S.rep[0]]} ${S.rep[1]}`,r);S.cur=r}S.fresh=S.done=true;S.wait=false},
+ pct(){const n=num();S.cur=R(S.op&&!S.wait&&'+-'.includes(S.op)?S.prev*n/100:n/100);S.wait=S.done=false},
+ sign(){if(S.fresh&&S.op&&S.wait){S.cur='-0';S.fresh=S.wait=false}else if(S.cur!='0')S.cur=S.cur[0]=='-'?S.cur.slice(1):'-'+S.cur},
+ bs(){if(S.fresh||S.done)return;S.cur=S.cur.length<2||S.cur.length==2&&S.cur[0]=='-'?'0':S.cur.slice(0,-1)},
+ clr(){S={cur:'0',prev:0,op:'',fresh:false,wait:false,done:false,err:'',rep:null}},
+ fn(n){if(n=='pow')return A.op('^');if(n=='pi'||n=='e')S.cur=R(n=='pi'?Math.PI:Math.E);else{const r=R(F[n](num()));add(`${n}(${S.cur})`,r);S.cur=r}S.fresh=true;S.wait=S.done=false}};
+function key(t,v){S.err='';try{A[t](v)}catch(e){A.clr();S.err=e.message}draw()}
+function draw(){if(!root||!root.isConnected||tab!='c')return;const m=q('.cx-m'),t=S.err||S.cur;m.textContent=t;m.className='cx-m'+(S.err?' er':t.length>16?' t2':t.length>11?' t1':'');
+ q('.cx-p').textContent=S.op?`${S.prev} ${OPN[S.op]}`:'';$$('.cx-k .op').forEach(b=>b.classList.toggle('sel',b.dataset.v==S.op&&S.wait));
+ q('#cxH').innerHTML=hist.length?hist.map(([e,r],i)=>`<div class="cx-hi" data-i="${i}"><span>${e}</span><b>= ${r}</b></div>`).join(''):'<div class="status">暂无记录</div>'}
+addEventListener('keydown',e=>{if(cur!='calc'||tab!='c'||e.ctrlKey||e.metaKey||e.altKey||!$('#sdlg').hidden||/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||e.target.closest?.('.cx-k')&&(e.key=='Enter'||e.key==' '))return;
+ const k=e.key,m={'.':['d','.'],Backspace:['bs'],Escape:['clr'],Enter:['eq'],'=':['eq'],'%':['pct']};for(const o in OPN)m[o]=['op',o];
+ const a=/^\d$/.test(k)?['d',k]:m[k];if(a){e.preventDefault();key(...a)}});
+const K=(t,v,l,c='')=>`<button class="${c}" data-t="${t}" data-v="${v}">${l}</button>`,D=v=>K('d',v,v),O=[['/','÷'],['*','×'],['-','−'],['+','+']].map(([v,l])=>K('op',v,l,'op')),FN=(n,l)=>K('fn',n,l,'fn');
+const STD=[K('clr','','AC','clr'),K('bs','','⌫','fn'),K('pct','','%','fn'),O[0],D(7),D(8),D(9),O[1],D(4),D(5),D(6),O[2],D(1),D(2),D(3),O[3],K('sign','','±','fn'),D(0),D('.'),K('eq','','=','eq')];
+const SCI=[FN('pi','π'),FN('e','e'),FN('ten','10ˣ'),FN('exp','eˣ'),FN('fact','n!'),FN('sin','sin'),FN('cos','cos'),FN('tan','tan'),FN('log','log'),FN('ln','ln'),FN('asin','sin⁻¹'),FN('acos','cos⁻¹'),FN('atan','tan⁻¹'),FN('sqrt','√'),FN('cbrt','∛'),
+ FN('sq','x²'),FN('cube','x³'),FN('pow','xʸ'),FN('rec','1/x'),FN('abs','|x|'),D(7),D(8),D(9),O[0],K('clr','','AC','clr'),D(4),D(5),D(6),O[1],K('bs','','⌫','fn'),D(1),D(2),D(3),O[2],K('pct','','%','fn'),K('sign','','±','fn'),D(0),D('.'),O[3],K('eq','','=','eq')];
+/* ----- 通用 ----- */
+const fld=(l,id,ph='')=>`<div><div class="lbl">${l}</div><input class="in" id="${id}" type="number" step="any" placeholder="${ph}"></div>`,
+ sel=(l,id,o)=>`<div><div class="lbl">${l}</div><select id="${id}">${o.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select></div>`,
+ N=id=>parseFloat(q('#'+id).value),bad=m=>toast(m,true),res=(l,id)=>{const b=q('#'+id);q('.cx-ph')?.remove();b.hidden=false;kv(b,l)},tabs=(k,l)=>`<div class="bar">${l.map(([v,t])=>`<button class="btn${v==k?' pri':''}" data-v="${v}">${t}</button>`).join('')}</div>`;
+const subtabs=(b,k,l)=>{b.innerHTML=tabs(sub[k],l)+'<div id="cxS"></div>';b.firstChild.onclick=e=>{const x=e.target.closest('[data-v]');if(x){sub[k]=x.dataset.v;mount()}};return q('#cxS')};
+const r2=x=>(Math.round(x*100)/100).toLocaleString('en-US'),fdt=d=>`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} 周${'日一二三四五六'[d.getDay()]}`;
+/* ----- 日期时间选择（年月日时分秒，滚轮 / ↑↓ 调整）----- */
+function dt(host,d0,cb){const L=[['年',4,1,9999],['月',2,1,12],['日',2,1,31],['时',2,0,23],['分',2,0,59],['秒',2,0,59]],v=[d0.getFullYear(),d0.getMonth()+1,d0.getDate(),d0.getHours(),d0.getMinutes(),d0.getSeconds()],E=[];
+ const mk=()=>{const t=new Date(2000,0,1,v[3],v[4],v[5]);t.setFullYear(v[0],v[1]-1,v[2]);return t},show=()=>E.forEach((e,j)=>e.value=String(v[j]).padStart(j?2:4,'0')),
+ clamp=()=>{v[2]=Math.min(v[2],new Date(v[0],v[1],0).getDate())},
+ step=(i,k)=>{if(i<2){v[i]=Math.min(L[i][3],Math.max(L[i][2],v[i]+k));clamp()}else{const t=mk();[,,()=>t.setDate(t.getDate()+k),()=>t.setHours(t.getHours()+k),()=>t.setMinutes(t.getMinutes()+k),()=>t.setSeconds(t.getSeconds()+k)][i]();v.splice(0,6,t.getFullYear(),t.getMonth()+1,t.getDate(),t.getHours(),t.getMinutes(),t.getSeconds())}show();sync()};
+ host.className='cx-dt';L.forEach(([l,n],i)=>{const b=document.createElement('label'),e=document.createElement('input'),s=document.createElement('small');e.inputMode='numeric';e.maxLength=n;e.setAttribute('aria-label',l);s.textContent=l;b.append(s,e);host.append(b);E.push(e);
+  e.onfocus=()=>setTimeout(()=>e.select());e.oninput=()=>{e.value=e.value.replace(/\D/g,'');if(e.value.length>=n&&i<5)E[i+1].focus()};e.onblur=()=>{read();sync()};
+  e.onkeydown=ev=>{if(ev.key=='Enter'){read();sync()}if(ev.key=='ArrowUp'||ev.key=='ArrowDown'){ev.preventDefault();read();step(i,ev.key=='ArrowUp'?1:-1);e.select()}};b.onwheel=ev=>{ev.preventDefault();read();step(i,ev.deltaY<0?1:-1)}});
+ let sig=v.join();const sync=()=>{const k=v.join();if(k!=sig){sig=k;cb&&cb()}},read=()=>{E.forEach((e,j)=>{const x=parseInt(e.value,10);if(!isNaN(x))v[j]=Math.min(L[j][3],Math.max(L[j][2],x))});clamp();show();return mk()};show();return{get:read,parts:()=>{read();return v.slice()},set:w=>{v.splice(0,6,...w);show();sig=v.join()}}}
+/* ----- 时区转换（主要时区的大城市；换算用浏览器内置 Intl，自动处理夏令时）----- */
+const CITY=[
+['北京','Beijing','Asia/Shanghai','中国'],['上海','Shanghai','Asia/Shanghai','中国'],['香港','Hong Kong','Asia/Hong_Kong','中国'],['台北','Taipei','Asia/Taipei','中国台湾'],['乌鲁木齐','Urumqi','Asia/Urumqi','中国'],
+['东京','Tokyo','Asia/Tokyo','日本'],['首尔','Seoul','Asia/Seoul','韩国'],['新加坡','Singapore','Asia/Singapore','新加坡'],['曼谷','Bangkok','Asia/Bangkok','泰国'],['河内','Hanoi','Asia/Ho_Chi_Minh','越南'],
+['雅加达','Jakarta','Asia/Jakarta','印度尼西亚'],['马尼拉','Manila','Asia/Manila','菲律宾'],['吉隆坡','Kuala Lumpur','Asia/Kuala_Lumpur','马来西亚'],['仰光','Yangon','Asia/Yangon','缅甸'],['达卡','Dhaka','Asia/Dhaka','孟加拉国'],
+['加德满都','Kathmandu','Asia/Kathmandu','尼泊尔'],['新德里','New Delhi','Asia/Kolkata','印度'],['孟买','Mumbai','Asia/Kolkata','印度'],['科伦坡','Colombo','Asia/Colombo','斯里兰卡'],['卡拉奇','Karachi','Asia/Karachi','巴基斯坦'],
+['塔什干','Tashkent','Asia/Tashkent','乌兹别克斯坦'],['阿拉木图','Almaty','Asia/Almaty','哈萨克斯坦'],['乌兰巴托','Ulaanbaatar','Asia/Ulaanbaatar','蒙古'],['迪拜','Dubai','Asia/Dubai','阿联酋'],['利雅得','Riyadh','Asia/Riyadh','沙特阿拉伯'],
+['德黑兰','Tehran','Asia/Tehran','伊朗'],['特拉维夫','Tel Aviv','Asia/Jerusalem','以色列'],['伊斯坦布尔','Istanbul','Europe/Istanbul','土耳其'],['莫斯科','Moscow','Europe/Moscow','俄罗斯'],
+['伦敦','London','Europe/London','英国'],['都柏林','Dublin','Europe/Dublin','爱尔兰'],['里斯本','Lisbon','Europe/Lisbon','葡萄牙'],['巴黎','Paris','Europe/Paris','法国'],['柏林','Berlin','Europe/Berlin','德国'],
+['马德里','Madrid','Europe/Madrid','西班牙'],['罗马','Rome','Europe/Rome','意大利'],['阿姆斯特丹','Amsterdam','Europe/Amsterdam','荷兰'],['苏黎世','Zurich','Europe/Zurich','瑞士'],['维也纳','Vienna','Europe/Vienna','奥地利'],
+['斯德哥尔摩','Stockholm','Europe/Stockholm','瑞典'],['华沙','Warsaw','Europe/Warsaw','波兰'],['赫尔辛基','Helsinki','Europe/Helsinki','芬兰'],['雅典','Athens','Europe/Athens','希腊'],['基辅','Kyiv','Europe/Kiev','乌克兰'],
+['开罗','Cairo','Africa/Cairo','埃及'],['拉各斯','Lagos','Africa/Lagos','尼日利亚'],['内罗毕','Nairobi','Africa/Nairobi','肯尼亚'],['约翰内斯堡','Johannesburg','Africa/Johannesburg','南非'],['卡萨布兰卡','Casablanca','Africa/Casablanca','摩洛哥'],
+['纽约','New York','America/New_York','美国'],['华盛顿','Washington','America/New_York','美国'],['芝加哥','Chicago','America/Chicago','美国'],['丹佛','Denver','America/Denver','美国'],['洛杉矶','Los Angeles','America/Los_Angeles','美国'],
+['旧金山','San Francisco','America/Los_Angeles','美国'],['凤凰城','Phoenix','America/Phoenix','美国'],['安克雷奇','Anchorage','America/Anchorage','美国'],['檀香山','Honolulu','Pacific/Honolulu','美国'],
+['多伦多','Toronto','America/Toronto','加拿大'],['温哥华','Vancouver','America/Vancouver','加拿大'],['哈利法克斯','Halifax','America/Halifax','加拿大'],['圣约翰斯','St Johns','America/St_Johns','加拿大'],
+['墨西哥城','Mexico City','America/Mexico_City','墨西哥'],['波哥大','Bogota','America/Bogota','哥伦比亚'],['利马','Lima','America/Lima','秘鲁'],['加拉加斯','Caracas','America/Caracas','委内瑞拉'],
+['圣地亚哥','Santiago','America/Santiago','智利'],['布宜诺斯艾利斯','Buenos Aires','America/Argentina/Buenos_Aires','阿根廷'],['圣保罗','Sao Paulo','America/Sao_Paulo','巴西'],
+['悉尼','Sydney','Australia/Sydney','澳大利亚'],['墨尔本','Melbourne','Australia/Melbourne','澳大利亚'],['布里斯班','Brisbane','Australia/Brisbane','澳大利亚'],['阿德莱德','Adelaide','Australia/Adelaide','澳大利亚'],['珀斯','Perth','Australia/Perth','澳大利亚'],
+['奥克兰','Auckland','Pacific/Auckland','新西兰'],['关岛','Guam','Pacific/Guam','美国'],['世界协调时','UTC','UTC','GMT']
+].map(([cn,en,tz,co])=>({cn,en,tz,co})).filter(c=>{try{new Intl.DateTimeFormat('en',{timeZone:c.tz});return true}catch(e){return false}});
+const FM={},wall=(tz,ms)=>{const f=FM[tz]||(FM[tz]=new Intl.DateTimeFormat('en-US',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric',second:'numeric'})),p={};for(const x of f.formatToParts(ms))p[x.type]=+x.value;return[p.year,p.month,p.day,p.hour%24,p.minute,p.second]},
+ utc=(y,mo,d,h=0,mi=0,s=0)=>{const t=new Date(0);t.setUTCFullYear(y,mo-1,d);t.setUTCHours(h,mi,s,0);return t.getTime()},
+ off=(tz,ms)=>{ms=Math.floor(ms/1e3)*1e3;return utc(...wall(tz,ms))-ms},
+ toUtc=(tz,w)=>{const g=utc(...w);return g-off(tz,g-off(tz,g))},
+ fo=m=>'UTC'+(m<0?'-':'+')+Math.floor(Math.abs(m)/60)+(m%60?':'+pad(Math.abs(m)%60):''),
+ hm=d=>{d=Math.abs(d);const h=Math.floor(d/60),m=d%60;return(h?h+' 小时':'')+(m?(h?' ':'')+m+' 分':'')},
+ dstOn=(tz,ms)=>{const y=new Date(ms).getUTCFullYear(),a=off(tz,Date.UTC(y,0,1)),b=off(tz,Date.UTC(y,6,1));return a!=b&&off(tz,ms)==Math.max(a,b)},
+ canon=tz=>{try{return new Intl.DateTimeFormat('en',{timeZone:tz}).resolvedOptions().timeZone}catch(e){return tz}};
+/* 可搜索的城市选择框：支持中文 / 英文 / 国家 / 时区名，↑↓ 回车选择 */
+function cityBox(host,ph,pick,o={}){
+ host.className='cx-cb';const inp=document.createElement('input'),dd=document.createElement('div');inp.className='in';inp.placeholder=ph;inp.autocomplete='off';inp.spellcheck=false;inp.setAttribute('aria-label',ph);dd.className='cx-dd';dd.hidden=true;host.append(inp,dd);
+ let list=[],hi=0,shown='';const now=Date.now(),dis=c=>!!(o.dis&&o.dis(c));
+ const draw=()=>{const k=(inp.value==shown?'':inp.value).trim().toLowerCase();list=CITY.filter(c=>!k||(c.cn+' '+c.en+' '+c.co+' '+c.tz).toLowerCase().includes(k));hi=Math.min(hi,Math.max(list.length-1,0));
+  dd.innerHTML=list.length?list.map((c,i)=>`<div class="cx-do${i==hi?' on':''}${dis(c)?' off':''}" data-i="${i}"><span>${c.cn}<small>${c.en}</small></span><small>${fo(off(c.tz,now)/6e4)}${dis(c)?' · 已添加':''}</small></div>`).join(''):'<div class="cx-do off">没有匹配的城市</div>';
+  dd.hidden=false;dd.querySelector('.on')?.scrollIntoView({block:'nearest'})},
+ choose=i=>{const c=list[i];if(!c||dis(c))return;pick(c);if(o.keep)inp.value=shown=c.cn;else inp.value='';dd.hidden=true};
+ inp.onfocus=()=>{inp.select();hi=0;draw()};inp.onclick=()=>{if(dd.hidden)draw()};inp.oninput=()=>{hi=0;draw()};inp.onblur=()=>{dd.hidden=true;if(o.keep)inp.value=shown};
+ dd.onmousedown=e=>{e.preventDefault();const x=e.target.closest('[data-i]');if(x)choose(+x.dataset.i)};
+ inp.onkeydown=e=>{if(e.isComposing)return;if(e.key=='ArrowDown'||e.key=='ArrowUp'){e.preventDefault();if(dd.hidden)return draw();hi=(hi+(e.key=='ArrowDown'?1:-1)+list.length)%(list.length||1);draw()}
+  else if(e.key=='Enter'){e.preventDefault();if(!dd.hidden)choose(hi)}else if(e.key=='Escape'){dd.hidden=true;if(o.keep)inp.value=shown}};
+ return{set:c=>{shown=c.cn;inp.value=shown}}}
+function zone(s){
+ s.innerHTML=`<div class="lbl">日期与时间（滚轮 / ↑↓ 调整）</div><div id="cxA"></div><div class="lbl">这个时间所在的城市（可搜索）</div><div id="cxSrc"></div><div class="lbl" style="margin-top:18px">添加城市到右侧对比 · 已固定 <span id="cxCnt"></span> 个</div><div id="cxAdd"></div><div class="status">收录各主要时区的大城市；添加后固定保存在本机，下次打开仍在。</div><div class="cx-r" id="cxR" hidden></div>`;
+ const R=q('#cxR'),lz=canon(Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC'),byEn=n=>CITY.find(c=>c.en==n);
+ let src=CITY.find(c=>canon(c.tz)==lz)||{cn:'本地时区',en:lz,tz:lz,co:''},pins=[],dirty=false,last='';
+ try{const v=JSON.parse(localStorage.getItem('cx-tz'));if(!Array.isArray(v))throw 0;pins=v.map(byEn).filter(Boolean)}catch(e){pins=['Beijing','London','New York','Tokyo'].map(byEn).filter(Boolean)}
+ const save=()=>{try{localStorage.setItem('cx-tz',JSON.stringify(pins.map(c=>c.en)))}catch(e){}},
+ a=dt(q('#cxA'),new Date(),()=>render()),
+ nowIn=()=>{const w=wall(src.tz,Date.now());a.set(w);last=w.join()},
+ render=()=>{const p=a.parts();if(p.join()!=last)dirty=true;
+  const ms=toUtc(src.tz,p),sw=wall(src.tz,ms),so=off(src.tz,ms)/6e4,sd0=utc(sw[0],sw[1],sw[2]);
+  const rows=[src,...pins.filter(c=>c.en!=src.en)].map((c,i)=>{const w=wall(c.tz,ms),o=off(c.tz,ms)/6e4,dd=Math.round((utc(w[0],w[1],w[2])-sd0)/864e5),df=o-so,
+    t=`${pad(w[3])}:${pad(w[4])}:${pad(w[5])}`,wd='日一二三四五六'[new Date(utc(w[0],w[1],w[2])).getUTCDay()],
+    day=dd==0?'当天':dd==1?'次日':dd==-1?'前一天':(dd>0?'+':'')+dd+' 天',
+    sub=i?(df?`比${src.cn}${df>0?'快':'慢'} ${hm(df)}`:`与${src.cn}无时差`):c.en;
+   return `<div class="cx-z${i?'':' src'}" data-cp="${w[0]}-${pad(w[1])}-${pad(w[2])} ${t} ${fo(o)} ${c.cn}"><div class="cx-zn"><b>${c.cn}${i?'':'<em>源</em>'}</b><small>${fo(o)}${dstOn(c.tz,ms)?' 夏令时':''} · ${sub}</small></div><div class="cx-zt"><code>${t}</code><small>${w[0]}年${w[1]}月${w[2]}日 周${wd} · ${day}</small></div>${i?`<button class="ghost" data-rm="${c.en}" title="移除" aria-label="移除 ${c.cn}">×</button>`:'<span></span>'}</div>`});
+  R.hidden=false;R.innerHTML=rows.join('')+(pins.length?'':'<div class="status" style="margin-top:12px">还没有固定的城市，在左侧搜索并添加。</div>');q('#cxCnt').textContent=pins.length};
+ cityBox(q('#cxSrc'),'搜索城市，如 北京 / Tokyo',c=>{src=c;if(!dirty)nowIn();render()},{keep:1}).set(src);
+ cityBox(q('#cxAdd'),'搜索并添加城市，如 纽约 / London',c=>{pins.push(c);save();render()},{dis:c=>c.en==src.en||pins.some(x=>x.en==c.en)});
+ R.onclick=e=>{const x=e.target.closest('[data-rm]');if(x){pins=pins.filter(c=>c.en!=x.dataset.rm);save();render();return}const z=e.target.closest('.cx-z');if(z)copy(z.dataset.cp)};
+ last=a.parts().join();render()}
+/* ----- 各面板 ----- */
+const P={
+c(b){b.innerHTML=`<div class="cx-d"><div class="cx-p"></div><div class="cx-m"></div></div><div class="bar"><button class="btn${sci?'':' pri'}" data-s="0">标准</button><button class="btn${sci?' pri':''}" data-s="1">科学</button><span class="sp"></span>${sci?`<button class="btn${deg?' pri':''}" data-a="1">角度</button><button class="btn${deg?'':' pri'}" data-a="0">弧度</button>`:''}</div>
+ <div class="cx-k ${sci?'s':'n'}">${(sci?SCI:STD).join('')}</div>`;
+ const k=q('.cx-k');k.onpointerdown=e=>e.preventDefault();k.onclick=e=>{const x=e.target.closest('button');if(x)key(x.dataset.t,x.dataset.v)};},
+d(b){const s=subtabs(b,'d',[['diff','相差多少时间'],['after','多少时间之后'],['tz','时区转换']]),now=new Date();
+ if(sub.d=='diff'){s.innerHTML='<div class="lbl">开始时间</div><div id="cxA"></div><div class="lbl">结束时间</div><div id="cxB2"></div><button class="btn pri" id="cxGo">计算</button><div class="cx-r" id="cxR" hidden></div>';
+  const a=dt(q('#cxA'),now),e=dt(q('#cxB2'),now);q('#cxGo').onclick=()=>{const ms=e.get()-a.get(),t=Math.round(Math.abs(ms)/1e3),g=ms<0?'-':'';
+   res([['相差',`${g}${t>=86400?Math.floor(t/86400)+' 天 ':''}${Math.floor(t%86400/3600)} 时 ${Math.floor(t%3600/60)} 分 ${t%60} 秒`],['说明',ms?ms<0?'结束早于开始':'结束晚于开始':'两个时间相同'],['合计小时',g+r2(t/3600)],['合计分钟',g+r2(t/60)],['合计秒数',g+t.toLocaleString('en-US')]],'cxR')}}
+ else if(sub.d=='tz')zone(s);
+ else{s.innerHTML=`<div class="lbl">开始时间</div><div id="cxA"></div><div class="lbl">时间间隔（负数表示之前）</div><div class="cx-g" style="grid-template-columns:repeat(4,1fr)">${fld('天','cxD','0')}${fld('时','cxH2','0')}${fld('分','cxM','0')}${fld('秒','cxSe','0')}</div>
+  ${sel('递推个数（每隔一个间隔算一个）','cxN',[1,2,3,4,5].map(i=>[i,i+' 个']))}<div style="margin-top:12px"><button class="btn pri" id="cxGo">计算</button></div><div class="cx-r" id="cxR" hidden></div>`;q('#cxN').value=3;
+  const a=dt(q('#cxA'),now);q('#cxGo').onclick=()=>{const du=['cxD','cxH2','cxM','cxSe'].map(i=>N(i)||0),n=+q('#cxN').value,base=a.get(),out=[];
+   for(let k=1;k<=n;k++){const t=new Date(base),di=Math.trunc(du[0]*k);t.setDate(t.getDate()+di);t.setTime(t.getTime()+((du[0]*k-di)*86400+du[1]*k*3600+du[2]*k*60+du[3]*k)*1e3);if(isNaN(t))return bad('超出可表示的日期范围');out.push([k==1?'目标时间':'第 '+k+' 个',fdt(t)])}
+   res(out,'cxR')}}},
+f(b){const s=subtabs(b,'f',[['dep','存款利息'],['disc','折扣计算'],['pr','价格比较']]);
+ const go=(h,f)=>{s.innerHTML=h+'<div style="margin-top:14px"><button class="btn pri" id="cxGo">计算</button></div><div class="cx-r" id="cxR" hidden></div>';q('#cxGo').onclick=f};
+ if(sub.f=='dep'){go(`<div class="cx-g">${sel('期限种类','cxT',[['','自定义'],['0.42|','活期（请填存期）'],['2.82|3','整存整取 3 个月'],['3.06|6','整存整取 半年'],['3.3|12','整存整取 1 年'],['4.02|24','整存整取 2 年'],['4.8|36','整存整取 3 年'],['5.225|60','整存整取 5 年']])}${fld('存入金额（元）','cxAm','10000')}${fld('年利率（%）','cxRt','3.30')}${fld('存期（月）','cxTm','12')}</div><div class="status">预设利率仅供参考，可手动修改；按单利计息。</div>`,
+  ()=>{const a=N('cxAm'),r=N('cxRt'),t=N('cxTm');if(!(a>0&&r>=0&&t>0))return bad('请输入有效的金额、利率和存期');const i=a*r*t/1200;res([['利息',i.toFixed(2)+' 元'],['本息合计',(a+i).toFixed(2)+' 元']],'cxR')});
+  q('#cxT').onchange=e=>{const[r,t]=e.target.value.split('|');if(r!=='')q('#cxRt').value=r;q('#cxTm').value=t||''}}
+ else if(sub.f=='disc'){go(`<div class="cx-g">${sel('计算方式','cxMd',[[1,'原价 + 折扣 → 折后价'],[2,'原价 + 折后价 → 折扣']])}${fld('原价（元）','cxO','299')}<span id="cxG1" style="display:contents">${fld('折扣（折）','cxDs','8.5')}${fld('额外立减（元，可不填）','cxCp')}</span><span id="cxG2" style="display:none">${fld('折后价（元）','cxFn','199')}</span></div>`,
+  ()=>{const o=N('cxO'),m=q('#cxMd').value;let f;if(!(o>0))return bad('请输入有效的原价');if(m==1){const d=N('cxDs');if(!(d>0&&d<=10))return bad('折扣应在 0~10 之间，如 8.5 表示 8.5 折');f=Math.max(o*d/10-(N('cxCp')||0),0)}else{f=N('cxFn');if(!(f>=0&&f<=o))return bad('折后价应为不大于原价的数字')}
+   res([['折后价',f.toFixed(2)+' 元'],['节省金额',(o-f).toFixed(2)+' 元'],['实际折扣',parseFloat((f/o*10).toFixed(2))+' 折']],'cxR')});
+  q('#cxMd').onchange=e=>{q('#cxG1').style.display=e.target.value==1?'contents':'none';q('#cxG2').style.display=e.target.value==2?'contents':'none'}}
+ else{const C={重量:['克',100,[['克',1],['千克',1e3],['斤',500],['磅',453.59237],['盎司',28.349523]]],体积:['毫升',100,[['毫升',1],['升',1e3]]],数量:['个',1,[['个',1],['打(12个)',12]]]},fill=()=>{const u=C[q('#cxC').value][2];['A','B'].forEach(k=>q('#cxU'+k).innerHTML=u.map(([n],i)=>`<option value="${i}">${n}</option>`).join(''))},
+   grp=k=>`<div class="lbl" style="margin-top:6px">商品 ${k}</div><div class="cx-g" style="grid-template-columns:repeat(4,1fr)">${fld('价格（元）','cxP'+k)}${fld('规格','cxZ'+k)}${sel('单位','cxU'+k,[])}${fld('件数','cxK'+k,'1')}</div>`;
+  go(sel('比较类型','cxC',Object.keys(C).map(k=>[k,'按'+k]))+grp('A')+grp('B')+'<div class="status">例：500 克 × 2 件，规格填 500，件数填 2。</div>',()=>{const c=C[q('#cxC').value],it=[];
+   for(const k of['A','B']){const p=N('cxP'+k),z=N('cxZ'+k),n=N('cxK'+k)||1;if(!(p>0&&z>0))return bad('请填写商品 '+k+' 的价格和规格');it.push(p/(z*n*c[2][q('#cxU'+k).value][1]))}
+   const f=x=>x>=1?x.toFixed(2):x.toPrecision(3),[a,u]=it,lo=a<u?0:1,v=Math.abs(a-u)<1e-12?'两者单价相同':`商品 ${'AB'[lo]} 更划算，便宜 ${((Math.max(a,u)-Math.min(a,u))/Math.max(a,u)*100).toFixed(1)}%`;
+   res([['结论',v],['商品 A',f(a*c[1])+' 元/'+(c[1]>1?c[1]:'')+c[0]],['商品 B',f(u*c[1])+' 元/'+(c[1]>1?c[1]:'')+c[0]]],'cxR')});fill();q('#cxC').onchange=fill}},
+u(b){const U={长度:['米','英尺',{毫米:.001,厘米:.01,米:1,千米:1e3,英寸:.0254,英尺:.3048,码:.9144,英里:1609.344}],重量:['千克','磅',{毫克:1e-6,克:.001,千克:1,吨:1e3,斤:.5,磅:.45359237,盎司:.028349523125}],
+  面积:['平方米','亩',{平方厘米:1e-4,平方米:1,公顷:1e4,平方千米:1e6,亩:1e4/15,平方英尺:.09290304}],体积:['升','毫升',{毫升:.001,升:1,立方米:1e3,加仑:3.785411784,品脱:.473176473}],速度:['千米/时','米/秒',{'米/秒':1,'千米/时':1/3.6,'英里/时':.44704,节:1852/3600}],
+  数据:['MB','GB',{bit:.125,B:1,KB:1024,MB:1024**2,GB:1024**3,TB:1024**4,PB:1024**5}],时间:['小时','分钟',{毫秒:.001,秒:1,分钟:60,小时:3600,天:86400,周:604800,'月(30天)':2592e3,'年(365天)':31536e3}],温度:['摄氏度 °C','华氏度 °F',{'摄氏度 °C':0,'华氏度 °F':0,'开尔文 K':0}]};
+ const T2={'摄氏度 °C':[x=>x,x=>x],'华氏度 °F':[x=>(x-32)*5/9,x=>x*9/5+32],'开尔文 K':[x=>x-273.15,x=>x+273.15]};
+ let ct=sub.u||'长度';
+ b.innerHTML=`<div class="bar" id="cxCt">${Object.keys(U).map(k=>`<button class="btn${k==ct?' pri':''}" data-u="${k}">${k}</button>`).join('')}</div>
+  <div class="cx-cv"><div><div class="lbl">从</div><input class="in cx-big" id="cxFv" inputmode="decimal" value="1" autocomplete="off"><select id="cxFu"></select></div><button class="ibtn" id="cxSw" title="交换单位" aria-label="交换单位">⇄</button><div><div class="lbl">到</div><input class="in cx-big" id="cxTv" inputmode="decimal" autocomplete="off"><select id="cxTu"></select></div></div>
+  <div class="status" id="cxHt"></div><div class="h">全部单位（点击复制）</div><div class="cx-ua" id="cxUa"></div>`;
+ const fmt=x=>isFinite(x)?String(parseFloat(x.toPrecision(10))):'',cv=(x,f,t)=>ct=='温度'?T2[t][1](T2[f][0](x)):x*U[ct][2][f]/U[ct][2][t];
+ const all=()=>{const x=parseFloat(q('#cxFv').value),f=q('#cxFu').value;q('#cxUa').innerHTML=isNaN(x)?'':Object.keys(U[ct][2]).map(k=>{const v=fmt(cv(x,f,k));return `<div class="cx-ui" data-v="${v}"><span>${k}</span><code>${v}</code></div>`}).join('')},
+  fwd=()=>{const x=parseFloat(q('#cxFv').value),f=q('#cxFu').value,t=q('#cxTu').value;q('#cxTv').value=isNaN(x)?'':fmt(cv(x,f,t));q('#cxHt').textContent=`1 ${f} = ${fmt(cv(1,f,t))} ${t}`;all()},
+  back=()=>{const x=parseFloat(q('#cxTv').value);q('#cxFv').value=isNaN(x)?'':fmt(cv(x,q('#cxTu').value,q('#cxFu').value));all()};
+ const c=U[ct],o=Object.keys(c[2]).map(k=>`<option>${k}</option>`).join('');q('#cxFu').innerHTML=q('#cxTu').innerHTML=o;q('#cxFu').value=c[0];q('#cxTu').value=c[1];fwd();
+ q('#cxCt').onclick=e=>{const x=e.target.closest('[data-u]');if(x){sub.u=x.dataset.u;mount()}};q('#cxFv').oninput=q('#cxFu').onchange=q('#cxTu').onchange=fwd;q('#cxTv').oninput=back;
+ q('#cxSw').onclick=()=>{const f=q('#cxFu'),t=q('#cxTu');[f.value,t.value]=[t.value,f.value];fwd()};q('#cxUa').onclick=e=>{const i=e.target.closest('.cx-ui');if(i)copy(i.dataset.v)}}};
+const mount=()=>{root.innerHTML=`<div class="cx${tab=='u'?' one':''}"><div class="cx-t">${tabs(tab,[['c','计算器'],['d','日期时间'],['f','金融'],['u','单位换算']])}</div><div class="cx-l" id="cxB"></div><aside class="cx-s" id="cxSd"></aside></div>`;
+ q('.cx-t .bar').onclick=e=>{const x=e.target.closest('[data-v]');if(x){tab=x.dataset.v;mount()}};P[tab](q('#cxB'));const sd=q('#cxSd');
+ if(tab=='c'){sd.innerHTML='<div class="bar"><div class="lbl" style="margin:0">历史记录</div><span class="sp"></span><button class="ghost" data-x2>清空</button></div><div id="cxH"></div>';draw()}
+ else if(tab!='u'){sd.innerHTML=tab=='d'&&sub.d=='tz'?'<div class="lbl">各城市时间（点击复制）</div>':'<div class="lbl">结果</div><div class="status cx-ph">填写左侧参数后点击「计算」</div>';sd.append(q('#cxR'))}
+ q('.cx').onclick=e=>{const m=e.target.closest('[data-s],[data-a]'),h=e.target.closest('.cx-hi');if(m){if(m.dataset.s!=null)sci=m.dataset.s=='1';else deg=m.dataset.a=='1';mount()}
+  else if(h){S.cur=hist[h.dataset.i][1];S.fresh=true;S.wait=S.done=false;draw()}else if(e.target.closest('[data-x2]')){hist=[];draw()}}};
+return r=>{root=r;mount()}})();
+return calc;
+})();
+
+/* 极限工具 · JSON  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).json=(()=>{
 /* ---------- JSON ---------- */
 function json(r){
  r.innerHTML=`<div class="bar"><button class="btn pri" data-m="fmt">格式化</button><button class="btn" data-m="min">压缩</button><button class="btn" data-m="sort">键排序</button><select id="ind"><option value="2">2 空格</option><option value="4">4 空格</option><option value="t">Tab</option></select><span class="sp"></span><span class="status" id="st">等待输入</span></div><div class="split">${pane('输入','i',0,'{"hello":"world"}')}${pane('输出','o',1)}</div>`;
@@ -428,6 +585,11 @@ function json(r){
  r.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{m=b.dataset.m;r.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('pri',x==b));run()});
  i.oninput=run;$('#ind').onchange=run;
 }
+return json;
+})();
+
+/* 极限工具 · Base64  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).base64=(()=>{
 /* ---------- Base64 ---------- */
 function b64(r){
  r.innerHTML=`<div class="bar"><button class="btn pri" data-m="e">编码</button><button class="btn" data-m="d">解码</button><label class="chk"><input type="checkbox" id="u">URL 安全</label><span class="sp"></span><span class="status" id="st"></span></div><div class="split">${pane('输入','i',0,'输入文本或 Base64')}${pane('输出','o',1)}</div>`;
@@ -438,6 +600,11 @@ function b64(r){
  r.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{m=b.dataset.m;r.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('pri',x==b));run()});
  i.oninput=run;$('#u').onchange=run;
 }
+return b64;
+})();
+
+/* 极限工具 · URL 编解码  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).url=(()=>{
 /* ---------- URL ---------- */
 function url(r){
  r.innerHTML=`<div class="bar"><button class="btn pri" data-m="c">编码 Component</button><button class="btn" data-m="u">编码 URI</button><button class="btn" data-m="d">解码</button><span class="sp"></span><span class="status" id="st"></span></div><div class="split">${pane('输入','i',0,'https://example.com/search?q=你好 世界&lang=zh')}${pane('输出','o',1)}</div><div class="h">URL 解析</div><div class="kvs" id="p"></div>`;
@@ -448,6 +615,11 @@ function url(r){
  r.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{m=b.dataset.m;r.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('pri',x==b));run()});
  i.oninput=run;run();
 }
+return url;
+})();
+
+/* 极限工具 · 时间戳  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).time=(()=>{
 /* ---------- Timestamp ---------- */
 function ts(r){
  r.innerHTML=`<div class="lbl">当前 Unix 时间戳（点击复制）</div><div class="bar"><div class="big" id="now"></div><span class="sp"></span><button class="btn" id="nowms">毫秒</button></div>
@@ -463,6 +635,11 @@ function ts(r){
  $('#d').oninput=e=>{const v=e.target.value.trim(),box=$('#k2');const d=new Date(v);if(!v||isNaN(d))return box.innerHTML='';kv(box,[['秒',String(Math.floor(d/1e3))],['毫秒',String(+d)]])};
  $('#d').value=fmtDate(new Date());$('#d').oninput({target:$('#d')});
 }
+return ts;
+})();
+
+/* 极限工具 · 哈希  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).hash=(()=>{
 /* ---------- Hash ---------- */
 function hash(r){
  r.innerHTML=`<div class="bar"><label class="chk"><input type="checkbox" id="up">大写输出</label><span class="sp"></span><span class="status">基于 Web Crypto · 实时计算</span></div>${pane('输入文本','i',0,'输入要计算哈希的文本','s')}<div class="h">结果</div><div class="kvs" id="k"></div>`;
@@ -471,12 +648,22 @@ function hash(r){
   kv($('#k'),l)};
  $('#i').oninput=run;$('#up').onchange=run;run();
 }
+return hash;
+})();
+
+/* 极限工具 · UUID  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).uuid=(()=>{
 /* ---------- UUID ---------- */
 function uuid(r){
  r.innerHTML=`<div class="bar"><button class="btn pri" id="g">重新生成</button><select id="n"><option>1</option><option selected>5</option><option>10</option><option>20</option></select><label class="chk"><input type="checkbox" id="up">大写</label><label class="chk"><input type="checkbox" id="nh">去掉连字符</label><span class="sp"></span><button class="btn" id="all">复制全部</button></div><div class="kvs" id="k"></div>`;
  let cur=[];const run=()=>{cur=Array.from({length:+$('#n').value},()=>{let u=uid();if($('#nh').checked)u=u.replace(/-/g,'');return $('#up').checked?u.toUpperCase():u});kv($('#k'),cur.map((u,i)=>['UUID v4 #'+(i+1),u]))};
  $('#g').onclick=run;['n','up','nh'].forEach(x=>$('#'+x).onchange=run);$('#all').onclick=()=>copy(cur.join('\n'));run();
 }
+return uuid;
+})();
+
+/* 极限工具 · 正则测试  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).regex=(()=>{
 /* ---------- Regex ---------- */
 function regex(r){
  r.innerHTML=`<div class="bar"><input class="in" id="p" style="flex:1;min-width:200px" placeholder="正则表达式，如 (\\d+)-(\\w+)" spellcheck="false"><input class="in" id="f" style="width:84px" value="g" spellcheck="false" title="标志"><span class="status" id="st"></span></div>${pane('测试文本','i',0,'在此输入要匹配的文本','s')}<div class="h">匹配高亮</div><div class="out" id="o"></div><div class="h">匹配详情</div><div class="kvs" id="k"></div>`;
@@ -488,6 +675,11 @@ function regex(r){
   catch(e){st.className='status err';st.textContent='✗ '+e.message}};
  ['p','f','i'].forEach(x=>$('#'+x).oninput=run);
 }
+return regex;
+})();
+
+/* 极限工具 · JWT 解码  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).jwt=(()=>{
 /* ---------- JWT ---------- */
 function jwt(r){
  r.innerHTML=`<div class="bar"><span class="status" id="st">粘贴 JWT 即可解码（不校验签名）</span></div>${pane('JWT','i',0,'eyJhbGciOi...','s')}<div class="row2"><div><div class="h">Header</div><div class="out" id="h"></div></div><div><div class="h">Payload</div><div class="out" id="pl"></div></div></div><div class="h">声明</div><div class="kvs" id="k"></div>`;
@@ -497,7 +689,11 @@ function jwt(r){
    if(typeof P.exp=='number')l.push(['状态',P.exp*1e3<Date.now()?'已过期':'有效中']);kv($('#k'),l)}
   catch(e){st.className='status err';st.textContent='✗ 不是有效的 JWT'}};
 }
+return jwt;
+})();
 
+/* 极限工具 · 文本对比  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).diff=(()=>{
 /* ---------- Diff ---------- */
 function diff(r){
  r.innerHTML=`<div class="bar"><label class="chk"><input type="checkbox" id="iw">忽略空白</label><label class="chk"><input type="checkbox" id="ic">忽略大小写</label><label class="chk"><input type="checkbox" id="od">仅显示差异</label><span class="sp"></span><button class="btn" id="sw">交换两侧</button><span class="status" id="st"></span></div><div class="split">${pane('原文','a',0,'原始文本','s')}${pane('新文','b',0,'修改后的文本','s')}</div><div class="h">差异</div><div class="out dif" id="o"></div>`;
@@ -529,6 +725,11 @@ function diff(r){
  ['a','b'].forEach(k=>$('#'+k).oninput=run);['iw','ic','od'].forEach(k=>$('#'+k).onchange=run);
  $('#sw').onclick=()=>{[$('#a').value,$('#b').value]=[$('#b').value,$('#a').value];run()};run();
 }
+return diff;
+})();
+
+/* 极限工具 · Cron  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).cron=(()=>{
 /* ---------- Cron ---------- */
 const MN='JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC'.split(' '),WN='SUN MON TUE WED THU FRI SAT'.split(' '),WD=['日','一','二','三','四','五','六'];
 function cf(s,lo,hi,names){const set=new Set(),val=x=>/^\d+$/.test(x)?+x:names?names.indexOf(x.toUpperCase())+lo:NaN;
@@ -570,7 +771,11 @@ function cron(r){
  for(let i=0;i<5;i++)$('#f'+i).oninput=()=>{x.value=[0,1,2,3,4].map(j=>$('#f'+j).value.trim()||'*').join(' ');run('f')};
  r.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{x.value=P[b.dataset.i][1];run()});run();
 }
+return cron;
+})();
 
+/* 极限工具 · 批量重命名  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).rename=(()=>{
 /* ---------- 批量重命名 ---------- */
 function rename(r){
  const ic=d=>`<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
@@ -725,7 +930,333 @@ function rename(r){
  if(!window.showDirectoryPicker){const w=$('#warn');w.hidden=false;w.textContent=window.isSecureContext?'当前浏览器不支持直接重命名文件，请使用 Chrome / Edge。仍可预览并导出脚本。':'当前页面不在安全上下文（例如通过局域网 http 地址打开），浏览器已禁用文件读写。请直接双击打开本地文件（file://），或使用 http://localhost 访问。仍可预览并导出脚本。'}
  render();
 }
+return rename;
+})();
 
+/* 极限工具 · 字幕处理  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).subtitle=(()=>{
+css('subtitle',String.raw`
+/* 字幕处理 */
+.sb [hidden]{display:none!important}
+.sb .cx-t{margin-bottom:18px}
+.sb-f{max-height:230px;overflow:auto;border:1px solid var(--line);border-radius:8px;margin-bottom:16px}
+.sb-i{display:grid;grid-template-columns:minmax(0,1fr) 48px auto 22px;gap:12px;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);cursor:pointer;font:14px var(--mono);transition:background .15s}
+.sb-i:last-child{border-bottom:0}
+.sb-i:hover,.sb-i.on{background:var(--accent-glow)}
+.sb-i.on{box-shadow:inset 2px 0 0 var(--gold)}
+.sb-i>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-i .m{color:var(--mu);font-size:13px}
+.sb-i .ghost{font-size:16px;padding:0;opacity:.6}.sb-i .ghost:hover{opacity:1;color:var(--err)}
+.sb-e{padding:30px 16px;text-align:center;color:var(--mu);cursor:pointer;font-size:14px}
+.sb-e strong{display:block;color:var(--gold2);font-size:17px;margin-bottom:4px}
+.sb-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px 22px;margin-bottom:16px}
+.sb-g .in,.sb-g select{width:100%}
+.sb-c{display:flex;gap:10px;align-items:center}.sb-c .in{flex:1;min-width:0}
+.sb input[type=color]{width:42px;height:28px;padding:0;border:1px solid var(--line2);border-radius:6px;background:none;cursor:pointer;flex:none}
+.sb input[type=number]{-moz-appearance:textfield}
+.sb-h{color:var(--dim);font-size:12.5px;line-height:1.5}
+.sb-note{color:var(--mu);font-size:13px;margin:-4px 0 14px}
+.sb textarea{min-height:280px;white-space:pre;overflow:auto}
+.sb .lbl{min-height:28px}
+@media(max-width:720px){.sb-i{grid-template-columns:minmax(0,1fr) 44px 22px}.sb-i .m2{display:none}.sb-g .fld[style]{grid-column:auto!important}}
+`);
+/* ---------- 字幕处理 ---------- */
+const subtitle=(()=>{
+const FM={srt:['SRT','.srt'],vtt:['VTT','.vtt'],ass:['ASS','.ass'],ssa:['SSA','.ssa'],sub:['SUB','.sub'],sbv:['SBV','.sbv'],lrc:['LRC','.lrc']};
+const FN=[['srt','SRT'],['vtt','WebVTT'],['ass','ASS（Advanced SSA）'],['ssa','SSA'],['sub','SUB（MicroDVD，按帧）'],['sbv','SBV（YouTube）'],['lrc','LRC（歌词）']];
+const CS=['ass','ssa','srt','vtt','sub'];
+const ENC_IN=[['auto','自动检测'],['utf-8','UTF-8'],['gb18030','GBK / GB18030'],['big5','Big5'],['shift_jis','Shift_JIS'],['euc-kr','EUC-KR'],['utf-16le','UTF-16 LE'],['utf-16be','UTF-16 BE'],['windows-1252','Windows-1252']];
+const ENC_OUT=[['bom','UTF-8（带 BOM）'],['utf8','UTF-8（无 BOM）'],['u16','UTF-16 LE']];
+const FPS=[23.976,24,25,29.97,30,50,59.94,60];
+let tab='c',files=[],sel=-1,R=null;
+const O={encIn:'auto',encOut:'bom',eol:'crlf',to:'srt',fpsIn:23.976,fpsOut:23.976,asFont:'Arial',asSize:60,asColor:'#FFFFFF',
+ adj:{color:false,hex:'#FFE5A0',size:false,sz:20,sz2:NaN,szmap:'',styles:'',clean:false,fps:false,f1:23.976,f2:25,off:false,sec:0}};
+
+/* ----- 时间 ----- */
+const pad=(n,w=2)=>String(n).padStart(w,'0');
+const hmsms=(ms,sep,hw=2)=>{ms=Math.max(0,Math.round(ms));return `${pad(ms/36e5|0,hw)}:${pad(ms/6e4%60|0)}:${pad(ms/1e3%60|0)}${sep}${pad(ms%1000,3)}`};
+const tAss=ms=>{const c=Math.max(0,Math.round(ms/10));return `${c/36e4|0}:${pad(c/6e3%60|0)}:${pad(c/100%60|0)}.${pad(c%100)}`};
+const tLrc=ms=>{const c=Math.max(0,Math.round(ms/10));return `${pad(c/6e3|0)}:${pad(c/100%60|0)}.${pad(c%100)}`};
+const pt=s=>{const m=/^\s*(?:(\d+):)?(\d+):(\d+)(?:[.,:](\d+))?\s*$/.exec(s);if(!m)return NaN;
+ return((+(m[1]||0))*3600+(+m[2])*60+(+m[3]))*1000+(m[4]?parseInt((m[4]+'00').slice(0,3),10):0)};
+const bgrOf=h=>{h=h.replace('#','').toUpperCase();return h.slice(4,6)+h.slice(2,4)+h.slice(0,2)};
+const okHex=h=>/^#?[0-9a-f]{6}$/i.test(h);
+
+/* ----- 编码 ----- */
+function decode(buf,enc){const u=new Uint8Array(buf);let e=enc;
+ if(e=='auto'){if(u[0]==0xFF&&u[1]==0xFE)e='utf-16le';else if(u[0]==0xFE&&u[1]==0xFF)e='utf-16be';
+  else{try{new TextDecoder('utf-8',{fatal:true}).decode(u);e='utf-8'}catch(_){e='gb18030'}}}
+ let s;try{s=new TextDecoder(e).decode(u)}catch(_){e='utf-8';s=new TextDecoder(e).decode(u)}
+ return{text:s.replace(/^\uFEFF/,''),enc:e}}
+function encode(s,enc){
+ if(enc=='u16'){const a=new Uint16Array(s.length+1);a[0]=0xFEFF;for(let i=0;i<s.length;i++)a[i+1]=s.charCodeAt(i);return new Blob([a],{type:'text/plain;charset=utf-16le'})}
+ return new Blob([enc=='bom'?'\uFEFF':'',s],{type:'text/plain;charset=utf-8'})}
+const eolFix=s=>{s=s.replace(/\r\n?/g,'\n');return O.eol=='crlf'?s.replace(/\n/g,'\r\n'):s};
+
+/* ----- 格式识别 ----- */
+function sniff(name,t){const x=((name.match(/\.([a-z0-9]+)$/i)||[])[1]||'').toLowerCase();
+ if(/^\s*WEBVTT/.test(t))return'vtt';
+ if(/^\s*\[Script Info\]/im.test(t))return/^\[V4\+ Styles\]/im.test(t)||/ScriptType:\s*v4\.00\+/i.test(t)?'ass':'ssa';
+ if(/^\s*\{\d+\}\{\d+\}/m.test(t))return'sub';
+ if(/^\s*\d+:\d\d:\d\d\.\d{3},\d+:\d\d:\d\d\.\d{3}\s*$/m.test(t))return'sbv';
+ if(/\d:\d\d[.,]\d+\s*-->\s*\d/.test(t))return'srt';
+ if(/^\s*\[\d+:\d\d(?:[.:]\d+)?\]/m.test(t))return'lrc';
+ return FM[x]&&x!='sub'?x:''}
+
+/* ----- 解析：得到 {s,e,t(原始标记)} ----- */
+function parse(t,fmt,fps){const L=t.replace(/\r\n?/g,'\n');let c=[];const meta={};
+ if(fmt=='srt'||fmt=='vtt'){
+  for(const b of L.split(/\n{2,}/)){const ls=b.split('\n');if(/^(NOTE|STYLE|REGION)\b/.test(ls[0].trim()))continue;
+   const i=ls.findIndex(x=>x.includes('-->'));if(i<0)continue;
+   const m=/^\s*([\d:.,]+)\s*-->\s*([\d:.,]+)/.exec(ls[i]);if(!m)continue;const s=pt(m[1]),e=pt(m[2]);if(isNaN(s)||isNaN(e))continue;
+   c.push({s,e,t:ls.slice(i+1).join('\n').replace(/\s+$/,'')})}}
+ else if(fmt=='ass'||fmt=='ssa'){let sec='',F=null;
+  for(const ln of L.split('\n')){const h=/^\[(.+?)\]/.exec(ln);if(h){sec=h[1].toLowerCase();continue}
+   if(sec!='events')continue;
+   if(/^Format:/i.test(ln)){F=ln.slice(7).split(',').map(x=>x.trim().toLowerCase());continue}
+   const m=/^Dialogue:\s?(.*)$/i.exec(ln);if(!m||!F)continue;
+   const p=m[1].split(','),n=F.length,s=pt(p[F.indexOf('start')]),e=pt(p[F.indexOf('end')]);if(isNaN(s)||isNaN(e))continue;
+   c.push({s,e,t:p.slice(n-1).join(',')})}
+  c.sort((a,b)=>a.s-b.s)}
+ else if(fmt=='sub'){
+  for(const ln of L.split('\n')){const m=/^\s*\{(\d+)\}\{(\d+)\}(.*)$/.exec(ln);if(!m)continue;
+   if(!c.length&&!meta.fps&&+m[1]<=1&&m[1]==m[2]&&/^\s*\d+(?:\.\d+)?\s*$/.test(m[3])){meta.fps=parseFloat(m[3]);continue}
+   c.push({f1:+m[1],f2:+m[2],t:m[3]})}
+  const F=meta.fps||fps||23.976;for(const q of c){q.s=q.f1/F*1000;q.e=q.f2/F*1000}}
+ else if(fmt=='sbv'){
+  for(const b of L.split(/\n{2,}/)){const ls=b.trim().split('\n');const m=/^([\d:.]+),([\d:.]+)$/.exec(ls[0].trim());if(!m)continue;
+   c.push({s:pt(m[1]),e:pt(m[2]),t:ls.slice(1).join('\n')})}}
+ else if(fmt=='lrc'){const a=[];
+  for(const ln of L.split('\n')){const st=[...ln.matchAll(/\[(\d+):(\d+(?:[.:]\d+)?)\]/g)];if(!st.length)continue;
+   const tx=ln.replace(/\[[^\]]*\]/g,'').trim();
+   for(const m of st)a.push({s:(+m[1])*6e4+Math.round(parseFloat(m[2].replace(':','.'))*1000),t:tx})}
+  a.sort((x,y)=>x.s-y.s);a.forEach((x,i)=>{x.e=i+1<a.length?a[i+1].s:x.s+3000});c=a.filter(x=>x.t)}
+ return{c,meta}}
+
+/* ----- 文本标记归一：只保留 <i> <b> <u> 与换行 ----- */
+const ent=s=>s.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&');
+function norm(fmt,t){
+ if(fmt=='srt'||fmt=='vtt'){
+  t=t.replace(/\{\\[^}]*\}/g,'').replace(/<(\/?)([ibu])\s*>/gi,(_,a,b)=>`\u0001${a}${b.toLowerCase()}\u0002`).replace(/<[^>]*>/g,'').replace(/\u0001/g,'<').replace(/\u0002/g,'>');
+  return fmt=='vtt'?ent(t):t}
+ if(fmt=='ass'||fmt=='ssa'){const st={i:0,b:0,u:0};let o='';
+  for(const m of t.matchAll(/\{[^}]*\}|\\[Nn]|\\h|[^{\\]+|\\/g)){const x=m[0];
+   if(x[0]=='{'){for(const g of x.matchAll(/\\([ibu])([01])(?!\d)/g)){const k=g[1],v=+g[2];if(st[k]!=v){o+=`<${v?'':'/'}${k}>`;st[k]=v}}}
+   else if(x=='\\N'||x=='\\n')o+='\n';else if(x=='\\h')o+=' ';else o+=x}
+  for(const k of['u','b','i'])if(st[k])o+=`</${k}>`;return o}
+ if(fmt=='sub')return t.split('|').map(l=>{let f='';l=l.replace(/^\{y:([ibu]+)\}/i,(_,x)=>{f=x.toLowerCase();return''}).replace(/\{[^}]*\}/g,'');for(const k of f)l=`<${k}>${l}</${k}>`;return l}).join('\n');
+ return t}
+
+/* ----- 写出 ----- */
+const strip=t=>t.replace(/<\/?[ibu]>/g,'');
+const assText=t=>t.replace(/<(\/?)([ibu])>/g,(_,a,k)=>`{\\${k}${a?0:1}}`).replace(/\n/g,'\\N');
+function write(n,to,o){
+ if(to=='srt')return n.map((c,i)=>`${i+1}\n${hmsms(c.s,',')} --> ${hmsms(c.e,',')}\n${c.t}\n`).join('\n');
+ if(to=='vtt')return'WEBVTT\n\n'+n.map(c=>`${hmsms(c.s,'.')} --> ${hmsms(c.e,'.')}\n${c.t.replace(/&/g,'&amp;')}\n`).join('\n');
+ if(to=='ass'||to=='ssa'){const font=String(o.asFont||'Arial').replace(/,/g,' '),size=Math.max(1,Math.round(o.asSize)||60),b=bgrOf(okHex(o.asColor)?o.asColor:'#FFFFFF');
+  const ev=n.map(c=>`Dialogue: ${to=='ass'?'0':'Marked=0'},${tAss(c.s)},${tAss(c.e)},Default,,0,0,0,,${assText(c.t)}`).join('\n')+'\n';
+  if(to=='ass')return`[Script Info]\n; Converted by 极限工具\nScriptType: v4.00+\nPlayResX: 1920\nPlayResY: 1080\nWrapStyle: 0\nScaledBorderAndShadow: yes\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Default,${font},${size},&H00${b},&H000000FF,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,2,1,2,30,30,40,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n${ev}`;
+  return`[Script Info]\n; Converted by 极限工具\nScriptType: v4.00\nPlayResX: 1920\nPlayResY: 1080\n\n[V4 Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, TertiaryColour, BackColour, Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding\nStyle: Default,${font},${size},${parseInt(b,16)},255,0,0,0,0,1,2,1,2,30,30,40,0,1\n\n[Events]\nFormat: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n${ev}`}
+ if(to=='sub'){const f=o.fpsOut>0?o.fpsOut:23.976,fr=ms=>Math.round(ms*f/1000);
+  return`{1}{1}${f}\n`+n.map(c=>{const a=fr(c.s),e=Math.max(a+1,fr(c.e));
+   const tx=c.t.split('\n').map(l=>{let k='';for(let i=0;i<3;i++)l=l.replace(/^<([ibu])>(.*)<\/\1>$/,(_,x,y)=>{k+=x;return y});return(k?`{y:${k}}`:'')+strip(l)}).join('|');
+   return`{${a}}{${e}}${tx}`}).join('\n')+'\n'}
+ if(to=='sbv')return n.map(c=>`${hmsms(c.s,'.',1)},${hmsms(c.e,'.',1)}\n${strip(c.t)}\n`).join('\n');
+ if(to=='lrc')return n.map(c=>`[${tLrc(c.s)}]${strip(c.t).replace(/\n/g,' ')}`).join('\n')+'\n';
+ throw Error('不支持的目标格式')}
+
+/* ----- 格式转换 ----- */
+function conv(f){if(!f.fmt)throw Error('无法识别字幕格式');const to=O.to,notes=[];
+ if(to==f.fmt&&!(to=='sub'&&O.fpsIn!=O.fpsOut))return{text:f.text,notes:['格式相同，仅转换编码 / 换行']};
+ const{c}=parse(f.text,f.fmt,O.fpsIn);
+ const n=c.map(x=>({s:x.s,e:x.e,t:norm(f.fmt,x.t).replace(/\n\s*\n+/g,'\n').trim()})).filter(x=>x.t);
+ if(!n.length)throw Error('没有解析到字幕条目');
+ if((f.fmt=='ass'||f.fmt=='ssa')&&to!='ass'&&to!='ssa')notes.push('样式与特效不会保留');
+ if(to=='lrc')notes.push('LRC 只有开始时间');
+ if(to=='sbv'||to=='lrc')notes.push('不含粗体 / 斜体标记');
+ return{text:write(n,to,O),notes}}
+
+/* ----- 字幕调整（尽量原样修改，保留其它内容） ----- */
+const assCol=(old,hex)=>{const b=bgrOf(hex);old=old.trim();if(/^-?\d+$/.test(old))return String(parseInt(b,16));
+ const al=(/^&H([0-9a-f]{2})[0-9a-f]{6}&?$/i.exec(old)||[])[1]||'00';return`&H${al}${b}`};
+const fz=v=>Math.round(v*100)/100;
+const sizeMap=s=>{const m=new Map();for(const x of String(s||'').split(/[,，;；]/)){const k=/^\s*(.+?)\s*[=:：]\s*(\d+(?:\.\d+)?)\s*$/.exec(x);if(k&&+k[2]>0)m.set(k[1].toLowerCase(),+k[2])}return m};
+/* 把多行文本拆成每行自成一体（i/b/u 标签跨行时补全），便于逐行套字体标签 */
+const selfClosed=ls=>{const open=[];return ls.map(l=>{const pre=open.map(k=>`<${k}>`).join('');
+ for(const m of l.matchAll(/<(\/?)([ibu])>/gi)){const k=m[2].toLowerCase();if(m[1]){const j=open.lastIndexOf(k);if(j>=0)open.splice(j,1)}else open.push(k)}
+ return pre+l+[...open].reverse().map(k=>`</${k}>`).join('')})};
+function adjust(f,a){if(!f.fmt)throw Error('无法识别字幕格式');
+ const t=f.text,fmt=f.fmt,notes=[],can=CS.includes(fmt),cs=a.color&&can&&okHex(a.hex),
+  szm=sizeMap(a.szmap),s1=a.sz>0?a.sz:0,s2=a.sz2>0?a.sz2:0,zs=a.size&&can&&!!(s1||s2||szm.size);
+ if(a.color&&!can)notes.push(FM[fmt][0]+' 不支持颜色，已跳过');if(a.size&&!can)notes.push(FM[fmt][0]+' 不支持字号，已跳过');
+ const ratio=a.fps&&a.f1>0&&a.f2>0?a.f1/a.f2:1,off=a.off&&isFinite(a.sec)?a.sec*1000:0,tm=ratio!=1||off!=0;
+ if(!tm&&!cs&&!zs)return{text:t,notes:notes.concat('没有可应用的调整项')};
+ const T=ms=>Math.max(0,ms*ratio+off),hex=a.hex.replace('#','').toUpperCase(),sz=fz(s1),b=cs?bgrOf(hex):'',nl=/\r\n/.test(t)?'\r\n':'\n';
+ let out;
+ if(fmt=='ass'||fmt=='ssa'){let sec='',SF=null,EF=null,hit=0;
+  const names=(a.styles||'').split(/[,，;；]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
+  const clean=x=>{if(cs)x=x.replace(/\\1?c&H[0-9A-Fa-f]+&?/g,'');if(zs)x=x.replace(/\\fs\d+(?:\.\d+)?/g,'');return x.replace(/\{\}/g,'')};
+  out=t.split(/\r?\n/).map(ln=>{const h=/^\[(.+?)\]/.exec(ln);if(h){sec=h[1].toLowerCase();return ln}
+   if(sec.includes('styles')){
+    if(/^Format:/i.test(ln)){SF=ln.slice(7).split(',').map(x=>x.trim().toLowerCase());return ln}
+    const m=/^(Style:\s?)(.*)$/i.exec(ln);if(!m||!SF)return ln;const p=m[2].split(',');if(p.length<SF.length)return ln;
+    const nm=p[SF.indexOf('name')].trim().toLowerCase(),inF=!names.length||names.includes(nm);
+    const kf=SF.indexOf('fontsize'),kc=SF.indexOf('primarycolour');
+    if(zs&&kf>=0){const v=szm.has(nm)?szm.get(nm):(inF?s1:0);if(v){p[kf]=String(fz(v));hit++}}
+    if(cs&&kc>=0&&inF){p[kc]=assCol(p[kc],hex);hit++}
+    return m[1]+p.join(',')}
+   if(sec=='events'){
+    if(/^Format:/i.test(ln)){EF=ln.slice(7).split(',').map(x=>x.trim().toLowerCase());return ln}
+    const m=/^((?:Dialogue|Comment):\s?)(.*)$/i.exec(ln);if(!m||!EF)return ln;const p=m[2].split(','),n=EF.length;if(p.length<n)return ln;
+    const h2=p.slice(0,n-1);let tx=p.slice(n-1).join(',');
+    if(tm){const si=EF.indexOf('start'),ei=EF.indexOf('end'),s=pt(h2[si]),e=pt(h2[ei]);if(!isNaN(s)&&!isNaN(e)){h2[si]=tAss(T(s));h2[ei]=tAss(T(e))}}
+    const st=h2[EF.indexOf('style')].trim().toLowerCase(),on=!names.length||names.includes(st)||szm.has(st);
+    if(a.clean&&(cs||zs)&&on)tx=clean(tx);
+    if(zs&&s2&&on)tx=tx.replace(/\\[Nn]((?:\{[^}]*\})*)/,g=>{hit++;return g+`{\\fs${fz(s2)}}`});
+    return m[1]+h2.concat(tx).join(',')}
+   return ln}).join(nl);
+  if((cs||s1||s2||szm.size)&&!hit)notes.push('没有匹配的样式（检查样式名）')}
+ else if(fmt=='vtt'){let L=t.split(/\r?\n/);
+  if(tm)L=L.map(ln=>ln.includes('-->')?ln.replace(/^(\s*)([\d:.,]+)(\s*-->\s*)([\d:.,]+)/,(_,x,s,m,e)=>x+hmsms(T(pt(s)),'.')+m+hmsms(T(pt(e)),'.')):ln);
+  if(zs&&(s2||szm.size))notes.push('VTT 不支持分行 / 分样式字号，已忽略');
+  if(cs||(zs&&s1)){let i=L.findIndex((x,k)=>k>0&&!x.trim());if(i<0){L.push('');i=L.length-1}
+   L.splice(i+1,0,'STYLE',`::cue{${cs?`color:#${hex};`:''}${zs&&s1?`font-size:${sz}px;`:''}}`,'')}
+  out=L.join(nl)}
+ else if(fmt=='srt'){const{c}=parse(t,'srt');if(zs&&szm.size)notes.push('SRT 没有样式，已忽略分样式字号');if(!c.length)throw Error('没有解析到字幕条目');
+  out=c.map((x,i)=>{let s=x.t;
+   if(cs||zs){s=s.replace(/<font\b([^>]*)>/gi,(_,at)=>{if(cs)at=at.replace(/\s*color\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi,'');if(zs)at=at.replace(/\s*size\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi,'');return`<font${at}>`});
+    const sw=(l,v)=>{const at=(cs?` color="#${hex}"`:'')+(zs&&v?` size="${fz(v)}"`:'');return at?`<font${at}>${l}</font>`:l};
+    const ls=s.split('\n');s=zs&&s2&&ls.length>1?selfClosed(ls).map((l,k)=>sw(l,k?s2:s1)).join('\n'):sw(s,s1)}
+   return`${i+1}${nl}${hmsms(T(x.s),',')} --> ${hmsms(T(x.e),',')}${nl}${s.replace(/\n/g,nl)}${nl}`}).join(nl)}
+ else if(fmt=='sub'){
+  if(zs&&szm.size)notes.push('SUB 没有样式，已忽略分样式字号');
+  const hd=/^\s*\{1\}\{1\}\s*(\d+(?:\.\d+)?)\s*$/m.exec(t),fp=hd?+hd[1]:((a.fps&&a.f1>0?a.f1:O.fpsIn)||23.976);
+  out=t.split(/\r?\n/).map(ln=>{const m=/^(\s*)\{(\d+)\}\{(\d+)\}(.*)$/.exec(ln);if(!m)return ln;
+   if(hd&&+m[2]<=1&&m[2]==m[3]&&/^\s*\d+(?:\.\d+)?\s*$/.test(m[4]))return ln;
+   let n1=+m[2],n2=+m[3];if(tm){const g=v=>Math.max(0,Math.round(T(v/fp*1000)*fp/1000));n1=g(n1);n2=g(n2)}
+   let x=m[4];if(cs||zs){x=x.split('|').map((l,k)=>{if(cs)l=l.replace(/\{c:[^}]*\}/gi,'');if(zs)l=l.replace(/\{s:[^}]*\}/gi,'');const v=k?(s2||s1):s1;return(cs?`{c:$${b}}`:'')+(zs&&v?`{s:${fz(v)}}`:'')+l}).join('|')}
+   return`${m[1]}{${n1}}{${n2}}${x}`}).join(nl)}
+ else if(fmt=='sbv')out=t.replace(/^([ \t]*)([\d:.]+),([\d:.]+)([ \t\r]*)$/gm,(_,x,s,e,z)=>x+hmsms(T(pt(s)),'.',1)+','+hmsms(T(pt(e)),'.',1)+z);
+ else if(fmt=='lrc')out=t.replace(/\[(\d+):(\d+(?:[.:]\d+)?)\]/g,(_,mi,s)=>`[${tLrc(T((+mi)*6e4+Math.round(parseFloat(s.replace(':','.'))*1000)))}]`);
+ else throw Error('不支持的格式');
+ return{text:out,notes}}
+
+/* ----- 界面 ----- */
+const q=s=>R.querySelector(s),$$=s=>[...R.querySelectorAll(s)];
+const opt=(l,v)=>l.map(([k,n])=>`<option value="${k}"${String(k)==String(v)?' selected':''}>${n}</option>`).join('');
+const ic=d=>`<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+const base=n=>n.replace(/\.[^.\\/]+$/,''),ext=n=>(n.match(/\.[^.\\/]+$/)||[''])[0];
+const outName=f=>tab=='c'?(O.to==f.fmt?f.name:base(f.name)+FM[O.to][1]):base(f.name)+'.adjusted'+(ext(f.name)||FM[f.fmt][1]);
+function save(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),30000)}
+function mk(name,buf){const d=decode(buf,O.encIn),f={name,buf,text:d.text,enc:d.enc};info(f);return f}
+function info(f){f.fmt=sniff(f.name,f.text);f.n=0;if(f.fmt)try{f.n=parse(f.text,f.fmt,O.fpsIn).c.length}catch(_){}}
+async function add(fl){let n=0;for(const f of fl){if(f.size>2e7){toast(f.name+' 过大，已跳过',true);continue}files.push(mk(f.name,await f.arrayBuffer()));n++}
+ if(n&&sel<0)sel=0;if(n)toast(`已添加 ${n} 个文件`);list();preview()}
+function list(){const L=q('#sbL');
+ if(!files.length){L.innerHTML='<div class="sb-e" id="sbE"><strong>拖放字幕文件到此处</strong>或点击选择（SRT · VTT · ASS · SSA · SUB · SBV · LRC，可多选）</div>';sync();return}
+ L.innerHTML=files.map((f,i)=>`<div class="sb-i${i==sel?' on':''}" data-i="${i}"><span title="${esc(f.name)}">${esc(f.name)}</span><span class="m">${f.fmt?FM[f.fmt][0]:'未识别'}</span><span class="m m2">${f.enc.toUpperCase()} · ${f.n} 条</span><button class="ghost" data-del="${i}" aria-label="移除">×</button></div>`).join('');sync()}
+function sync(){
+ for(const el of $$('[data-show]')){const k=el.dataset.show;el.hidden=!(k=='src'?files.some(f=>f.fmt=='sub'):k=='dst'?O.to=='sub':k=='ass'?(O.to=='ass'||O.to=='ssa'):true)}
+ const r=q('#sbR');if(r){const a=O.adj;r.textContent=a.f1>0&&a.f2>0?`时间轴 × ${(a.f1/a.f2).toFixed(5)}`:''}}
+function preview(){const f=files[sel],A=q('#sbA'),B=q('#sbB'),M=q('#sbM');A.value=f?f.text:'';B.value='';M.textContent='';M.className='status';
+ if(!f)return;
+ try{const r=tab=='c'?conv(f):adjust(f,O.adj);B.value=r.text;M.textContent=r.notes.join('；');}catch(e){M.textContent=e.message;M.classList.add('err')}}
+async function download(){const ok=files.filter(f=>f.fmt);if(!ok.length)return toast(files.length?'没有可识别的字幕文件':'请先添加字幕文件',true);
+ let n=0;const bad=[];
+ for(const f of ok){try{const r=tab=='c'?conv(f):adjust(f,O.adj);save(outName(f),encode(eolFix(r.text),O.encOut));n++;await new Promise(r=>setTimeout(r,250))}catch(e){bad.push(`${f.name}：${e.message}`)}}
+ if(bad.length)toast(`${n} 个已导出，失败：${bad.join('；')}`,true);else toast(`已导出 ${n} 个文件`)}
+function common(){return`<label class="fld">源编码<select data-k="encIn">${opt(ENC_IN,O.encIn)}</select></label>
+ <label class="fld">输出编码<select data-k="encOut">${opt(ENC_OUT,O.encOut)}</select></label>
+ <label class="fld">换行<select data-k="eol">${opt([['crlf','CRLF（Windows）'],['lf','LF']],O.eol)}</select></label>`}
+const fpsIn=(k,v)=>`<input class="in" type="number" step="any" min="0.001" list="sbFps" data-k="${k}" value="${v}">`;
+function render(){const a=O.adj;
+ q('#sbT').innerHTML=[['c','格式转换'],['a','字幕调整']].map(([k,n])=>`<button class="btn${k==tab?' pri':''}" data-tab="${k}">${n}</button>`).join('');
+ q('#sbO').innerHTML=tab=='c'?`<div class="sb-g">
+  <label class="fld">目标格式<select data-k="to">${opt(FN,O.to)}</select></label>${common()}
+  <label class="fld" data-show="src">源帧速率（SUB 未声明时使用）${fpsIn('fpsIn',O.fpsIn)}</label>
+  <label class="fld" data-show="dst">目标帧速率${fpsIn('fpsOut',O.fpsOut)}</label>
+  <label class="fld" data-show="ass">ASS / SSA 字体<input class="in" data-k="asFont" value="${esc(O.asFont)}" spellcheck="false"></label>
+  <label class="fld" data-show="ass">ASS / SSA 字号<input class="in" type="number" min="1" data-k="asSize" value="${O.asSize}"></label>
+  <label class="fld" data-show="ass">ASS / SSA 颜色<span class="sb-c"><input type="color" data-k="asColor" value="${O.asColor}"></span></label></div>`
+ :`<div class="sb-g">${common()}</div>
+  <p class="sb-note">颜色 / 字号：ASS · SSA · SRT · VTT · SUB　｜　帧速率 / 时间偏移：全部格式</p>
+  <div class="rg">
+  <div class="rr"><label class="rh"><input type="checkbox" class="sw" data-k="adj.color"${a.color?' checked':''}>颜色</label><div class="rb">
+   <div class="sb-c"><input type="color" data-k="adj.hex" value="${a.hex}"><input class="in" data-k="adj.hex" value="${a.hex}" maxlength="7" spellcheck="false" aria-label="颜色值"></div>
+   <small class="sb-h">ASS / SSA 改样式主色；SRT / SUB 写入字体标签；VTT 写入 ::cue 样式</small></div></div>
+  <div class="rr"><label class="rh"><input type="checkbox" class="sw" data-k="adj.size"${a.size?' checked':''}>字号</label><div class="rb">
+   <div class="row2"><label class="fld">第一行 / 统一<input class="in" type="number" min="1" step="any" data-k="adj.sz" value="${a.sz}"></label>
+    <label class="fld">第二行（留空同第一行）<input class="in" type="number" min="1" step="any" data-k="adj.sz2" value="${isNaN(a.sz2)?'':a.sz2}"></label></div>
+   <small class="sb-h">两行在同一条字幕里时用「第二行」（VTT 不支持）；ASS 中英分成不同样式时用下方「分样式字号」。ASS 为样式字号，SRT / SUB 由播放器解释</small></div></div>
+  <div class="rr"><label class="rh"><input type="checkbox" class="sw" data-k="adj.fps"${a.fps?' checked':''}>帧速率</label><div class="rb">
+   <div class="row2"><label class="fld">源帧速率${fpsIn('adj.f1',a.f1)}</label><label class="fld">目标帧速率${fpsIn('adj.f2',a.f2)}</label></div>
+   <small class="sb-h" id="sbR"></small></div></div>
+  <div class="rr"><label class="rh"><input type="checkbox" class="sw" data-k="adj.off"${a.off?' checked':''}>时间偏移</label><div class="rb">
+   <input class="in" type="number" step="0.1" data-k="adj.sec" value="${a.sec}" aria-label="偏移秒数">
+   <small class="sb-h">单位：秒。正数延后，负数提前</small></div></div></div>
+  <div class="sb-g"><label class="fld" style="grid-column:span 2">ASS / SSA 分样式字号（样式名=字号，逗号分隔）<input class="in" data-k="adj.szmap" value="${esc(a.szmap)}" placeholder="Default=20, E=12" spellcheck="false"></label></div>
+  <div class="sb-g"><label class="fld" style="grid-column:span 2">ASS / SSA 作用样式（颜色 / 统一字号；逗号分隔，留空为全部）<input class="in" data-k="adj.styles" value="${esc(a.styles)}" placeholder="如 Default, Top" spellcheck="false"></label>
+   <label class="chk" style="align-self:end"><input type="checkbox" data-k="adj.clean"${a.clean?' checked':''}>同时清除行内颜色 / 字号标签</label></div>`;
+ sync();list();preview()}
+function setK(k,v){const p=k.split('.');let o=O;while(p.length>1)o=o[p.shift()];o[p[0]]=v}
+function init(r){R=document.createElement('div');R.className='sb';
+ R.innerHTML=`<div class="cx-t"><div class="bar" id="sbT"></div></div>
+ <div class="bar"><button class="ibtn" id="sbAdd" title="添加字幕文件" aria-label="添加字幕文件">${ic('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 12v6M9 15h6"/>')}</button>
+  <button class="ibtn" id="sbClr" title="清空列表" aria-label="清空列表">${ic('<path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/>')}</button>
+  <span class="sp"></span><button class="btn pri" id="sbGo">下载全部</button></div>
+ <input type="file" id="sbFile" multiple hidden accept=".srt,.vtt,.ass,.ssa,.sub,.sbv,.lrc,.txt,text/*">
+ <datalist id="sbFps">${FPS.map(x=>`<option value="${x}">`).join('')}</datalist>
+ <div class="sb-f" id="sbL"></div><div id="sbO"></div>
+ <div class="status" id="sbM" style="min-height:22px;margin-bottom:10px"></div>
+ <div class="split"><div class="pane"><div class="lbl">原文</div><textarea id="sbA" readonly spellcheck="false" aria-label="原文"></textarea></div>
+  <div class="pane"><div class="lbl">结果<span class="sp"></span><button class="ghost" data-c="#sbB">复制</button></div><textarea id="sbB" readonly spellcheck="false" aria-label="结果"></textarea></div></div>`;
+ r.replaceChildren(R);
+ const pick=()=>q('#sbFile').click();
+ q('#sbAdd').onclick=pick;q('#sbGo').onclick=download;
+ q('#sbClr').onclick=()=>{files=[];sel=-1;list();preview()};
+ q('#sbFile').onchange=async e=>{await add(e.target.files);e.target.value=''};
+ R.onclick=e=>{const t=e.target.closest('[data-tab]');if(t){tab=t.dataset.tab;render();return}
+  if(e.target.closest('#sbE')){pick();return}
+  const d=e.target.closest('[data-del]');if(d){const i=+d.dataset.del;files.splice(i,1);if(sel>=files.length)sel=files.length-1;list();preview();return}
+  const it=e.target.closest('.sb-i');if(it){sel=+it.dataset.i;list();preview()}};
+ R.addEventListener('input',e=>{const el=e.target.closest('[data-k]');if(!el)return;const k=el.dataset.k;let v;
+  if(el.type=='checkbox')v=el.checked;else if(el.type=='number')v=parseFloat(el.value);else v=el.value;
+  if(el.type=='text'&&k.endsWith('hex')){if(!okHex(v))return;v=(v[0]=='#'?v:'#'+v).toUpperCase()}
+  if(el.type=='color')v=v.toUpperCase();
+  setK(k,v);for(const o of $$(`[data-k="${k}"]`))if(o!==el&&o.type!='checkbox')o.value=v;
+  if(k=='encIn'){for(const f of files){const d=decode(f.buf,O.encIn);f.text=d.text;f.enc=d.enc;info(f)}list()}
+  else if(['fpsIn'].includes(k)){for(const f of files)info(f);list()}
+  else sync();
+  preview()});
+ R.addEventListener('dragover',e=>{e.preventDefault();r.classList.add('drop')});
+ R.addEventListener('dragleave',e=>{if(!e.relatedTarget||!R.contains(e.relatedTarget))r.classList.remove('drop')});
+ R.addEventListener('drop',async e=>{e.preventDefault();r.classList.remove('drop');await add(e.dataTransfer.files)});
+ render()}
+return init})();
+return subtitle;
+})();
+
+/* 极限工具 · 视频下载  —  依赖外壳提供的公共函数：$ esc toast copy kv pane enc64 dec64 pad uid fmtDate css */
+(window.TOOLS??={}).video=(()=>{
+css('video',String.raw`
+/* 视频下载器 */
+#vdlg{width:min(460px,92vw)}
+#vdlg .in{width:100%}
+.vi{display:grid;grid-template-columns:128px minmax(0,1fr);gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.vi:last-child{border-bottom:0}
+.vth{width:128px;aspect-ratio:16/9;border:1px solid var(--line);border-radius:8px;overflow:hidden;display:grid;place-items:center;color:var(--dim);font:12px var(--mono)}
+.vth img{width:100%;height:100%;object-fit:cover}
+.vtt{font-size:15px;color:var(--tx);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all}
+.vmt{font-size:13px;color:var(--mu);margin-top:2px}
+.vmt b{color:var(--gold);font-weight:500;margin-right:8px}
+.vac{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.vpg{height:2px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:8px;display:none}
+.vpg i{display:block;height:100%;width:0;background:var(--gold);transition:width .3s}
+.vi.run .vpg{display:block}
+.vms{font:13px var(--mono);color:var(--mu);margin-top:6px;word-break:break-all}.vms:empty{display:none}
+.vms.ok{color:var(--ok)}.vms.err{color:var(--err)}
+@media(max-width:720px){.vi{grid-template-columns:96px minmax(0,1fr);gap:10px}.vth{width:96px}}
+`);
 /* ---------- 视频下载器 ---------- */
 function video(r){
  const LS='devbox.video.base',DEF='http://127.0.0.1:8765';
@@ -810,133 +1341,44 @@ function video(r){
  vu.onkeydown=e=>{if(e.key=='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();$('#vg').click()}};
  check();
 }
+return video;
+})();
 
-/* ---------- 计算器 ---------- */
-const calc=(()=>{
-const OPN={'+':'+','-':'−','*':'×','/':'÷','^':'^'},$$=s=>[...root.querySelectorAll(s)],q=s=>root.querySelector(s);
-let root,tab='c',sub={d:'diff',f:'dep'},sci=false,deg=true,hist=[],S={cur:'0',prev:0,op:'',fresh:false,wait:false,done:false,err:'',rep:null};
-/* ----- 计算引擎 ----- */
-const R=x=>{if(!isFinite(x))throw Error('结果无效');return x===0?'0':String(parseFloat(x.toPrecision(15)))},snap=x=>Math.abs(x)<1e-14?0:x;
-const bin=(a,b,o)=>{if(o=='/'&&b==0)throw Error('不能除以 0');return{'+':a+b,'-':a-b,'*':a*b,'/':a/b,'^':a**b}[o]};
-const ang=x=>deg?x*Math.PI/180:x,inv=v=>deg?v*180/Math.PI:v;
-const F={sin:x=>snap(Math.sin(ang(x))),cos:x=>snap(Math.cos(ang(x))),tan:x=>{if(Math.abs(Math.cos(ang(x)))<1e-14)throw Error('tan 无定义');return snap(Math.tan(ang(x)))},
- asin:x=>inv(Math.asin(x)),acos:x=>inv(Math.acos(x)),atan:x=>inv(Math.atan(x)),log:Math.log10,ln:Math.log,sqrt:Math.sqrt,cbrt:Math.cbrt,sq:x=>x*x,cube:x=>x**3,
- rec:x=>{if(!x)throw Error('不能除以 0');return 1/x},abs:Math.abs,ten:x=>10**x,exp:Math.exp,fact:x=>{if(x<0||x>170||x%1)throw Error('阶乘仅支持 0–170 的整数');let r=1;for(let i=2;i<=x;i++)r*=i;return r}};
-const num=()=>parseFloat(S.cur),add=(e,r)=>{hist.unshift([e,r]);hist.length=Math.min(hist.length,30)};
-const A={
- d(v){if(S.done||S.fresh){S.cur='0';S.done=S.fresh=S.wait=false;if(!S.op)S.rep=null}
-  if(v=='.'){if(!S.cur.includes('.'))S.cur+='.'}else if(S.cur.replace(/[-.]/g,'').length<15)S.cur=/^-?0$/.test(S.cur)?(S.cur[0]=='-'?'-':'')+v:S.cur+v},
- op(o){if(S.op&&!S.wait){S.cur=R(bin(S.prev,num(),S.op));S.prev=num()}else if(!S.op)S.prev=num();S.op=o;S.fresh=S.wait=true;S.done=false;S.rep=null},
- eq(){if(S.op){const b=S.wait?S.prev:num(),r=R(bin(S.prev,b,S.op));add(`${S.prev} ${OPN[S.op]} ${b}`,r);S.rep=[S.op,b];S.cur=r;S.op=''}
-  else if(S.rep){const r=R(bin(num(),S.rep[1],S.rep[0]));add(`${S.cur} ${OPN[S.rep[0]]} ${S.rep[1]}`,r);S.cur=r}S.fresh=S.done=true;S.wait=false},
- pct(){const n=num();S.cur=R(S.op&&!S.wait&&'+-'.includes(S.op)?S.prev*n/100:n/100);S.wait=S.done=false},
- sign(){if(S.fresh&&S.op&&S.wait){S.cur='-0';S.fresh=S.wait=false}else if(S.cur!='0')S.cur=S.cur[0]=='-'?S.cur.slice(1):'-'+S.cur},
- bs(){if(S.fresh||S.done)return;S.cur=S.cur.length<2||S.cur.length==2&&S.cur[0]=='-'?'0':S.cur.slice(0,-1)},
- clr(){S={cur:'0',prev:0,op:'',fresh:false,wait:false,done:false,err:'',rep:null}},
- fn(n){if(n=='pow')return A.op('^');if(n=='pi'||n=='e')S.cur=R(n=='pi'?Math.PI:Math.E);else{const r=R(F[n](num()));add(`${n}(${S.cur})`,r);S.cur=r}S.fresh=true;S.wait=S.done=false}};
-function key(t,v){S.err='';try{A[t](v)}catch(e){A.clr();S.err=e.message}draw()}
-function draw(){if(!root||!root.isConnected||tab!='c')return;const m=q('.cx-m'),t=S.err||S.cur;m.textContent=t;m.className='cx-m'+(S.err?' er':t.length>16?' t2':t.length>11?' t1':'');
- q('.cx-p').textContent=S.op?`${S.prev} ${OPN[S.op]}`:'';$$('.cx-k .op').forEach(b=>b.classList.toggle('sel',b.dataset.v==S.op&&S.wait));
- q('#cxH').innerHTML=hist.length?hist.map(([e,r],i)=>`<div class="cx-hi" data-i="${i}"><span>${e}</span><b>= ${r}</b></div>`).join(''):'<div class="status">暂无记录</div>'}
-addEventListener('keydown',e=>{if(cur!='calc'||tab!='c'||e.ctrlKey||e.metaKey||e.altKey||!$('#sdlg').hidden||/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||e.target.closest?.('.cx-k')&&(e.key=='Enter'||e.key==' '))return;
- const k=e.key,m={'.':['d','.'],Backspace:['bs'],Escape:['clr'],Enter:['eq'],'=':['eq'],'%':['pct']};for(const o in OPN)m[o]=['op',o];
- const a=/^\d$/.test(k)?['d',k]:m[k];if(a){e.preventDefault();key(...a)}});
-const K=(t,v,l,c='')=>`<button class="${c}" data-t="${t}" data-v="${v}">${l}</button>`,D=v=>K('d',v,v),O=[['/','÷'],['*','×'],['-','−'],['+','+']].map(([v,l])=>K('op',v,l,'op')),FN=(n,l)=>K('fn',n,l,'fn');
-const STD=[K('clr','','AC','clr'),K('bs','','⌫','fn'),K('pct','','%','fn'),O[0],D(7),D(8),D(9),O[1],D(4),D(5),D(6),O[2],D(1),D(2),D(3),O[3],K('sign','','±','fn'),D(0),D('.'),K('eq','','=','eq')];
-const SCI=[FN('pi','π'),FN('e','e'),FN('ten','10ˣ'),FN('exp','eˣ'),FN('fact','n!'),FN('sin','sin'),FN('cos','cos'),FN('tan','tan'),FN('log','log'),FN('ln','ln'),FN('asin','sin⁻¹'),FN('acos','cos⁻¹'),FN('atan','tan⁻¹'),FN('sqrt','√'),FN('cbrt','∛'),
- FN('sq','x²'),FN('cube','x³'),FN('pow','xʸ'),FN('rec','1/x'),FN('abs','|x|'),D(7),D(8),D(9),O[0],K('clr','','AC','clr'),D(4),D(5),D(6),O[1],K('bs','','⌫','fn'),D(1),D(2),D(3),O[2],K('pct','','%','fn'),K('sign','','±','fn'),D(0),D('.'),O[3],K('eq','','=','eq')];
-/* ----- 通用 ----- */
-const fld=(l,id,ph='')=>`<div><div class="lbl">${l}</div><input class="in" id="${id}" type="number" step="any" placeholder="${ph}"></div>`,
- sel=(l,id,o)=>`<div><div class="lbl">${l}</div><select id="${id}">${o.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select></div>`,
- N=id=>parseFloat(q('#'+id).value),bad=m=>toast(m,true),res=(m,l,id)=>{const b=q('#'+id);q('.cx-ph')?.remove();b.hidden=false;kv(b,l)},tabs=(k,l)=>`<div class="bar">${l.map(([v,t])=>`<button class="btn${v==k?' pri':''}" data-v="${v}">${t}</button>`).join('')}</div>`;
-const r2=x=>(Math.round(x*100)/100).toLocaleString('en-US'),fdt=d=>`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} 周${'日一二三四五六'[d.getDay()]}`;
-/* ----- 日期时间选择（年月日时分秒，滚轮 / ↑↓ 调整）----- */
-function dt(host,d0){const L=[['年',4,1,9999],['月',2,1,12],['日',2,1,31],['时',2,0,23],['分',2,0,59],['秒',2,0,59]],v=[d0.getFullYear(),d0.getMonth()+1,d0.getDate(),d0.getHours(),d0.getMinutes(),d0.getSeconds()],E=[];
- const mk=()=>{const t=new Date(2000,0,1,v[3],v[4],v[5]);t.setFullYear(v[0],v[1]-1,v[2]);return t},show=()=>E.forEach((e,j)=>e.value=String(v[j]).padStart(j?2:4,'0')),
- clamp=()=>{v[2]=Math.min(v[2],new Date(v[0],v[1],0).getDate())},
- step=(i,k)=>{if(i<2){v[i]=Math.min(L[i][3],Math.max(L[i][2],v[i]+k));clamp()}else{const t=mk();[,,()=>t.setDate(t.getDate()+k),()=>t.setHours(t.getHours()+k),()=>t.setMinutes(t.getMinutes()+k),()=>t.setSeconds(t.getSeconds()+k)][i]();v.splice(0,6,t.getFullYear(),t.getMonth()+1,t.getDate(),t.getHours(),t.getMinutes(),t.getSeconds())}show()};
- host.className='cx-dt';L.forEach(([l,n],i)=>{const b=document.createElement('label'),e=document.createElement('input'),s=document.createElement('small');e.inputMode='numeric';e.maxLength=n;e.setAttribute('aria-label',l);s.textContent=l;b.append(s,e);host.append(b);E.push(e);
-  e.onfocus=()=>setTimeout(()=>e.select());e.oninput=()=>{e.value=e.value.replace(/\D/g,'');if(e.value.length>=n&&i<5)E[i+1].focus()};e.onblur=()=>{read();};
-  e.onkeydown=ev=>{if(ev.key=='ArrowUp'||ev.key=='ArrowDown'){ev.preventDefault();read();step(i,ev.key=='ArrowUp'?1:-1);e.select()}};b.onwheel=ev=>{ev.preventDefault();read();step(i,ev.deltaY<0?1:-1)}});
- const read=()=>{E.forEach((e,j)=>{const x=parseInt(e.value,10);if(!isNaN(x))v[j]=Math.min(L[j][3],Math.max(L[j][2],x))});clamp();show();return mk()};show();return{get:read}}
-/* ----- 各面板 ----- */
-const P={
-c(b){b.innerHTML=`<div class="cx-d"><div class="cx-p"></div><div class="cx-m"></div></div><div class="bar"><button class="btn${sci?'':' pri'}" data-s="0">标准</button><button class="btn${sci?' pri':''}" data-s="1">科学</button><span class="sp"></span>${sci?`<button class="btn${deg?' pri':''}" data-a="1">角度</button><button class="btn${deg?'':' pri'}" data-a="0">弧度</button>`:''}</div>
- <div class="cx-k ${sci?'s':'n'}">${(sci?SCI:STD).join('')}</div>`;
- const k=q('.cx-k');k.onpointerdown=e=>e.preventDefault();k.onclick=e=>{const x=e.target.closest('button');if(x)key(x.dataset.t,x.dataset.v)};},
-d(b){b.innerHTML=tabs(sub.d,[['diff','相差多少时间'],['after','多少时间之后']])+'<div id="cxS"></div>';
- b.firstChild.onclick=e=>{const x=e.target.closest('[data-v]');if(x){sub.d=x.dataset.v;mount()}};const s=q('#cxS'),now=new Date();
- if(sub.d=='diff'){s.innerHTML='<div class="lbl">开始时间</div><div id="cxA"></div><div class="lbl">结束时间</div><div id="cxB2"></div><button class="btn pri" id="cxGo">计算</button><div class="cx-r" id="cxR" hidden></div>';
-  const a=dt(q('#cxA'),now),e=dt(q('#cxB2'),now);q('#cxGo').onclick=()=>{const ms=e.get()-a.get(),t=Math.round(Math.abs(ms)/1e3),g=ms<0?'-':'';
-   res(0,[['相差',`${g}${t>=86400?Math.floor(t/86400)+' 天 ':''}${Math.floor(t%86400/3600)} 时 ${Math.floor(t%3600/60)} 分 ${t%60} 秒`],['说明',ms?ms<0?'结束早于开始':'结束晚于开始':'两个时间相同'],['合计小时',g+r2(t/3600)],['合计分钟',g+r2(t/60)],['合计秒数',g+t.toLocaleString('en-US')]],'cxR')}}
- else{s.innerHTML=`<div class="lbl">开始时间</div><div id="cxA"></div><div class="lbl">时间间隔（负数表示之前）</div><div class="cx-g" style="grid-template-columns:repeat(4,1fr)">${fld('天','cxD','0')}${fld('时','cxH2','0')}${fld('分','cxM','0')}${fld('秒','cxSe','0')}</div>
-  ${sel('递推个数（每隔一个间隔算一个）','cxN',[1,2,3,4,5].map(i=>[i,i+' 个']))}<div style="margin-top:12px"><button class="btn pri" id="cxGo">计算</button></div><div class="cx-r" id="cxR" hidden></div>`;q('#cxN').value=3;
-  const a=dt(q('#cxA'),now);q('#cxGo').onclick=()=>{const du=['cxD','cxH2','cxM','cxSe'].map(i=>N(i)||0),n=+q('#cxN').value,base=a.get(),out=[];
-   for(let k=1;k<=n;k++){const t=new Date(base),di=Math.trunc(du[0]*k);t.setDate(t.getDate()+di);t.setTime(t.getTime()+((du[0]*k-di)*86400+du[1]*k*3600+du[2]*k*60+du[3]*k)*1e3);if(isNaN(t))return bad('超出可表示的日期范围');out.push([k==1?'目标时间':'第 '+k+' 个',fdt(t)])}
-   res(0,out,'cxR')}}},
-f(b){b.innerHTML=tabs(sub.f,[['dep','存款利息'],['disc','折扣计算'],['pr','价格比较']])+'<div id="cxS"></div>';b.firstChild.onclick=e=>{const x=e.target.closest('[data-v]');if(x){sub.f=x.dataset.v;mount()}};const s=q('#cxS');
- const go=(h,f)=>{s.innerHTML=h+'<div style="margin-top:14px"><button class="btn pri" id="cxGo">计算</button></div><div class="cx-r" id="cxR" hidden></div>';q('#cxGo').onclick=f};
- if(sub.f=='dep'){go(`<div class="cx-g">${sel('期限种类','cxT',[['','自定义'],['0.42|','活期（请填存期）'],['2.82|3','整存整取 3 个月'],['3.06|6','整存整取 半年'],['3.3|12','整存整取 1 年'],['4.02|24','整存整取 2 年'],['4.8|36','整存整取 3 年'],['5.225|60','整存整取 5 年']])}${fld('存入金额（元）','cxAm','10000')}${fld('年利率（%）','cxRt','3.30')}${fld('存期（月）','cxTm','12')}</div><div class="status">预设利率仅供参考，可手动修改；按单利计息。</div>`,
-  ()=>{const a=N('cxAm'),r=N('cxRt'),t=N('cxTm');if(!(a>0&&r>=0&&t>0))return bad('请输入有效的金额、利率和存期');const i=a*r*t/1200;res(0,[['利息',i.toFixed(2)+' 元'],['本息合计',(a+i).toFixed(2)+' 元']],'cxR')});
-  q('#cxT').onchange=e=>{const[r,t]=e.target.value.split('|');if(r!=='')q('#cxRt').value=r;q('#cxTm').value=t||''}}
- else if(sub.f=='disc'){go(`<div class="cx-g">${sel('计算方式','cxMd',[[1,'原价 + 折扣 → 折后价'],[2,'原价 + 折后价 → 折扣']])}${fld('原价（元）','cxO','299')}<span id="cxG1" style="display:contents">${fld('折扣（折）','cxDs','8.5')}${fld('额外立减（元，可不填）','cxCp')}</span><span id="cxG2" style="display:none">${fld('折后价（元）','cxFn','199')}</span></div>`,
-  ()=>{const o=N('cxO'),m=q('#cxMd').value;let f;if(!(o>0))return bad('请输入有效的原价');if(m==1){const d=N('cxDs');if(!(d>0&&d<=10))return bad('折扣应在 0~10 之间，如 8.5 表示 8.5 折');f=Math.max(o*d/10-(N('cxCp')||0),0)}else{f=N('cxFn');if(!(f>=0&&f<=o))return bad('折后价应为不大于原价的数字')}
-   res(0,[['折后价',f.toFixed(2)+' 元'],['节省金额',(o-f).toFixed(2)+' 元'],['实际折扣',parseFloat((f/o*10).toFixed(2))+' 折']],'cxR')});
-  q('#cxMd').onchange=e=>{q('#cxG1').style.display=e.target.value==1?'contents':'none';q('#cxG2').style.display=e.target.value==2?'contents':'none'}}
- else{const C={重量:['克',100,[['克',1],['千克',1e3],['斤',500],['磅',453.59237],['盎司',28.349523]]],体积:['毫升',100,[['毫升',1],['升',1e3]]],数量:['个',1,[['个',1],['打(12个)',12]]]},fill=()=>{const u=C[q('#cxC').value][2];['A','B'].forEach(k=>q('#cxU'+k).innerHTML=u.map(([n],i)=>`<option value="${i}">${n}</option>`).join(''))},
-   grp=k=>`<div class="lbl" style="margin-top:6px">商品 ${k}</div><div class="cx-g" style="grid-template-columns:repeat(4,1fr)">${fld('价格（元）','cxP'+k)}${fld('规格','cxZ'+k)}${sel('单位','cxU'+k,[])}${fld('件数','cxK'+k,'1')}</div>`;
-  go(sel('比较类型','cxC',Object.keys(C).map(k=>[k,'按'+k]))+grp('A')+grp('B')+'<div class="status">例：500 克 × 2 件，规格填 500，件数填 2。</div>',()=>{const c=C[q('#cxC').value],it=[];
-   for(const k of['A','B']){const p=N('cxP'+k),z=N('cxZ'+k),n=N('cxK'+k)||1;if(!(p>0&&z>0))return bad('请填写商品 '+k+' 的价格和规格');it.push(p/(z*n*c[2][q('#cxU'+k).value][1]))}
-   const f=x=>x>=1?x.toFixed(2):x.toPrecision(3),[a,u]=it,lo=a<u?0:1,v=Math.abs(a-u)<1e-12?'两者单价相同':`商品 ${'AB'[lo]} 更划算，便宜 ${((Math.max(a,u)-Math.min(a,u))/Math.max(a,u)*100).toFixed(1)}%`;
-   res(0,[['结论',v],['商品 A',f(a*c[1])+' 元/'+(c[1]>1?c[1]:'')+c[0]],['商品 B',f(u*c[1])+' 元/'+(c[1]>1?c[1]:'')+c[0]]],'cxR')});fill();q('#cxC').onchange=fill}},
-u(b){const U={长度:['米','英尺',{毫米:.001,厘米:.01,米:1,千米:1e3,英寸:.0254,英尺:.3048,码:.9144,英里:1609.344}],重量:['千克','磅',{毫克:1e-6,克:.001,千克:1,吨:1e3,斤:.5,磅:.45359237,盎司:.028349523125}],
-  面积:['平方米','亩',{平方厘米:1e-4,平方米:1,公顷:1e4,平方千米:1e6,亩:1e4/15,平方英尺:.09290304}],体积:['升','毫升',{毫升:.001,升:1,立方米:1e3,加仑:3.785411784,品脱:.473176473}],速度:['千米/时','米/秒',{'米/秒':1,'千米/时':1/3.6,'英里/时':.44704,节:1852/3600}],
-  数据:['MB','GB',{bit:.125,B:1,KB:1024,MB:1024**2,GB:1024**3,TB:1024**4,PB:1024**5}],时间:['小时','分钟',{毫秒:.001,秒:1,分钟:60,小时:3600,天:86400,周:604800,'月(30天)':2592e3,'年(365天)':31536e3}],温度:['摄氏度 °C','华氏度 °F',{'摄氏度 °C':0,'华氏度 °F':0,'开尔文 K':0}]};
- const T2={'摄氏度 °C':[x=>x,x=>x],'华氏度 °F':[x=>(x-32)*5/9,x=>x*9/5+32],'开尔文 K':[x=>x-273.15,x=>x+273.15]};
- const ct0=sub.u||'长度';let ct=ct0;
- b.innerHTML=`<div class="bar" id="cxCt">${Object.keys(U).map(k=>`<button class="btn${k==ct?' pri':''}" data-u="${k}">${k}</button>`).join('')}</div>
-  <div class="cx-cv"><div><div class="lbl">从</div><input class="in cx-big" id="cxFv" inputmode="decimal" value="1" autocomplete="off"><select id="cxFu"></select></div><button class="ibtn" id="cxSw" title="交换单位" aria-label="交换单位">⇄</button><div><div class="lbl">到</div><input class="in cx-big" id="cxTv" inputmode="decimal" autocomplete="off"><select id="cxTu"></select></div></div>
-  <div class="status" id="cxHt"></div><div class="h">全部单位（点击复制）</div><div class="cx-ua" id="cxUa"></div>`;
- const fmt=x=>isFinite(x)?String(parseFloat(x.toPrecision(10))):'',cv=(x,f,t)=>ct=='温度'?T2[t][1](T2[f][0](x)):x*U[ct][2][f]/U[ct][2][t];
- const all=()=>{const x=parseFloat(q('#cxFv').value),f=q('#cxFu').value;q('#cxUa').innerHTML=isNaN(x)?'':Object.keys(U[ct][2]).map(k=>{const v=fmt(cv(x,f,k));return `<div class="cx-ui" data-v="${v}"><span>${k}</span><code>${v}</code></div>`}).join('')},
-  fwd=()=>{const x=parseFloat(q('#cxFv').value),f=q('#cxFu').value,t=q('#cxTu').value;q('#cxTv').value=isNaN(x)?'':fmt(cv(x,f,t));q('#cxHt').textContent=`1 ${f} = ${fmt(cv(1,f,t))} ${t}`;all()},
-  back=()=>{const x=parseFloat(q('#cxTv').value);q('#cxFv').value=isNaN(x)?'':fmt(cv(x,q('#cxTu').value,q('#cxFu').value));all()};
- const c=U[ct],o=Object.keys(c[2]).map(k=>`<option>${k}</option>`).join('');q('#cxFu').innerHTML=q('#cxTu').innerHTML=o;q('#cxFu').value=c[0];q('#cxTu').value=c[1];fwd();
- q('#cxCt').onclick=e=>{const x=e.target.closest('[data-u]');if(x){sub.u=x.dataset.u;mount()}};q('#cxFv').oninput=q('#cxFu').onchange=q('#cxTu').onchange=fwd;q('#cxTv').oninput=back;
- q('#cxSw').onclick=()=>{const f=q('#cxFu'),t=q('#cxTu');[f.value,t.value]=[t.value,f.value];fwd()};q('#cxUa').onclick=e=>{const i=e.target.closest('.cx-ui');if(i)copy(i.dataset.v)}}};
-const mount=()=>{root.innerHTML=`<div class="cx${tab=='u'?' one':''}"><div class="cx-t">${tabs(tab,[['c','计算器'],['d','日期时间'],['f','金融'],['u','单位换算']])}</div><div class="cx-l" id="cxB"></div><aside class="cx-s" id="cxSd"></aside></div>`;
- q('.cx-t .bar').onclick=e=>{const x=e.target.closest('[data-v]');if(x){tab=x.dataset.v;mount()}};P[tab](q('#cxB'));const sd=q('#cxSd');
- if(tab=='c'){sd.innerHTML='<div class="bar"><div class="lbl" style="margin:0">历史记录</div><span class="sp"></span><button class="ghost" data-x2>清空</button></div><div id="cxH"></div>';draw()}
- else if(tab!='u'){sd.innerHTML='<div class="lbl">结果</div><div class="status cx-ph">填写左侧参数后点击「计算」</div>';sd.append(q('#cxR'))}
- q('.cx').onclick=e=>{const m=e.target.closest('[data-s],[data-a]'),h=e.target.closest('.cx-hi');if(m){if(m.dataset.s!=null)sci=m.dataset.s=='1';else deg=m.dataset.a=='1';mount()}
-  else if(h){S.cur=hist[h.dataset.i][1];S.fresh=true;S.wait=S.done=false;draw()}else if(e.target.closest('[data-x2]')){hist=[];draw()}}};
-return r=>{root=r;mount()}})();
 
 const T=[
- {id:'calc',n:'计算器',d:'标准 / 科学计算器，日期时间、存款利息、折扣与价格比较、单位换算',r:calc},
- {id:'json',n:'JSON',d:'格式化、压缩、校验与键排序',r:json},
- {id:'base64',n:'Base64',d:'文本与 Base64 互转，支持 UTF-8 与 URL 安全',r:b64},
- {id:'url',n:'URL 编解码',d:'URL 编码、解码与参数解析',r:url},
- {id:'time',n:'时间戳',d:'Unix 时间戳与日期互转',r:ts},
- {id:'hash',n:'哈希',d:'SHA-1 / 256 / 384 / 512 实时计算',r:hash},
- {id:'uuid',n:'UUID',d:'批量生成 UUID v4',r:uuid},
- {id:'regex',n:'正则测试',d:'实时匹配、高亮与分组查看',r:regex},
- {id:'jwt',n:'JWT 解码',d:'解析 Header、Payload 与过期时间',r:jwt},
- {id:'diff',n:'文本对比',d:'逐行 Diff，行内高亮变化，支持忽略空白与大小写',r:diff},
- {id:'cron',n:'Cron',d:'设定表达式，解析含义并预览未来执行时间',r:cron},
- {id:'rename',n:'批量重命名',d:'批量重命名本地文件：查找替换、命名模板、大小写、扩展名，可导出脚本',r:rename},
- {id:'video',n:'视频下载',d:'粘贴链接下载 YouTube、推特、哔哩哔哩、微博、小红书、抖音视频',r:video}
+ {id:'calc',n:'计算器',d:'标准 / 科学计算器，日期时间（含时区转换）、存款利息、折扣与价格比较、单位换算'},
+ {id:'json',n:'JSON',d:'格式化、压缩、校验与键排序'},
+ {id:'base64',n:'Base64',d:'文本与 Base64 互转，支持 UTF-8 与 URL 安全'},
+ {id:'url',n:'URL 编解码',d:'URL 编码、解码与参数解析'},
+ {id:'time',n:'时间戳',d:'Unix 时间戳与日期互转'},
+ {id:'hash',n:'哈希',d:'SHA-1 / 256 / 384 / 512 实时计算'},
+ {id:'uuid',n:'UUID',d:'批量生成 UUID v4'},
+ {id:'regex',n:'正则测试',d:'实时匹配、高亮与分组查看'},
+ {id:'jwt',n:'JWT 解码',d:'解析 Header、Payload 与过期时间'},
+ {id:'diff',n:'文本对比',d:'逐行 Diff，行内高亮变化，支持忽略空白与大小写'},
+ {id:'cron',n:'Cron',d:'设定表达式，解析含义并预览未来执行时间'},
+ {id:'rename',n:'批量重命名',d:'批量重命名本地文件：查找替换、命名模板、大小写、扩展名，可导出脚本'},
+ {id:'subtitle',n:'字幕处理',d:'字幕格式转换（SRT / VTT / ASS / SSA / SUB / SBV / LRC）与调整：颜色、字号、帧速率、时间偏移'},
+ {id:'video',n:'视频下载',d:'粘贴链接下载 YouTube、推特、哔哩哔哩、微博、小红书、抖音视频'}
 ];
+/* 工具按需加载：tools/<id>.js 注册到 window.TOOLS；改动某个工具后把 VER 加一以刷新缓存 */
+const VER='5',TL={};
+const need=t=>{const r=window.TOOLS&&window.TOOLS[t.id];if(r)return Promise.resolve(r);
+ return TL[t.id]||(TL[t.id]=new Promise((ok,no)=>{const e=document.createElement('script');e.src=`tools/${t.id}.js?v=${VER}`;
+  e.onload=()=>window.TOOLS&&window.TOOLS[t.id]?ok(window.TOOLS[t.id]):no(Error('工具文件未注册：'+t.id));
+  e.onerror=()=>no(Error(`无法加载 tools/${t.id}.js，请确认文件存在`));document.head.append(e)}).catch(x=>{delete TL[t.id];throw x}))};
+function loadTool(t){if(!(window.TOOLS&&window.TOOLS[t.id]))stage.innerHTML='<p class="none">加载中…</p>';
+ need(t).then(r=>{if(cur===t.id)r(stage)}).catch(x=>{if(cur===t.id)stage.innerHTML=`<p class="none">${esc(x.message)}</p>`})}
 const stage=$('#stage'),qb=$('#qb');let cur='',fq=false;
 function tiles(f=''){const g=$('#tl');g.replaceChildren();f=f.trim().toLowerCase();let n=0;for(const t of T)if((t.n+t.d+t.id).toLowerCase().includes(f)){n++;const a=document.createElement('a');a.className='tile';a.href='#'+t.id;a.title=t.d;a.innerHTML=`<b>${t.n}</b><span>${t.d}</span>`;g.append(a)}if(!n){const d=document.createElement('p');d.className='none';d.textContent='没有匹配的工具';g.append(d)}}
 function home(){stage.innerHTML='<input class="hq" id="hq" autocomplete="off" placeholder="搜索工具…" aria-label="搜索工具"><div class="tiles" id="tl"></div>';const q=$('#hq');tiles();q.oninput=()=>tiles(q.value);q.onkeydown=e=>{if(e.key=='Enter'){const a=$('#tl a');if(a)a.click()}else if(e.key=='Escape'&&q.value){q.value='';tiles()}};if(fq)q.focus();fq=false}
 function go(id){const t=T.find(x=>x.id==id),prev=cur;cur=t?t.id:'';if(prev!==cur)scrollTo(0,0);stage.classList.toggle('hm',!t);$('main header').hidden=!t;
  if(!t){if(location.hash)history.replaceState(null,'',location.pathname+location.search);$('#title').hidden=true;$('#desc').textContent='';document.title='极限工具';home();return}
- $('#title .cn').textContent=t.n;$('#title').hidden=false;$('#desc').textContent=t.d;document.title=t.n+' · 极限工具';t.r(stage)}
+ $('#title .cn').textContent=t.n;$('#title').hidden=false;$('#desc').textContent=t.d;document.title=t.n+' · 极限工具';loadTool(t)}
 function toHome(){if(cur)history.pushState(null,'',location.pathname+location.search);go('')}
 function search(){fq=true;if(cur)toHome();else{const q=$('#hq');if(q){q.focus();q.select();fq=false}else home()}}
 qb.onclick=search;$('#title').onclick=toHome;$('.brand').onclick=e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;e.preventDefault();toHome()};
-document.addEventListener('keydown',e=>{const sOpen=!$('#sdlg').hidden;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()=='k'){e.preventDefault();if(!sOpen)search();return}if(e.key=='Escape'&&sOpen)window.__closeSettings()});
+document.addEventListener('keydown',e=>{const sOpen=!$('#sdlg').hidden;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()=='k'){e.preventDefault();if(!sOpen)search();return}if(e.key=='/'&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!sOpen&&!e.isComposing&&!/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)&&!e.target.isContentEditable){e.preventDefault();search();return}if(e.key=='Escape'&&sOpen)window.__closeSettings()});
 /* ---------- 宇宙背景 ---------- */
 (()=>{const c=$('#sky'),x=c.getContext('2d'),rm=matchMedia('(prefers-reduced-motion: reduce)').matches;let W,H,S=[],M=null;
  function init(){const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*d;c.height=H*d;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(d,0,0,d,0,0);
@@ -960,7 +1402,7 @@ document.addEventListener('keydown',e=>{const sOpen=!$('#sdlg').hidden;if((e.ctr
   const Settings = (() => {
     const KEY = 'devbox.settings.v1';
     // bg：sky = 动态星空（默认）｜ image = 自己添加的壁纸
-    const DEF = { theme: 'default', bg: 'sky', wp: '', cardA: 25, dim: 25, glass: true, blur: 5 };   // cardA：卡片背景浓度，0 = 完全透明
+    const DEF = { theme: 'default', bg: 'sky', wp: '', cardA: 25, dim: 25, blur: 5 };   // cardA：卡片背景浓度，0 = 完全透明
     const DB = 'devbox-nav', STORE = 'kv', MAX_WP = 5;
     const clamp = (v, lo, hi, d) => (typeof v === 'number' && isFinite(v)) ? Math.min(hi, Math.max(lo, Math.round(v))) : d;
 
@@ -972,7 +1414,7 @@ document.addEventListener('keydown',e=>{const sOpen=!$('#sdlg').hidden;if((e.ctr
       S.wp = typeof S.wp === 'string' ? S.wp : '';
       S.cardA = clamp(S.cardA, 0, 100, 25);
       S.dim = clamp(S.dim, 0, 80, 25);
-      S.glass = S.glass !== false;
+      if (S.glass === false) S.blur = 0; delete S.glass;   // 兼容旧设置：原来关闭毛玻璃的，等同于模糊度 0
       S.blur = clamp(S.blur, 0, 40, 5);
     };
     sanitize();
@@ -1048,7 +1490,7 @@ document.addEventListener('keydown',e=>{const sOpen=!$('#sdlg').hidden;if((e.ctr
     const applyCards = () => root.style.setProperty('--card-alpha', (S.cardA / 100).toFixed(2));
     const applyDim = () => root.style.setProperty('--img-dim', (S.dim / 100).toFixed(2));
     const applyGlass = () => {
-      root.classList.toggle('glass', S.glass);
+      root.classList.toggle('glass', S.blur > 0);   // 模糊度为 0 即关闭毛玻璃
       root.style.setProperty('--glass-blur', S.blur + 'px');
     };
     function applyBg() {
@@ -1133,8 +1575,7 @@ document.addEventListener('keydown',e=>{const sOpen=!$('#sdlg').hidden;if((e.ctr
       g('stThemes').querySelectorAll('.st-th').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.t === S.theme)));
       g('stDim').value = S.dim; g('stDimVal').textContent = S.dim + '%'; g('stDim').disabled = S.bg === 'sky';
       g('stCard').value = S.cardA; g('stCardVal').textContent = S.cardA + '%';
-      g('stGlass').setAttribute('aria-checked', String(S.glass));
-      g('stBlur').value = S.blur; g('stBlurVal').textContent = S.blur + 'px'; g('stBlur').disabled = !S.glass;
+      g('stBlur').value = S.blur; g('stBlurVal').textContent = S.blur + 'px';
     }
 
     g('stThemes').addEventListener('click', e => {
@@ -1190,7 +1631,6 @@ document.addEventListener('keydown',e=>{const sOpen=!$('#sdlg').hidden;if((e.ctr
     });
     g('stDim').addEventListener('input', e => { S.dim = clamp(+e.target.value, 0, 80, 25); g('stDimVal').textContent = S.dim + '%'; applyDim(); save(); });
     g('stCard').addEventListener('input', e => { S.cardA = clamp(+e.target.value, 0, 100, 25); g('stCardVal').textContent = S.cardA + '%'; applyCards(); save(); });
-    g('stGlass').addEventListener('click', () => { S.glass = !S.glass; save(); applyGlass(); refresh(); });
     g('stBlur').addEventListener('input', e => { S.blur = clamp(+e.target.value, 0, 40, 5); g('stBlurVal').textContent = S.blur + 'px'; applyGlass(); save(); });
     g('stReset').addEventListener('click', () => {
       S = { ...DEF }; save();

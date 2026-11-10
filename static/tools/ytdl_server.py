@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""极限工具箱 · 视频下载器 —— 本地辅助服务（基于 yt-dlp）
+"""视频下载器本地辅助服务，基于 yt-dlp，需要 ffmpeg（高画质/合并/分类/转MP3）浏览器本身无法解析各大平台的视频链接（跨域限制、签名、反爬），所以由这个服务在本机调用 yt-dlp 解析
 
-浏览器页面本身无法直接解析 YouTube / 推特 / 哔哩哔哩 / 微博 / 小红书 / 抖音 的视频地址
-（跨域限制、签名、反爬），所以由这个小服务在本机调用 yt-dlp 完成解析与下载。
+它的前端页面支持多个链接，也支持抖音、小红书的整段分享文字，每条结果有封面、标题、作者、时长，画质可选（最高画质、各分辨率、仅音频），多条时有「全部下载」
+
+下载服务地址默认 127.0.0.1:8765，可以改，会记住；页面没连上服务时会提示怎么启动；辅助程序只放行这6个平台的链接，b23.tv、v.douyin.com、xhslink.com 这类短链会自动展开
 
 用法：
-    pip install -U yt-dlp
+    pip install -U yt-dlp                      # 应经常更新
     python ytdl_server.py                      # 监听 127.0.0.1:8765
     python ytdl_server.py --host 0.0.0.0       # 允许局域网其他设备访问
-    python ytdl_server.py --browser edge       # 借用浏览器登录状态（抖音 / 小红书 / 微博常需要）
+    python ytdl_server.py --browser edge       # 借用浏览器登录状态（抖音/小红书/微博需要）
+    python ytdl_server.py --cookies cookies.txt # 或用 cookies 文件
     python ytdl_server.py --outdir T:\\Downloads  # 指定保存目录（默认是系统「下载」文件夹）
     python ytdl_server.py --cookies cookies.txt --proxy http://127.0.0.1:7890
-
-建议安装 ffmpeg 并加入 PATH：有它才能合并 YouTube / B 站的高画质（音视频分离）流，以及转 MP3。
 """
 import argparse
 import json

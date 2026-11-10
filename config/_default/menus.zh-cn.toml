@@ -58,12 +58,12 @@
   weight = 40
 
 [[main]]
-  name = "极限导航"
+  name = "网站导航"
   url  = "https://nav.ttti.cc"
   weight = 50
 
 [[main]]
-  name = "程序导航"
+  name = "软件导航"
   url  = "https://app.ttti.cc"
   weight = 60
 

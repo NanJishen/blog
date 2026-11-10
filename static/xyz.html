@@ -9,10 +9,9 @@
 <link rel="icon" href="favicon.ico">
 <style>
 :root{
-  --bg-alt:transparent;
   --surface-hover:transparent;
   /* 弹出菜单（搜索引擎菜单、n/a/c 搜索结果、dock 弹层）：底色和不透明度与卡片完全一致，随「透明度」变化；
-     只有卡片近乎全透明时才用 .3 的下限，再加一点轻微模糊，避免后面的文字直接穿透；开启毛玻璃后用设置里的模糊度 */
+     只有卡片近乎全透明时才用 .3 的下限，再加一点轻微模糊，避免后面的文字直接穿透；模糊度大于 0 时改用设置里的模糊度 */
   --popup-bg:rgba(var(--card-rgb), max(var(--card-alpha), .3));
   --popup-blur:blur(6px);
   --border:rgba(232,180,90,.14);
@@ -58,7 +57,7 @@ button{font-family:inherit;cursor:pointer}
   padding:12px clamp(14px,3vw,40px) 0;
   display:flex;align-items:center;gap:18px;
 }
-/* 搜索框 = 顶栏卡片：边框、圆角、底色（跟随「透明度」）和 .module 一致；模糊只在开启「毛玻璃效果」后才有 */
+/* 搜索框 = 顶栏卡片：边框、圆角、底色（跟随「透明度」）和 .module 一致；模糊只在设置里「毛玻璃模糊度」大于 0 时才有 */
 .search{
   flex:1;display:flex;align-items:center;gap:6px;
   background:rgba(var(--card-rgb), var(--card-alpha));
@@ -114,6 +113,17 @@ button{font-family:inherit;cursor:pointer}
   color:var(--text-bright);font-size:14.5px;font-family:var(--mono);
 }
 .search input::placeholder{color:var(--text-dim)}
+.search__clear{
+  display:none;align-items:center;justify-content:center;
+  width:24px;height:24px;padding:0;
+  color:var(--text-dim);
+  background:none;border:none;border-radius:50%;
+  cursor:pointer;flex:none;
+  transition:color .15s, background .15s;
+}
+.search.has-text .search__clear{display:flex}
+.search__clear svg{width:13px;height:13px}
+.search__clear:hover{color:var(--text-bright);background:var(--accent-glow)}
 .search__submit{
   display:flex;align-items:center;justify-content:center;
   min-width:28px;height:28px;padding:0 4px;
@@ -173,10 +183,9 @@ button{font-family:inherit;cursor:pointer}
   display:grid;
   grid-template-columns:repeat(3, 1fr);
   gap:14px;
+  transition:opacity .15s;   /* n / a / c 搜索结果面板打开时淡出分类卡片（保留占位，页面不跳动） */
 }
 @media (max-width:900px){ .board{grid-template-columns:repeat(2,1fr)} }
-/* n / a / c 搜索结果面板打开时，暂时淡出分类卡片（保留占位，页面不跳动） */
-.board{transition:opacity .15s}
 body.navres-open .board{opacity:0;pointer-events:none}
 .module{
   position:relative;
@@ -261,12 +270,51 @@ body.navres-open .board{opacity:0;pointer-events:none}
   flex:1;
   border-radius:8px;
   width:auto;
-  /* 移动端：长按条目展开子菜单（见脚本）；屏蔽长按时的系统选中与链接菜单 */
-  -webkit-touch-callout:none;-webkit-user-select:none;user-select:none;
 }
 .chip:hover{background:transparent;color:var(--accent)}
 .chip-group:hover > .chip{
   background:var(--surface-hover);color:var(--accent);
+}
+
+/* ---------- 触屏：带子菜单的条目做成「分裂按钮」——左侧跳转，右侧箭头区展开子菜单（见脚本 setupTouchFlyouts） ---------- */
+@media (hover:none){
+  /* 触屏没有真正的悬停，:hover/:focus-within 会在点击后一直粘着，导致子菜单收不起来：只认 .is-open */
+  .chip-group:hover .flyout,.chip-group:focus-within .flyout{display:none}
+  .chip-group.is-open .flyout{display:block}
+  .chip-group:hover,.chip-group:focus-within{z-index:1}
+  .chip-group.is-open{z-index:80}
+  .module:has(.chip-group:hover),.module:has(.chip-group:focus-within){z-index:1}
+  .module:has(.chip-group.is-open){z-index:70}
+  .chip-group:hover > .chip{background:transparent;color:var(--text)}
+
+  .chip-group > .chip{position:relative;padding-right:36px}
+  .chip-group > .chip::before{            /* 分隔线 */
+    content:"";position:absolute;right:32px;top:26%;bottom:26%;width:1px;
+    background:currentColor;opacity:.16;transition:opacity .15s;
+  }
+  .chip-group > .chip::after{             /* 箭头 */
+    content:"";position:absolute;right:13px;top:50%;
+    width:6px;height:6px;margin-top:-5px;
+    border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+    transform:rotate(45deg);opacity:.5;transition:transform .18s,margin .18s,opacity .15s;
+  }
+  .chip-group.is-open > .chip{
+    background:color-mix(in srgb,var(--accent) 12%,transparent);
+    color:var(--accent);
+    border-color:color-mix(in srgb,var(--accent) 38%,transparent);
+  }
+  .chip-group.is-open > .chip::before{opacity:.35}
+  .chip-group.is-open > .chip::after{transform:rotate(-135deg);margin-top:-1px;opacity:.95}
+
+  /* 子菜单宽度：至少和条目一样宽，随内容变宽但最多 180px（长名称省略号截断），不再撑到 280px */
+  .chip-group .flyout{padding-top:6px;min-width:100%}
+  .flyout-inner{
+    min-width:100%;max-width:min(180px,calc(100vw - 16px));
+    padding:4px;gap:2px;border-radius:12px;
+    box-shadow:0 12px 32px rgba(0,0,0,.38),0 2px 8px rgba(0,0,0,.2);
+  }
+  .flyout a{display:block;min-height:36px;line-height:36px;padding:0 10px;font-size:13px;overflow:hidden;text-overflow:ellipsis}
+  .flyout a:active{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
 }
 
 /* ---------- Favorites（可自行增删的收藏夹，数据存浏览器 localStorage） ---------- */
@@ -371,7 +419,7 @@ html[data-theme="neon"] .module__title svg{filter:drop-shadow(0 0 4px currentCol
 html[data-theme="neon"] .chip:hover{text-shadow:0 0 8px currentColor}
 html[data-theme="neon"] .dock{box-shadow:0 0 16px rgba(255,79,216,.18)}
 
-/* ---------- 毛玻璃开关（设置 → 卡片与顶栏）---------- */
+/* ---------- 毛玻璃（设置 → 卡片与顶栏；模糊度 0 = 关闭，大于 0 才加 html.glass）---------- */
 /* 模糊放在伪元素上，而不是卡片 / 搜索框本身：元素自带 backdrop-filter 会成为子元素模糊的「背景根」，
    里面的子菜单就再也模糊不到卡片外面的内容（并且会让 position:fixed 的引擎菜单错位）。dock 的弹层挂在 body 下，不受影响 */
 html.glass .module::after,html.glass .search::after{
@@ -385,19 +433,6 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
 /* dock：设置按钮图标与其他图标视觉大小一致，焦点环收敛 */
 #settingsBtn svg{width:16px;height:16px}
 .dock-item>a:focus-visible,.dock-item>button:focus-visible{outline:1px solid var(--border-strong);outline-offset:-1px;color:var(--accent-2)}
-
-.st-switch{
-  position:relative;flex:none;width:38px;height:22px;padding:0;
-  border:1px solid var(--border-strong);border-radius:999px;background:none;cursor:pointer;
-  transition:border-color .15s,background .15s;
-}
-.st-switch i{
-  position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;
-  background:var(--text-dim);transition:transform .18s,background .15s;
-}
-.st-switch[aria-checked="true"]{border-color:var(--accent);background:var(--accent-glow)}
-.st-switch[aria-checked="true"] i{transform:translateX(16px);background:var(--accent)}
-.st-switch:focus-visible{outline:1px solid var(--accent);outline-offset:2px}
 
 /* ---------- 设置窗口 ---------- */
 .st-panel{max-width:520px}
@@ -420,6 +455,10 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
 .st-row label{flex:none;width:6em;color:var(--text)}
 .st-row input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
 .st-row input[type=range]:disabled{opacity:.4}
+.st-text{flex:1;min-width:0;padding:6px 9px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.04);color:var(--text);font:inherit;font-size:12.5px}
+.st-text:focus{outline:none;border-color:var(--border-strong)}
+.st-sync{flex:1;min-width:0;font-family:var(--mono);font-size:11.5px;color:var(--text-dim)}
+.st-sync.bad{color:#ff6b6b}
 .st-val{flex:none;width:3.4em;text-align:right;font-family:var(--mono);font-size:12px;color:var(--text-dim)}
 .st-wps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:2px}
 .st-wp{position:relative;aspect-ratio:16 / 10;min-width:0}
@@ -468,6 +507,7 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
   margin-left:2ch;
   font-size:11.5px;letter-spacing:.08em;color:var(--accent);
 }
+.mini-cal__title svg{display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .mini-cal__time{
   grid-column:7 / 8;
   justify-self:end;
@@ -551,7 +591,6 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
 }
 .mini-calc__display{
   flex:none;
-  background:var(--bg-alt);
   border-radius:10px;
   padding:10px 12px;
   text-align:right;
@@ -579,6 +618,52 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
 }
 .calc-btn:hover{background:var(--accent-glow);color:var(--accent-2);border-color:var(--border)}
 .calc-btn--op{color:var(--accent)}
+
+/* ---------- calculator <-> HASS card flip ---------- */
+.flip{display:grid;height:100%}
+.flip>*{grid-area:1/1;min-width:0}
+#calcModule:not(.is-hass) .hass,
+#calcModule.is-hass .mini-calc{visibility:hidden;pointer-events:none}
+.hass{display:flex;flex-direction:column;height:100%}
+.hass .module__head{padding-top:0;padding-bottom:11px}
+a.hass-title{color:var(--accent)}
+a.hass-title:hover{color:var(--accent-2)}
+.hass-back{
+  margin-left:auto;width:28px;height:24px;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:7px;border:1px solid transparent;background:none;
+  color:var(--accent);font-family:var(--mono);font-size:15px;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.hass-back:hover{background:var(--accent-glow);color:var(--accent-2);border-color:var(--border)}
+.hass-list{display:flex;flex-direction:column;gap:2px}
+.hass-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:3px 2px;min-height:28px}
+.hass-name{font-size:13px;color:var(--text)}
+.ha-sw{
+  position:relative;flex:none;width:38px;height:22px;padding:0;
+  border-radius:999px;border:1px solid var(--border-strong);background:none;
+  transition:background .18s,border-color .18s,opacity .18s;
+}
+.ha-sw::after{
+  content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+  background:var(--text-dim);transition:transform .18s,background .18s;
+}
+.ha-sw[aria-checked="true"]{background:var(--accent-glow);border-color:var(--accent)}
+.ha-sw[aria-checked="true"]::after{transform:translateX(16px);background:var(--accent)}
+.ha-sw[data-state="unknown"]{opacity:.55}
+.ha-sw:disabled{opacity:.35;cursor:not-allowed}
+.ha-trig{
+  flex:none;width:38px;height:22px;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:999px;
+  border:1px solid var(--border-strong);background:none;
+  color:var(--accent);
+  transition:background .15s,color .15s,transform .1s;
+}
+.ha-trig svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ha-trig:hover{background:var(--accent-glow);color:var(--accent-2)}
+.ha-trig:active{transform:scale(.94)}
+.ha-trig:disabled{opacity:.5;cursor:default}
 
 /* ---------- scratchpad ---------- */
 .scratch-inline{display:flex;flex-direction:column;height:100%}
@@ -630,8 +715,6 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
 }
 .dock-flyout.is-open{display:block}
 .dock-flyout .flyout-inner{max-width:220px}
-.flyout a.ha-action{display:flex;align-items:center;justify-content:center;padding:8px 12px}
-.ha-action svg{flex:none;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---------- drawer (navhide) ---------- */
 #navhide{
@@ -748,6 +831,13 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
   transition:border-color .15s,background .15s,opacity .15s;
 }
 .th-item[data-edit-id]{cursor:pointer;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.th-item.is-editing{cursor:text;-webkit-user-select:text;user-select:text;border-color:var(--accent);background:var(--accent-glow)}
+.th-inline{
+  display:block;width:100%;box-sizing:border-box;margin:0;padding:0;resize:none;overflow:hidden;
+  background:transparent;border:none;outline:none;
+  color:var(--text-bright);font-family:var(--sans);font-size:14px;line-height:1.5;
+  -webkit-user-select:text;user-select:text;
+}
 .th-item:hover{border-color:var(--border-strong)}
 .th-item.done{opacity:.5}
 .th-item.done .th-text{text-decoration:line-through;color:var(--text-dim)}
@@ -783,27 +873,6 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
 .th-del:hover{opacity:1;color:var(--accent)}
 .th-empty{list-style:none;font-size:13px;color:var(--text-dim);padding:14px 0;text-align:center}
 .th-empty-all{text-align:center;color:var(--text-dim);padding:40px 10px;font-size:14px;line-height:1.8}
-/* 编辑弹层 */
-.th-overlay--edit{z-index:160}
-.th-modal{
-  width:100%;max-width:420px;
-  background:rgba(18,18,18,.96);border:1px solid var(--border-strong);border-radius:14px;
-  padding:18px;animation:thRise .2s cubic-bezier(.2,.8,.3,1);
-}
-.th-modal textarea{
-  width:100%;min-height:5em;resize:none;background:transparent;
-  border:1px solid var(--border);border-radius:10px;padding:10px 12px;
-  color:var(--text-bright);font-family:var(--sans);font-size:14px;outline:none;
-}
-.th-modal textarea:focus{border-color:var(--border-strong)}
-.th-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
-.th-actions button{
-  font-family:var(--mono);font-size:12.5px;padding:6px 14px;border-radius:8px;
-  background:none;border:1px solid var(--border);color:var(--text);cursor:pointer;
-}
-.th-actions button:hover{border-color:var(--border-strong);color:var(--accent-2)}
-.th-actions .primary{background:var(--accent);color:#1a1204;border-color:var(--accent)}
-.th-actions .primary:hover{background:var(--accent-2);color:#1a1204}
 .ek-overlay{z-index:165}
 .ek-panel{max-width:372px;max-height:86vh}
 .ek-head{
@@ -839,6 +908,7 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
 @media (max-width:600px){
   .th-overlay,#navhide{padding:3vh 3vw}
   .th-panel{max-height:94vh}
+  .th-inline{font-size:16px}   /* 防止 iOS 聚焦时自动放大页面 */
 }
 </style>
 </head>
@@ -854,6 +924,7 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
         <div class="search__menu" id="engine-menu" role="listbox"></div>
       </div>
       <input type="text" id="Searchbox" autofocus enterkeyhint="search" inputmode="search">
+      <button type="button" class="search__clear" id="searchClear" aria-label="清空搜索框" title="清空"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <button type="submit" class="search__submit" aria-label="搜索"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
     </form>
   </div>
@@ -872,10 +943,8 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
 <a class="chip" href="./tools/notepad.html">Notepad</a>
 <a class="chip" href="./prompt/index.html">Prompt</a>
 <a class="chip" href="./cmd/index.html">Cheat</a>
-<span class="chip-group"><a class="chip" href="tools/devbox.html">Tools</a><span class="flyout"><span class="flyout-inner"><a href="tools/stitching.html">拼截图</a>
-<a href="tools/paint.html">改图像</a>
-<a href="https://coder.aaxyz.de:55">写代码</a>
-<a href="tools/mdtowx.html">公众号</a></span></span></span>
+<span class="chip-group"><a class="chip" href="tools/">Tools</a><span class="flyout"><span class="flyout-inner"><a href="tools/stitching.html">拼截图</a>
+<a href="tools/paint.html">改图像</a></span></span></span>
   </div>
 </section>
 
@@ -884,7 +953,7 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
     <h2 class="module__title" aria-label="Homelab"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg></h2>
   </header>
   <div class="links">
-<span class="chip-group"><a class="chip" href="https://nha.aaxyz.de:55">HASS</a><span class="flyout"><span class="flyout-inner"><a href="https://192.168.10.1:9443">Portainer</a>
+<span class="chip-group"><a class="chip" href="https://192.168.10.1:9443">Portainer</a><span class="flyout"><span class="flyout-inner">
 <a href="http://192.168.10.1:299">Uptime</a>
 <a href="http://aaxyz.de:811">NPM</a>
 <a href="http://192.168.10.111:8384">Syncthing</a></span></span></span>
@@ -985,14 +1054,15 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
       <button onclick="cutScratch()">剪切</button>
       <button id="translateBtn" onclick="translateText()">翻译</button>
       <button type="button" id="thoughtChip">想法</button>
-      <button onclick="location.href='tools/textedit.html'">便笺</button>
-      <button onclick="location.href='https://xyz.556660.xyz/nanji'">传输</button>
+      <button onclick="location.href='tools/snote.html'">便笺</button>
+      <button onclick="location.href='https://coder.aaxyz.de:55'">代码</button>
     </div>
   </div>
 </section>
 
-<section class="module">
-  <div class="mini-calc" id="miniCalc">
+<section class="module" id="calcModule">
+  <div class="flip">
+  <div class="mini-calc">
     <div class="mini-calc__display" id="calcDisplay">0</div>
     <div class="mini-calc__pad" id="calcPad">
       <button type="button" class="calc-btn calc-btn--op" data-action="clear">C</button>
@@ -1011,11 +1081,25 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
       <button type="button" class="calc-btn" data-value="2">2</button>
       <button type="button" class="calc-btn" data-value="3">3</button>
       <button type="button" class="calc-btn calc-btn--op" data-value="+">+</button>
-      <a class="calc-btn calc-btn--op" href="./tools/calc.html">↵</a>
+      <button type="button" class="calc-btn calc-btn--op" data-action="hass" title="切换到 HASS" aria-label="切换到 HASS">↵</button>
       <button type="button" class="calc-btn" data-value="0">0</button>
       <button type="button" class="calc-btn" data-value=".">.</button>
       <button type="button" class="calc-btn calc-btn--eq" data-action="equals">=</button>
     </div>
+  </div>
+  <div class="hass" id="hassPanel" aria-hidden="true">
+    <header class="module__head">
+      <a class="module__title hass-title" href="https://nha.aaxyz.de:55" aria-label="HASS" title="Home Assistant"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg></a>
+      <button type="button" class="hass-back" id="hassBack" title="切换回计算器" aria-label="切换回计算器">↵</button>
+    </header>
+    <div class="hass-list">
+      <div class="hass-row"><span class="hass-name">Awtrix</span><button type="button" class="ha-trig" data-ha-service="button/press" data-ha-entity="button.awtrix_a7a898_next_app" data-ha-name="Awtrix" aria-label="触发 Awtrix" title="触发"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L5.5 13.5H11L10 21l7.5-10.5H12z"/></svg></button></div>
+      <div class="hass-row"><span class="hass-name">NanPC</span><button type="button" class="ha-sw" role="switch" aria-checked="false" aria-label="NanPC" data-ha-entity="switch.nanpc" data-state="unknown"></button></div>
+      <div class="hass-row"><span class="hass-name">显示器灯</span><button type="button" class="ha-sw" role="switch" aria-checked="false" aria-label="显示器灯" data-ha-entity="light.xiaomi_bar2_d755_light" data-state="unknown"></button></div>
+      <div class="hass-row"><span class="hass-name">手机充电</span><button type="button" class="ha-trig" data-ha-service="script/turn_on" data-ha-entity="script.1683454414705" data-ha-name="手机充电" aria-label="触发 手机充电" title="触发"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L5.5 13.5H11L10 21l7.5-10.5H12z"/></svg></button></div>
+      <div class="hass-row"><span class="hass-name">电暖器</span><button type="button" class="ha-sw" role="switch" aria-checked="false" aria-label="电暖器" data-ha-entity="switch.qiang_bi_cha_zuo" data-state="unknown"></button></div>
+    </div>
+  </div>
   </div>
 </section>
 
@@ -1087,17 +1171,6 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
     <a href="https://www.mchose.com.cn/#/connectDevice" aria-label="外设设备" title="迈从驱动">
       <svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 3v7"/><path d="M6 10h12"/></svg>
     </a>
-  </li>
-
-  <li class="dock-item">
-    <button type="button" aria-label="Home Assistant" title="Home Assistant">
-      <svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg>
-    </button>
-    <span class="flyout dock-flyout"><span class="flyout-inner">
-      <a href="#" class="ha-action" data-ha-service="button/press" data-ha-entity="button.xiaomi_bar2_d755_toggle" aria-label="显示器挂灯" title="显示器挂灯"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="4" rx="1.5"/><path d="M8 10l-2 4M12 10v5M16 10l2 4"/></svg></a>
-      <a href="#" class="ha-action" data-ha-service="switch/toggle" data-ha-entity="switch.qiang_bi_cha_zuo" aria-label="墙壁插座" title="墙壁插座"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M9.5 9.5v2.5M14.5 9.5v2.5M10 16h4"/></svg></a>
-      <a href="#" class="ha-action" data-ha-service="script/turn_on" data-ha-entity="script.1683454414705" aria-label="手机充电" title="手机充电"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M12.8 8.5l-2.3 3.6h3l-2.3 3.6"/></svg></a>
-    </span></span>
   </li>
 
   <li class="dock-item">
@@ -1244,25 +1317,22 @@ html.glass{--popup-blur:blur(var(--glass-blur,14px)) saturate(140%)}
       <section class="st-sec">
         <div class="th-heading">背景</div>
         <div class="st-wps" id="stWps"></div>
-        <div class="st-row"><label for="stDim">图片遮罩</label><input type="range" id="stDim" min="0" max="80" step="1"><span class="st-val" id="stDimVal"></span></div>
+        <div class="st-row"><label for="stDim">遮罩</label><input type="range" id="stDim" min="0" max="80" step="1"><span class="st-val" id="stDimVal"></span></div>
         <input type="file" id="stFile" accept="image/*" multiple hidden>
       </section>
       <section class="st-sec">
         <div class="th-heading">界面</div>
         <div class="st-row"><label for="stCard">透明度</label><input type="range" id="stCard" min="0" max="100" step="1"><span class="st-val" id="stCardVal"></span></div>
-        <div class="st-row"><label id="stGlassLabel">毛玻璃</label><button type="button" class="st-switch" id="stGlass" role="switch" aria-checked="false" aria-labelledby="stGlassLabel"><i></i></button></div>
         <div class="st-row"><label for="stBlur">模糊度</label><input type="range" id="stBlur" min="0" max="40" step="1"><span class="st-val" id="stBlurVal"></span></div>
       </section>
+      <section class="st-sec">
+        <div class="th-heading">想法 WebDAV</div>
+        <div class="st-row"><label for="syncUrl">文件</label><input type="text" inputmode="url" id="syncUrl" class="st-text" placeholder="https://dav.example.com/xyz/thoughts.json 或 /jgy/xyz/thoughts.json" autocomplete="off" spellcheck="false"></div>
+        <div class="st-row"><label for="syncUser">账号</label><input type="text" id="syncUser" class="st-text" autocomplete="off" spellcheck="false"></div>
+        <div class="st-row"><label for="syncPass">密码</label><input type="password" id="syncPass" class="st-text" autocomplete="new-password"></div>
+        <div class="st-row"><span class="st-sync" id="syncStatus">未配置</span><button type="button" class="fav-btn" id="syncNow">立即同步</button></div>
+      </section>
       <div class="st-foot"><button type="button" class="fav-btn" id="stReset">恢复默认</button></div>
-    </div>
-  </div>
-</div>
-<div class="th-overlay th-overlay--edit" id="thoughtEdit">
-  <div class="th-modal">
-    <textarea id="thoughtEditInput" rows="3"></textarea>
-    <div class="th-actions">
-      <button type="button" id="thoughtEditCancel">取消</button>
-      <button type="button" class="primary" id="thoughtEditConfirm">确认</button>
     </div>
   </div>
 </div>
@@ -1627,6 +1697,7 @@ const NavSearch = (function(){
     box.focus();
     box.setSelectionRange(box.value.length, box.value.length);
     update();
+    window.syncSearchClear?.();
   }, { passive: false });
   box.addEventListener('keydown', e => {
     if (!isOpen() || e.isComposing) return;
@@ -1867,71 +1938,116 @@ function setupDockFlyouts(){
 }
 setupDockFlyouts();
 
-// Home Assistant：点击 dock 弹层里带 data-ha-service / data-ha-entity 的条目，调用对应服务。
+// Home Assistant：计算器卡片翻面后的 HASS 卡片，滑动开关读取/切换状态，触发开关调用服务并提示。
 // 令牌放在同目录的 haapi 文件里，不写进页面源码；但能访问该目录的人仍可读到它，只建议在局域网内使用。
 // 浏览器跨域请求需要 HA 允许本页面的来源，见 configuration.yaml 的 http.cors_allowed_origins。
 const HA_URL = 'https://nha.aaxyz.de:55';
 const HA_TOKEN_FILE = 'haapi'; // 与本页面同目录的纯文本文件，内容只放令牌
 let haTokenPromise = null;
-// 失败原因分类，用来给出不同的提示：token / mixed / network / auth / reject / empty / http
-class HaError extends Error { constructor(kind, msg){ super(msg); this.kind = kind; } }
 function haToken(){
   haTokenPromise ??= fetch(HA_TOKEN_FILE, { cache: 'no-store' })
     .then(r => {
-      if(!r.ok) throw new HaError('token', 'haapi: HTTP ' + r.status);
+      if(!r.ok) throw new Error('haapi: HTTP ' + r.status);
       return r.text();
     })
     .then(t => {
       const token = t.split(/\r?\n/).map(l => l.trim()).find(Boolean)
         ?.replace(/^bearer\s+/i, '').replace(/^['"]|['"]$/g, '');
       // 服务器对不存在的文件常回退成 HTML 页面，别把它当令牌发给 HA
-      if(!token || token.length < 20 || /[<\s]/.test(token)) throw new HaError('token', 'haapi: 内容不是令牌');
+      if(!token || token.length < 20 || /[<\s]/.test(token)) throw new Error('haapi: 内容不是令牌');
       return token;
     })
     .catch(err => { // 失败后下次点击可重试
       haTokenPromise = null;
-      throw err instanceof HaError ? err : new HaError('token', 'haapi: ' + err.message);
+      throw err;
     });
   return haTokenPromise;
 }
-async function haCallService(service, entityId){
+// 统一请求：自动带令牌；连不上或返回非 2xx 时抛出带原因的错误
+async function haFetch(path, init = {}){
   const token = await haToken();
   let res;
   try{
-    res = await fetch(`${HA_URL}/api/services/${service}`, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ entity_id: entityId })
-    });
+    res = await fetch(HA_URL + path, { ...init, headers: { 'Authorization': `Bearer ${token}`, ...init.headers } });
   }catch(err){
-    // https 页面请求 http 的 HA 会被浏览器当作混合内容拦截（除非站点设置里允许了不安全内容），
-    // 所以先照常发请求，失败后才据此给出提示，避免误判
-    const mixed = location.protocol === 'https:' && HA_URL.startsWith('http:');
-    throw new HaError(mixed ? 'mixed' : 'network', err.message);   // 连不上 / 跨域未放行 / 预检被拒 / 混合内容
+    throw new Error('HA 无法连接（网络 / 跨域未放行 / 混合内容）: ' + err.message);
   }
-  if(res.status === 401 || res.status === 403) throw new HaError('auth', 'HTTP ' + res.status);
-  if(res.status === 400 || res.status === 404) throw new HaError('reject', 'HTTP ' + res.status);
-  if(!res.ok) throw new HaError('http', 'HTTP ' + res.status);
-  // HA 对不存在的实体也返回 200 和空数组；按钮/开关正常触发一定会返回变化的状态
-  let changed = null;
-  try{ changed = await res.json(); }catch(e){}
-  if(Array.isArray(changed) && !changed.length && service !== 'script/turn_on') throw new HaError('empty', 'no state change');
+  if(!res.ok) throw new Error('HA HTTP ' + res.status);
+  return res;
 }
-let haBusy = false;
-document.addEventListener('click', async e => {
-  const item = e.target.closest('[data-ha-entity]');
-  if(!item) return;
-  e.preventDefault();
-  document.querySelectorAll('.dock-flyout.is-open').forEach(f => f.classList.remove('is-open'));
-  if(haBusy) return;
-  haBusy = true;
-  try{
-    const { haService, haEntity } = item.dataset;
-    await haCallService(haService, haEntity);   // 发送和出错都不弹提示，出错只写控制台
-  }catch(err){
-    console.error('Home Assistant 调用失败:', err);
-  }finally{
-    haBusy = false;
+async function haCallService(service, entityId){
+  const res = await haFetch(`/api/services/${service}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ entity_id: entityId })
+  });
+  // HA 对不存在的实体也返回 200 和空数组；toggle / press 正常触发一定会返回变化的状态
+  // （turn_on / turn_off 在已是目标状态时同样返回空数组，不算错）
+  if(service === 'switch/toggle' || service === 'button/press'){
+    const changed = await res.json().catch(() => null);
+    if(Array.isArray(changed) && !changed.length) throw new Error('HA 没有产生状态变化: ' + entityId);
+  }
+}
+async function haGetState(entityId){
+  const res = await haFetch(`/api/states/${entityId}`, { cache: 'no-store' });
+  return (await res.json()).state;
+}
+function setHaSwitch(btn, state){
+  btn.dataset.state = state;
+  btn.setAttribute('aria-checked', state === 'on' ? 'true' : 'false');
+  btn.disabled = state === 'unavailable';
+}
+async function refreshHaSwitch(btn){
+  try{ setHaSwitch(btn, await haGetState(btn.dataset.haEntity)); }
+  catch(err){ console.error('Home Assistant 读取状态失败:', err); setHaSwitch(btn, 'unknown'); }
+}
+const hassModule = document.getElementById('calcModule');
+const hassPanel = document.getElementById('hassPanel');
+function refreshHass(){ hassPanel?.querySelectorAll('.ha-sw').forEach(refreshHaSwitch); }
+function showHass(on){
+  if(!hassModule) return;
+  hassModule.classList.toggle('is-hass', on);
+  hassPanel.setAttribute('aria-hidden', on ? 'false' : 'true');
+  try{ on ? localStorage.setItem(HASS_VIEW_KEY, '1') : localStorage.removeItem(HASS_VIEW_KEY); }catch(e){}   // 记住当前是计算器还是 HASS，刷新后保持
+  if(on) refreshHass();
+}
+const HASS_VIEW_KEY = 'nav_calc_view';
+try{ if(localStorage.getItem(HASS_VIEW_KEY) === '1') showHass(true); }catch(e){}
+document.getElementById('hassBack')?.addEventListener('click', () => showHass(false));
+document.addEventListener('visibilitychange', () => {
+  if(!document.hidden && hassModule?.classList.contains('is-hass')) refreshHass();
+});
+hassPanel?.addEventListener('click', async e => {
+  const sw = e.target.closest('.ha-sw');
+  if(sw){
+    if(sw.dataset.busy) return;
+    sw.dataset.busy = '1';
+    const entity = sw.dataset.haEntity;
+    const was = sw.getAttribute('aria-checked') === 'true';
+    setHaSwitch(sw, was ? 'off' : 'on');                       // 先乐观更新，失败再还原
+    try{
+      await haCallService(`${entity.split('.')[0]}/turn_${was ? 'off' : 'on'}`, entity);
+    }catch(err){
+      console.error('Home Assistant 调用失败:', err);
+      setHaSwitch(sw, was ? 'on' : 'off');
+    }finally{
+      delete sw.dataset.busy;
+    }
+    setTimeout(() => refreshHaSwitch(sw), 600);                // 以 HA 实际状态为准
+    return;
+  }
+  const trig = e.target.closest('.ha-trig');
+  if(trig){
+    if(trig.disabled) return;
+    trig.disabled = true;
+    try{
+      await haCallService(trig.dataset.haService, trig.dataset.haEntity);
+      showToast('已触发：' + trig.dataset.haName);
+    }catch(err){
+      console.error('Home Assistant 调用失败:', err);        // 失败不弹提示，只写控制台
+    }finally{
+      trig.disabled = false;
+    }
   }
 });
 
@@ -2230,12 +2346,16 @@ buildMiniCalendar();
       if(lastH) box.style.minHeight = lastH + 'px';   // 与日历等高，切换时页面不跳动
       miniCalTimerOn = true;
       root.classList.add('is-timer');
-      titleEl.textContent = '倒计时';
+      titleEl.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.5" r="6.5"/><path d="M12 10.5v3.5l2.2 1.5"/><path d="M9.5 3.5h5"/><path d="M12 3.5V7"/><path d="M18 7.5l1.3-1.3"/></svg>';
+      titleEl.setAttribute('aria-label', '倒计时');
+      titleEl.setAttribute('title', '倒计时');
       titleEl.removeAttribute('href');
     }else{
       miniCalTimerOn = false;
       root.classList.remove('is-timer');
       if(titleHref) titleEl.setAttribute('href', titleHref);
+      titleEl.removeAttribute('aria-label');
+      titleEl.removeAttribute('title');
       buildMiniCalendar();
     }
     store.set(VIEW_KEY, on ? 1 : 0);
@@ -2354,6 +2474,7 @@ buildMiniCalendar();
       else if(action === 'sign') toggleSign();
       else if(action === 'percent') percent();
       else if(action === 'equals') evaluate();
+      else if(action === 'hass') showHass(true);
     }
   });
 
@@ -2599,26 +2720,32 @@ const SkyBg = (() => {
   };
 })();
 
-/* 设置窗口：主题（默认 / 赛博朋克 / 霓虹灯）、背景（动态星空 / 壁纸）、界面（透明度 / 毛玻璃）。
+/* 设置窗口：主题（默认 / 赛博朋克 / 霓虹灯）、背景（动态星空 / 壁纸）、界面（透明度 / 毛玻璃模糊度）。
    选项存 localStorage（xyz.settings.v1）；壁纸（最多 5 张）是 Blob + 缩略图，存 IndexedDB，只在本机浏览器里 */
 (() => {
   const KEY = 'xyz.settings.v1';
-  const DEF = { theme: 'default', bg: 'sky', wp: '', cardA: 0, dim: 35, glass: false, blur: 14 };   // cardA：卡片背景浓度，0 = 完全透明，100 = 不透明
+  const DEF = { theme: 'default', bg: 'sky', wp: '', cardA: 0, dim: 35, blur: 0 };   // cardA：卡片背景浓度，0 = 完全透明，100 = 不透明
   const THEME_COLOR = { default: '#000000', cyber: '#0a0614', neon: '#07040f' };
   const root = document.documentElement;
   const $ = id => document.getElementById(id);
   const clamp = (v, lo, hi, d) => (typeof v === 'number' && isFinite(v)) ? Math.min(hi, Math.max(lo, Math.round(v))) : d;
 
   let S = { ...DEF };
-  try { const o = JSON.parse(localStorage.getItem(KEY)); if (o && typeof o === 'object') S = { ...DEF, ...o }; } catch (e) {}
+  try {
+    const o = JSON.parse(localStorage.getItem(KEY));
+    if (o && typeof o === 'object') {
+      S = { ...DEF, ...o };
+      if (o.glass !== true && 'glass' in o) S.blur = 0;   // 旧版：开关是关的 → 模糊度 0（关闭）
+    }
+  } catch (e) {}
   const sanitize = () => {
     if (!(S.theme in THEME_COLOR)) S.theme = 'default';
     S.bg = S.bg === 'image' ? 'image' : 'sky';
     S.wp = typeof S.wp === 'string' ? S.wp : '';
     S.cardA = clamp(S.cardA, 0, 100, 0);
     S.dim = clamp(S.dim, 0, 80, 35);
-    S.glass = S.glass === true;
-    S.blur = clamp(S.blur, 0, 40, 14);
+    delete S.glass;
+    S.blur = clamp(S.blur, 0, 40, 0);
   };
   sanitize();
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
@@ -2802,7 +2929,7 @@ const SkyBg = (() => {
   const applyCards = () => root.style.setProperty('--card-alpha', (S.cardA / 100).toFixed(2));
   const applyDim = () => root.style.setProperty('--img-dim', (S.dim / 100).toFixed(2));
   const applyGlass = () => {
-    root.classList.toggle('glass', S.glass);
+    root.classList.toggle('glass', S.blur > 0);
     root.style.setProperty('--glass-blur', S.blur + 'px');
   };
   function applyBg(){
@@ -2819,8 +2946,7 @@ const SkyBg = (() => {
     renderWps();
     $('stDim').value = S.dim; $('stDimVal').textContent = S.dim + '%'; $('stDim').disabled = !wps.length;
     $('stCard').value = S.cardA; $('stCardVal').textContent = S.cardA + '%';
-    $('stGlass').setAttribute('aria-checked', String(S.glass));
-    $('stBlur').value = S.blur; $('stBlurVal').textContent = S.blur + 'px'; $('stBlur').disabled = !S.glass;
+    $('stBlur').value = S.blur; $('stBlurVal').textContent = S.blur ? S.blur + 'px' : '关闭';
   }
 
   function applyAll(){ applyTheme(); applyCards(); applyDim(); applyGlass(); applyBg(); refresh(); }
@@ -2849,8 +2975,7 @@ const SkyBg = (() => {
   });
   $('stDim').addEventListener('input', e => { S.dim = clamp(+e.target.value, 0, 80, 35); $('stDimVal').textContent = S.dim + '%'; applyDim(); save(); });
   $('stCard').addEventListener('input', e => { S.cardA = clamp(+e.target.value, 0, 100, 0); $('stCardVal').textContent = S.cardA + '%'; applyCards(); save(); });
-  $('stGlass').addEventListener('click', () => { S.glass = !S.glass; save(); applyGlass(); refresh(); });
-  $('stBlur').addEventListener('input', e => { S.blur = clamp(+e.target.value, 0, 40, 14); $('stBlurVal').textContent = S.blur + 'px'; applyGlass(); save(); });
+  $('stBlur').addEventListener('input', e => { S.blur = clamp(+e.target.value, 0, 40, 0); $('stBlurVal').textContent = S.blur ? S.blur + 'px' : '关闭'; applyGlass(); save(); });
   $('stReset').addEventListener('click', () => { S = { ...DEF }; save(); applyAll(); showToast('已恢复默认设置'); });
 
   // ---- 打开 / 关闭 ----
@@ -2890,7 +3015,6 @@ const SkyBg = (() => {
 /* ===== 想法 / 待办（功能提取自 todo.html，数据沿用同一个 localStorage 键） ===== */
 const Thoughts = (function(){
   const KEY = 'todo';
-  const LONG_PRESS_MS = 500;
   const $t = id => document.getElementById(id);
   const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()));
   const GRIP = '<svg width="8" height="12" viewBox="0 0 8 12" fill="currentColor" aria-hidden="true"><circle cx="2" cy="2" r="1.2"/><circle cx="6" cy="2" r="1.2"/><circle cx="2" cy="6" r="1.2"/><circle cx="6" cy="6" r="1.2"/><circle cx="2" cy="10" r="1.2"/><circle cx="6" cy="10" r="1.2"/></svg>';
@@ -2900,44 +3024,126 @@ const Thoughts = (function(){
     return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 ${p(d.getHours())}:${p(d.getMinutes())}`;
   };
 
+  // 数据层：本地 localStorage 里保留「已删除」标记（墓碑）和每条的 updatedAt，用于多设备 WebDAV 同步时按条目合并
   const DataService = {
-    load(){
+    raw(){
       let list;
       try { list = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e) { list = []; }
+      if (!Array.isArray(list)) list = [];
       let changed = false;
       list.forEach(item => {
         if (!item.id) { item.id = uid(); changed = true; }
         if (!item.createdAt) { item.createdAt = Date.now(); changed = true; }
         if (item.done && !item.completedAt) { item.completedAt = item.createdAt; changed = true; }
       });
-      if (changed) this.save(list);
+      if (changed) this.saveRaw(list, true);
       return list;
     },
-    save(list){ try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e) {} },
+    saveRaw(list, silent){
+      try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e) {}
+      if (!silent) Sync.touch();
+    },
+    load(){ return this.raw().filter(t => !t.deleted); },
     add(title){
-      const list = this.load(), now = Date.now();
-      list.push({ id: uid(), title, done: false, createdAt: now, order: now, completedAt: null });
-      this.save(list);
+      const list = this.raw(), now = Date.now();
+      list.push({ id: uid(), title, done: false, createdAt: now, order: now, completedAt: null, updatedAt: now });
+      this.saveRaw(list);
     },
     update(id, patch){
-      const list = this.load(), t = list.find(x => x.id === id);
-      if (t) Object.assign(t, patch);
-      this.save(list);
+      const list = this.raw(), t = list.find(x => x.id === id && !x.deleted);
+      if (t) Object.assign(t, patch, { updatedAt: Date.now() });
+      this.saveRaw(list);
     },
     setOrder(ids){
-      const list = this.load();
-      ids.forEach((id, i) => { const t = list.find(x => x.id === id); if (t) t.order = i; });
-      this.save(list);
+      const list = this.raw(), now = Date.now();
+      ids.forEach((id, i) => { const t = list.find(x => x.id === id && !x.deleted); if (t && t.order !== i) { t.order = i; t.updatedAt = now; } });
+      this.saveRaw(list);
     },
-    remove(id){ this.save(this.load().filter(t => t.id !== id)); },
-    clearCompleted(){ this.save(this.load().filter(t => !t.done)); }
+    _kill(list, pred){
+      const now = Date.now();
+      return list.map(t => (!t.deleted && pred(t)) ? { id: t.id, createdAt: t.createdAt, deleted: true, updatedAt: now } : t);
+    },
+    remove(id){ this.saveRaw(this._kill(this.raw(), t => t.id === id)); },
+    clearCompleted(){ this.saveRaw(this._kill(this.raw(), t => t.done)); }
   };
+
+  // WebDAV 同步：整份 JSON 存成一个文件（地址、账号在「设置 → 想法同步」里填）。
+  // 流程：GET 远端 → 按 id 合并（updatedAt 新的胜出，删除也算一次修改）→ 本地有变化就写回本地 → 与远端不同就 PUT（带 If-Match 防覆盖，冲突则重来）。
+  // 未配置地址时什么都不做；连不上时本地照常读写，下次同步时再合并。
+  const Sync = (function(){
+    const CFG_KEY = 'thoughtSync', TOMB_DAYS = 30;
+    let timer = null, busy = false, again = false;
+    const cfg = () => { try { const c = JSON.parse(localStorage.getItem(CFG_KEY)); return c && c.url ? c : null; } catch(e) { return null; } };
+    const stamp = t => t.updatedAt || t.createdAt || 0;
+    // 比较用：按 id 排序、键名排序，不受字段顺序影响
+    const sortKeys = (k, v) => (v && typeof v === 'object' && !Array.isArray(v)) ? Object.keys(v).sort().reduce((o, key) => (o[key] = v[key], o), {}) : v;
+    const canon = l => JSON.stringify(l.slice().sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0), sortKeys);
+    // 远端数据不可信（id 会被拼进 HTML 属性）：只收格式正确的条目，字段逐个校验
+    const num = v => Number.isFinite(v) ? v : undefined;
+    function clean(t){
+      if (!t || typeof t !== 'object' || typeof t.id !== 'string' || !/^[\w.-]{1,64}$/.test(t.id)) return null;
+      const o = { id: t.id, createdAt: num(t.createdAt) || 0, updatedAt: num(t.updatedAt) || 0 };
+      if (t.deleted) return { ...o, deleted: true };
+      return { ...o, title: String(t.title == null ? '' : t.title).slice(0, 5000), done: !!t.done,
+               order: num(t.order) ?? o.createdAt, completedAt: t.done ? (num(t.completedAt) || o.createdAt) : null };
+    }
+    const auth = c => c.user ? { Authorization: 'Basic ' + btoa(unescape(encodeURIComponent(c.user + ':' + (c.pass || '')))) } : {};
+    const setStatus = (msg, bad) => { const el = $t('syncStatus'); if (el) { el.textContent = msg; el.classList.toggle('bad', !!bad); } };
+    const hhmm = () => { const d = new Date(), p = n => String(n).padStart(2, '0'); return p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds()); };
+
+    function merge(a, b){
+      const map = new Map();
+      a.concat(b).forEach(t => { const x = map.get(t.id); if (!x || stamp(t) > stamp(x)) map.set(t.id, t); });
+      const limit = Date.now() - TOMB_DAYS * 864e5;
+      return [...map.values()].filter(t => !(t.deleted && stamp(t) < limit));   // 过期的删除标记丢掉，避免文件越来越大
+    }
+
+    async function run(){
+      const c = cfg();
+      if (!c) { setStatus('未配置'); return; }
+      if (busy) { again = true; return; }
+      busy = true; setStatus('同步中…');
+      try {
+        let done = false;
+        for (let i = 0; i < 3; i++) {
+          const r = await fetch(c.url, { headers: auth(c), cache: 'no-store' });
+          let remote = [], etag = null, exists = false;
+          if (r.status !== 404) {
+            if (!r.ok) throw new Error('HTTP ' + r.status + (r.status === 401 ? '（账号或密码不对）' : ''));
+            exists = true; etag = r.headers.get('ETag');
+            const j = await r.json().catch(() => []);
+            remote = Array.isArray(j) ? j.map(clean).filter(Boolean) : [];
+          }
+          const local = DataService.raw();
+          const merged = merge(local, remote);
+          if (canon(merged) !== canon(local)) { DataService.saveRaw(merged, true); if (isOpen()) render(); }
+          if (canon(merged) === canon(remote)) { done = true; break; }      // 远端已是最新，无需写回
+          const h = { ...auth(c), 'Content-Type': 'application/json' };
+          if (i < 2) { if (etag) h['If-Match'] = etag; else if (!exists) h['If-None-Match'] = '*'; }   // 最后一轮不带条件头：兼容不支持 If-Match 的 WebDAV 服务
+          const w = await fetch(c.url, { method: 'PUT', headers: h, body: JSON.stringify(merged) });
+          if (w.status === 412) continue;                                   // 期间被别的设备改过：重新拉取再合并
+          if (!w.ok) throw new Error('HTTP ' + w.status);
+          done = true; break;
+        }
+        if (!done) throw new Error('多台设备同时修改，请稍后再试');
+        setStatus('已同步 ' + hhmm());
+      } catch (e) {
+        setStatus(e instanceof TypeError ? '连接失败：检查地址、证书和跨域（CORS）设置' : '同步失败：' + e.message, true);
+      } finally {
+        busy = false;
+        if (again) { again = false; schedule(300); }
+      }
+    }
+    function schedule(ms){ clearTimeout(timer); timer = setTimeout(run, ms); }
+    return { run, touch: () => { if (cfg()) schedule(1500); }, cfg, CFG_KEY };
+  })();
 
   const sorted = () => DataService.load().sort((a, b) => (a.order ?? a.createdAt) - (b.order ?? b.createdAt));
   const isOpen = () => $t('thoughtOverlay').classList.contains('show');
-  let editingId = null, pressTimer = null, maxed = false;
+  let editingId = null, maxed = false;
 
   function render(){
+    if (editingId) commitEdit();   // 正在行内编辑时先保存，避免重绘丢内容
     const list = sorted();
     const pending = list.filter(t => !t.done);
     const done = list.filter(t => t.done);
@@ -3020,23 +3226,52 @@ const Thoughts = (function(){
     handle.addEventListener('pointercancel', onEnd);
   }
 
+  // 行内编辑：点击条目文字直接在原位编辑，Enter / 点击别处即保存生效，Esc 放弃修改
   function openEdit(id){
+    if (editingId === id) return;
+    if (editingId) commitEdit();
     const t = DataService.load().find(x => x.id === id);
-    if (!t || t.done) return;
+    const row = $t('thoughtBody').querySelector(`[data-row-id="${id}"]`);
+    const textEl = row && row.querySelector('.th-text');
+    if (!t || t.done || !textEl) return;
     editingId = id;
-    const input = $t('thoughtEditInput');
-    input.value = t.title;
-    $t('thoughtEdit').classList.add('show');
-    requestAnimationFrame(() => { input.focus(); input.select(); });
+    row.classList.add('is-editing');
+    const ta = document.createElement('textarea');
+    ta.className = 'th-inline';
+    ta.rows = 1;
+    ta.value = t.title;
+    ta.setAttribute('aria-label', '编辑想法');
+    const fit = () => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; };
+    ta.addEventListener('input', fit);
+    ta.addEventListener('keydown', e => {
+      if (e.isComposing) return;
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); commitEdit(); }
+      else if (e.key === 'Escape') { e.stopPropagation(); finishEdit(false); }
+    });
+    ta.addEventListener('blur', () => commitEdit());
+    textEl.replaceWith(ta);
+    fit();
+    ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
   }
-  function closeEdit(){ $t('thoughtEdit').classList.remove('show'); editingId = null; }
-  function confirmEdit(){
-    const v = $t('thoughtEditInput').value.trim();
-    if (editingId && v) DataService.update(editingId, { title: v });
-    closeEdit();
-    render();
+  function finishEdit(save){
+    const id = editingId;
+    if (!id) return;
+    editingId = null;
+    const row = $t('thoughtBody').querySelector(`[data-row-id="${id}"]`);
+    const ta = row && row.querySelector('textarea.th-inline');
+    const t = DataService.load().find(x => x.id === id);
+    if (!ta) return;
+    let title = t ? t.title : '';
+    const v = ta.value.trim();
+    if (save && t && v && v !== t.title) { DataService.update(id, { title: v }); title = v; }   // 空内容不保存，保持原文
+    const div = document.createElement('div');
+    div.className = 'th-text';
+    div.textContent = title;
+    row.classList.remove('is-editing');
+    ta.replaceWith(div);
   }
-  function cancelPress(){ clearTimeout(pressTimer); pressTimer = null; }
+  function commitEdit(){ finishEdit(true); }
 
   function exportMd(){
     const list = sorted();
@@ -3080,8 +3315,8 @@ const Thoughts = (function(){
     input.value = '';
     render();
   }
-  function open(){ render(); $t('thoughtOverlay').classList.add('show'); if (maxed) requestAnimationFrame(() => $t('thoughtAddInput').focus()); }
-  function close(){ $t('thoughtOverlay').classList.remove('show'); closeEdit(); }
+  function open(){ render(); Sync.run(); $t('thoughtOverlay').classList.add('show'); if (maxed) requestAnimationFrame(() => $t('thoughtAddInput').focus()); }
+  function close(){ commitEdit(); $t('thoughtOverlay').classList.remove('show'); }
 
   function init(){
     const body = $t('thoughtBody');
@@ -3097,18 +3332,11 @@ const Thoughts = (function(){
       render();
     });
     body.addEventListener('pointerdown', startDrag);
-    body.addEventListener('dblclick', e => {
+    body.addEventListener('click', e => {
       const el = e.target.closest('[data-edit-id]');
-      if (el && !e.target.closest('button')) openEdit(el.dataset.editId);
+      if (!el || e.target.closest('button') || e.target.closest('textarea')) return;
+      openEdit(el.dataset.editId);
     });
-    body.addEventListener('touchstart', e => {
-      const el = e.target.closest('[data-edit-id]');
-      if (!el || e.target.closest('button')) return;
-      cancelPress();
-      pressTimer = setTimeout(() => { pressTimer = null; openEdit(el.dataset.editId); }, LONG_PRESS_MS);
-    }, { passive: true });
-    ['touchend', 'touchmove', 'touchcancel'].forEach(type =>
-      body.addEventListener(type, cancelPress, { passive: true }));
 
     $t('thoughtChip').addEventListener('click', e => {
       e.preventDefault();
@@ -3127,18 +3355,8 @@ const Thoughts = (function(){
       showToast('已清除已完成');
     });
 
-    $t('thoughtEditConfirm').addEventListener('click', confirmEdit);
-    $t('thoughtEditCancel').addEventListener('click', closeEdit);
-    $t('thoughtEdit').addEventListener('click', e => { if (e.target.id === 'thoughtEdit') closeEdit(); });
-    $t('thoughtEditInput').addEventListener('keydown', e => {
-      if (e.isComposing) return;
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); confirmEdit(); }
-      if (e.key === 'Escape') { e.stopPropagation(); closeEdit(); }
-    });
-
     document.addEventListener('keydown', e => {
       if (e.key !== 'Escape') return;
-      if ($t('thoughtEdit').classList.contains('show')) return closeEdit();
       if (isOpen()) close();
     });
     // Ctrl/Cmd+L：打开想法弹窗（再按一次关闭；会覆盖浏览器「聚焦地址栏」的默认行为）
@@ -3150,6 +3368,22 @@ const Thoughts = (function(){
       isOpen() ? close() : open();
     });
     window.addEventListener('storage', e => { if (e.key === KEY && isOpen()) render(); });
+
+    // 想法同步设置（WebDAV）
+    const fUrl = $t('syncUrl'), fUser = $t('syncUser'), fPass = $t('syncPass');
+    if (fUrl) {
+      const c = Sync.cfg() || {};
+      fUrl.value = c.url || ''; fUser.value = c.user || ''; fPass.value = c.pass || '';
+      const saveCfg = () => {
+        try { localStorage.setItem(Sync.CFG_KEY, JSON.stringify({ url: fUrl.value.trim(), user: fUser.value.trim(), pass: fPass.value })); } catch(e) {}
+        Sync.run();
+      };
+      [fUrl, fUser, fPass].forEach(el => el.addEventListener('change', saveCfg));
+      $t('syncNow').addEventListener('click', saveCfg);
+      if (Sync.cfg()) $t('syncStatus').textContent = '已配置';
+    }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) Sync.run(); });
+    setTimeout(() => Sync.run(), 800);   // 启动后稍等再拉取，不拖慢首页
   }
 
   init();
@@ -3206,36 +3440,31 @@ const Thoughts = (function(){
   }, true);
 })();
 
-/* 移动端：长按带子菜单的条目展开子菜单 */
-(function setupLongPressFlyouts(){
-  const LONG_MS = 500;
-  let timer = null, touching = false, suppressClick = false;
-  document.addEventListener('touchstart', e => {
-    const chip = e.target.closest('.chip-group > .chip');
-    suppressClick = false;
-    touching = true;
-    clearTimeout(timer);
-    timer = null;
-    if (!chip) return;
-    const group = chip.parentElement;
-    timer = setTimeout(() => {
-      timer = null;
-      clearFlyoutState();
-      group.classList.add('is-open');
-      suppressClick = true;
-    }, LONG_MS);
-  }, { passive: true });
-  const endTouch = () => { clearTimeout(timer); timer = null; touching = false; };
-  ['touchend', 'touchmove', 'touchcancel'].forEach(type =>
-    document.addEventListener(type, endTouch, { passive: true }));
-  // 长按触发后，吞掉随之而来的 click，避免直接跳转
+/* 触屏：带子菜单的条目右侧有个小箭头，点箭头展开/收起子菜单，点其余部分照常跳转（不再用长按，避免误触） */
+(function setupTouchFlyouts(){
+  const touchOnly = window.matchMedia('(hover:none)');
+  const ARROW_W = 34;   // 条目右侧这么宽的区域算「箭头区」，与 CSS 里分隔线/箭头的位置对应
+  // 子菜单靠右的条目容易超出屏幕：展开后量一下，超出就向左挪回来
+  const keepInViewport = group => {
+    const fly = group.querySelector(':scope > .flyout');
+    const inner = fly && fly.querySelector('.flyout-inner');
+    if (!inner) return;
+    fly.style.left = '';
+    const over = inner.getBoundingClientRect().right - (window.innerWidth - 8);
+    if (over > 0) fly.style.left = -over + 'px';
+  };
   window.addEventListener('click', e => {
-    if (suppressClick) { suppressClick = false; e.preventDefault(); e.stopPropagation(); }
+    if (!touchOnly.matches) return;
+    const chip = e.target.closest('.chip-group > .chip');
+    if (!chip) return;
+    const r = chip.getBoundingClientRect();
+    if (e.clientX < r.right - ARROW_W) return;
+    e.preventDefault(); e.stopPropagation();
+    const group = chip.parentElement, wasOpen = group.classList.contains('is-open');
+    clearFlyoutState();
+    if (!wasOpen) { group.classList.add('is-open'); keepInViewport(group); }
+    chip.blur();
   }, true);
-  // 阻止长按时系统弹出的链接菜单
-  document.addEventListener('contextmenu', e => {
-    if (touching && e.target.closest('.chip-group > .chip')) e.preventDefault();
-  });
 })();
 
 /* Favorites：可自行增删/修改的收藏夹，存浏览器 localStorage。点击标题的星标图标进入/退出管理模式 */
@@ -3424,6 +3653,26 @@ const Thoughts = (function(){
   });
 
   render();
+})();
+
+/* 搜索框右侧的 X：有文字时显示，点击清空并重新聚焦（触发 input 事件，让「n/a/c」下拉等同步关闭） */
+(function setupSearchClear(){
+  const box = document.getElementById('Searchbox');
+  const btn = document.getElementById('searchClear');
+  const form = box && box.closest('.search');
+  if (!box || !btn || !form) return;
+  const sync = () => form.classList.toggle('has-text', box.value.length > 0);
+  window.syncSearchClear = sync;
+  box.addEventListener('input', sync);
+  window.addEventListener('pageshow', sync);   // 浏览器恢复缓存页 / 自动填充后同步
+  btn.addEventListener('mousedown', e => e.preventDefault());   // 不抢走输入框焦点
+  btn.addEventListener('click', () => {
+    box.value = '';
+    box.dispatchEvent(new Event('input', { bubbles: true }));
+    box.focus();
+  });
+  sync();
+  setTimeout(sync, 150);
 })();
 
 /* 打开页面时直接聚焦搜索框；从后台标签切回、从缓存恢复时同样处理（不打断弹窗、已有焦点和选中的文字） */
