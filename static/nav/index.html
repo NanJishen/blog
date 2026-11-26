@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0a0c11">
 <title>极限导航</title>
-<link rel="icon" href="/favicon.ico">
-<script>try{ if(localStorage.getItem("navTheme")==="light") document.documentElement.setAttribute("data-theme","light"); }catch(e){}</script>
+<link rel="icon" href="favicon.ico">
+<script>try{ var t=localStorage.getItem("navTheme"); if(t==="light"||t==="amber") document.documentElement.setAttribute("data-theme",t); }catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -38,6 +38,9 @@
     color-scheme: dark;
     --header-bg: rgba(10,12,17,0.86);
     --grid-line: rgba(255,255,255,0.015);
+    --tile-0:#e2a23c; --tile-1:#4bb3a4; --tile-2:#c9707a; --tile-3:#7d8fc4;
+    --card-rgb:18,21,29; --card-hover-rgb:25,29,41; --dim-rgb:0,0,0;
+    --card-alpha:.25; --img-dim:.3; --glass-blur:3px;
   }
   :root[data-theme="light"]{
     --bg: #f4f5f9;
@@ -59,7 +62,40 @@
     --slate: #5f74b3;
     --header-bg: rgba(244,245,249,0.88);
     --grid-line: rgba(20,25,40,0.035);
+    --card-rgb:255,255,255; --card-hover-rgb:240,242,248; --dim-rgb:244,245,249;
     color-scheme: light;
+  }
+  /* 琥珀金主题：取自「极限搜索」页面 —— 纯黑底 + 琥珀金强调色，单色调 */
+  :root[data-theme="amber"]{
+    --bg: #000000;
+    --bg-soft: #0a0908;
+    --bg-elevated: #0e0c0a;
+    --card: #0e0c0a;
+    --card-hover: #171410;
+    --border: rgba(232,180,90,0.14);
+    --border-strong: rgba(232,180,90,0.38);
+    --text: #cdc5b3;
+    --text-dim: #8a8272;
+    --text-faint: #5a5446;
+    --accent: #e8b45a;
+    --accent-dim: #c99a48;
+    --accent-soft: rgba(232,180,90,0.16);
+    --teal: #ffd479;
+    --teal-soft: rgba(232,180,90,0.14);
+    --rose: #c9707a;
+    --slate: #b8a77f;
+    --radius: 14px;
+    --header-bg: rgba(0,0,0,0.86);
+    --grid-line: rgba(232,180,90,0.03);
+    --tile-0:#e8b45a; --tile-1:#ffd479; --tile-2:#c99a48; --tile-3:#f3ead9;
+    --card-rgb:14,12,10; --card-hover-rgb:23,20,16; --dim-rgb:0,0,0;
+    color-scheme: dark;
+  }
+  :root[data-theme="amber"] body{
+    background:
+      radial-gradient(900px 520px at 80% -8%, rgba(212,175,55,0.06), transparent 62%),
+      radial-gradient(700px 500px at 10% 105%, rgba(255,255,255,0.03), transparent 65%),
+      var(--bg);
   }
 
   *{ box-sizing:border-box; }
@@ -193,8 +229,8 @@
   /* ---------- SIDEBAR (nested tree) ---------- */
   aside{
     width:236px; flex-shrink:0;
-    position:sticky; top:69px;
-    height:calc(100vh - 69px);
+    position:sticky; top:var(--hdr-h, 74px);          /* 顶栏实际高度由脚本量出来，避免写死后与顶栏错位 */
+    height:calc(100vh - var(--hdr-h, 74px));
     overflow-y:auto;
     padding:24px 10px 40px 28px;
     border-right:1px solid var(--border);
@@ -256,8 +292,8 @@
   /* ---------- MOBILE DRAWER ---------- */
   .drawer-backdrop{ display:none; }
 
-  /* ---------- THEME TOGGLE ---------- */
-  .theme-fab{
+  /* ---------- SETTINGS BUTTON ---------- */
+  .settings-fab{
     position:fixed; right:26px; bottom:26px; z-index:60;
     width:44px; height:44px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
@@ -266,18 +302,181 @@
     box-shadow:0 6px 20px rgba(0,0,0,0.25);
     transition:transform .15s ease, border-color .15s ease, background .15s ease;
   }
-  .theme-fab:hover{ transform:scale(1.08); border-color:var(--accent-dim); }
-  .theme-fab:active{ transform:scale(0.96); }
+  .settings-fab:hover{ transform:scale(1.08); border-color:var(--accent-dim); }
+  .settings-fab:active{ transform:scale(0.96); }
+
+  /* ---------- SETTINGS MODAL ---------- */
+  .st-modal{
+    position:fixed; inset:0; z-index:200; padding:6vh 5vw;
+    display:none; align-items:center; justify-content:center;
+    background:rgba(0,0,0,0.35); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  }
+  .st-modal.show{ display:flex; }
+  @keyframes stRise{ from{ opacity:0; transform:translateY(8px) scale(.98); } to{ opacity:1; transform:none; } }
+  .st-panel{
+    position:relative; width:min(100%, 480px); max-height:88vh; overflow:auto;
+    padding:20px 22px 22px;
+    background:var(--bg-elevated); border:1px solid var(--border-strong); border-radius:18px;
+    color:var(--text); box-shadow:0 20px 60px rgba(0,0,0,0.4);
+    animation:stRise .22s cubic-bezier(.2,.8,.3,1);
+  }
+  .st-panel:focus{ outline:none; }
+  .st-panel h2{
+    margin:0 0 14px; padding-bottom:12px; border-bottom:1px dashed var(--border);
+    font-size:18px; font-weight:600; color:var(--text);
+  }
+  .st-close{
+    position:absolute; top:14px; right:16px; width:28px; height:28px;
+    display:flex; align-items:center; justify-content:center;
+    background:none; border:0; border-radius:8px; cursor:pointer;
+    font-size:18px; line-height:1; color:var(--text-dim); transition:color .15s;
+  }
+  .st-close:hover{ color:var(--accent); }
+  .st-heading{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 12px; padding-bottom:6px; border-bottom:1px solid var(--border);
+  }
+  .st-themes{ display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+  .st-theme{
+    display:flex; flex-direction:column; gap:8px; padding:8px; min-width:0;
+    background:transparent; color:var(--text); font:inherit; font-size:12.5px; text-align:center; cursor:pointer;
+    border:1px solid var(--border); border-radius:10px;
+    transition:border-color .15s, box-shadow .15s, color .15s;
+  }
+  .st-theme:hover, .st-theme:focus-visible{ border-color:var(--border-strong); }
+  .st-theme.is-active{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); color:var(--accent); }
+  .st-swatch{
+    display:block; aspect-ratio:16 / 10; border-radius:7px; border:1px solid rgba(128,128,128,0.25);
+    position:relative; overflow:hidden;
+  }
+  .st-swatch::before{ content:""; position:absolute; left:10%; top:18%; width:46%; height:14%; border-radius:3px; background:var(--sw-accent); }
+  .st-swatch::after{ content:""; position:absolute; left:10%; top:44%; width:80%; height:32%; border-radius:4px; background:var(--sw-card); border:1px solid var(--sw-line); }
+  .st-swatch.sw-dark{ --sw-accent:#e2a23c; --sw-card:#12151d; --sw-line:rgba(255,255,255,.14); background:#0a0c11; }
+  .st-swatch.sw-light{ --sw-accent:#c07a0c; --sw-card:#ffffff; --sw-line:rgba(20,25,40,.18); background:#f4f5f9; }
+  .st-swatch.sw-amber{ --sw-accent:#e8b45a; --sw-card:#0e0c0a; --sw-line:rgba(232,180,90,.38); background:#000; }
+
+  /* ---------- BACKGROUND IMAGE（设了壁纸后生效；玻璃效果取自「极限搜索」）---------- */
+  #bgImg{ position:fixed; inset:0; z-index:-2; display:none; pointer-events:none; }
+  #bgPic{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  #bgPic:not([src]){ display:none; }
+  #bgImg::after{ content:""; position:absolute; inset:0; background:rgba(var(--dim-rgb), var(--img-dim)); }
+  html.has-img #bgImg{ display:block; }
+
+  /* 面板（卡片、顶栏、左侧导航、设置按钮）：底色浓度 = 「透明度」，毛玻璃 = 「模糊度」（0 = 关闭） */
+  html.has-img .card{ background:rgba(var(--card-rgb), var(--card-alpha)); }
+  html.has-img .card:hover{ background:rgba(var(--card-hover-rgb), calc(var(--card-alpha) + .12)); }
+  html.has-img header{
+    background:rgba(var(--card-rgb), var(--card-alpha));
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+  }
+  html.has-img aside{
+    background:rgba(var(--card-rgb), var(--card-alpha));
+    --hint-bg:rgba(var(--card-rgb), var(--card-alpha));
+  }
+  html.has-img .settings-fab{
+    background:rgba(var(--card-rgb), max(var(--card-alpha), .5));   /* 小按钮留一点底色，保证图标看得清 */
+    text-shadow:0 0 6px rgba(var(--card-rgb), .9);
+  }
+  html.has-img.glass .card, html.has-img.glass aside, html.has-img.glass header, html.has-img.glass .settings-fab{
+    -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(140%);
+    backdrop-filter:blur(var(--glass-blur)) saturate(140%);
+  }
+
+  /* 顶栏里的输入框和按钮：顶栏本身已是玻璃，它们不再单独铺底色 */
+  html.has-img #searchInput, html.has-img #searchInput:focus, html.has-img .menu-btn, html.has-img .clear-btn{ background:transparent; }
+  html.has-img .clear-btn:hover{ background:var(--border); }
+  html.has-img #searchInput::placeholder, html.has-img .search-wrap i.fa-magnifying-glass{ color:var(--text-dim); }
+
+  /* 文字：只用颜色，不加阴影（页脚直接压在壁纸上，保留一圈光晕） */
+  html.has-img .cat-item{ color:var(--text); }
+  html.has-img .term-item{ color:var(--text); color:color-mix(in srgb, var(--text) 82%, transparent); }
+  html.has-img .card-desc{ color:var(--text); color:color-mix(in srgb, var(--text) 80%, transparent); }
+  html.has-img .cat-item i.fa-fw, html.has-img .cat-item .cat-count, html.has-img .term-item .term-count{ color:var(--text-dim); }
+  html.has-img .term-label{ color:var(--accent); }
+  html.has-img footer{
+    color:var(--text-dim);
+    text-shadow:0 0 2px rgba(var(--card-rgb), 1), 0 1px 4px rgba(var(--card-rgb), .9), 0 0 10px rgba(var(--card-rgb), .7);
+  }
+
+  /* 侧栏悬停（半透明底色）→ 选中态；选中态写在后面，颜色才压得过悬停 */
+  html.has-img .cat-item:not(.active):hover, html.has-img .term-item:hover{ background:rgba(var(--card-hover-rgb), calc(var(--card-alpha) + .2)); }
+  html.has-img .cat-item:hover, html.has-img .term-item:hover{ color:var(--text); }
+  html.has-img .cat-item:hover i.fa-fw{ color:var(--accent); }
+  html.has-img .cat-item.active, html.has-img .cat-item.active i.fa-fw{ color:var(--accent); }
+  html.has-img .cat-item.active .cat-count{ color:var(--accent-dim); }
+  html.has-img .term-item.active{ color:var(--teal); }
+
+  /* 设置弹窗：设了壁纸后同样跟随 透明度 / 模糊度。
+     底色留 30% 下限、模糊至少 6px（和极限搜索的弹窗一致），否则后面的页面文字会穿透；
+     遮罩层本身不能带 backdrop-filter（否则面板的模糊只能作用在遮罩内部），
+     所以页面背后的虚化放在一个伪元素上，面板仍然能直接模糊页面。 */
+  html.has-img .st-modal{ -webkit-backdrop-filter:none; backdrop-filter:none; }
+  html.has-img .st-modal::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    -webkit-backdrop-filter:blur(max(var(--glass-blur), 6px)); backdrop-filter:blur(max(var(--glass-blur), 6px));
+  }
+  html.has-img .st-panel{
+    background:rgba(var(--card-rgb), max(var(--card-alpha), .3));
+    -webkit-backdrop-filter:blur(max(var(--glass-blur), 6px)) saturate(140%);
+    backdrop-filter:blur(max(var(--glass-blur), 6px)) saturate(140%);
+  }
+
+  /* ---------- SETTINGS: wallpaper / sliders ---------- */
+  .st-sec{ margin-bottom:20px; }
+  .st-wps{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+  .st-wp, .st-wp__add{ position:relative; aspect-ratio:16 / 10; min-width:0; cursor:pointer; -webkit-user-select:none; user-select:none; }
+  .st-wp{ border:1px solid var(--border); border-radius:8px; transition:border-color .15s, box-shadow .15s; }
+  .st-wp:hover, .st-wp:focus-visible{ border-color:var(--border-strong); }
+  .st-wp img{ display:block; width:100%; height:100%; object-fit:cover; border-radius:7px; }
+  .st-wp.is-active{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+  .st-wp__del{
+    position:absolute; top:-6px; right:-6px; width:18px; height:18px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--border-strong); border-radius:50%;
+    background:var(--bg-elevated); color:var(--text); font-size:13px; line-height:1; cursor:pointer;
+    opacity:0; pointer-events:none; transition:opacity .12s, color .15s, border-color .15s;
+  }
+  .st-wp:hover .st-wp__del, .st-wp:focus-within .st-wp__del{ opacity:1; pointer-events:auto; }
+  @media (hover:none){ .st-wp__del{ opacity:1; pointer-events:auto; } }
+  .st-wp__del:hover, .st-wp__del:focus-visible{ color:var(--accent); border-color:var(--accent); }
+  .st-wp__add{
+    display:flex; align-items:center; justify-content:center;
+    border:1px dashed var(--border-strong); border-radius:8px;
+    color:var(--text-dim); font-size:20px; line-height:1;
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .st-wp__add:hover, .st-wp__add:focus-visible{ color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
+  .st-row{ display:flex; align-items:center; gap:10px; margin-top:12px; font-size:12.5px; }
+  .st-wps + .st-row{ margin-top:14px; }
+  .st-row label{ flex:none; width:6em; color:var(--text); }
+  .st-row input[type=range]{ flex:1; min-width:0; accent-color:var(--accent); }
+  .st-row input[type=range]:disabled{ opacity:.4; }
+  .st-val{ flex:none; width:3.4em; text-align:right; font-size:12px; color:var(--text-dim); }
+  .st-hint{ margin:10px 0 0; font-size:11.5px; color:var(--text-faint); }
+  .st-foot{ display:flex; justify-content:flex-end; }
+  .st-btn{
+    padding:5px 14px; font:inherit; font-size:12px; color:var(--text); background:transparent; cursor:pointer;
+    border:1px solid var(--border); border-radius:8px;
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .st-btn:hover, .st-btn:focus-visible{ color:var(--accent); border-color:var(--border-strong); background:var(--accent-soft); }
+  #toast{
+    position:fixed; left:50%; bottom:28px; transform:translateX(-50%); z-index:2000;
+    padding:8px 16px; border-radius:999px; font-size:12.5px; white-space:nowrap;
+    background:var(--bg-elevated); border:1px solid var(--border-strong); color:var(--accent);
+    opacity:0; pointer-events:none; transition:opacity .2s;
+  }
+  #toast.show{ opacity:1; }
 
   /* ---------- MAIN ---------- */
   main{ flex:1; min-width:0; padding:32px 28px 80px; }
 
-  .cat-section{ margin-bottom:52px; scroll-margin-top:84px; }
+  .cat-section{ margin-bottom:52px; scroll-margin-top:calc(var(--hdr-h, 74px) + 10px); }
   .cat-section-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:22px; }
   .cat-section-head h2{ font-family:var(--font-display); font-weight:600; font-size:24px; margin:0; letter-spacing:0.01em; display:flex; align-items:center; gap:10px; }
   .cat-section-head h2 i{ font-size:17px; color:var(--accent); }
 
-  .term-group{ margin-bottom:28px; scroll-margin-top:84px; }
+  .term-group{ margin-bottom:28px; scroll-margin-top:calc(var(--hdr-h, 74px) + 10px); }
   .term-label{ display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.08em; color:var(--teal); text-transform:uppercase; margin:0 0 14px; }
   .term-label::after{ content:""; flex:1; height:1px; background:linear-gradient(90deg, var(--teal-soft), transparent); }
 
@@ -300,6 +499,7 @@
   footer{ max-width:1440px; margin:0 auto; padding:30px 28px 60px; color:var(--text-faint); font-size:12px; border-top:1px solid var(--border); display:flex; justify-content:center; text-align:center; }
   footer .fmono{ font-family:var(--font-mono); }
   footer a:hover{ color:var(--accent); }
+  .code{ font-family:var(--font-mono); color:var(--accent); }
 
   @media (max-width: 880px){
     /* let the bottom sheet / backdrop sit above the sticky header */
@@ -353,6 +553,13 @@
     .term-item .term-count{ font-size:11px; }
     .scroll-hint::before{ left:-18px; right:-14px; }
 
+    html.has-img aside{
+      background:rgba(var(--card-rgb), max(var(--card-alpha), .6));
+      --hint-bg:rgba(var(--card-rgb), max(var(--card-alpha), .6));
+    }
+    html.has-img .drawer-head{ background:transparent; }
+    html.has-img:not(.glass) aside{ background:var(--bg-elevated); --hint-bg:var(--bg-elevated); }
+
     .drawer-backdrop{
       display:block; position:fixed; inset:0; z-index:75;
       background:rgba(4,5,8,0.6); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px);
@@ -374,7 +581,7 @@
     .card-title{ font-size:13.5px; }
     .card-desc{ font-size:11.5px; line-height:1.5; }
     footer{ padding:24px 16px calc(84px + env(safe-area-inset-bottom)); }
-    .theme-fab{ width:40px; height:40px; font-size:15px; right:max(14px, env(safe-area-inset-right)); bottom:calc(16px + env(safe-area-inset-bottom)); opacity:0.9; }
+    .settings-fab{ width:40px; height:40px; font-size:15px; right:max(14px, env(safe-area-inset-right)); bottom:calc(16px + env(safe-area-inset-bottom)); opacity:0.9; }
   }
 
   /* touch devices: no sticky hover, give press feedback instead */
@@ -386,16 +593,27 @@
     .cat-item:hover i.fa-fw{ color:var(--text-faint); }
     .cat-item.active:hover i.fa-fw{ color:var(--accent); }
     .cat-item:active{ background:var(--bg-soft); }
-    .term-item:hover{ color:var(--text-dim); }
-    .theme-fab:hover{ transform:none; border-color:var(--border-strong); }
-    .theme-fab:active{ transform:scale(0.94); }
+    .term-item:not(.active):hover{ color:var(--text-dim); }
+    .settings-fab:hover{ transform:none; border-color:var(--border-strong); }
+    .settings-fab:active{ transform:scale(0.94); }
     .menu-btn:hover{ color:var(--text-dim); border-color:var(--border); }
     .brand:hover .wordmark{ filter:none; }
     *{ -webkit-tap-highlight-color:transparent; }
+
+    /* 有壁纸时：同样取消悬停，保留半透明的按压反馈 */
+    html.has-img .card:hover{ background:rgba(var(--card-rgb), var(--card-alpha)); }
+    html.has-img .card:active{ background:rgba(var(--card-hover-rgb), calc(var(--card-alpha) + .12)); }
+    html.has-img .cat-item:not(.active):hover, html.has-img .term-item:hover{ background:transparent; }
+    html.has-img .cat-item:not(.active):hover{ color:var(--text); }
+    html.has-img .term-item:not(.active):hover{ color:var(--text); color:color-mix(in srgb, var(--text) 82%, transparent); }
+    html.has-img .cat-item:hover i.fa-fw{ color:var(--text-dim); }
+    html.has-img .cat-item.active:hover i.fa-fw{ color:var(--accent); }
+    html.has-img .settings-fab:hover{ border-color:var(--border-strong); }
   }
 </style>
 </head>
 <body>
+<div id="bgImg" aria-hidden="true"><img id="bgPic" alt="" referrerpolicy="no-referrer"></div>
 <div class="texture"></div>
 
 <div id="stateScreen">
@@ -406,7 +624,35 @@
   </div>
 </div>
 
-<button class="theme-fab" id="themeFab" aria-label="切换主题" title="切换亮色主题"><i class="fa-solid fa-sun"></i></button>
+<button class="settings-fab" id="settingsFab" type="button" aria-label="设置" title="设置" aria-haspopup="dialog"><i class="fa-solid fa-gear"></i></button>
+<div class="st-modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="st-panel" tabindex="-1">
+    <button class="st-close" type="button" id="settingsClose" aria-label="关闭">&times;</button>
+    <h2 id="settingsTitle">设置</h2>
+    <div class="st-sec">
+      <div class="st-heading">主题</div>
+      <div class="st-themes" id="themeOptions" role="radiogroup" aria-label="主题">
+        <button type="button" class="st-theme" data-theme-value="dark" role="radio"><span class="st-swatch sw-dark"></span>暗色</button>
+        <button type="button" class="st-theme" data-theme-value="light" role="radio"><span class="st-swatch sw-light"></span>亮色</button>
+        <button type="button" class="st-theme" data-theme-value="amber" role="radio"><span class="st-swatch sw-amber"></span>琥珀金</button>
+      </div>
+    </div>
+    <div class="st-sec">
+      <div class="st-heading">背景</div>
+      <ul class="st-wps" id="stWps"></ul>
+      <div class="st-row"><label for="stDim">图片遮罩</label><input type="range" id="stDim" min="0" max="80" step="1"><span class="st-val" id="stDimVal"></span></div>
+      <input type="file" id="stFile" accept="image/*" multiple hidden>
+    </div>
+    <div class="st-sec">
+      <div class="st-heading">条目</div>
+      <div class="st-row"><label for="stCard">透明度</label><input type="range" id="stCard" min="0" max="100" step="1"><span class="st-val" id="stCardVal"></span></div>
+      <div class="st-row"><label for="stBlur" title="0 = 关闭毛玻璃">模糊度</label><input type="range" id="stBlur" min="0" max="40" step="1"><span class="st-val" id="stBlurVal"></span></div>
+      <p class="st-hint" id="stHint">选择壁纸后，遮罩、透明度和玻璃效果才会生效</p>
+    </div>
+    <div class="st-foot"><button type="button" class="st-btn" id="stReset">恢复默认</button></div>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
 <header style="display:none" id="siteHeader">
   <div class="header-inner">
     <div class="header-left">
@@ -447,28 +693,27 @@
 </div>
 
 <footer id="siteFooter" style="display:none">
-  <span><span class="fmono" id="footerStat"></span> <a href="https://ttti.cc" target="_blank" rel="noopener noreferrer" style="color:inherit;">由极限玩家驱动</a></span>
+  <span><span class="fmono" id="footerStat"></span> <a href="https://ttti.cc" target="_blank" rel="noopener noreferrer">由极限玩家驱动</a></span>
 </footer>
 
 <script>
-const TILE_COLORS = ['#e2a23c', '#4bb3a4', '#c9707a', '#7d8fc4'];
-
+// 卡片左侧色条：颜色取自主题里的 --tile-0..3，切换主题时自动跟随
 function hashColor(str){
   let h = 0;
   for (let i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) >>> 0; }
-  return TILE_COLORS[h % TILE_COLORS.length];
+  return 'var(--tile-' + (h % 4) + ')';
 }
 function escapeHtml(s){
   return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-function highlight(text, q){
+// 搜索词 → 高亮用的正则（每次搜索只建一次）；先按 HTML 转义，才能和转义后的文本对上
+function makeHighlightRe(q){
+  try{ return new RegExp('(' + escapeHtml(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); }
+  catch(e){ return null; }
+}
+function highlight(text, re){
   const esc = escapeHtml(text);
-  if(!q) return esc;
-  const qEsc = escapeHtml(q);
-  try{
-    const re = new RegExp('('+qEsc.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');
-    return esc.replace(re, '<mark>$1</mark>');
-  }catch(e){ return esc; }
+  return re ? esc.replace(re, '<mark>$1</mark>') : esc;
 }
 function getDomain(url){
   if(!url) return '';
@@ -486,31 +731,26 @@ function cleanUrl(url){
   return m ? m[0] : url.trim();
 }
 
+// ---- 隐藏的子分类（term）：不显示、不参与搜索，但仍保留在 nav.js 中供其它页面使用 ----
+const HIDDEN_TERMS = ['柠檬柠檬'];
+
 // ---- 将 nav.js 中的原始数据转换为渲染所需结构 ----
+function mapLink(l){
+  const u = cleanUrl(l.url);
+  return { t:String(l.name??'').trim(), u, d:String(l.desc??''), h:getDomain(u) };
+}
 function transformData(raw){
   return raw.map((cat, i)=>{
     const slug = 'c'+i;
     const groups = [];
     if(Array.isArray(cat.links)){
-      groups.push({
-        term: null,
-        slug: slug+'-t0',
-        links: cat.links.map(l=>{
-          const u = cleanUrl(l.url);
-          return { t:String(l.name??'').trim(), u, d:String(l.desc??''), h:getDomain(u) };
-        })
-      });
+      groups.push({ term:null, slug:slug+'-t0', links:cat.links.map(mapLink) });
     }
     if(Array.isArray(cat.list)){
       cat.list.forEach((term, j)=>{
-        groups.push({
-          term: String(term.term??'').trim(),
-          slug: slug+'-t'+j,
-          links: (term.links||[]).map(l=>{
-            const u = cleanUrl(l.url);
-            return { t:String(l.name??'').trim(), u, d:String(l.desc??''), h:getDomain(u) };
-          })
-        });
+        const name = String(term.term??'').trim();
+        if(HIDDEN_TERMS.includes(name)) return;
+        groups.push({ term:name, slug:slug+'-t'+j, links:(term.links||[]).map(mapLink) });
       });
     }
     const count = groups.reduce((s,g)=>s+g.links.length,0);
@@ -534,7 +774,7 @@ function showError(err){
       <i class="fa-solid fa-triangle-exclamation err-icon"></i>
       <h2>无法加载导航数据</h2>
       <p>${escapeHtml(err.message || String(err))}</p>
-      <p>请确认 <span style="font-family:var(--font-mono);color:var(--accent);">nav.js</span> 与 <span style="font-family:var(--font-mono);color:var(--accent);">index.html</span> 在同一目录下，且 <span style="font-family:var(--font-mono);color:var(--accent);">nav.js</span> 中没有语法错误（可打开浏览器控制台查看详细报错），然后刷新页面重试。</p>
+      <p>请确认 <span class="code">nav.js</span> 与 <span class="code">index.html</span> 在同一目录下，且 <span class="code">nav.js</span> 中没有语法错误（可打开浏览器控制台查看详细报错），然后刷新页面重试。</p>
     </div>`;
 }
 
@@ -565,7 +805,7 @@ function renderSidebar(){
     block.dataset.slug = cat.slug;
 
     const item = document.createElement('div');
-    item.className = 'cat-item' + (hasNamedTerms ? '' : ' no-children');
+    item.className = 'cat-item';
     item.dataset.slug = cat.slug;
     item.innerHTML = `<i class="fa-solid ${cat.icon} fa-fw"></i>
       <span class="cat-name">${escapeHtml(cat.name)}</span>
@@ -602,28 +842,22 @@ function renderSidebar(){
   });
 }
 
-// only one category expanded at a time; clicking an expanded one collapses it, clicking a collapsed one expands it and closes the rest
+// 同一时间只展开一个分类；slug 为 null 则全部收起
+function setExpanded(slug){
+  document.querySelectorAll('.cat-block').forEach(b=>b.classList.toggle('expanded', b.dataset.slug === slug));
+}
+// 点已展开的 → 收起；点未展开的 → 展开它并收起其余
 function toggleAccordion(slug){
   const target = document.querySelector(`.cat-block[data-slug="${CSS.escape(slug)}"]`);
   if(!target) return;
-  const wasExpanded = target.classList.contains('expanded');
-  document.querySelectorAll('.cat-block').forEach(b=>{
-    b.classList.remove('expanded');
-    const ci = b.querySelector('.cat-item');
-    if(ci) ci.classList.remove('expanded');
-  });
-  if(!wasExpanded){
-    target.classList.add('expanded');
-    const ci = target.querySelector('.cat-item');
-    if(ci) ci.classList.add('expanded');
-  }
+  setExpanded(target.classList.contains('expanded') ? null : slug);
 }
 
 // ---- main content ----
 function renderContent(){
   const content = document.getElementById('content');
   content.innerHTML = '';
-  DATA.forEach((cat, idx)=>{
+  DATA.forEach(cat=>{
     const section = document.createElement('section');
     section.className = 'cat-section';
     section.id = cat.slug;
@@ -678,14 +912,7 @@ function setupObserver(){
         const slug = entry.target.id;
         catItems.forEach(i=>i.classList.toggle('active', i.dataset.slug===slug));
         const hasChildren = !!document.querySelector(`.cat-block[data-slug="${CSS.escape(slug)}"] .term-list`);
-        if(hasChildren){
-          document.querySelectorAll('.cat-block').forEach(b=>{
-            const isMatch = b.dataset.slug === slug;
-            b.classList.toggle('expanded', isMatch);
-            const ci = b.querySelector('.cat-item');
-            if(ci) ci.classList.toggle('expanded', isMatch);
-          });
-        }
+        if(hasChildren) setExpanded(slug);
       }
     });
   }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
@@ -712,10 +939,23 @@ function setupSearch(){
   const kbdHint = document.getElementById('kbdHint');
   const catItems = [...document.querySelectorAll('.cat-item')];
   const termItems = [...document.querySelectorAll('.term-item')];
+  const groups = [...document.querySelectorAll('.term-group')];
+  const sections = [...document.querySelectorAll('.cat-section')];
+  // 一次性缓存卡片及其所属分组，输入时不再反复查 DOM；marked = 标题/描述里当前带着高亮
+  const cards = [...document.querySelectorAll('.card')].map(el=>({
+    el,
+    text: el.dataset.search,
+    title: el.querySelector('.card-title'),
+    desc: el.querySelector('.card-desc'),
+    termSlug: el.closest('.term-group').id,
+    catSlug: el.closest('.cat-section').id,
+    marked: false
+  }));
 
   let debounceTimer;
   function runSearch(){
     const q = searchInput.value.trim().toLowerCase();
+    const re = q ? makeHighlightRe(q) : null;
     clearBtn.style.display = q ? 'flex' : 'none';
     kbdHint.style.display = q ? 'none' : 'block';
 
@@ -723,30 +963,25 @@ function setupSearch(){
     const catVisibleCount = {};
     const termVisibleCount = {};
 
-    document.querySelectorAll('.card').forEach(card=>{
-      const match = !q || card.dataset.search.includes(q);
-      card.style.display = match ? '' : 'none';
+    cards.forEach(c=>{
+      const match = !q || c.text.includes(q);
+      c.el.style.display = match ? '' : 'none';
       if(match){
         anyVisible = true;
-        const termSlug = card.closest('.term-group').id;
-        const catSlug = card.closest('.cat-section').id;
-        termVisibleCount[termSlug] = (termVisibleCount[termSlug]||0)+1;
-        catVisibleCount[catSlug] = (catVisibleCount[catSlug]||0)+1;
+        termVisibleCount[c.termSlug] = (termVisibleCount[c.termSlug]||0)+1;
+        catVisibleCount[c.catSlug] = (catVisibleCount[c.catSlug]||0)+1;
       }
-      const titleEl = card.querySelector('.card-title');
-      const descEl = card.querySelector('.card-desc');
-      titleEl.innerHTML = highlight(titleEl.dataset.t, q);
-      descEl.innerHTML = highlight(descEl.dataset.d, q);
+      // 只在需要时重写文字：匹配到了要加高亮，或上一次留下的高亮要清掉
+      if(c.marked || (q && match)){
+        const t = highlight(c.title.dataset.t, re), d = highlight(c.desc.dataset.d, re);
+        c.title.innerHTML = t;
+        c.desc.innerHTML = d;
+        c.marked = t.includes('<mark>') || d.includes('<mark>');
+      }
     });
 
-    document.querySelectorAll('.term-group').forEach(g=>{
-      const count = termVisibleCount[g.id] || 0;
-      g.style.display = count ? '' : 'none';
-    });
-    document.querySelectorAll('.cat-section').forEach(sec=>{
-      const count = catVisibleCount[sec.id] || 0;
-      sec.style.display = (!q || count>0) ? '' : 'none';
-    });
+    groups.forEach(g=>{ g.style.display = termVisibleCount[g.id] ? '' : 'none'; });
+    sections.forEach(sec=>{ sec.style.display = (!q || catVisibleCount[sec.id]) ? '' : 'none'; });
 
     catItems.forEach(item=>{
       const count = catVisibleCount[item.dataset.slug] || 0;
@@ -757,8 +992,7 @@ function setupSearch(){
       }
     });
     termItems.forEach(item=>{
-      const count = termVisibleCount[item.dataset.slug] || 0;
-      item.classList.toggle('dim', !!q && count===0);
+      item.classList.toggle('dim', !!q && !termVisibleCount[item.dataset.slug]);
     });
 
     noResults.style.display = (q && !anyVisible) ? 'block' : 'none';
@@ -786,36 +1020,378 @@ function setupBrandReload(){
 }
 setupBrandReload();
 
-// ---- light / dark theme toggle (remembered in localStorage) ----
-function setupThemeToggle(){
+// ---- toast ----
+let toastTimer = 0;
+function toast(msg, ms){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), ms || 1800);
+}
+
+// ---- background image / card transparency / glass (ported from 极限搜索) ----
+// 选项存 localStorage；壁纸是 Blob + 缩略图，存 IndexedDB（只在本机浏览器里）
+function setupBgSettings(){
+  const $ = id => document.getElementById(id);
   const root = document.documentElement;
-  const btn = document.getElementById('themeFab');
-  const icon = btn.querySelector('i');
-  const sync = ()=>{
-    const light = root.getAttribute('data-theme') === 'light';
-    icon.className = 'fa-solid ' + (light ? 'fa-moon' : 'fa-sun');
-    const tip = light ? '切换暗色主题' : '切换亮色主题';
-    btn.title = tip; btn.setAttribute('aria-label', tip);
-    const tc = document.querySelector('meta[name="theme-color"]');
-    if(tc) tc.setAttribute('content', light ? '#f4f5f9' : '#0a0c11');
+  const KEY = 'nav.settings.v1', DAILY_KEY = 'nav.daily.v1';
+  // bg：none = 纯色背景（默认，和原来一样）｜ daily = 互联网每日壁纸 ｜ image = 自己添加的壁纸
+  const DEF = { bg:'none', wp:'', cardA:25, dim:30, blur:3 };   // cardA：条目背景浓度，0 = 完全透明
+  const DB = 'nav-bg', STORE = 'kv', MAX_WP = 5;
+  // 每日壁纸来源：按顺序尝试，哪个能加载就用哪个；地址里带日期，所以每天会换新的一张
+  const DAILY_SOURCES = [
+    d => 'https://bing.biturl.top/?resolution=1920&format=image&index=0&mkt=zh-CN&d=' + d,   // 必应每日一图
+    d => 'https://api.dujin.org/bing/1920.php?d=' + d,                                          // 必应每日一图（备用）
+    d => 'https://picsum.photos/seed/' + d + '/1920/1080'                                       // 随日期固定的随机风景图（兜底）
+  ];
+  const clamp = (v, lo, hi, d) => (typeof v === 'number' && isFinite(v)) ? Math.min(hi, Math.max(lo, Math.round(v))) : d;
+
+  let S = { ...DEF };
+  try { const o = JSON.parse(localStorage.getItem(KEY)); if (o && typeof o === 'object') S = { ...DEF, ...o }; } catch(e){}
+  const sanitize = ()=>{
+    S.bg = (S.bg === 'image' || S.bg === 'daily') ? S.bg : 'none';
+    S.wp = typeof S.wp === 'string' ? S.wp : '';
+    S.cardA = clamp(S.cardA, 0, 100, DEF.cardA);
+    S.dim = clamp(S.dim, 0, 80, DEF.dim);
+    S.blur = clamp(S.blur, 0, 40, DEF.blur);
   };
-  btn.addEventListener('click', ()=>{
-    const light = root.getAttribute('data-theme') === 'light';
-    if(light) root.removeAttribute('data-theme'); else root.setAttribute('data-theme','light');
-    try{ localStorage.setItem('navTheme', light ? 'dark' : 'light'); }catch(e){}
-    sync();
+  sanitize();
+  const save = ()=>{ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} };
+
+  // ---- IndexedDB：壁纸（键 wp:<id> → { id, blob, name, thumb, t }）----
+  const idbOp = (mode, fn) => new Promise((res, rej)=>{
+    if (!window.indexedDB) return rej(new Error('no indexedDB'));
+    const r = indexedDB.open(DB, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore(STORE);
+    r.onerror = () => rej(r.error);
+    r.onsuccess = () => {
+      const db = r.result, tx = db.transaction(STORE, mode);
+      const req = fn(tx.objectStore(STORE));
+      tx.oncomplete = () => { db.close(); res(req.result); };
+      tx.onerror = tx.onabort = () => { db.close(); rej(tx.error); };
+    };
   });
+  const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2));
+
+  let wps = [];          // 已添加的壁纸，按添加顺序
+  let blobURL = '';      // 当前选中的本地壁纸（object URL）
+  const setImage = blob => { if (blobURL) URL.revokeObjectURL(blobURL); blobURL = URL.createObjectURL(blob); };
+  const clearImage = () => { if (blobURL) URL.revokeObjectURL(blobURL); blobURL = ''; };
+
+  // ---- 每日壁纸（互联网）----
+  const pad2 = n => String(n).padStart(2, '0');
+  const dayStamp = () => { const t = new Date(); return '' + t.getFullYear() + pad2(t.getMonth() + 1) + pad2(t.getDate()); };
+  const probe = url => new Promise(res => {          // 先用 Image 试加载，成功才采用；10 秒没响应算失败
+    const im = new Image();
+    let done = false;
+    const end = ok => { if (done) return; done = true; clearTimeout(tm); im.onload = im.onerror = null; res(ok); };
+    const tm = setTimeout(() => { im.src = ''; end(false); }, 10000);
+    im.referrerPolicy = 'no-referrer';
+    im.onload = () => end(true); im.onerror = () => end(false);
+    im.src = url;
+  });
+  let dailyURL = '', dailyDay = '', dailyBusy = null;
+  function loadDaily(){
+    const d = dayStamp();
+    if (dailyURL && dailyDay === d) return Promise.resolve(true);
+    if (dailyBusy) return dailyBusy;
+    dailyBusy = (async ()=>{
+      let first = -1;
+      try { const m = JSON.parse(localStorage.getItem(DAILY_KEY)); if (m && m.d === d && DAILY_SOURCES[m.i]) first = m.i; } catch(e){}
+      const order = [...(first >= 0 ? [first] : []), ...DAILY_SOURCES.map((_, i) => i).filter(i => i !== first)];
+      for (const i of order){
+        const url = DAILY_SOURCES[i](d);
+        if (await probe(url)){
+          dailyURL = url; dailyDay = d;
+          try { localStorage.setItem(DAILY_KEY, JSON.stringify({ d, i })); } catch(e){}
+          return true;
+        }
+      }
+      return false;
+    })().finally(()=>{ dailyBusy = null; });
+    return dailyBusy;
+  }
+  function ensureDaily(){
+    loadDaily().then(ok=>{
+      applyBg(); refresh();
+      if (!ok && !dailyURL && S.bg === 'daily') toast('每日壁纸加载失败，暂时使用纯色背景', 2600);
+    });
+  }
+  // 页面开着跨天了：回到前台或每半小时检查一次，换成当天的图
+  const checkDay = ()=>{ if (S.bg === 'daily' && dailyDay && dailyDay !== dayStamp()) ensureDaily(); };
+  document.addEventListener('visibilitychange', ()=>{ if (!document.hidden) checkDay(); });
+  setInterval(checkDay, 30 * 60 * 1000);
+
+  // 缩略图：192×120 居中裁切，存成很小的 JPEG data URL
+  async function makeThumb(blob){
+    const W = 192, H = 120;
+    const bmp = window.createImageBitmap ? await createImageBitmap(blob) : await new Promise((res, rej)=>{
+      const im = new Image(), u = URL.createObjectURL(blob);
+      im.onload = () => { URL.revokeObjectURL(u); res(im); };
+      im.onerror = rej; im.src = u;
+    });
+    const sw = bmp.width, sh = bmp.height, k = Math.max(W / sw, H / sh);
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    c.getContext('2d').drawImage(bmp, (W - sw * k) / 2, (H - sh * k) / 2, sw * k, sh * k);
+    if (bmp.close) bmp.close();
+    return c.toDataURL('image/jpeg', .72);
+  }
+
+  // 「纯色背景」的缩略图：取当前主题的底色和强调色，画几张示意卡片（按主题缓存）
+  const solidThumbs = {};
+  function makeSolidThumb(){
+    const key = root.getAttribute('data-theme') || 'dark';
+    if (solidThumbs[key]) return solidThumbs[key];
+    const cs = getComputedStyle(root);
+    const bg = cs.getPropertyValue('--bg').trim() || '#000';
+    const ac = cs.getPropertyValue('--accent').trim() || '#e8b45a';
+    const W = 192, H = 120, c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const g = c.getContext('2d');
+    g.fillStyle = bg; g.fillRect(0, 0, W, H);
+    g.strokeStyle = ac; g.globalAlpha = .45; g.lineWidth = 1;
+    for (let i = 0; i < 3; i++) for (let j = 0; j < 2; j++){
+      const x = 12 + i * 56, y = 30 + j * 44;
+      g.beginPath(); g.roundRect ? g.roundRect(x, y, 48, 36, 5) : g.rect(x, y, 48, 36); g.stroke();
+    }
+    g.strokeRect(12.5, 10.5, W - 25, 12);
+    return (solidThumbs[key] = c.toDataURL('image/jpeg', .8));
+  }
+
+  // 「每日壁纸」还没加载出来时的占位缩略图：渐变天空 + 太阳 + 远山
+  let dailyThumb = '';
+  function makeDailyThumb(){
+    if (dailyThumb) return dailyThumb;
+    const W = 192, H = 120, c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const g = c.getContext('2d');
+    const sky = g.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, '#16233f'); sky.addColorStop(.6, '#c9794a'); sky.addColorStop(1, '#f0b060');
+    g.fillStyle = sky; g.fillRect(0, 0, W, H);
+    g.fillStyle = 'rgba(255,230,170,.9)'; g.beginPath(); g.arc(138, 66, 13, 0, 7); g.fill();
+    g.fillStyle = '#2a2230'; g.beginPath(); g.moveTo(0, H); g.lineTo(0, 84); g.lineTo(44, 58); g.lineTo(84, 90); g.lineTo(120, 70); g.lineTo(W, 96); g.lineTo(W, H); g.fill();
+    g.fillStyle = '#14101a'; g.beginPath(); g.moveTo(0, H); g.lineTo(0, 106); g.lineTo(60, 92); g.lineTo(130, 108); g.lineTo(W, 100); g.lineTo(W, H); g.fill();
+    return (dailyThumb = c.toDataURL('image/jpeg', .8));
+  }
+
+  // ---- 应用 ----
+  const applyCards = ()=> root.style.setProperty('--card-alpha', (S.cardA / 100).toFixed(2));
+  const applyDim = ()=> root.style.setProperty('--img-dim', (S.dim / 100).toFixed(2));
+  const applyGlass = ()=>{
+    root.classList.toggle('glass', S.blur > 0);   // 模糊度 0 = 关闭毛玻璃
+    root.style.setProperty('--glass-blur', S.blur + 'px');
+  };
+  // 三个滑块：[元素 id, 设置键, 最小, 最大, 单位, 应用函数]
+  const SLIDERS = [
+    ['stDim',  'dim',   0,  80, '%',  applyDim],
+    ['stCard', 'cardA', 0, 100, '%',  applyCards],
+    ['stBlur', 'blur',  0,  40, 'px', applyGlass]
+  ];
+  function applyBg(){
+    const url = S.bg === 'image' ? blobURL : S.bg === 'daily' ? dailyURL : '';
+    const pic = $('bgPic');
+    if (url){ if (pic.getAttribute('src') !== url) pic.src = url; } else pic.removeAttribute('src');
+    root.classList.toggle('has-img', !!url);
+  }
+
+  function useWp(w){
+    setImage(w.blob);
+    S.wp = w.id; S.bg = 'image';
+    save(); applyBg(); refresh();
+  }
+  async function addFiles(files){
+    const imgs = [...files].filter(f => /^image\//.test(f.type));
+    if (!imgs.length) return toast('请选择图片文件');
+    const room = MAX_WP - wps.length;
+    if (room <= 0) return toast('最多添加 ' + MAX_WP + ' 张壁纸');
+    if (imgs.length > room) toast('最多 ' + MAX_WP + ' 张壁纸，多出的已忽略', 2200);
+    let last = null, saveFailed = false;
+    for (const f of imgs.slice(0, room)){
+      let thumb = '';
+      try { thumb = await makeThumb(f); } catch(e){}
+      const rec = { id: uid(), blob: f, name: f.name, thumb, t: Date.now() + wps.length };
+      wps.push(rec); last = rec;
+      try { await idbOp('readwrite', st => st.put(rec, 'wp:' + rec.id)); } catch(e){ saveFailed = true; }
+    }
+    if (saveFailed) toast('壁纸未能保存，刷新后会失效', 2600);
+    if (last) useWp(last);
+  }
+  function removeWp(id){
+    const i = wps.findIndex(w => w.id === id);
+    if (i < 0) return;
+    wps.splice(i, 1);
+    idbOp('readwrite', st => st.delete('wp:' + id)).catch(()=>{});
+    if (S.wp === id){
+      const next = wps[Math.min(i, wps.length - 1)];
+      if (next && S.bg === 'image') return useWp(next);   // 正在用的被删了：换相邻一张
+      S.wp = next ? next.id : '';
+      if (!next){ clearImage(); if (S.bg === 'image') S.bg = 'none'; }
+    }
+    save(); applyBg(); refresh();
+  }
+
+  // ---- 界面：缩略图网格 = 每日壁纸 + 纯色背景 + 自己的壁纸（最多 5 张）+ “+” ----
+  function renderTiles(){
+    const box = $('stWps');
+    box.textContent = '';
+    const tile = (active, title, thumb, fallback)=>{
+      const li = document.createElement('li');
+      li.className = 'st-wp' + (active ? ' is-active' : '');
+      li.setAttribute('role', 'button'); li.tabIndex = 0;
+      li.title = title; li.setAttribute('aria-label', title); li.setAttribute('aria-pressed', String(active));
+      if (thumb){ const im = document.createElement('img'); im.src = thumb; im.alt = ''; li.appendChild(im); }
+      else li.textContent = fallback || '';
+      box.appendChild(li);
+      return li;
+    };
+    const d = tile(S.bg === 'daily', '每日壁纸（互联网，每天更新）', dailyURL || makeDailyThumb());
+    d.dataset.bg = 'daily';
+    const im = d.querySelector('img'); if (im){ im.referrerPolicy = 'no-referrer'; im.onerror = ()=>{ im.onerror = null; im.src = makeDailyThumb(); }; }
+    tile(S.bg === 'none', '纯色背景', makeSolidThumb()).dataset.bg = 'none';
+    wps.forEach(w=>{
+      const li = tile(S.bg === 'image' && S.wp === w.id, w.name || '壁纸', w.thumb, (w.name || '壁纸').slice(0, 6));
+      li.dataset.id = w.id;
+      const x = document.createElement('span');
+      x.className = 'st-wp__del'; x.textContent = '×';
+      x.setAttribute('role', 'button'); x.tabIndex = 0;
+      x.title = '去掉这张壁纸'; x.setAttribute('aria-label', '去掉壁纸 ' + (w.name || ''));
+      li.appendChild(x);
+    });
+    if (wps.length < MAX_WP){
+      const a = document.createElement('li');
+      a.className = 'st-wp__add'; a.textContent = '+';
+      a.setAttribute('role', 'button'); a.tabIndex = 0;
+      a.title = '添加壁纸（' + wps.length + '/' + MAX_WP + '）'; a.setAttribute('aria-label', '添加壁纸');
+      box.appendChild(a);
+    }
+  }
+
+  function refresh(){
+    renderTiles();
+    const off = S.bg === 'none';   // 纯色背景时，下面三项没有可作用的对象
+    SLIDERS.forEach(([id, key, , , unit])=>{
+      $(id).value = S[key]; $(id + 'Val').textContent = S[key] + unit; $(id).disabled = off;
+    });
+    $('stHint').hidden = !off;
+  }
+
+  $('stWps').addEventListener('click', e=>{
+    if (e.target.closest('.st-wp__add')) return $('stFile').click();
+    const li = e.target.closest('.st-wp');
+    if (!li) return;
+    if (e.target.closest('.st-wp__del')) return removeWp(li.dataset.id);
+    if (li.dataset.bg){
+      S.bg = li.dataset.bg; save(); applyBg(); refresh();
+      if (S.bg === 'daily') ensureDaily();
+      return;
+    }
+    const w = wps.find(x => x.id === li.dataset.id);
+    if (w) useWp(w);
+  });
+  $('stWps').addEventListener('keydown', e=>{
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const el = e.target.closest('.st-wp, .st-wp__add, .st-wp__del');
+    if (!el) return;
+    e.preventDefault();
+    el.click();
+  });
+  $('stFile').addEventListener('change', e=>{
+    const fs = e.target.files ? [...e.target.files] : [];
+    e.target.value = '';
+    if (fs.length) addFiles(fs);
+  });
+  SLIDERS.forEach(([id, key, lo, hi, unit, apply])=>{
+    $(id).addEventListener('input', e=>{
+      S[key] = clamp(+e.target.value, lo, hi, DEF[key]);
+      $(id + 'Val').textContent = S[key] + unit;
+      apply(); save();
+    });
+  });
+  $('stReset').addEventListener('click', ()=>{
+    S = { ...DEF }; clearImage(); save();
+    SLIDERS.forEach(s => s[5]());
+    applyBg(); refresh();
+    toast('已恢复默认设置');
+  });
+
+  // ---- 启动：先套用选项，再异步取回壁纸 ----
+  SLIDERS.forEach(s => s[5]());
+  if (S.bg === 'daily') ensureDaily();                 // 不等壁纸库读完，先去取今天的图
+  (async ()=>{
+    try {
+      const recs = await idbOp('readonly', st => st.getAll(IDBKeyRange.bound('wp:', 'wp:\uffff')));
+      wps = recs.filter(r => r && r.blob).sort((a, b) => a.t - b.t).slice(0, MAX_WP);
+    } catch(e){ wps = []; }
+    const cur = wps.find(w => w.id === S.wp) || (S.bg === 'image' ? wps[0] : null);
+    if (cur){ S.wp = cur.id; if (S.bg === 'image') setImage(cur.blob); }
+    else { S.wp = ''; if (S.bg === 'image') S.bg = 'none'; }
+    save(); applyBg(); refresh();
+    if (S.bg === 'daily') ensureDaily();
+  })();
+
+  return { refresh };
+}
+
+// ---- settings modal: theme switch (dark / light / amber, remembered in localStorage) ----
+function setupSettings(){
+  const bgs = setupBgSettings();
+  const root = document.documentElement;
+  const fab = document.getElementById('settingsFab');
+  const modal = document.getElementById('settingsModal');
+  const panel = modal.querySelector('.st-panel');
+  const opts = Array.from(document.querySelectorAll('#themeOptions .st-theme'));
+  const THEME_COLOR = { dark:'#0a0c11', light:'#f4f5f9', amber:'#000000' };
+  const current = ()=>{ const t = root.getAttribute('data-theme'); return (t==='light'||t==='amber') ? t : 'dark'; };
+  const sync = ()=>{
+    const t = current();
+    opts.forEach(b=>{
+      const on = b.dataset.themeValue === t;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+    const tc = document.querySelector('meta[name="theme-color"]');
+    if(tc) tc.setAttribute('content', THEME_COLOR[t]);
+  };
+  const apply = (t)=>{
+    if(t==='dark') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+    try{ localStorage.setItem('navTheme', t); }catch(e){}
+    sync();
+    bgs.refresh();   // 「纯色背景」缩略图跟随主题
+  };
+  const open = ()=>{ bgs.refresh(); modal.classList.add('show'); panel.focus(); };
+  const close = ()=>{ modal.classList.remove('show'); fab.focus(); };
+  fab.addEventListener('click', open);
+  document.getElementById('settingsClose').addEventListener('click', close);
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) close(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('show')) close(); });
+  opts.forEach(b=>b.addEventListener('click', ()=>apply(b.dataset.themeValue)));
   sync();
 }
-setupThemeToggle();
+setupSettings();
+
+// ---- 顶栏实际高度 → --hdr-h（左侧导航的 sticky 起点、锚点滚动偏移都用它）----
+(function(){
+  const hdr = document.getElementById('siteHeader');
+  if(!hdr) return;
+  const root = document.documentElement;
+  const sync = ()=>{
+    const h = hdr.getBoundingClientRect().height;
+    if(h > 0) root.style.setProperty('--hdr-h', h + 'px');   // 顶栏还没显示时高度为 0，跳过
+  };
+  sync();
+  if(window.ResizeObserver) new ResizeObserver(sync).observe(hdr);
+  window.addEventListener('resize', sync);
+})();
 
 // ---- mobile off-canvas category drawer ----
+let updateSidebarHint = ()=>{};   // 由 setupSidebarHint 接管
 function openDrawer(){
   const aside = document.getElementById('sidebar');
   aside.classList.add('drawer-open');
   document.getElementById('drawerBackdrop').classList.add('show');
   document.body.classList.add('drawer-locked');
-  aside.scrollTop = 0; if(window.updateSidebarHint) updateSidebarHint(); // always start at the top of the list (常用置顶) when opening
+  aside.scrollTop = 0; updateSidebarHint(); // always start at the top of the list (常用置顶) when opening
 }
 function closeDrawer(){
   document.getElementById('sidebar').classList.remove('drawer-open');
@@ -878,7 +1454,7 @@ function setupSidebarHint(){
     ro.observe(aside);
     ro.observe(document.getElementById('sideList'));
   }
-  window.updateSidebarHint = update;
+  updateSidebarHint = update;
   update();
 }
 setupSidebarHint();

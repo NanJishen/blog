@@ -4,25 +4,31 @@
     "type": "split",
     "children": [
       {
-        "id": "2d76583b981d8fa4",
+        "id": "09a0239130a62efd",
         "type": "tabs",
         "children": [
           {
-            "id": "001ab42880f62f1c",
+            "id": "05b47f298020d0a8",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "posts/mpv.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "mpv"
+              "title": "新标签页"
+            }
+          },
+          {
+            "id": "55eab67db3cc7f56",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "新标签页"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -112,7 +118,6 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "posts/mpv.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -136,10 +141,11 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "001ab42880f62f1c",
+  "active": "55eab67db3cc7f56",
   "lastOpenFiles": [
-    "posts/mpv.md",
+    "posts/everything.md",
     "posts/sayings.md",
+    "posts/mpv.md",
     "posts/windows-opt.md",
     "posts/windows-run-shortcut.md",
     "posts/ventoy.md",
@@ -156,7 +162,6 @@
     "posts/windows-setup.md",
     "posts/youtubecouts.md",
     "posts/wfr.md",
-    "posts/everything.md",
     "posts/copyq.md",
     "posts/dokuwiki.md",
     "posts/ytdlp.md",

@@ -904,6 +904,11 @@ const NAV_DATA = [
         "term": "社区论坛",
         "links": [
           {
+            "name": " 今日热榜",
+            "url": "https://rebang.today",
+            "desc": "主流平台热榜聚合"
+          },
+          {
             "name": "微博",
             "url": "https://weibo.com",
             "desc": "国内主流微博平台"
@@ -1867,11 +1872,6 @@ const NAV_DATA = [
         "term": "流媒体",
         "links": [
           {
-            "name": "Netflix",
-            "url": "https://www.netflix.com",
-            "desc": "全球最好的在线流媒体服务"
-          },
-          {
             "name": "爱奇艺",
             "url": "https://www.iqiyi.com",
             "desc": "国内主流的在线视频"
@@ -2248,11 +2248,6 @@ const NAV_DATA = [
             "desc": "TG的无账号轻量级文章分享"
           },
           {
-            "name": "Notevibes",
-            "url": "https://notevibes.com",
-            "desc": "文字内容转语音需登录"
-          },
-          {
             "name": "网易见外",
             "url": "https://jianwai.youdao.com",
             "desc": "音视频转写翻译等"
@@ -2623,6 +2618,11 @@ const NAV_DATA = [
         "term": "OCR识别",
         "links": [
           {
+            "name": "OCRMind",
+            "url": "https://ocrmind.com",
+            "desc": "基于PaddleOCR本地识别图像"
+          },
+          {
             "name": "ImgPeel",
             "url": "http://imgpeel.toolooz.com",
             "desc": "ORC 识别图像"
@@ -2916,6 +2916,11 @@ const NAV_DATA = [
             "name": "Ytd.app",
             "url": "https://ytd.app/zh-CN/",
             "desc": "油管视频下载"
+          },
+          {
+            "name": "TurboScribe-YT",
+            "url": "https://turboscribe.ai/zh-CN/downloader/youtube/video",
+            "desc": "油管视频下载转字幕"
           },
           {
             "name": "DLBunny",
@@ -5673,6 +5678,11 @@ const NAV_DATA = [
             "desc": "云主机供应商"
           },
           {
+            "name": "大鸟博客",
+            "url": "https://www.daniao.org",
+            "desc": "VPS评测和优惠信息"
+          },
+          {
             "name": "AppOnFly",
             "url": "https://vps.apponfly.com",
             "desc": "运行Windows实例通过浏览器体验"
@@ -6194,11 +6204,6 @@ const NAV_DATA = [
             "desc": "随机生成配色取色"
           },
           {
-            "name": "fffuel",
-            "url": "https://fffuel.co",
-            "desc": "调色板色彩渐变等生成"
-          },
-          {
             "name": "Coolors",
             "url": "https://coolors.co",
             "desc": "调色板色彩生成"
@@ -6394,11 +6399,6 @@ const NAV_DATA = [
             "desc": "截图生成设备边框"
           },
           {
-            "name": "TT0",
-            "url": "https://tt0.top",
-            "desc": "剪裁和压缩图像及Gif"
-          },
-          {
             "name": "BeFunky",
             "url": "https://www.befunky.com",
             "desc": "在线的图像编辑器"
@@ -6477,11 +6477,6 @@ const NAV_DATA = [
             "name": "Designcap",
             "url": "https://www.designcap.com",
             "desc": "很不错的在线图像视频编辑"
-          },
-          {
-            "name": "Coverview",
-            "url": "https://github.com/rutikwankhade/CoverView",
-            "desc": "为博客文章生成头图"
           },
           {
             "name": "太美工具",
@@ -6837,11 +6832,6 @@ const NAV_DATA = [
             "name": "FlexClip",
             "url": "https://www.flexclip.com",
             "desc": "视频片头制作"
-          },
-          {
-            "name": "Unscreen",
-            "url": "https://www.unscreen.com",
-            "desc": "移除视频背景"
           },
           {
             "name": "字幕酱",
@@ -8265,11 +8255,6 @@ const NAV_DATA = [
             "desc": "日本的图标库黑白图标"
           },
           {
-            "name": "Stocks2",
-            "url": "http://thestocks.im",
-            "desc": "非常不错的综合搜索"
-          },
-          {
             "name": "FluentIcon",
             "url": "https://icons8.com/l/fluent",
             "desc": "Fluent 风格的图标"
@@ -9181,6 +9166,11 @@ const NAV_DATA = [
             "desc": "学习做菜菜谱"
           },
           {
+            "name": "今天吃什么",
+            "url": "https://jinrichishenme.xyz",
+            "desc": "选餐做法和买菜清单"
+          },
+          {
             "name": "美团网",
             "url": "http://www.meituan.com",
             "desc": "点餐送餐服务"
@@ -9199,26 +9189,6 @@ const NAV_DATA = [
             "name": "120ask",
             "url": "https://www.120ask.com",
             "desc": "病情咨询"
-          },
-          {
-            "name": "天眼查",
-            "url": "https://www.tianyancha.com",
-            "desc": "专业企业信息查询"
-          },
-          {
-            "name": "企查查",
-            "url": "https://www.qcc.com",
-            "desc": "专业企业信息查询"
-          },
-          {
-            "name": "经济指标",
-            "url": "https://zh.tradingeconomics.com/china/indicators",
-            "desc": "各国经济指标查询"
-          },
-          {
-            "name": "Semrush",
-            "url": "https://zh.semrush.com/trending-websites/global/all",
-            "desc": "查询市场最热门的网站"
           },
           {
             "name": "Abbreviation",
@@ -9439,6 +9409,111 @@ const NAV_DATA = [
             "name": "全球网站排名",
             "url": "https://zh.semrush.com/trending-websites/global/all",
             "desc": "全球热门网站排名"
+          }
+        ]
+      },
+      {
+        "term": "柠檬柠檬",
+        "links": [
+          {
+            "name": "PornDude",
+            "url": "https://theporndude.com/zh",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "Pornsite",
+            "url": "https://toppornsites.net/zh-CN",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "Jable",
+            "url": "https://jable.tv",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "Missav",
+            "url": "https://missav.live",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "Rou",
+            "url": "https://rou.pub/dizhi",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "123av",
+            "url": "https://123av.com/cn",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "PornHub",
+            "url": "https://pornhub.com",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "98Tang",
+            "url": "https://www.sehuatang.org",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "CaoLiu",
+            "url": "https://t66y.com",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "JavBus",
+            "url": "https://www.javbus.com",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "Eporner",
+            "url": "https://www.eporner.com",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "Xvideos",
+            "url": "https://www.xvideos.com",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "Javcc",
+            "url": "https://javcc.com",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "YouPorn",
+            "url": "http://www.youporn.com",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "RedTube",
+            "url": "https://www.redtube.com",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "JaponX",
+            "url": "https://x18r.com",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "Toshokan",
+            "url": "http://tokyotosho.info",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "识脸",
+            "url": "https://xslist.org/zh",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "Javlibrary",
+            "url": "https://www.javlibrary.com",
+            "desc": "柠檬的颜色"
+          },
+          {
+            "name": "Javdatabase",
+            "url": "https://www.javdatabase.com",
+            "desc": "柠檬的颜色"
           }
         ]
       }

@@ -7,15 +7,12 @@
 <meta name="keywords" content="极限玩家,操作系统,软件中心">
 <meta name="description" content="极限玩家软件推荐导航">
 <title>极限玩家系统与软件</title>
-<link rel="icon" href="/favicon.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico">
 <style>
 /* ============================================================
    TOKENS
    ============================================================ */
-:root{
+:root{color-scheme:dark;
   --bg:            #05070c;
   --panel:         #0b101a;
   --card:          #0a0f19;
@@ -27,14 +24,14 @@
   --text:          #cfe9f3;
   --text-dim:      #5c7a90;
   --border:        #16212f;
-  --font-display:  'Orbitron', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --font-mono:     'JetBrains Mono', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', ui-monospace, 'SF Mono', Consolas, monospace;
+  --font-display:  'Bahnschrift', 'Segoe UI Variable Display', 'Segoe UI', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+  --font-mono:     ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, Menlo, 'Liberation Mono', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans Mono CJK SC', monospace;
 }
 
 *{box-sizing:border-box}
 ::selection{background:var(--magenta);color:#000}
 
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--cyan) transparent}
+html{scrollbar-gutter:stable;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--cyan) transparent}
 html::-webkit-scrollbar{width:9px}
 html::-webkit-scrollbar-track{background:var(--bg)}
 html::-webkit-scrollbar-thumb{background:linear-gradient(var(--cyan),var(--magenta));border-radius:5px}
@@ -42,7 +39,7 @@ html::-webkit-scrollbar-thumb:hover{background:var(--cyan)}
 
 body{
   margin:0;
-  min-height:100vh;
+  min-height:100vh;min-height:100dvh;
   background:var(--bg);
   color:var(--text);
   font-family:var(--font-mono);
@@ -98,7 +95,7 @@ body::after{
 .page{
   position:relative;z-index:1;
   width:100%;max-width:var(--shell-max);margin:0 auto;
-  min-height:100vh;
+  min-height:100vh;min-height:100dvh;
   padding-left:var(--side-w);
 }
 
@@ -216,7 +213,7 @@ body::after{
   transition:color .2s;
 }
 .search-clear-btn:hover{color:var(--magenta)}
-.search-input-wrap.has-value .search-clear-btn{display:flex}
+.search-input-wrap:has(input:not(:placeholder-shown)) .search-clear-btn{display:flex}   /* 有内容时显示清空按钮，无需 JS 切换类 */
 
 .cat-block{margin-bottom:38px}
 .category-title{
@@ -255,6 +252,7 @@ body::after{
   padding:14px 16px;
   display:flex;flex-direction:column;gap:10px;
   transition:transform .15s ease-out,border-color .2s;
+  content-visibility:auto;contain-intrinsic-size:auto 76px;   /* 屏幕外的卡片不参与布局/绘制 */
 }
 .cat li:hover{
   --bc:rgba(0,240,255,.75);
@@ -293,17 +291,19 @@ body::after{
 /* ============================================================
    MODAL
    ============================================================ */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(2,4,8,.38);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);z-index:1001}
+/* 原生 <dialog>：showModal() 进入浏览器顶层，自带遮罩(::backdrop)、Esc 关闭、焦点陷阱，关闭后焦点回到触发处 */
+.modal::backdrop{background:rgba(2,4,8,.38);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .modal{
-  display:none;flex-direction:column;
-  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:90%;max-width:900px;max-height:80vh;
+  display:none;margin:auto;padding:0;color:inherit;
+  width:90%;max-width:900px;max-height:80vh;max-height:80dvh;
   background:linear-gradient(160deg,rgba(16,26,44,.58),rgba(9,14,26,.42));   /* 透明玻璃底 */
   -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
   border:1px solid var(--magenta);
   box-shadow:0 0 0 1px rgba(255,45,120,.15),0 0 40px rgba(255,45,120,.18);
-  z-index:1002;overflow:hidden;
+  overflow:hidden;
 }
+.modal[open]{display:flex;flex-direction:column}
+html:has(dialog[open]){overflow:hidden}   /* 弹窗打开时锁定背景滚动 */
 .modal::before,.modal::after{content:'';position:absolute;width:18px;height:18px;z-index:2;pointer-events:none}
 .modal::before{top:-1px;left:-1px;border-top:2px solid var(--magenta);border-left:2px solid var(--magenta)}
 .modal::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--magenta);border-right:2px solid var(--magenta)}
@@ -464,6 +464,10 @@ body::after{
 .cur-dot{width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
 .cur-on .cur-ring,.cur-on .cur-dot{opacity:1}
 .cur-text .cur-ring,.cur-text .cur-dot{opacity:0}   /* 输入框内改回系统 I 形光标 */
+/* 弹窗在浏览器顶层，会盖住自定义光标圈：弹窗打开时隐藏光标圈并恢复系统光标 */
+html.cur-on:has(dialog[open]) :is(.cur-ring,.cur-dot){opacity:0}
+html.cur-on:not(.cur-text):has(dialog[open]) *{cursor:auto !important}
+html.cur-on:not(.cur-text):has(dialog[open]) :is(a,button,summary){cursor:pointer !important}
 /* 隐藏系统自带指针，只显示发光圆点 + 光环（输入框内除外） */
 .cur-on:not(.cur-text),.cur-on:not(.cur-text) *{cursor:none !important}
 
@@ -540,14 +544,13 @@ body::after{
 </div>
 </div>
 
-<div class="modal-overlay" id="modalOverlay"></div>
-<div class="modal" id="modal">
+<dialog class="modal" id="modal" aria-labelledby="modalHeader">
   <div class="modal-head">
     <div class="modal-header" id="modalHeader"></div>
     <button type="button" class="modal-close-btn" id="modalClose" aria-label="关闭">✕</button>
   </div>
   <div class="modal-body modal-content" id="modalContent"></div>
-</div>
+</dialog>
 
 <script src="app.js"></script>
 <script>
@@ -555,6 +558,7 @@ body::after{
   "use strict";
 
   const state = { data: null };
+  let navAnchors = [], titles = [], icons = {}, index = [], byId = [];
 
   const topbarEl   = document.getElementById('topbar');
   const navLinks   = document.getElementById('navLinks');
@@ -563,7 +567,6 @@ body::after{
   const searchBox   = document.getElementById('searchBox');
   const content    = document.getElementById('content');
   const modal      = document.getElementById('modal');
-  const modalOverlay = document.getElementById('modalOverlay');
   const modalHeader  = document.getElementById('modalHeader');
   const modalContent = document.getElementById('modalContent');
   const modalClose   = document.getElementById('modalClose');
@@ -576,20 +579,31 @@ body::after{
   }
 
   /* ---------------- boot sequence ---------------- */
+  // 同一会话内只播放一次；播放过程中点击 / 按任意键可直接跳过
+  const BOOT_KEY = 'jx_boot_seen';
+  let bootSeen = false;
+  try { bootSeen = sessionStorage.getItem(BOOT_KEY) === '1'; } catch (e) {}
+  let skipBoot = bootSeen;
+  bootEl.addEventListener('pointerdown', () => { skipBoot = true; });
+  document.addEventListener('keydown', () => { skipBoot = true; }, { once: true });
+
   function typeLine(text, className, speed){
     return new Promise(resolve => {
       const span = document.createElement('span');
       if (className) span.className = className;
       bootText.appendChild(span);
-      let i = 0;
-      const timer = setInterval(() => {
-        span.textContent += text[i];
-        i++;
-        if (i >= text.length){
-          clearInterval(timer);
-          bootText.appendChild(document.createTextNode('\n'));
-          resolve();
-        }
+      let timer, i = 0;
+      const finish = () => {
+        clearInterval(timer);
+        span.textContent = text;
+        bootText.appendChild(document.createTextNode('\n'));
+        resolve();
+      };
+      if (skipBoot) return finish();
+      timer = setInterval(() => {
+        if (skipBoot) return finish();
+        span.textContent += text[i++];
+        if (i >= text.length) finish();
       }, speed || 14);
     });
   }
@@ -620,7 +634,7 @@ body::after{
     }
 
     bootText.appendChild(cursor);
-    await new Promise(r => setTimeout(r, 350));
+    if (!skipBoot) await new Promise(r => setTimeout(r, 350));
     return result;
   }
 
@@ -814,8 +828,7 @@ body::after{
   function showModalShell(title, kbd){
     modalHeader.textContent = title;
     modal.classList.toggle('kbd', !!kbd);
-    modal.style.display = 'flex';
-    modalOverlay.style.display = 'block';
+    if (!modal.open) modal.showModal();
   }
 
   // loads "<item name>.json" from the same directory as this page
@@ -841,12 +854,14 @@ body::after{
     }
   }
   function closeModal(){
-    modal.style.display = 'none';
-    modalOverlay.style.display = 'none';
+    if (modal.open) modal.close();
   }
+  // Esc、焦点陷阱、背景遮罩都由 <dialog> 原生处理；这里只处理“点遮罩关闭”
+  // （要求按下和松开都落在遮罩上，避免在弹窗里拖选文字拖到外面时误关）
+  let downOnBackdrop = false;
+  modal.addEventListener('pointerdown', e => { downOnBackdrop = e.target === modal; });
+  modal.addEventListener('click', e => { if (e.target === modal && downOnBackdrop) closeModal(); });
   modalClose.addEventListener('click', closeModal);
-  modalOverlay.addEventListener('click', closeModal);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
   // press "/" to jump straight into the search box (unless already typing somewhere)
   document.addEventListener('keydown', e => {
@@ -869,6 +884,7 @@ body::after{
       a.addEventListener('click', () => closeMobileNav());
       navLinks.appendChild(a);
     });
+    navAnchors = Array.from(navLinks.querySelectorAll('a[href^="#"]'));
   }
 
   const helpBtn = document.getElementById('helpBtn');
@@ -911,104 +927,74 @@ body::after{
   }, { passive: true });
 
   /* ---------------- content ---------------- */
-  function itemMatches(item, q){
-    if (!q) return true;
-    const ql = q.toLowerCase();
-    if (item.name && item.name.toLowerCase().includes(ql)) return true;
-    if (item.desc && item.desc.toLowerCase().includes(ql)) return true;
-    // also search the URLs behind each emoji icon link, not the emoji glyph itself
-    if (item.links && item.links.some(link => link.href && link.href.toLowerCase().includes(ql))) return true;
-    return false;
+  // 启动时给每个条目预计算一个小写搜索串（名称 + 简介 + 各链接 URL，不含 emoji），
+  // 并给全部条目编号，点击时按编号取回条目，不必给每张卡片单独绑监听
+  function buildIndex(categories){
+    let n = 0;
+    byId = [];
+    index = categories.map(cat => ({
+      cat,
+      rows: cat.items.map(it => {
+        byId.push(it);
+        const q = [it.name, it.desc].concat((it.links || []).map(l => l.href || '')).join('\n').toLowerCase();
+        return { it, id: n++, q };
+      })
+    }));
   }
 
-  function renderContent(categories, query){
-    content.innerHTML = '';
-    let totalShown = 0;
-
-    categories.forEach((cat) => {
-      const items = cat.items.filter(it => itemMatches(it, query));
-      if (items.length === 0) return;
-      totalShown += items.length;
-
-      const block = document.createElement('div');
-      block.className = 'cat-block';
-
-      const h2 = document.createElement('h2');
-      h2.id = cat.id;
-      h2.className = 'category-title';
-      h2.innerHTML = '<span class="arrow">▸</span><span>' + escapeHtml(cat.title) +
-        '</span><span class="count">[' + items.length + (query ? ' / ' + cat.items.length : '') + ']</span>';
-      block.appendChild(h2);
-
-      const ul = document.createElement('ul');
-      ul.className = 'cat';
-
-      items.forEach(it => {
-        const li = document.createElement('li');
-
-        const main = document.createElement('div');
-        main.className = 'item-main';
-
-        const left = document.createElement('div');
-        const a = document.createElement('a');
-        a.className = 'item-name';
-        a.textContent = it.name;
-        a.href = '';
-        a.addEventListener('click', e => {
-          e.preventDefault();
-          openModal(it.name, it.detail);
-        });
-        const p = document.createElement('p');
-        p.textContent = it.desc || '';
-        left.appendChild(a);
-        left.appendChild(p);
-        main.appendChild(left);
-        li.appendChild(main);
-
-        if (it.links && it.links.length){
-          const dls = document.createElement('div');
-          dls.className = 'dls';
-          it.links.forEach(link => {
-            const la = document.createElement('a');
-            la.textContent = link.emoji;
-            la.href = link.href || '';
-            if (!link.href) {
-              // no href supplied: emoji acts as a button. The keyboard emoji opens
-              // the shortcut modal, anything else opens this item's detail modal
-              const isKeys = link.emoji.startsWith('\u2328');
-              la.addEventListener('click', e => {
-                e.preventDefault();
-                if (isKeys) openKeyboard(it.name);
-                else openModal(it.name, it.detail);
-              });
-            } else {
-              la.target = '_blank';
-              la.rel = 'noopener noreferrer';
-            }
-            dls.appendChild(la);
-          });
-          li.appendChild(dls);
+  function cardHtml(row){
+    const it = row.it;
+    let h = '<li><div class="item-main"><div><a class="item-name" href="" data-id="' + row.id + '">' +
+      escapeHtml(it.name) + '</a><p>' + escapeHtml(it.desc || '') + '</p></div></div>';
+    if (it.links && it.links.length){
+      h += '<div class="dls">';
+      for (const link of it.links){
+        const label = icons[link.emoji];
+        const tip = label ? ' title="' + escapeHtml(label) + '" aria-label="' + escapeHtml(label) + '"' : '';
+        if (link.href){
+          h += '<a href="' + escapeHtml(link.href) + '" target="_blank" rel="noopener noreferrer"' + tip + '>' +
+            escapeHtml(link.emoji) + '</a>';
+        } else {
+          // 没写 href：emoji 当按钮用。⌨ 打开快捷键弹窗，其余打开该条目的详情弹窗
+          const act = link.emoji.startsWith('\u2328') ? 'keys' : 'detail';
+          h += '<a href="" data-id="' + row.id + '" data-act="' + act + '"' + tip + '>' + escapeHtml(link.emoji) + '</a>';
         }
-
-        ul.appendChild(li);
-      });
-
-      block.appendChild(ul);
-      content.appendChild(block);
-    });
-
-    if (totalShown === 0) {
-      content.innerHTML = '<div class="empty">// 未找到匹配结果 — 尝试其他关键词</div>';
+      }
+      h += '</div>';
     }
+    return h + '</li>';
+  }
 
+  function renderContent(query){
+    const ql = (query || '').toLowerCase();
+    let total = 0, html = '';
+    for (const g of index){
+      const rows = ql ? g.rows.filter(r => r.q.includes(ql)) : g.rows;
+      if (!rows.length) continue;
+      total += rows.length;
+      html += '<div class="cat-block"><h2 id="' + escapeHtml(g.cat.id) + '" class="category-title">' +
+        '<span class="arrow">▸</span><span>' + escapeHtml(g.cat.title) + '</span>' +
+        '<span class="count">[' + rows.length + (ql ? ' / ' + g.rows.length : '') + ']</span></h2>' +
+        '<ul class="cat">' + rows.map(cardHtml).join('') + '</ul></div>';
+    }
+    content.innerHTML = html || '<div class="empty">// 未找到匹配结果 — 尝试其他关键词</div>';
+    titles = Array.from(content.querySelectorAll('.category-title'));
     updateActiveNav();
   }
 
+  // 一个监听器接管所有“无 href”的卡片按钮（条目名 / 详情 emoji / ⌨ 快捷键）
+  content.addEventListener('click', e => {
+    const a = e.target.closest('a[data-id]');
+    if (!a) return;
+    e.preventDefault();
+    const it = byId[Number(a.dataset.id)];
+    if (a.dataset.act === 'keys') openKeyboard(it.name);
+    else openModal(it.name, it.detail);
+  });
+
   /* ---------------- scrollspy: highlight current category in sidebar ---------------- */
-  let navAnchors = [];
+  let activeId = null;
   function updateActiveNav(){
-    navAnchors = Array.from(navLinks.querySelectorAll('a[href^="#"]'));
-    const titles = Array.from(document.querySelectorAll('.category-title'));
     if (!titles.length || !navAnchors.length) return;
     const offset = topbarEl.offsetHeight + 28;
     let currentId = titles[0].id;
@@ -1016,6 +1002,8 @@ body::after{
       if (t.getBoundingClientRect().top - offset <= 0) currentId = t.id;
       else break;
     }
+    if (currentId === activeId) return;
+    activeId = currentId;
     navAnchors.forEach(a => {
       a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
     });
@@ -1033,20 +1021,25 @@ body::after{
   // fix: remember the scroll position the moment a search begins, and restore it
   // once the box is cleared back to empty.
   let scrollBeforeSearch = null;
+  let searchTimer = 0;
   function handleSearchInput(){
+    clearTimeout(searchTimer);
     const val = searchInput.value;
     if (val && scrollBeforeSearch === null) {
       scrollBeforeSearch = window.scrollY;
     }
-    searchInput.closest('.search-input-wrap').classList.toggle('has-value', val.length > 0);
-    if (state.data) renderContent(state.data.categories, val.trim());
+    if (state.data) renderContent(val.trim());
     if (!val && scrollBeforeSearch !== null) {
       const restoreY = scrollBeforeSearch;
       scrollBeforeSearch = null;
       requestAnimationFrame(() => window.scrollTo(0, restoreY));
     }
   }
-  searchInput.addEventListener('input', handleSearchInput);
+  // 输入防抖：连续输入时只在停顿 60ms 后渲染一次
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(handleSearchInput, 60);
+  });
 
   const searchClearBtn = document.getElementById('searchClearBtn');
   searchClearBtn.addEventListener('click', () => {
@@ -1060,13 +1053,22 @@ body::after{
     ? Promise.resolve(window.APP_DATA)
     : Promise.reject(new Error('app.js 未加载或未定义 APP_DATA'));
 
+  if (bootSeen){        // 本会话已播放过：不再显示开机画面
+    bootEl.style.transition = 'none';
+    bootEl.classList.add('hidden');
+  }
+
   runBoot(dataPromise).then(data => {
     state.data = data;
-    document.title = data.meta.title || document.title;
+    icons = data.icons || {};
+    buildIndex(data.categories);
     renderNav(data.meta, data.categories);
-    renderContent(data.categories, '');
+    renderContent('');
     bootEl.classList.add('hidden');
+    try { sessionStorage.setItem(BOOT_KEY, '1'); } catch (e) {}
   }).catch(() => {
+    bootEl.style.transition = '';
+    bootEl.classList.remove('hidden');
     // boot overlay already shows the error; also surface it in main content
     content.innerHTML = '<div class="error">加载 app.js 失败，请确认 <code>app.js</code> 与本页面在同一目录下并已正确引入。</div>';
   });

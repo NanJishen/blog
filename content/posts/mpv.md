@@ -87,6 +87,8 @@ keep-open=yes # 播放结束后不退出
 volume=0 # 启动后的默认音量
 # ontop=yes # 始终置顶
 border=no # 无边框
+# save-watch-history=yes # 启用保存历史记录
+# watch-history-path="T:/cache/mpv/watch_history.jsonl" # 保存历史记录的文件路径
 save-position-on-quit=yes # 记忆上次播放位置
 autocreate-playlist=same # 自动加载同目录中的视频到播放列表
 directory-mode=ignore # 忽略子目录被加载到播放列表
@@ -94,11 +96,13 @@ directory-filter-types=video # 指定仅播放的文件类型
 # priority=high # 如果需要高优先级
 
 ## 屏显
-osc=no # 是否使用原生屏控，使用第三方需设为 no
-osd-bar=no # 是否禁用原生播放进度条，使用第三方需设为 no
+# osc=no # 是否使用原生屏控，使用第三方需设为 no
+osd-bar=no # 是否禁用原生播放进度条（按快进和后退时会出现）
+script-opts=osc-deadzonesize=0.99 # 触发显示控制条区域
 osd-playing-msg="${filename}" # 开始播放时短暂显示文件名
 # osd-font-size=25 # 文本大小
 # osd-color="#FFF500" # 文本颜色
+# script-opts=osc-layout=floating # 浮动播放控制条
 
 ## 字幕
 sub-auto=fuzzy # 自动加载同名外置字幕
@@ -175,6 +179,8 @@ mpv --list-options | findstr osc # osc 设置项
 ```bash
 ## 键盘
 ENTER cycle fullscreen # 全屏切换
+\` script-binding select/select-watch-later # 打开稍后观看，需先配置启用稍后观看功能
+# \` script-binding select/select-watch-history # 打开历史记录，需先配置启用历史记录功能
 # n set window-minimized yes # 最小化
 UP add volume 5 # 键盘上键增加音量
 DOWN add volume -5 # 键盘下键减少音量
@@ -193,7 +199,11 @@ Ctrl+UP add sub-scale +0.05 # 字幕放大5%
 Ctrl+DOWN add sub-scale -0.05 # 字幕缩小5%
 Ctrl+z set sub-delay 0 # 字幕延时复位
 Ctrl+F7 sub-reload # 重载字幕
-F2 cycle-values sub-ass-override force no
+F1 script-binding commands/open # 打开控制台
+F2 script-binding select/select-binding # 查询快捷键
+F3 cycle-values sub-ass-override "force" "no" # 强制ass渲染
+F8 script-binding select/select-playlist # 播放列表
+F9 script-binding select/select-track # 音轨和字幕列表
 
 ## UOSC 专用
 MBTN_RIGHT_DBL script-binding uosc/menu # 右键菜单
@@ -223,12 +233,6 @@ MBTN_BACK seek -2 # 侧键后退2秒
 
 **常用脚本**
 
-[recent](https://github.com/hacel/recent)：最近播放列表
-```bash
-display_bind= # 设定调出快捷键，例如数字1键左面的反点
-log_path=T:/cache/history.log # 自定义历史文件记录位置
-```
-
 [thumbfast](https://github.com/po5/thumbfast)：播放进度显示缩略图
 
 最小化并自动暂停播放，编写 `auto-pause.lua` 脚本
@@ -242,27 +246,60 @@ mp.observe_property("window-minimized", "bool", function(name, value)
 end)
 ```
 
-清除播放历史记录，编写 `clear-history.lua` 脚本
+也自己编写一个合并脚本自用，例如 `custom.lua`
 ```lua
-local u = require 'mp.utils'
-mp.add_key_binding("Ctrl+Shift+H", "clear-history", function()
-    local p = "T:/cache/mpv/watch_later"
-    for _, f in ipairs(u.readdir(p) or {}) do os.remove(u.join_path(p, f)) end
-    mp.osd_message("播放历史已清除")
-end)
-```
+local utils = require 'mp.utils'
 
-[Navigator](https://github.com/jonniek/mpv-filenavigator)：文件浏览器，f 在收藏目录间切换，↑↓ 上下选择，←→ 进入返回目录，可以修改 `navigator.lua` 文件进行配置
-```lua
-defaultpath = 默认路径 "T:/Videos"  
-navigator_mainkey = 快捷键 Ctrl+o
-favorites = 想收藏的目录
-ignorePaths = 忽略路径
-ignorePatterns = 忽略文件名
-visible_item_count = 显示条目数
-style_ass_tags = "{\\fs12}" 字体大小
-name_prefix = "{\\c&FFFFFF&}□ " 条目颜色
-selection_prefix = "{\\c&00BFFF&}■ " 选择条目颜色
+-- 最小化时自动暂停
+local paused_by_script = false
+
+mp.observe_property("window-minimized", "bool", function(_, minimized)
+    if minimized then
+        if not mp.get_property_bool("pause", false) then
+            mp.set_property_bool("pause", true)
+            paused_by_script = true
+        end
+    elseif paused_by_script then
+        mp.set_property_bool("pause", false)
+        paused_by_script = false
+    end
+end)
+
+-- 清除播放历史
+local function get_watch_later_dir()
+    local dir = mp.get_property("watch-later-directory", "")
+    if dir == "" then
+        dir = "~~state/watch_later"
+    end
+    local expanded = mp.command_native({"expand-path", dir})
+    return expanded or dir
+end
+
+local function clear_history()
+    local dir = get_watch_later_dir()
+    local files = utils.readdir(dir, "files")
+    if not files then
+        mp.osd_message("播放历史目录不存在:" .. dir)
+        return
+    end
+
+    local removed, failed = 0, 0
+    for _, name in ipairs(files) do
+        if os.remove(utils.join_path(dir, name)) then
+            removed = removed + 1
+        else
+            failed = failed + 1
+        end
+    end
+
+    if failed > 0 then
+        mp.osd_message(string.format("已清除 %d 条播放历史,%d 条删除失败", removed, failed))
+    else
+        mp.osd_message(string.format("播放历史已清除(%d 条)", removed))
+    end
+end
+
+mp.add_key_binding("Ctrl+Shift+H", "clear-history", clear_history)
 ```
 
 [Playlistmanager](https://github.com/jonniek/mpv-playlistmanager)：操作播放列表

@@ -17,6 +17,7 @@
       --accent: #ffa72b;
       --hover-bg: #3a3222;
       --shadow-text: 2px 2px 3px #131313;
+      --dial: min(400px, 90vw);   /* 表盘与待办列表的统一宽度 */
     }
 
     * { box-sizing: border-box; }
@@ -25,7 +26,7 @@
 
     body {
       margin: 0;
-      padding: 76px 20px 40px;
+      padding: 56px 20px 40px;
       background: var(--bg);
       color: var(--text);
       font-family: system-ui, -apple-system, sans-serif;
@@ -34,70 +35,66 @@
       align-items: center;
     }
 
-    /* ===== 顶部通栏导航 ===== */
-    .mode-switch {
+    /* ===== 左右边缘模式切换标识 ===== */
+    .edge-nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
+      top: 50%;
+      z-index: 50;
       display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      align-items: stretch;
-      padding: 0 12px;
-      background: var(--bg-nav);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, .45);
-    }
-    .nav-center { display: flex; align-items: stretch; }
-
-    .mode-btn {
-      padding: 14px 26px;
+      width: 48px;
+      height: 160px;
+      margin-top: -80px;
+      padding: 0;
       background: transparent;
       border: none;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -1px;
       color: var(--text);
       font: inherit;
-      font-size: 15px;
-      font-weight: 600;
-      white-space: nowrap;              /* 防止窄屏换行 */
+      opacity: .28;
       cursor: pointer;
-      transition: color .2s, border-color .2s, background-color .15s;
+      transition: opacity .25s, color .25s;
+      -webkit-tap-highlight-color: transparent;
     }
-    .mode-btn:hover { color: var(--accent-text); }
-    .mode-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-    @media (max-width: 480px) {
-      .mode-switch { padding: 0 4px; }
-      .mode-btn { padding: 12px 8px; font-size: 13px; }
-    }
-
-    /* ===== 右上角汉堡菜单 ===== */
-    .nav-right { position: relative; display: flex; align-items: stretch; }
-    #menuBtn { padding: 14px 18px; font-size: 17px; }
-    .nav-menu {
-      display: none;
-      position: absolute;
-      top: 100%; right: 0;
-      z-index: 101;
-      min-width: 140px;
-      flex-direction: column;
-      background: var(--bg-nav);
-      border: 1px solid var(--border);
-      border-top: none;
-      border-radius: 0 0 10px 10px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, .5);
-      overflow: hidden;
-    }
-    .nav-menu.show { display: flex; }
-    .nav-menu a {
-      padding: 12px 22px;
-      color: var(--text);
-      font-size: 14px;
+    .edge-nav.prev { left: 0; }
+    .edge-nav.next { right: 0; }
+    .edge-nav:hover, .edge-nav:focus-visible { opacity: 1; color: var(--accent); outline: none; }
+    .edge-nav .arrow { font-size: 34px; line-height: 1; }
+    .edge-nav .name {
+      position: absolute;              /* 脱离布局：不同字数的模式名不会把箭头挤得上下移动 */
+      top: calc(50% + 24px);
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
       font-weight: 600;
-      white-space: nowrap;
-      transition: background-color .15s, color .15s;
+      letter-spacing: 2px;
+      writing-mode: vertical-rl;
+      opacity: 0;
+      transition: opacity .25s;
     }
-    .nav-menu a:hover { background: var(--hover-bg); color: var(--accent-text); }
+    .edge-nav:hover .name, .edge-nav:focus-visible .name { opacity: 1; }
+    @media (hover: none) { .edge-nav { opacity: .35; } .edge-nav .name { display: none; } }
+
+    /* 右下角使用帮助（淡） */
+    .help-btn {
+      position: fixed;
+      right: 14px; bottom: 14px;
+      z-index: 50;
+      width: 28px; height: 28px;
+      padding: 0;
+      background: transparent;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      opacity: .28;
+      cursor: pointer;
+      transition: opacity .25s, color .25s;
+    }
+    .help-btn:hover { opacity: 1; color: var(--accent); }
 
     /* ===== 帮助弹窗 ===== */
     .modal-mask {
@@ -148,7 +145,8 @@
 
     /* ===== 表盘 ===== */
     .clock {
-      --cs: min(400px, 90vw);   /* 表盘尺寸，夜光模式下放大 */
+      --cs: var(--dial);                    /* 表盘尺寸，夜光模式下放大 */
+      --label-size: calc(var(--cs) * .035); /* 星期文字 / 番茄钟刻度 / 数字时间统一字号（400px 表盘 = 14px） */
       position: relative;
       width: var(--cs);
       height: var(--cs);
@@ -156,6 +154,7 @@
       border: 12px solid #7e7567;
       border-radius: 50%;
       box-shadow: inset 0 0 20px #3e2a1a, 0 8px 20px rgba(0, 0, 0, .6);
+      cursor: pointer;                      /* 三种模式下点击表盘都有功能 */
       user-select: none;
     }
 
@@ -172,7 +171,7 @@
     .label {
       position: absolute;
       color: var(--accent-text);
-      font-size: 14px;
+      font-size: var(--label-size);
       font-weight: 700;
       text-shadow: var(--shadow-text);
       transform: translate(-50%, -50%);
@@ -190,36 +189,40 @@
       transform-origin: bottom center;
     }
 
-    /* ===== 指针（周时钟 / 番茄钟共用） ===== */
+    /* ===== 指针（三种模式共用）：--len 针长、--w 针宽，针尾固定在圆心 ===== */
     .hand {
+      --len: 39%;
+      --w: 5px;
       position: absolute;
-      top: 10%; left: 50%;
-      z-index: 4;
-      width: 6px; height: 40%;
-      margin-left: -3px;
+      top: calc(50% - var(--len)); left: 50%;
+      z-index: 5;
+      width: var(--w); height: var(--len);
+      margin-left: calc(var(--w) / -2);
       background: #222;
       border-radius: 3px;
       box-shadow: 0 0 6px #000;
       transform-origin: bottom center;
       transform: rotate(0deg);
     }
-    .hand-timer { z-index: 5; }
 
-    /* 数字时间：仅番茄钟模式显示 */
+    /* 数字时间：位于表盘中心与「30」之间；滚轮调节时浮现，计时开始后常显 */
     .time-display {
+      position: absolute;
+      top: 68%; left: 50%;
+      z-index: 6;
       display: none;
-      margin-top: 28px;
       color: var(--accent-text);
-      font-size: 30px;
+      font-size: var(--label-size);        /* 与表盘刻度数字一致 */
       font-weight: 700;
-      letter-spacing: 2px;
       font-variant-numeric: tabular-nums;
       text-shadow: var(--shadow-text);
-      cursor: pointer;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      pointer-events: none;
       user-select: none;
-      transition: color .2s;
+      transition: opacity .6s;
     }
-    .time-display:hover { color: var(--accent); }
+    .time-display.show, .time-display.running { opacity: .85; transition-duration: .15s; }
 
     /* ===== 周时钟：扇区高亮 / 点击选择 ===== */
     .sector-hl {
@@ -230,10 +233,10 @@
       pointer-events: none;
       transition: background .25s;
     }
-    .label.active { color: var(--accent); font-size: 16px; }
+    .label.active { color: var(--accent); font-size: calc(var(--label-size) + 2px); }
 
     /* ===== 待办列表：纯文字 + 占位输入行 ===== */
-    .todo { display: none; width: min(400px, 90vw); margin-top: 26px; }
+    .todo { display: none; width: var(--dial); margin-top: 26px; }
     .todo-list { margin: 0; padding: 0; list-style: none; max-height: 240px; overflow-y: auto; }
     .todo-item {
       position: relative;
@@ -312,43 +315,10 @@
     .tick::before { content: ""; display: block; width: 100%; height: 6px; background: #19191999; }
     .tick.major { width: 3px; margin-left: -1.5px; }
     .tick.major::before { height: 12px; background: #191919cc; }
-    .label.num { font-size: calc(var(--cs) * .05); }
 
-    #hourHand   { top: 27%; height: 23%; width: 8px; margin-left: -4px; }
-    #minuteHand { top: 11%; height: 39%; width: 5px; margin-left: -2.5px; z-index: 5; }
-    #secondHand { top: 7%;  height: 43%; width: 2px; margin-left: -1px; z-index: 6; background: var(--accent); box-shadow: none; }
+    #hourHand   { --len: 23%; --w: 8px; z-index: 4; }
+    #secondHand { --len: 43%; --w: 2px; z-index: 6; background: var(--accent); box-shadow: none; }   /* 分针即默认指针 */
     #secondHand::after { content: ""; position: absolute; left: 0; top: 100%; width: 100%; height: 18px; background: inherit; }
-
-    /* 夜光开关：仅时钟模式显示 */
-    .glow-toggle {
-      display: none;
-      align-items: center;
-      gap: 10px;
-      margin-top: 28px;
-      padding: 8px 16px;
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      color: var(--text);
-      font: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: color .2s, border-color .2s, opacity .2s;
-    }
-    .glow-toggle:hover { color: var(--accent-text); border-color: var(--accent); }
-    .glow-toggle .sw { position: relative; width: 34px; height: 18px; background: var(--hover-bg); border-radius: 9px; transition: background-color .2s; }
-    .glow-toggle .sw::after {
-      content: "";
-      position: absolute;
-      top: 2px; left: 2px;
-      width: 14px; height: 14px;
-      background: var(--text);
-      border-radius: 50%;
-      transition: transform .2s, background-color .2s;
-    }
-    .glow-toggle[aria-pressed="true"] .sw { background: var(--accent); }
-    .glow-toggle[aria-pressed="true"] .sw::after { transform: translateX(16px); background: #2a2411; }
 
     /* 夜光钟画布 — 更多参考 github.com/KyleBing/animate-clock-canvas 不要删除这条注释 */
     /* ===== 夜光模式：纯黑、荧光配色，只留时钟 ===== */
@@ -372,58 +342,50 @@
       padding: 20px;
       background: #000;
     }
-    .night-mode .mode-switch { display: none; }
+    .night-mode .edge-nav, .night-mode .help-btn { display: none; }
     .night-mode .clock { --cs: min(720px, 80vmin); }
-    .night-mode .glow-toggle { opacity: .35; }   /* 夜间弱化，悬停恢复；触屏用它退出（ESC 同样可退出） */
-    .night-mode .glow-toggle:hover { opacity: 1; }
-
-    .clock-only-mode { padding: 76px 20px 20px; }
-    .clock-only-mode .nav-right { display: none; }
 
     /* ===== 按模式显示 / 隐藏（body[data-mode] 由脚本切换） ===== */
     .hand-timer, .hand-clk { display: none; }
-    [data-mode="weekday"] .clock { cursor: pointer; }
-    [data-mode="weekday"] .todo { display: block; }
+    [data-mode="clock"] .clock { --label-size: calc(var(--cs) * .05); }   /* 时钟数字比周时钟 / 番茄钟的刻度略大：400px 表盘 = 20px */
+    [data-mode="weekday"] .todo.open { display: block; }   /* 激活某个星期后才显示 */
     [data-mode="timer"] .time-display { display: block; }
-    [data-mode="clock"] .glow-toggle { display: inline-flex; }
     [data-mode="timer"] #weekdayHand, [data-mode="clock"] #weekdayHand { display: none; }
     [data-mode="timer"] #timerHand { display: block; }
     [data-mode="clock"] .hand-clk { display: block; }
   </style>
 </head>
 <body data-mode="weekday">
-  <nav class="mode-switch">
-    <div class="nav-center">
-      <button class="mode-btn active" data-mode="weekday">周时钟</button>
-      <button class="mode-btn" data-mode="timer">番茄钟</button>
-      <button class="mode-btn" data-mode="clock">时钟</button>
-    </div>
-    <div class="nav-right">
-      <button class="mode-btn" id="menuBtn" aria-haspopup="true" aria-expanded="false" title="菜单">☰</button>
-      <div class="nav-menu" id="navMenu">
-        <a href="#" id="helpItem">使用帮助</a>
-      </div>
-    </div>
-  </nav>
+  <button class="edge-nav prev" id="edgePrev" type="button" aria-label="上一个模式">
+    <span class="arrow" aria-hidden="true">‹</span><span class="name" id="edgePrevName"></span>
+  </button>
+  <button class="edge-nav next" id="edgeNext" type="button" aria-label="下一个模式">
+    <span class="arrow" aria-hidden="true">›</span><span class="name" id="edgeNextName"></span>
+  </button>
+  <button class="help-btn" id="helpBtn" type="button" title="使用帮助（?）" aria-label="使用帮助">?</button>
 
   <div class="modal-mask" id="helpMask">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
       <h2 id="helpTitle">使用帮助</h2>
       <section>
+        <h3>切换模式</h3>
+        <p>点击窗口左右两侧的 ‹ › 标识，或在表盘以外的区域滚动鼠标滚轮，即可在周时钟、番茄钟、时钟之间来回切换（首尾相接）。番茄钟计时进行中不会被滚轮切换。按 ? 键可打开本帮助。</p>
+      </section>
+      <section>
         <h3>周时钟</h3>
         <p>即使不工作也请珍惜每一周的时间</p>
         <p>表盘按星期分为 7 个扇区，指针指向当前时刻所在的星期与当天进度。</p>
-        <p>表盘下方是待办列表：每个星期都有独立的列表，默认显示当天，指针走到新的一天时自动切换；点击表盘上的某个星期可切换到对应的列表（再次点击取消选择，回到当天）；在虚线框中输入，回车或点击别处即可添加待办，点击待办文字可标记完成，悬停显示 × 可删除。待办保存在本机浏览器中。</p>
+        <p>点击表盘上的某个星期即可激活并在表盘下方显示该星期的待办列表，每个星期都有独立的列表；再次点击同一星期则收起列表，指针走到新的一天时也会自动收起；在虚线框中输入，回车或点击别处即可添加待办，点击待办文字可标记完成，悬停显示 × 可删除。待办保存在本机浏览器中。</p>
       </section>
       <section>
         <h3>番茄钟</h3>
-        <p>鼠标滚轮调整时间 · 单击启停 · 双击重置</p>
-        <p>在时钟上滚动滚轮以分钟为单位增减倒计时（最长 60 分钟），单击数字时间开始/暂停，双击重置。</p>
+        <p>表盘上滚轮调时间 · 单击表盘启停 · 双击重置</p>
+        <p>在表盘上滚动滚轮以分钟为单位增减倒计时（最长 60 分钟，计时进行中也可调节），调节时表盘中心下方会浮现数字时间，开始计时后一直显示；单击表盘开始/暂停，双击表盘重置；也可按空格键开始/暂停。</p>
       </section>
       <section>
         <h3>时钟</h3>
         <p>标准 12 小时制指针时钟：粗短的是时针，长的是分针，带尾巴的橙色细针是秒针。</p>
-        <p>表盘下方的“夜光模式”开关可切换到纯黑荧光配色并放大时钟；按 ESC 或再次点击开关退出。</p>
+        <p>点击表盘可切换到夜光模式：纯黑荧光配色并放大时钟；再次点击表盘或按 ESC 退出。</p>
       </section>
       <button class="modal-close" id="helpClose">关闭</button>
     </div>
@@ -436,20 +398,14 @@
     <div class="hand hand-clk" id="minuteHand"></div>
     <div class="hand hand-clk" id="secondHand"></div>
     <div class="center-dot"></div>
+    <div class="time-display" id="timeDisplay" aria-live="off">00:00</div>
   </div>
-
-  <div class="time-display" id="timeDisplay" role="button" tabindex="0"
-       title="单击 开始/暂停 · 双击 重置">00:00</div>
 
   <section class="todo" id="todo" aria-label="待办列表">
     <ul class="todo-list" id="todoList"></ul>
     <input class="todo-input" id="todoInput" type="text" maxlength="100"
            placeholder="+" aria-label="添加待办，回车确认" autocomplete="off">
   </section>
-
-  <button class="glow-toggle" id="glowToggle" type="button" aria-pressed="false">
-    <span class="sw" aria-hidden="true"></span><span>夜光模式</span>
-  </button>
 
   <script>
     (function () {
@@ -463,10 +419,11 @@
       const hourHand = $("hourHand");
       const minuteHand = $("minuteHand");
       const secondHand = $("secondHand");
-      const glowToggle = $("glowToggle");
-      const modeBtns = document.querySelectorAll("button.mode-btn[data-mode]");
-      const menuBtn = $("menuBtn");
-      const navMenu = $("navMenu");
+      const edgePrev = $("edgePrev");
+      const edgeNext = $("edgeNext");
+      const edgePrevName = $("edgePrevName");
+      const edgeNextName = $("edgeNextName");
+      const todoSection = $("todo");
       const helpMask = $("helpMask");
       const helpClose = $("helpClose");
       const todoInput = $("todoInput");
@@ -475,10 +432,6 @@
       let currentMode = "weekday";
       let glowOn = false;                // 时钟的夜光模式开关
       let ticker = null;                 // 周时钟 / 时钟共用的定时器（同一时刻只有一个模式在走）
-
-      if (new URLSearchParams(location.search).has("clockonly")) {
-        document.body.classList.add("clock-only-mode");
-      }
 
       /* ============ 通用工具 ============ */
       function startTicker(fn, ms) {
@@ -497,7 +450,7 @@
       }
 
       // 在表盘圆周 radiusPct(%) 处放置文字，0° 指向 12 点方向
-      function placeLabel(text, angleDeg, radiusPct) {
+      function placeLabel(text, angleDeg, radiusPct = 36) {
         const rad = (angleDeg - 90) * Math.PI / 180;
         const label = document.createElement("div");
         label.className = "label";
@@ -535,6 +488,7 @@
 
       // 刷新扇区高亮：仅在手动点击选中某一天时才亮
       function refreshDayMarks() {
+        todoSection.classList.toggle("open", pickedDay !== null);   // 待办列表仅在激活星期后显示
         if (!sectorHl) return;
         sectorHl.style.background = pickedDay === null
           ? "transparent"
@@ -550,8 +504,7 @@
       }
 
       // 点击表盘：按点击位置相对圆心的角度判断所在扇区
-      function onClockClick(e) {
-        if (currentMode !== "weekday") return;
+      function pickDayAt(e) {
         const r = clock.getBoundingClientRect();
         const dx = e.clientX - (r.left + r.width / 2);
         const dy = e.clientY - (r.top + r.height / 2);
@@ -668,7 +621,7 @@
           clock.appendChild(tick);
         }
         for (let n = 1; n <= 12; n++) {
-          placeLabel(n, n * 30, 36).classList.add("num");
+          placeLabel(n, n * 30);
         }
       }
 
@@ -692,7 +645,6 @@
         const on = glowOn && currentMode === "clock";
         clock.classList.toggle("glow", on);
         document.body.classList.toggle("night-mode", on);
-        glowToggle.setAttribute("aria-pressed", String(on));
       }
 
       /* ============ 番茄钟 ============ */
@@ -701,11 +653,13 @@
       let remainingSeconds = 0;
       let timerInterval = null;
       let isRunning = false;
+      let hideTimeTimer = null;
+      let endAt = 0;                       // 计时结束的时间戳
 
       function buildTimerDial() {
         clearDial();
         for (let m = 0; m < 60; m += 5) {
-          placeLabel(m, m * 6, 36);
+          placeLabel(m, m * 6);
         }
       }
 
@@ -733,7 +687,8 @@
       function startTimer() {
         if (isRunning || remainingSeconds <= 0) return;
         isRunning = true;
-        const endAt = Date.now() + remainingSeconds * 1000;   // 用时间戳，避免 setInterval 漂移
+        timeDisplay.classList.add("running");                  // 计时中数字时间常显
+        endAt = Date.now() + remainingSeconds * 1000;          // 用时间戳，避免 setInterval 漂移
         timerInterval = setInterval(() => {
           remainingSeconds = Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
           updateDisplay();
@@ -746,6 +701,7 @@
 
       function stopTimer() {
         isRunning = false;
+        timeDisplay.classList.remove("running");
         clearInterval(timerInterval);
         timerInterval = null;
         updateDisplay();
@@ -756,10 +712,20 @@
         setSeconds(0);
       }
 
+      const toggleTimer = () => (isRunning ? stopTimer() : startTimer());
+      let clickTimer = null;   // 单击延时：250ms 内再次点击视为双击，取消单击动作
+
       function onWheel(e) {
-        if (currentMode !== "timer" || isRunning) return;
+        if (currentMode !== "timer") return;
         e.preventDefault();
         setSeconds(remainingSeconds + (e.deltaY < 0 ? TIMER_STEP : -TIMER_STEP));
+        if (isRunning) {                                   // 计时中滚轮同样调节：以新的剩余时间重新定结束点
+          if (remainingSeconds <= 0) stopTimer();
+          else endAt = Date.now() + remainingSeconds * 1000;
+        }
+        timeDisplay.classList.add("show");                 // 调节时浮现，停止后淡出
+        clearTimeout(hideTimeTimer);
+        hideTimeTimer = setTimeout(() => timeDisplay.classList.remove("show"), 1400);
       }
 
       /* ============ 模式切换 ============ */
@@ -768,12 +734,30 @@
         stopTimer();
       }
 
+      const MODES = ["weekday", "timer", "clock"];
+      const MODE_NAMES = { weekday: "周时钟", timer: "番茄钟", clock: "时钟" };
+
+      // 偏移 step 个模式（首尾相接）
+      function neighborMode(step) {
+        return MODES[(MODES.indexOf(currentMode) + step + MODES.length) % MODES.length];
+      }
+
+      function updateEdgeNav() {
+        const prev = neighborMode(-1), next = neighborMode(1);
+        edgePrevName.textContent = MODE_NAMES[prev];
+        edgeNextName.textContent = MODE_NAMES[next];
+        edgePrev.title = "切换到 " + MODE_NAMES[prev];
+        edgeNext.title = "切换到 " + MODE_NAMES[next];
+      }
+
       function switchMode(mode) {
         if (mode === currentMode) return;
         stopAllTimers();
+        clearTimeout(hideTimeTimer);
+        timeDisplay.classList.remove("show");
         currentMode = mode;
-        document.body.dataset.mode = mode;   // 指针、待办、数字时间、夜光开关的显隐都由 CSS 按此属性控制
-        modeBtns.forEach((btn) => btn.classList.toggle("active", btn.dataset.mode === mode));
+        document.body.dataset.mode = mode;   // 指针、待办、数字时间的显隐都由 CSS 按此属性控制
+        updateEdgeNav();
         glowOn = false;                      // 离开时钟模式即退出夜光
         applyGlow();
 
@@ -788,69 +772,76 @@
       }
 
       /* ============ 事件绑定 ============ */
-      modeBtns.forEach((btn) => btn.addEventListener("click", () => switchMode(btn.dataset.mode)));
+      edgePrev.addEventListener("click", () => switchMode(neighborMode(-1)));
+      edgeNext.addEventListener("click", () => switchMode(neighborMode(1)));
 
-      /* ============ 汉堡菜单 & 使用帮助 ============ */
-      function setMenu(open) {
-        navMenu.classList.toggle("show", open);
-        menuBtn.setAttribute("aria-expanded", String(open));
-      }
+      /* ============ 使用帮助 ============ */
       function closeHelp() { helpMask.classList.remove("show"); }
+      function openHelp() { helpMask.classList.add("show"); }
 
-      menuBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        setMenu(!navMenu.classList.contains("show"));
-      });
-      // 点菜单外部收起
-      document.addEventListener("click", (e) => {
-        if (!navMenu.contains(e.target)) setMenu(false);
-      });
-      $("helpItem").addEventListener("click", (e) => {
-        e.preventDefault();
-        setMenu(false);
-        helpMask.classList.add("show");
-      });
+      $("helpBtn").addEventListener("click", openHelp);
       helpClose.addEventListener("click", closeHelp);
       helpMask.addEventListener("click", (e) => { if (e.target === helpMask) closeHelp(); });
 
-      // ESC：依次关闭帮助弹窗 → 菜单 → 夜光模式
       document.addEventListener("keydown", (e) => {
-        if (e.key !== "Escape") return;
-        if (helpMask.classList.contains("show")) {
-          closeHelp();
-        } else if (navMenu.classList.contains("show")) {
-          setMenu(false);
-        } else if (currentMode === "clock" && glowOn) {
-          glowOn = false;
-          applyGlow();
-        }
-      });
+        const typing = /^(INPUT|TEXTAREA|BUTTON)$/.test(e.target.tagName || "");
+        const helpOpen = helpMask.classList.contains("show");
 
-      // 单击：开始/暂停；双击：重置（250ms 延时区分，双击时取消单击动作）
-      const toggleTimer = () => (isRunning ? stopTimer() : startTimer());
-      let clickTimer = null;
-      timeDisplay.addEventListener("click", () => {
-        clearTimeout(clickTimer);
-        clickTimer = setTimeout(toggleTimer, 250);
-      });
-      timeDisplay.addEventListener("keydown", (e) => {   // 键盘：Enter / 空格 开始/暂停
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
+        if (e.key === "Escape") {
+          // ESC：依次关闭帮助弹窗 → 夜光模式
+          if (helpOpen) {
+            closeHelp();
+          } else if (currentMode === "clock" && glowOn) {
+            glowOn = false;
+            applyGlow();
+          }
+        } else if ((e.key === "?" || e.key === "？") && !typing) {
+          helpOpen ? closeHelp() : openHelp();
+        } else if (e.key === " " && currentMode === "timer" && !typing && !helpOpen && !e.repeat) {
+          e.preventDefault();   // 番茄钟：空格 开始/暂停
           toggleTimer();
         }
       });
-      timeDisplay.addEventListener("dblclick", () => {
+
+      /* ============ 表盘点击：按当前模式分发 ============ */
+      clock.addEventListener("click", (e) => {
+        if (currentMode === "weekday") {
+          pickDayAt(e);                                // 选择星期
+        } else if (currentMode === "timer") {
+          clearTimeout(clickTimer);                    // 开始 / 暂停（双击时被取消）
+          clickTimer = setTimeout(toggleTimer, 250);
+        } else {
+          glowOn = !glowOn;                            // 切换夜光模式
+          applyGlow();
+        }
+      });
+      clock.addEventListener("dblclick", () => {
+        if (currentMode !== "timer") return;
         clearTimeout(clickTimer);
-        resetTimer();
+        resetTimer();                                  // 番茄钟：双击重置
       });
 
-      glowToggle.addEventListener("click", () => {
-        glowOn = !glowOn;
-        applyGlow();
-      });
+      /* ============ 滚轮：表盘内调番茄钟时间，表盘外切换模式 ============ */
+      let wheelLockUntil = 0;
+      document.addEventListener("wheel", (e) => {
+        if (clock.contains(e.target)) { onWheel(e); return; }
+        if (helpMask.classList.contains("show")) return;            // 帮助弹窗内正常滚动
+        if (document.body.classList.contains("night-mode")) return; // 夜光模式不误切换
+        if (isRunning) return;                                      // 番茄钟计时中不切换
 
-      clock.addEventListener("wheel", onWheel, { passive: false });
-      clock.addEventListener("click", onClockClick);
+        // 页面本身可纵向滚动时，待办区域保持正常滚动
+        const pageScrollable = document.documentElement.scrollHeight > window.innerHeight + 1;
+        if (pageScrollable && todoSection.contains(e.target)) return;
+
+        const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        if (Math.abs(d) < 4) return;
+        e.preventDefault();
+
+        const now = Date.now();
+        if (now < wheelLockUntil) return;                           // 冷却，避免触控板惯性连续切换
+        wheelLockUntil = now + 450;
+        switchMode(neighborMode(d > 0 ? 1 : -1));
+      }, { passive: false });
 
       todoInput.addEventListener("blur", () => addTodo(false));   // 点击其它地方也添加
       todoInput.addEventListener("keydown", (e) => {
@@ -865,6 +856,7 @@
       });
 
       /* ============ 初始化 ============ */
+      updateEdgeNav();
       startWeekday();
     })();
   </script>

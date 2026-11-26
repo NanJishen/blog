@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark" data-bg="none" data-glass="1">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,32 +7,45 @@
 <meta name="description" content="Jarvis HUD 风格 AI 提示词库：全息界面、分类检索、一键复制。">
 <meta name="theme-color" content="#020a12">
 <link rel="icon" href="/favicon.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+/* 首屏同步脚本：① 先套用主题/背景，避免默认配色一闪；② 提前发起 prompt.json 请求，与 CSS 解析并行 */
+(function () {
+  var r = document.documentElement, s = {};
+  try { s = JSON.parse(localStorage.getItem('pos-settings') || 'null') || {}; } catch (e) {}
+  var t = s.theme;
+  if (t === undefined && (s.accent === 'gold' || s.accent === 'violet')) t = s.accent;
+  r.dataset.theme = ['dark', 'gold', 'violet', 'dash'].indexOf(t) >= 0 ? t : 'dark';
+  r.dataset.bg = (s.bg === 'warp' || s.bg === 'rain') ? s.bg : 'none';
+  r.dataset.glass = s.glass === false ? '0' : '1';
+  window.__pj = fetch('./prompt.json').then(function (res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  });
+  window.__pj.catch(function () {});
+})();
+</script>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --hud: "Rajdhani", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --mono: "JetBrains Mono", "SF Mono", Consolas, monospace;
+  --hud: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Cascadia Code", Consolas, Menlo, "Liberation Mono", monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ---- 滚动条：跟随主题色（--sb-c / --sb-bg 由 applySettings 同步到 :root） ---- */
-:root { --sb-c: #2fd7ff; --sb-bg: #020a12; }
+/* ---- 滚动条：直接取 :root 上的主题变量 ---- */
 @supports not selector(::-webkit-scrollbar) {
-  * { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--sb-c) 50%, transparent) transparent; }
+  * { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--cyan) 50%, transparent) transparent; }
 }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: color-mix(in srgb, var(--sb-bg) 92%, transparent); border-left: 1px solid color-mix(in srgb, var(--sb-c) 14%, transparent); }
-::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--sb-c) 36%, transparent); border: 3px solid transparent; background-clip: padding-box; transition: background 0.2s; }
-::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--sb-c) 75%, transparent); background-clip: padding-box; }
-::-webkit-scrollbar-thumb:active { background: var(--sb-c); background-clip: padding-box; }
+::-webkit-scrollbar-track { background: color-mix(in srgb, var(--bg) 92%, transparent); border-left: 1px solid color-mix(in srgb, var(--cyan) 14%, transparent); }
+::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--cyan) 36%, transparent); border: 3px solid transparent; background-clip: padding-box; transition: background 0.2s; }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--cyan) 75%, transparent); background-clip: padding-box; }
+::-webkit-scrollbar-thumb:active { background: var(--cyan); background-clip: padding-box; }
 ::-webkit-scrollbar-corner { background: transparent; }
 
 /* ---- 主题：只声明基础色，线条/发光/面板由 --cyan 与 --bg 派生 ---- */
-body {
+:root {
   --cyan: #2fd7ff; --bg: #020a12; --bg-2: #041420; --panel-rgb: 6, 16, 24; --card-a: 0.55;
   --gold: #ffb347; --red: #ff5566;
   --text: #dcf5ff; --muted: #7fb3c9; --faint: #3f6b80;
@@ -42,15 +55,15 @@ body {
   --glow: 0 0 24px color-mix(in srgb, var(--cyan) 35%, transparent);
   --panel: color-mix(in srgb, var(--cyan) 7%, rgba(var(--panel-rgb), var(--card-a)));
 }
-body[data-theme="gold"] {
+:root[data-theme="gold"] {
   --cyan: #ffb347; --bg: #0c0904; --bg-2: #130e07; --panel-rgb: 24, 17, 8; --card-a: 0.6;
   --gold: #ffcf70; --red: #ff6b5e; --text: #f5ead2; --muted: #bda986; --faint: #7d6c4f;
 }
-body[data-theme="violet"] {
+:root[data-theme="violet"] {
   --cyan: #a78bfa; --bg: #0b0714; --bg-2: #120b1e; --panel-rgb: 18, 12, 28; --card-a: 0.6;
   --gold: #ffc46b; --red: #ff6b8a; --text: #eee9ff; --muted: #a89ec7; --faint: #5e5480;
 }
-body[data-theme="dash"] {
+:root[data-theme="dash"] {
   --cyan: #5b8cff; --bg: #0f1117; --bg-2: #151822; --panel-rgb: 22, 25, 34; --card-a: 0.6;
   --gold: #f5b04b; --red: #ef5b6b; --text: #e8ebf4; --muted: #8b93a8; --faint: #565e72;
 }
@@ -78,7 +91,7 @@ body::after {
   background: radial-gradient(ellipse 70% 45% at 50% -5%, color-mix(in srgb, var(--cyan) 14%, transparent), transparent 70%);
 }
 /* 非网格背景下隐藏网格 */
-body[data-bg="warp"]::before, body[data-bg="rain"]::before, body[data-bg="none"]::before, body[data-bg="image"]::before { display: none; }
+:root[data-bg="warp"] body::before, :root[data-bg="rain"] body::before, :root[data-bg="none"] body::before, :root[data-bg="image"] body::before { display: none; }
 
 ::selection { background: var(--cyan); color: #02141f; }
 
@@ -155,7 +168,7 @@ a.hud-id:hover .name { color: var(--cyan); text-shadow: 0 0 14px color-mix(in sr
 .hud-menu button.active { color: var(--cyan); background: color-mix(in srgb, var(--cyan) 12%, transparent); box-shadow: inset 2px 0 0 var(--cyan); }
 
 /* 状态栏 SEARCH Ctrl+K：沿用状态栏文字样式，可点击 */
-.kbd-hint { background: none; border: 0; padding: 0; font: inherit; letter-spacing: inherit; color: inherit; cursor: var(--cur) 13 13, pointer; }
+.kbd-hint { background: none; border: 0; padding: 0; font: inherit; letter-spacing: inherit; color: inherit; }
 .kbd-hint:hover { filter: brightness(1.3); }
 
 /* 状态栏右侧组：Ctrl+K 提示 + 设置按钮 */
@@ -243,7 +256,6 @@ a.hud-id:hover .name { color: var(--cyan); text-shadow: 0 0 14px color-mix(in sr
   border: 1px solid var(--line);
   padding: 20px 20px 16px;
   cursor: pointer;
-  backdrop-filter: blur(var(--glass-blur, 6px)); -webkit-backdrop-filter: blur(var(--glass-blur, 6px));
   animation: cardIn 0.45s var(--ease) backwards; animation-delay: calc(var(--n, 0) * 45ms);
   display: flex; flex-direction: column;
   transition: transform 0.25s var(--ease);
@@ -251,6 +263,12 @@ a.hud-id:hover .name { color: var(--cyan); text-shadow: 0 0 14px color-mix(in sr
 @keyframes cardIn { from { opacity: 0; transform: translateY(18px); } }
 .card:hover { transform: translateY(-3px); }
 .card:focus-visible { outline: none; }
+/* 毛玻璃只在“有东西可模糊”（图片/特效背景）且开关打开时启用：纯色背景下模糊没有视觉收益，却让每张卡片占一层 GPU 合成 */
+:root[data-glass="1"][data-bg="image"] .card,
+:root[data-glass="1"][data-bg="warp"] .card,
+:root[data-glass="1"][data-bg="rain"] .card { backdrop-filter: blur(var(--glass-blur, 6px)); -webkit-backdrop-filter: blur(var(--glass-blur, 6px)); }
+/* 卡片很多时（>60）跳过屏外渲染 */
+.grid.cv .card { content-visibility: auto; contain-intrinsic-size: auto 190px; }
 .card .scanline { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .card .scanline::after {
   content: ""; position: absolute; left: 0; right: 0; height: 34%; top: -30%; opacity: 0;
@@ -258,18 +276,20 @@ a.hud-id:hover .name { color: var(--cyan); text-shadow: 0 0 14px color-mix(in sr
 }
 .card:hover .scanline::after { opacity: 1; animation: sweep 0.9s var(--ease); }
 @keyframes sweep { from { top: -30%; } to { top: 110%; } }
-.card::before {
-  content: ""; position: absolute; top: -1px; left: -1px; width: 16px; height: 16px;
+/* HUD 角标：卡片 / 搜索面板 / 弹窗共用，--c 控制尺寸 */
+.card::before, .pal::before, .win::before {
+  content: ""; position: absolute; top: -1px; left: -1px; z-index: 5; width: var(--c, 16px); height: var(--c, 16px);
   border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan);
   transition: width 0.35s var(--ease), height 0.35s var(--ease);
 }
-.card::after {
-  content: ""; position: absolute; bottom: -1px; right: -1px; width: 16px; height: 16px;
+.card::after, .pal::after, .win::after {
+  content: ""; position: absolute; bottom: -1px; right: -1px; z-index: 5; width: var(--c, 16px); height: var(--c, 16px);
   border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan);
   transition: width 0.35s var(--ease), height 0.35s var(--ease);
 }
-.card:hover::before, .card:hover::after,
-.card:focus-visible::before, .card:focus-visible::after { width: 44px; height: 44px; }
+.pal { --c: 18px; }
+.win { --c: 20px; }
+.card:hover, .card:focus-visible { --c: 44px; }
 
 .card-code {
   font-family: var(--mono); font-size: 10.5px; letter-spacing: 1.5px; color: var(--faint);
@@ -291,19 +311,19 @@ a.hud-id:hover .name { color: var(--cyan); text-shadow: 0 0 14px color-mix(in sr
 .empty .code { color: var(--red); font-size: 15px; }
 
 /* ============ Ctrl+K 搜索面板 ============ */
-.pal-overlay {
-  position: fixed; inset: 0; z-index: 2500;
-  background: rgba(1, 6, 10, 0.72);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  display: none; align-items: flex-start; justify-content: center;
-  padding: 14vh 18px 18px;
+/* 三个弹窗都是原生 <dialog>（showModal）：自带焦点陷阱 / Esc / top layer / 背景 inert，遮罩交给 ::backdrop */
+dialog.overlay, dialog.pal-overlay {
+  position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+  margin: 0; border: 0; background: transparent; color: inherit; overflow: visible; justify-content: center;
 }
-.pal-overlay.show { display: flex; }
+dialog.overlay[open] { display: flex; align-items: center; padding: 18px; }
+dialog.pal-overlay[open] { display: flex; align-items: flex-start; padding: 14vh 18px 18px; }
+dialog.overlay::backdrop { background: rgba(1, 6, 10, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+dialog.pal-overlay::backdrop { background: rgba(1, 6, 10, 0.72); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 
 .pal {
   position: relative; width: 100%; max-width: 640px;
   background: var(--panel);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--line-strong);
   box-shadow: var(--glow), 0 40px 110px -30px rgba(0,0,0,0.9);
   animation: palIn 0.28s var(--ease);
@@ -311,8 +331,6 @@ a.hud-id:hover .name { color: var(--cyan); text-shadow: 0 0 14px color-mix(in sr
   max-height: 70vh;
 }
 @keyframes palIn { from { opacity: 0; transform: translateY(-18px) scale(0.98); } to { opacity: 1; transform: none; } }
-.pal::before { content: ""; position: absolute; top: -1px; left: -1px; width: 18px; height: 18px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); z-index: 5; }
-.pal::after { content: ""; position: absolute; bottom: -1px; right: -1px; width: 18px; height: 18px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); z-index: 5; }
 
 .pal-input-row {
   display: flex; align-items: center; gap: 12px;
@@ -356,26 +374,16 @@ a.hud-id:hover .name { color: var(--cyan); text-shadow: 0 0 14px color-mix(in sr
 .pal-foot b { color: var(--muted); }
 
 /* ============ HUD 文件视窗 ============ */
-.overlay {
-  position: fixed; inset: 0; z-index: 2000;
-  background: rgba(1, 6, 10, 0.8);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  display: none; align-items: center; justify-content: center; padding: 18px;
-}
-.overlay.show { display: flex; }
 
 .win {
   position: relative; width: 100%; max-width: 760px; max-height: 88vh;
   background: color-mix(in srgb, var(--bg-2) 94%, transparent);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--line-strong);
   box-shadow: var(--glow), 0 40px 110px -30px rgba(0,0,0,0.9);
   display: flex; flex-direction: column;
   animation: winIn 0.32s var(--ease);
 }
 @keyframes winIn { from { opacity: 0; transform: translateY(24px) scale(0.975); } to { opacity: 1; transform: none; } }
-.win::before { content: ""; position: absolute; top: -1px; left: -1px; width: 20px; height: 20px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); z-index: 5; }
-.win::after { content: ""; position: absolute; bottom: -1px; right: -1px; width: 20px; height: 20px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); z-index: 5; }
 
 .win-bar {
   display: flex; align-items: center; gap: 12px;
@@ -474,7 +482,7 @@ a.hud-id:hover .name { color: var(--cyan); text-shadow: 0 0 14px color-mix(in sr
 body { cursor: var(--cur) 13 13, auto; }
 a, button, .card, .tab, .pi, .wp, .wp-add, input[type="text"] { cursor: var(--cur) 13 13, pointer; }
 #cursorRing {
-  position: fixed; left: 0; top: 0; width: 34px; height: 34px;
+  position: fixed; inset: 0 auto auto 0; margin: 0; padding: 0; background: transparent; overflow: visible; width: 34px; height: 34px;
   border: 1.5px solid var(--cyan); border-radius: 50%;
   pointer-events: none; z-index: 9998;
   transform: translate(-50%, -50%); opacity: 0;
@@ -488,7 +496,7 @@ a, button, .card, .tab, .pi, .wp, .wp-add, input[type="text"] { cursor: var(--cu
 }
 #cursorRing.big { width: 50px; height: 50px; }
 .click-fx {
-  position: fixed; width: 10px; height: 10px;
+  position: fixed; inset: auto; margin: 0; padding: 0; background: transparent; overflow: visible; width: 10px; height: 10px;
   border: 1.5px solid var(--cyan); border-radius: 50%;
   pointer-events: none; z-index: 9999;
   transform: translate(-50%, -50%);
@@ -499,13 +507,16 @@ a, button, .card, .tab, .pi, .wp, .wp-add, input[type="text"] { cursor: var(--cu
 
 /* ============ toast ============ */
 .toast {
-  position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(18px);
+  position: fixed; inset: auto auto 60px 50%; margin: 0; transform: translateX(-50%);
+  width: max-content; max-width: calc(100vw - 32px); overflow: visible; z-index: 3000; pointer-events: none;
   background: color-mix(in srgb, var(--bg-2) 95%, transparent); border: 1px solid var(--cyan); color: var(--cyan);
   font-family: var(--mono); font-size: 12.5px; letter-spacing: 2px;
-  padding: 11px 22px; z-index: 3000; opacity: 0; pointer-events: none;
-  transition: all 0.3s var(--ease); box-shadow: var(--glow);
+  padding: 11px 22px; box-shadow: var(--glow);
 }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast:not([popover]) { display: none; }
+.toast:not([popover]).show { display: block; }
+.toast:popover-open { animation: toastIn 0.3s var(--ease); }
+@keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(18px); } }
 
 @media (max-width: 820px) {
   .m-search { display: flex; }
@@ -521,7 +532,7 @@ a, button, .card, .tab, .pi, .wp, .wp-add, input[type="text"] { cursor: var(--cu
   .wrap { padding-left: 20px; padding-right: 20px; }
   .pi .pi-desc { display: none; }
   .grid { grid-template-columns: 1fr; }
-  .pal-overlay { padding-top: 10vh; }
+  dialog.pal-overlay[open] { padding-top: 10vh; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -529,7 +540,7 @@ a, button, .card, .tab, .pi, .wp, .wp-add, input[type="text"] { cursor: var(--cu
 }
 </style>
 </head>
-<body data-theme="dark" data-bg="none">
+<body>
 
 <noscript><div style="padding:40px;font-family:monospace;">HUD 系统需要启用 JavaScript。</div></noscript>
 <div class="bg-img-layer" id="bgImgLayer"></div>
@@ -577,8 +588,8 @@ a, button, .card, .tab, .pi, .wp, .wp-add, input[type="text"] { cursor: var(--cu
 </footer>
 
 <!-- ===== Ctrl+K 搜索面板 ===== -->
-<div class="pal-overlay" id="palOverlay">
-  <div class="pal" role="dialog" aria-modal="true" aria-label="搜索">
+<dialog class="pal-overlay" id="palOverlay" aria-label="搜索">
+  <div class="pal">
     <div class="pal-input-row">
       <span class="ico">⌕</span>
       <input id="palInput" type="text" placeholder="SCAN DATABASE — 输入关键词检索提示词" autocomplete="off" spellcheck="false">
@@ -592,11 +603,11 @@ a, button, .card, .tab, .pi, .wp, .wp-add, input[type="text"] { cursor: var(--cu
       <span style="margin-left:auto" id="palCount"></span>
     </div>
   </div>
-</div>
+</dialog>
 
 <!-- ===== HUD 文件视窗 ===== -->
-<div class="overlay" id="overlay">
-  <div class="win" role="dialog" aria-modal="true">
+<dialog class="overlay" id="overlay" aria-label="提示词详情">
+  <div class="win">
     <div class="win-bar">
       <span class="dots"><i class="on"></i><i></i><i></i></span>
       <span class="win-file" id="winFile">–</span>
@@ -611,11 +622,11 @@ a, button, .card, .tab, .pi, .wp, .wp-add, input[type="text"] { cursor: var(--cu
       </div>
     </div>
   </div>
-</div>
+</dialog>
 
 <!-- ===== 设置窗口 ===== -->
-<div class="overlay" id="setOverlay">
-  <div class="win set-win" role="dialog" aria-modal="true" aria-label="设置">
+<dialog class="overlay" id="setOverlay" aria-label="设置">
+  <div class="win set-win">
     <div class="win-bar">
       <span class="win-file">设置</span>
       <button class="win-close" id="setClose" title="ESC" aria-label="关闭">✕</button>
@@ -640,7 +651,7 @@ a, button, .card, .tab, .pi, .wp, .wp-add, input[type="text"] { cursor: var(--cu
       <div class="set-foot"><button type="button" class="set-btn" id="wpFetch">在线获取</button><button type="button" class="set-btn" id="setReset">恢复默认</button></div>
     </div>
   </div>
-</div>
+</dialog>
 
 <div class="toast" id="toast"></div>
 
@@ -656,8 +667,11 @@ const els = {
   toast: $('toast'), sbCount: $('sbCount'), sbCat: $('sbCat'),
 };
 
-let config = null, activeCategory = 'all', currentPrompt = null;
-let overflowIds = [];
+/* 集中状态：UI 相关的可变状态都挂在 state 上，改动入口一目了然 */
+const state = { config: null, category: 'all', prompt: null, editing: false, overflow: [], palItems: [], palActive: 0 };
+const hasPopover = 'popover' in HTMLElement.prototype;   // toast / 光标环用 popover 进 top layer（不被 <dialog> 盖住）
+let ring = null;                                          // 自定义光标环（见文末）
+if (hasPopover) els.toast.setAttribute('popover', 'manual');
 
 /* ---------- 数据 ---------- */
 function normalize(raw) {
@@ -673,9 +687,9 @@ function normalize(raw) {
 
 async function loadConfig() {
   try {
-    const res = await fetch('./prompt.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    config = normalize(await res.json());
+    // 请求在 <head> 里已提前发出（window.__pj），这里直接接力
+    const raw = await (window.__pj || fetch('./prompt.json').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }));
+    state.config = normalize(raw);
   } catch (err) {
     els.grid.innerHTML = '<div class="empty"><span class="code">SIGNAL LOST</span><br>无法连接数据库 ./prompt.json — 请通过 HTTP 访问，并确认 prompt.json 与 index.html 同目录</div>';
     return;
@@ -690,59 +704,62 @@ const slugify = s => s.replace(/[^\w一-龥]+/g, '-').toLowerCase().slice(0, 24)
 
 /* ---------- 分类导航 ---------- */
 const tabLabel = cat => cat.name.toUpperCase();
-const catName = id => (config.categories.find(c => c.id === id) || {}).name || id;
+const catName = id => ((state.config && state.config.categories.find(c => c.id === id)) || {}).name || id;
 
 function renderTabs() {
-  els.tabs.innerHTML = config.categories.filter(c => c.id !== 'all').map(cat =>
-    `<button class="tab ${cat.id === activeCategory ? 'active' : ''}" data-id="${cat.id}" aria-pressed="${cat.id === activeCategory}">${tabLabel(cat)}</button>`
+  els.tabs.innerHTML = state.config.categories.filter(c => c.id !== 'all').map(cat =>
+    `<button class="tab ${cat.id === state.category ? 'active' : ''}" data-id="${cat.id}" aria-pressed="${cat.id === state.category}">${tabLabel(cat)}</button>`
   ).join('');
-  els.tabs.querySelectorAll('.tab').forEach(t =>
-    t.addEventListener('click', () => selectCategory(t.dataset.id === activeCategory ? 'all' : t.dataset.id)));
   layoutTabs();
 }
 
 function selectCategory(id) {
-  activeCategory = id;
-  renderTabs(); renderCards();
+  state.category = id;
+  syncActive(); renderCards();
+}
+/* 点击事件统一委托，渲染函数只管渲染 */
+els.tabs.addEventListener('click', e => {
+  const t = e.target.closest('.tab');
+  if (t) selectCategory(t.dataset.id === state.category ? 'all' : t.dataset.id);
+});
+els.hudMenu.addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (b) { closeMenu(); selectCategory(b.dataset.id); }
+});
+
+/* 切换分类只改状态类名，不重建导航 */
+function syncActive() {
+  els.tabs.querySelectorAll('.tab').forEach(t => {
+    const on = t.dataset.id === state.category;
+    t.classList.toggle('active', on); t.setAttribute('aria-pressed', String(on));
+  });
+  els.hudMenu.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.id === state.category));
+  els.menuBtn.classList.toggle('has-active', state.overflow.includes(state.category));
+  moveInd();
 }
 
-/* 分类自动折叠：移动端全部进汉堡；PC 放不下时从右往左折叠 */
+/* 分类自动折叠：移动端全部进汉堡；PC 放不下时从右往左折叠。
+   先一次性读出所有宽度，纯计算出能放几个，最后统一写样式（避免读写交替的强制回流） */
 function layoutTabs() {
-  const nav = els.tabs;
-  const tabs = [...nav.children];
-  tabs.forEach(t => t.style.display = '');
-  overflowIds = [];
-
-  if (window.innerWidth <= 820) {
-    nav.style.display = 'none';
-    overflowIds = config.categories.filter(c => c.id !== 'all').map(c => c.id);
-  } else {
-    nav.style.display = '';
-    const visibleWidth = () => {
-      let w = 0, first = true;
-      for (const t of tabs) {
-        if (t.style.display === 'none') continue;
-        w += t.offsetWidth + (first ? 0 : 4);
-        first = false;
-      }
-      return w;
-    };
-    for (let i = tabs.length - 1; i >= 0; i--) {
-      if (visibleWidth() <= nav.clientWidth) break;
-      tabs[i].style.display = 'none';
-      overflowIds.unshift(tabs[i].dataset.id);
-    }
+  const nav = els.tabs, tabs = [...nav.children];
+  const mobile = innerWidth <= 820;
+  tabs.forEach(t => { t.style.display = ''; });
+  nav.style.display = mobile ? 'none' : '';
+  let keep = mobile ? 0 : tabs.length;
+  if (keep) {
+    const widths = tabs.map(t => t.offsetWidth), avail = nav.clientWidth;
+    const fits = n => widths.slice(0, n).reduce((s, w) => s + w, 0) + Math.max(0, n - 1) * 4 <= avail;
+    while (keep > 0 && !fits(keep)) keep--;
   }
+  tabs.forEach((t, i) => { if (i >= keep) t.style.display = 'none'; });
+  state.overflow = tabs.slice(keep).map(t => t.dataset.id);
 
-  els.menuBtn.classList.toggle('show', overflowIds.length > 0);
-  els.menuBtn.classList.toggle('has-active', overflowIds.includes(activeCategory));
-  els.hudMenu.innerHTML = config.categories
-    .filter(c => overflowIds.includes(c.id))
-    .map(c => `<button class="${c.id === activeCategory ? 'active' : ''}" data-id="${c.id}">${c.name.toUpperCase()}</button>`)
+  els.menuBtn.classList.toggle('show', state.overflow.length > 0);
+  els.hudMenu.innerHTML = state.config.categories
+    .filter(c => state.overflow.includes(c.id))
+    .map(c => `<button class="${c.id === state.category ? 'active' : ''}" data-id="${c.id}">${c.name.toUpperCase()}</button>`)
     .join('');
-  els.hudMenu.querySelectorAll('button').forEach(b =>
-    b.addEventListener('click', () => { closeMenu(); selectCategory(b.dataset.id); }));
-  moveInd();
+  syncActive();
 }
 
 /* 当前分类指示线：在持久元素上平移，切换时有滑动动画 */
@@ -757,12 +774,17 @@ function moveInd() {
   if (first) { ind.getBoundingClientRect(); ind.style.transition = ''; ind.dataset.ready = '1'; }
 }
 
-let resizeDebounce = null;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeDebounce);
-  resizeDebounce = setTimeout(() => { if (config) layoutTabs(); }, 150);
-});
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (config) layoutTabs(); });
+/* 导航容器宽度变化（窗口缩放 / 字体切换 / 布局变动）时重新折叠，代替 window.resize + 防抖 */
+{
+  const wrap = els.tabs.parentElement;
+  let lastW = -1;
+  new ResizeObserver(() => {
+    const w = wrap.clientWidth;
+    if (w === lastW) return;
+    lastW = w;
+    if (state.config) layoutTabs();
+  }).observe(wrap);
+}
 
 /* 汉堡菜单开合 */
 function closeMenu() {
@@ -784,15 +806,16 @@ document.addEventListener('click', (e) => {
 
 /* ---------- 卡片 ---------- */
 function getFiltered() {
-  let f = config.prompts;
-  if (activeCategory !== 'all') f = f.filter(p => p.category === activeCategory);
+  let f = state.config.prompts;
+  if (state.category !== 'all') f = f.filter(p => p.category === state.category);
   return f;
 }
 
 function renderCards() {
   const filtered = getFiltered();
   els.sbCount.textContent = filtered.length;
-  els.sbCat.textContent = activeCategory.toUpperCase();
+  els.grid.classList.toggle('cv', filtered.length > 60);
+  els.sbCat.textContent = state.category.toUpperCase();
 
   if (!filtered.length) {
     els.grid.innerHTML = '<div class="empty"><span class="code">NO SIGNAL — 0 MATCHES</span><br>该模块暂无协议</div>';
@@ -809,7 +832,7 @@ function renderCards() {
     </article>`;
   }).join('');
 }
-const cardPrompt = el => { const c = el.closest('.card'); return c && config.prompts[Number(c.dataset.index)]; };
+const cardPrompt = el => { const c = el.closest('.card'); return c && state.config.prompts[Number(c.dataset.index)]; };
 els.grid.addEventListener('click', e => { const p = cardPrompt(e.target); if (p) openWin(p); });
 els.grid.addEventListener('keydown', e => {
   if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -818,18 +841,17 @@ els.grid.addEventListener('keydown', e => {
 });
 
 /* ---------- Ctrl+K 搜索面板 ---------- */
-let palItems = [], palActive = 0;
 
 function searchAll(q) {
   const words = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  if (!words.length) return config.prompts.slice(0, 20);
-  return config.prompts.filter(p => words.every(w => p._hay.includes(w))).slice(0, 20);
+  if (!words.length) return state.config.prompts.slice(0, 20);
+  return state.config.prompts.filter(p => words.every(w => p._hay.includes(w))).slice(0, 20);
 }
 
 function renderPal(q) {
-  palItems = searchAll(q);
-  palActive = 0;
-  els.palList.innerHTML = palItems.map((p, i) => {
+  state.palItems = searchAll(q);
+  state.palActive = 0;
+  els.palList.innerHTML = state.palItems.map((p, i) => {
     const idx = String(p._i + 1).padStart(3, '0');
     return `<div class="pi ${i === 0 ? 'on' : ''}" data-i="${i}">
       <span class="pi-code">${idx}</span>
@@ -838,42 +860,43 @@ function renderPal(q) {
       <span class="pi-desc">${escapeHtml(p.description)}</span>
     </div>`;
   }).join('');
-  els.palCount.textContent = q.trim() ? `${palItems.length} MATCHES` : `${config.prompts.length} PROTOCOLS`;
+  els.palCount.textContent = q.trim() ? `${state.palItems.length} MATCHES` : `${state.config.prompts.length} PROTOCOLS`;
 }
 
 function setPalActive(i) {
-  palActive = i;
+  state.palActive = i;
   els.palList.querySelectorAll('.pi').forEach((el, j) => el.classList.toggle('on', j === i));
   const on = els.palList.querySelectorAll('.pi')[i];
   if (on) on.scrollIntoView({ block: 'nearest' });
 }
 
 function openPalItem(i) {
-  const p = palItems[i];
+  const p = state.palItems[i];
   if (!p) return;
   closePal();
   openWin(p);
 }
 
 function openPal() {
-  els.palOverlay.classList.add('show');
+  if (!els.palOverlay.open) els.palOverlay.showModal();
   renderPal('');
-  setTimeout(() => { els.palInput.value = ''; els.palInput.focus(); }, 30);
+  els.palInput.value = ''; els.palInput.focus();
+  raiseRing(); fxSync();
 }
-function closePal() { els.palOverlay.classList.remove('show'); }
+function closePal() { if (els.palOverlay.open) els.palOverlay.close(); }
 
 els.palOverlay.addEventListener('click', e => { if (e.target === els.palOverlay) closePal(); });
 $('kbdHint').addEventListener('click', openPal);
 els.palList.addEventListener('mousemove', e => {
   const el = e.target.closest('.pi');
-  if (el && Number(el.dataset.i) !== palActive) setPalActive(Number(el.dataset.i));
+  if (el && Number(el.dataset.i) !== state.palActive) setPalActive(Number(el.dataset.i));
 });
 els.palList.addEventListener('click', e => { const el = e.target.closest('.pi'); if (el) openPalItem(Number(el.dataset.i)); });
 els.palInput.addEventListener('input', e => renderPal(e.target.value));
 els.palInput.addEventListener('keydown', e => {
-  if (e.key === 'ArrowDown') { e.preventDefault(); setPalActive(Math.min(palActive + 1, palItems.length - 1)); }
-  else if (e.key === 'ArrowUp') { e.preventDefault(); setPalActive(Math.max(palActive - 1, 0)); }
-  else if (e.key === 'Enter') { e.preventDefault(); openPalItem(palActive); }
+  if (e.key === 'ArrowDown') { e.preventDefault(); setPalActive(Math.min(state.palActive + 1, state.palItems.length - 1)); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); setPalActive(Math.max(state.palActive - 1, 0)); }
+  else if (e.key === 'Enter') { e.preventDefault(); openPalItem(state.palActive); }
 });
 
 document.addEventListener('keydown', e => {
@@ -885,15 +908,13 @@ document.addEventListener('keydown', e => {
     e.preventDefault();
     openPal();
   } else if (e.key === 'Escape') {
-    if (editing) { exitEdit(); return; }
-    closePal(); closeWin(); closeMenu(); closeSet();
+    closeMenu();   // 弹窗的 Esc 由 <dialog> 的 cancel / close 事件处理
   }
 });
 
 /* ---------- 文件视窗 ---------- */
-const syncLock = () => { document.body.style.overflow = document.querySelector('.overlay.show') ? 'hidden' : ''; };
-let lastFocus = null;
-let editing = false, winFileName = '';
+const syncLock = () => { document.body.style.overflow = document.querySelector('dialog[open]') ? 'hidden' : ''; };
+let winFileName = '';
 
 function renderDetail(detail) {
   const lines = detail.split('\n');
@@ -914,22 +935,22 @@ function renderDetail(detail) {
   }
   return html;
 }
-const execLabel = () => editing ? 'COPY 复制 ⧉' : 'DEPLOY ⧉';
+const execLabel = () => state.editing ? 'COPY 复制 ⧉' : 'DEPLOY ⧉';
 
 function showView() {
-  editing = false;
+  state.editing = false;
   els.winBody.classList.remove('editing');
-  els.winBody.innerHTML = renderDetail(currentPrompt.detail);
+  els.winBody.innerHTML = renderDetail(state.prompt.detail);
   els.winFile.textContent = winFileName;
   els.editCancel.hidden = true;
   els.execBtn.classList.remove('done');
   els.execBtnText.textContent = execLabel();
 }
 function enterEdit() {
-  if (!currentPrompt) return;
-  editing = true;
+  if (!state.prompt) return;
+  state.editing = true;
   const ta = document.createElement('textarea');
-  ta.id = 'winEdit'; ta.className = 'win-edit'; ta.value = currentPrompt.detail; ta.spellcheck = false;
+  ta.id = 'winEdit'; ta.className = 'win-edit'; ta.value = state.prompt.detail; ta.spellcheck = false;
   ta.setAttribute('aria-label', '临时编辑（仅本次有效，不会保存）');
   ta.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); doDeploy(); }
@@ -950,24 +971,23 @@ function exitEdit() {
 }
 
 function openWin(p) {
-  lastFocus = document.activeElement;
-  currentPrompt = p;
+  state.prompt = p;
   const idx = String(p._i + 1).padStart(3, '0');
   winFileName = `FILE://${idx}_${slugify(p.name)}.md`;
   els.winTags.innerHTML = p.tags.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join('');
   showView();
-  els.overlay.classList.add('show');
+  if (!els.overlay.open) els.overlay.showModal();
   syncLock();
   els.winClose.focus();
+  raiseRing(); fxSync();
 }
-function closeWin() {
-  if (!els.overlay.classList.contains('show')) return;
-  els.overlay.classList.remove('show'); syncLock(); currentPrompt = null; editing = false;
-  if (lastFocus && lastFocus.focus) lastFocus.focus();
-}
+function closeWin() { if (els.overlay.open) els.overlay.close(); }   // 关闭后焦点由 <dialog> 自动还给打开前的元素
+/* Esc：编辑中先退出编辑，再按一次才关闭 */
+els.overlay.addEventListener('cancel', e => { e.preventDefault(); if (state.editing) exitEdit(); else closeWin(); });
+els.overlay.addEventListener('close', () => { state.prompt = null; state.editing = false; });
 
 els.winClose.addEventListener('click', closeWin);
-els.overlay.addEventListener('click', e => { if (e.target === els.overlay && !editing) closeWin(); }); // 编辑中点空白处不关闭，避免丢内容
+els.overlay.addEventListener('click', e => { if (e.target === els.overlay && !state.editing) closeWin(); }); // 编辑中点空白处不关闭，避免丢内容
 els.editCancel.addEventListener('click', exitEdit);
 
 async function copyText(text) {
@@ -987,8 +1007,8 @@ async function copyText(text) {
 
 /* DEPLOY：先进入临时编辑；编辑模式下再点 = 复制当前文本 */
 async function doDeploy() {
-  if (!currentPrompt) return;
-  if (!editing) { enterEdit(); return; }
+  if (!state.prompt) return;
+  if (!state.editing) { enterEdit(); return; }
   const ok = await copyText($('winEdit').value);
   els.execBtnText.textContent = ok ? '✓ COPIED 已复制' : '✗ FAILED 重试';
   els.execBtn.classList.toggle('done', ok);
@@ -1000,13 +1020,17 @@ els.execBtn.addEventListener('click', doDeploy);
 
 /* ---------- toast ---------- */
 function toast(msg) {
-  els.toast.textContent = msg;
-  els.toast.classList.add('show');
-  clearTimeout(els.toast._t);
-  els.toast._t = setTimeout(() => els.toast.classList.remove('show'), 2000);
+  const t = els.toast;
+  t.textContent = msg;
+  if (hasPopover) {   // popover 在 top layer，不会被打开的 <dialog> 盖住；重复触发先收再开，动画重播
+    try { if (t.matches(':popover-open')) t.hidePopover(); t.showPopover(); } catch (e) {}
+  } else t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => {
+    if (hasPopover) { try { t.hidePopover(); } catch (e) {} } else t.classList.remove('show');
+  }, 2000);
 }
 
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (config) layoutTabs(); });
 /* ================= 设置：主题 / 背景（特效 + 本地壁纸）/ 界面 ================= */
 const THEMES = [
   { id: 'dark',   name: '默认深色', color: '#2fd7ff' },
@@ -1062,6 +1086,12 @@ let wps = [];        // 已添加的壁纸，按添加顺序
 let blobURL = '';    // 当前选中的壁纸（object URL）
 function setImage(blob) { if (blobURL) URL.revokeObjectURL(blobURL); blobURL = URL.createObjectURL(blob); }
 function clearImage() { if (blobURL) URL.revokeObjectURL(blobURL); blobURL = ''; }
+/* 缩略图可能是 Blob（新）或 dataURL 字符串（旧版记录）；Blob 懒生成 object URL 并缓存 */
+function thumbURL(w) {
+  if (!w.thumb) return '';
+  if (typeof w.thumb === 'string') return w.thumb;
+  return w._tu || (w._tu = URL.createObjectURL(w.thumb));
+}
 
 /* 缩略图：192×120 居中裁切，存成很小的 JPEG */
 async function makeThumb(blob) {
@@ -1075,7 +1105,7 @@ async function makeThumb(blob) {
   const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
   cv.getContext('2d').drawImage(bmp, (W - bmp.width * k) / 2, (H - bmp.height * k) / 2, bmp.width * k, bmp.height * k);
   if (bmp.close) bmp.close();
-  return cv.toDataURL('image/jpeg', 0.72);
+  return new Promise(res => cv.toBlob(b => res(b || ''), 'image/jpeg', 0.72));
 }
 
 /* 特效缩略图：随主题色重绘（固定种子，每次一样） */
@@ -1144,7 +1174,7 @@ function renderTiles() {
     li.appendChild(cap);
   });
   wps.forEach(w => {
-    const li = tile(settings.bg === 'image' && settings.wp === w.id, w.name || '壁纸', w.thumb, (w.name || '壁纸').slice(0, 6));
+    const li = tile(settings.bg === 'image' && settings.wp === w.id, w.name || '壁纸', thumbURL(w), (w.name || '壁纸').slice(0, 6));
     li.dataset.id = w.id;
     const x = document.createElement('span');
     x.className = 'wp-del'; x.textContent = '×';
@@ -1200,7 +1230,8 @@ async function addFiles(files) {
 function removeWp(id) {
   const i = wps.findIndex(w => w.id === id);
   if (i < 0) return;
-  wps.splice(i, 1);
+  const [gone] = wps.splice(i, 1);
+  if (gone._tu) URL.revokeObjectURL(gone._tu);
   idbOp('readwrite', st => st.delete('wp:' + id)).catch(() => {});
   if (settings.wp === id) {
     const next = wps[Math.min(i, wps.length - 1)];
@@ -1268,8 +1299,8 @@ $('setReset').addEventListener('click', () => {
   toast('[ OK ] 已恢复默认设置');
 });
 
-/* 启动：先套用选项，再异步取回壁纸（并把旧版单张背景迁移进来） */
-(async () => {
+/* 取回壁纸（并把旧版单张背景迁移进来），由文末 init() 调用 */
+async function restoreWallpapers() {
   try {
     const recs = await idbOp('readonly', st => st.getAll(IDBKeyRange.bound('wp:', 'wp:\uffff')));
     wps = recs.filter(r => r && r.blob).sort((a, b) => a.t - b.t).slice(0, MAX_WP);
@@ -1290,103 +1321,118 @@ $('setReset').addEventListener('click', () => {
   if (cur) { settings.wp = cur.id; if (settings.bg === 'image') setImage(cur.blob); }
   else { settings.wp = ''; if (settings.bg === 'image') settings.bg = 'none'; }
   applySettings();
-})();
+}
 
 /* ---- 背景特效引擎：星际穿梭 / 数据雨 ---- */
-const fx = { cv: $('bgFx'), ctx: null, mode: null, stars: [], drops: [], raf: null, accent: '#2fd7ff', bg: '#020a12' };
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const fx = { cv: $('bgFx'), ctx: null, mode: null, stars: [], drops: [], raf: 0, accent: '#2fd7ff', bg: '#020a12', mono: 'monospace', w: 0, h: 0, dpr: 1 };
 const RAIN_CHARS = '01アカサタナハマヤラ<>/{}#$%&*+=-';
 function fxColors() {
   const cs = getComputedStyle(document.body);
   fx.accent = cs.getPropertyValue('--cyan').trim() || fx.accent;
   fx.bg = cs.getPropertyValue('--bg').trim() || fx.bg;
+  fx.mono = cs.getPropertyValue('--mono').trim() || fx.mono;
 }
-function fxResize() { fx.cv.width = innerWidth; fx.cv.height = innerHeight; }
+/* 画布按设备像素比缩放（封顶 2），逻辑尺寸仍是 CSS 像素 */
+function fxResize() {
+  fx.dpr = Math.min(window.devicePixelRatio || 1, 2);
+  fx.w = innerWidth; fx.h = innerHeight;
+  fx.cv.width = Math.round(fx.w * fx.dpr); fx.cv.height = Math.round(fx.h * fx.dpr);
+  fx.ctx.setTransform(fx.dpr, 0, 0, fx.dpr, 0, 0);
+}
 function warpNewStar() {
-  const maxD = Math.hypot(fx.cv.width, fx.cv.height) * 0.75;
+  const maxD = Math.hypot(fx.w, fx.h) * 0.75;
   return { a: Math.random() * Math.PI * 2, d: 4 + Math.random() * maxD };
 }
 function fxSpawn() {
   if (fx.mode === 'warp') fx.stars = Array.from({ length: 240 }, warpNewStar);
-  else if (fx.mode === 'rain') fx.drops = Array.from({ length: Math.floor(fx.cv.width / 14) }, () => Math.random() * -60);
+  else if (fx.mode === 'rain') fx.drops = Array.from({ length: Math.floor(fx.w / 14) }, () => Math.random() * -60);
 }
-/* 星际穿梭：星点从中心向外加速飞散，拖出速度线 */
+/* 星际穿梭：星点按亮度分 4 档，每档合成一条 Path2D 一次 stroke（240 次描边 → 4 次） */
 function fxWarp() {
-  const { ctx, cv, stars } = fx;
-  ctx.clearRect(0, 0, cv.width, cv.height);
-  const cx = cv.width / 2, cy = cv.height / 2;
-  const maxD = Math.hypot(cx, cy) + 30;
-  ctx.lineWidth = 1.4;
-  ctx.lineCap = 'round';
-  ctx.strokeStyle = fx.accent;
+  const { ctx, w, h, stars } = fx;
+  ctx.clearRect(0, 0, w, h);
+  const cx = w / 2, cy = h / 2, maxD = Math.hypot(cx, cy) + 30, k = maxD * 0.55, B = 4;
+  const paths = Array.from({ length: B }, () => new Path2D());
   for (const s of stars) {
     const prev = s.d;
-    s.d = s.d * 1.028 + 0.35;           // 加速外扩
+    s.d = s.d * 1.028 + 0.35;                       // 加速外扩
     const cos = Math.cos(s.a), sin = Math.sin(s.a);
-    ctx.globalAlpha = 0.15 + Math.min(1, s.d / (maxD * 0.55)) * 0.75;  // 越近外缘越亮
-    ctx.beginPath();
-    ctx.moveTo(cx + cos * prev, cy + sin * prev);
-    ctx.lineTo(cx + cos * s.d, cy + sin * s.d);
-    ctx.stroke();
+    const p = paths[Math.min(B - 1, (Math.min(1, s.d / k) * B) | 0)];   // 越靠外缘越亮
+    p.moveTo(cx + cos * prev, cy + sin * prev);
+    p.lineTo(cx + cos * s.d, cy + sin * s.d);
     if (s.d > maxD) Object.assign(s, warpNewStar());
   }
+  ctx.lineWidth = 1.4; ctx.lineCap = 'round'; ctx.strokeStyle = fx.accent;
+  for (let i = 0; i < B; i++) { ctx.globalAlpha = 0.15 + (i + 0.5) / B * 0.75; ctx.stroke(paths[i]); }
   ctx.globalAlpha = 1;
 }
 /* 数据雨：用主题底色做半透明淡出，形成拖尾 */
 function fxRain() {
-  const { ctx, cv, drops } = fx;
+  const { ctx, w, h, drops } = fx;
   ctx.globalAlpha = 0.07;
   ctx.fillStyle = fx.bg;
-  ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.fillRect(0, 0, w, h);
   ctx.globalAlpha = 1;
-  ctx.font = '15px "JetBrains Mono", monospace';
+  ctx.font = `15px ${fx.mono}`;
   ctx.fillStyle = '#eafaff';
   for (let i = 0; i < drops.length; i++) {
     const y = drops[i] * 14;
     ctx.fillText(RAIN_CHARS[(Math.random() * RAIN_CHARS.length) | 0], i * 14, y);
-    if (y > cv.height && Math.random() > 0.975) drops[i] = 0;
+    if (y > h && Math.random() > 0.975) drops[i] = 0;
     drops[i] += 0.18;
   }
 }
+/* 只在“有特效 + 页面可见 + 没被弹窗盖住”时跑动画；设置窗口除外（要能实时预览） */
+const fxShouldRun = () => !!fx.mode && !document.hidden && !document.querySelector('dialog[open]:not(#setOverlay)');
+function fxSync() {
+  if (fxShouldRun()) { if (!fx.raf) fx.raf = requestAnimationFrame(fxLoop); }
+  else if (fx.raf) { cancelAnimationFrame(fx.raf); fx.raf = 0; }
+}
 function fxLoop() {
-  if (fx.mode === 'warp') fxWarp();
-  else if (fx.mode === 'rain') fxRain();
+  fx.raf = 0;
+  if (!fxShouldRun()) return;
+  if (fx.mode === 'warp') fxWarp(); else fxRain();
   fx.raf = requestAnimationFrame(fxLoop);
 }
 function fxStart(mode) {
   fxStop();
   fx.mode = mode;
   fx.ctx = fx.cv.getContext('2d');
-  fxColors(); fxResize(); fxSpawn();
-  fx.raf = requestAnimationFrame(fxLoop);
+  fxColors(); fxResize(); fxSpawn(); fxSync();
 }
 function fxStop() {
-  cancelAnimationFrame(fx.raf);
+  cancelAnimationFrame(fx.raf); fx.raf = 0;
   fx.mode = null;
-  if (fx.ctx) fx.ctx.clearRect(0, 0, fx.cv.width, fx.cv.height);
+  if (fx.ctx) fx.ctx.clearRect(0, 0, fx.w, fx.h);
 }
-window.addEventListener('resize', () => {
-  if (fx.mode) { fxResize(); fxSpawn(); }
-});
+window.addEventListener('resize', () => { if (fx.mode) { fxResize(); fxSpawn(); } });
+document.addEventListener('visibilitychange', fxSync);
 
 /* 数值类变量：透明度 / 图片遮罩 / 毛玻璃（拖动滑杆时只更新这些，不重绘整个面板） */
 function applyVars() {
-  const st = document.body.style;
+  const root = document.documentElement, st = root.style;
   if (settings.cardOp != null) st.setProperty('--card-a', settings.cardOp / 100); else st.removeProperty('--card-a');
   st.setProperty('--img-dim', (settings.dim / 100).toFixed(2));
   st.setProperty('--glass-blur', (settings.glass ? settings.blur : 0) + 'px');
+  root.dataset.glass = settings.glass ? '1' : '0';
 }
 
+/* 光标 SVG 随主题色生成 */
+const cursorURL = hex => `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><g fill='none' stroke='%23${hex}' stroke-width='1.6'><circle cx='13' cy='13' r='8'/><path d='M13 1v5M13 20v5M1 13h5M20 13h5'/></g><circle cx='13' cy='13' r='1.8' fill='%23${hex}'/></svg>")`;
+
 function applySettings() {
-  document.body.dataset.theme = settings.theme;
-  { const cs = getComputedStyle(document.body), rs = document.documentElement.style;
-    rs.setProperty('--sb-c', cs.getPropertyValue('--cyan').trim());
-    rs.setProperty('--sb-bg', cs.getPropertyValue('--bg').trim()); }
+  const root = document.documentElement;
+  root.dataset.theme = settings.theme;
   const useImg = settings.bg === 'image' && !!blobURL;
-  document.body.dataset.bg = useImg ? 'image' : (settings.bg === 'image' ? 'none' : settings.bg);
+  root.dataset.bg = useImg ? 'image' : (settings.bg === 'image' ? 'none' : settings.bg);
+  const cs = getComputedStyle(root);
   const tc = document.querySelector('meta[name=theme-color]');
-  if (tc) tc.content = getComputedStyle(document.body).getPropertyValue('--bg').trim();
+  if (tc) tc.content = cs.getPropertyValue('--bg').trim();
+  const accent = cs.getPropertyValue('--cyan').trim();
+  if (/^#[0-9a-f]{6}$/i.test(accent)) root.style.setProperty('--cur', cursorURL(accent.slice(1)));
   applyVars();
-  const useFx = settings.bg === 'warp' || settings.bg === 'rain';
+  const useFx = (settings.bg === 'warp' || settings.bg === 'rain') && !reduceMotion.matches;
   fx.cv.style.display = useFx ? 'block' : 'none';
   if (useFx) fxStart(settings.bg); else fxStop();
   const layer = $('bgImgLayer');
@@ -1395,31 +1441,44 @@ function applySettings() {
   renderSettingsUI();
   saveSettings();
 }
+reduceMotion.addEventListener('change', applySettings);
 
-function openSet() { $('setOverlay').classList.add('show'); syncLock(); renderSettingsUI(); }
-function closeSet() { $('setOverlay').classList.remove('show'); syncLock(); }
+function openSet() {
+  if (!$('setOverlay').open) $('setOverlay').showModal();
+  syncLock(); renderSettingsUI(); raiseRing(); fxSync();
+}
+function closeSet() { if ($('setOverlay').open) $('setOverlay').close(); }
 $('gearBtn').addEventListener('click', openSet);
 $('setClose').addEventListener('click', closeSet);
 $('setOverlay').addEventListener('click', e => { if (e.target === $('setOverlay')) closeSet(); });
 
-applySettings();
+/* 三个 <dialog> 关闭（含 Esc / backdrop 点击）后统一收尾 */
+for (const id of ['palOverlay', 'overlay', 'setOverlay'])
+  $(id).addEventListener('close', () => { syncLock(); fxSync(); });
 
 /* ================= 科幻光标 & 点击脉冲（仅精确指针设备） ================= */
+/* 弹窗在 top layer，普通 z-index 压不过；光标环/点击涟漪也用 popover 进 top layer，弹窗打开后再提到最上 */
+function raiseRing() {
+  if (!ring || !hasPopover) return;
+  try { if (ring.matches(':popover-open')) ring.hidePopover(); ring.showPopover(); } catch (e) {}
+}
 if (window.matchMedia('(pointer: fine)').matches) {
-  const ring = document.createElement('div');
+  ring = document.createElement('div');
   ring.id = 'cursorRing';
+  if (hasPopover) ring.setAttribute('popover', 'manual');
   document.body.appendChild(ring);
+  raiseRing();
   let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, running = false;
   const follow = () => {
     rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
-    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;   // 只走合成层，不触发布局
     running = Math.abs(mx - rx) > 0.1 || Math.abs(my - ry) > 0.1;
     if (running) requestAnimationFrame(follow);
   };
   addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY; ring.style.opacity = 1;
     if (!running) { running = true; requestAnimationFrame(follow); }
-  });
+  }, { passive: true });
   document.documentElement.addEventListener('mouseleave', () => { ring.style.opacity = 0; });
   document.addEventListener('mouseover', e => {
     ring.classList.toggle('big', !!e.target.closest('a, button, .card, .tab, .pi, .wp, .wp-add'));
@@ -1427,14 +1486,22 @@ if (window.matchMedia('(pointer: fine)').matches) {
   document.addEventListener('mousedown', e => {
     const p = document.createElement('span');
     p.className = 'click-fx';
+    if (hasPopover) p.setAttribute('popover', 'manual');
     p.style.left = e.clientX + 'px';
     p.style.top = e.clientY + 'px';
     document.body.appendChild(p);
+    if (hasPopover) { try { p.showPopover(); } catch (err) {} }
     p.addEventListener('animationend', () => p.remove());
   });
 }
 
-loadConfig();
+/* ================= 启动 ================= */
+async function init() {
+  applySettings();            // 先同步套用选项
+  loadConfig();               // 数据加载与壁纸恢复并行
+  await restoreWallpapers();  // 再异步取回壁纸（并迁移旧版单张背景）
+}
+init();
 </script>
 </body>
 </html>

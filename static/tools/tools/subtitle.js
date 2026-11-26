@@ -23,6 +23,7 @@ css('subtitle',String.raw`
 .sb-s{display:flex;align-items:center;gap:12px;margin:4px 0 10px;color:var(--dim);font-size:12.5px;letter-spacing:.12em}
 .sb-s::after{content:"";flex:1;height:1px;background:var(--line)}
 .sb .rg3{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin-bottom:20px}
+.sb .rg3.fill{grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
 .sb .rb{align-content:start}
 .sb .rb>.sb-h{margin-top:-2px}
 .rr:has(.sw:not(:checked)) .rb{opacity:.6;transition:opacity .15s}
@@ -56,13 +57,14 @@ css('subtitle',String.raw`
 const FM={srt:['SRT','.srt'],vtt:['VTT','.vtt'],ass:['ASS','.ass'],ssa:['SSA','.ssa'],sub:['SUB','.sub'],sbv:['SBV','.sbv'],lrc:['LRC','.lrc']};
 const FN=[['srt','SRT'],['vtt','WebVTT'],['ass','ASS（Advanced SSA）'],['ssa','SSA'],['sub','SUB（MicroDVD，按帧）'],['sbv','SBV（YouTube）'],['lrc','LRC（歌词）']];
 const CS=['ass','ssa','srt','vtt','sub'];
+const OS=['ass','ssa','vtt'];   // 支持边框 / 阴影的格式
 const ENC_IN=[['auto','自动检测'],['utf-8','UTF-8'],['gb18030','GBK / GB18030'],['big5','Big5'],['shift_jis','Shift_JIS'],['euc-kr','EUC-KR'],['utf-16le','UTF-16 LE'],['utf-16be','UTF-16 BE'],['windows-1252','Windows-1252']];
 const ENC_OUT=[['bom','UTF-8（带 BOM）'],['utf8','UTF-8（无 BOM）'],['u16','UTF-16 LE']];
 const FPS=[23.976,24,25,29.97,30,50,59.94,60];
 const FONTS=['思源黑体','Noto Sans CJK SC','微软雅黑','Microsoft YaHei','黑体','宋体','楷体','苹方-简','Arial','Helvetica','Times New Roman','Verdana','Tahoma'];
 let tab='c',files=[],sel=-1,R=null;
 const O={encIn:'auto',encOut:'bom',eol:'crlf',to:'srt',fpsIn:23.976,fpsOut:23.976,asFont:'Arial',asSize:60,asColor:'#FFFFFF',
- adj:{color:false,hex:'#FFE5A0',color2:false,hex2:'#FFFFFF',en:false,font:false,fname:'',bold:'',size:false,sz:20,sz2:NaN,szmap:'',styles:'',clean:false,fps:false,f1:23.976,f2:25,off:false,sec:0}};
+ adj:{color:false,hex:'#FFE5A0',color2:false,hex2:'#FFFFFF',en:false,font:false,fname:'',bold:'',size:false,sz:20,sz2:NaN,szmap:'',ol:false,olhex:'#000000',olw:2,sh:false,shhex:'#000000',shd:1,styles:'',clean:false,fps:false,f1:23.976,f2:25,off:false,sec:0}};
 
 /* ----- 时间 ----- */
 const pad=(n,w=2)=>String(n).padStart(w,'0');
@@ -188,34 +190,43 @@ const selfClosed=ls=>{const open=[];return ls.map(l=>{const pre=open.map(k=>`<${
 
 /* 把界面选项换算成各格式共用的开关与数值 */
 function adjCtx(f,a){const fmt=f.fmt,can=CS.includes(fmt),notes=[];
- for(const[on,n]of[[a.en,'去除英文行'],[a.color,'颜色'],[a.size,'字号'],[a.font,'字体 / 粗体']])if(on&&!can)notes.push(`${FM[fmt][0]} 不支持${n}，已跳过`);
- const cs=a.color&&can&&okHex(a.hex),cs2=cs&&a.color2&&okHex(a.hex2),
+ const os=OS.includes(fmt);
+ for(const[on,ok,n]of[[a.en,can,'去除英文行'],[a.color,can,'颜色'],[a.size,can,'字号'],[a.font,can,'字体 / 粗体'],[a.ol,os,'边框'],[a.sh,os,'阴影']])
+  if(on&&!ok)notes.push(`${FM[fmt][0]} 不支持${n}，已跳过`);
+ const ol=!!(a.ol&&os&&okHex(a.olhex)),sh=!!(a.sh&&os&&okHex(a.shhex)),cs=a.color&&can&&okHex(a.hex),cs2=cs&&a.color2&&okHex(a.hex2),
   fnm=String(a.fname||'').trim().replace(/[,{}<>"|\r\n]/g,''),
   szm=sizeMap(a.szmap),s1=a.sz>0?a.sz:0,s2=a.sz2>0?a.sz2:0,
   ratio=a.fps&&a.f1>0&&a.f2>0?a.f1/a.f2:1,off=a.off&&isFinite(a.sec)?a.sec*1000:0,
   x={a,fmt,notes,t:f.text,nl:/\r\n/.test(f.text)?'\r\n':'\n',cs,cs2,ev:a.en&&can,fnm,fn:a.font&&can&&!!fnm,
    bd:a.font&&can&&(a.bold=='b'||a.bold=='n'),bold:a.bold=='b',szm,s1,s2,zs:a.size&&can&&!!(s1||s2||szm.size),sz:fz(s1),
-   hex:hx(a.hex),hex2:cs2?hx(a.hex2):'',tm:ratio!=1||off!=0,enN:0,
+   hex:hx(a.hex),hex2:cs2?hx(a.hex2):'',ol,sh,olc:hx(a.olhex),shc:hx(a.shhex),olw:a.olw>=0?a.olw:-1,shd:a.shd>=0?a.shd:-1,tm:ratio!=1||off!=0,enN:0,
    T:ms=>Math.max(0,ms*ratio+off),
    /* 去掉只含英文的行；全是英文或没有英文时原样返回 */
    drop(ls){const k=ls.filter(l=>!isEn(l));if(!k.length||k.length==ls.length)return ls;x.enN+=ls.length-k.length;return k}};
  x.b=cs?bgrOf(x.hex):'';x.b2=cs2?bgrOf(x.hex2):'';
  return x}
 
-function adjAss(x){const{a,t,tm,T,cs,cs2,zs,fn,bd,ev,s1,s2,szm,fnm,bold,hex,b2}=x,any=cs||zs||fn||bd;
- let sec='',SF=null,EF=null,hit=0;
+function adjAss(x){const{a,t,tm,T,cs,cs2,zs,fn,bd,ev,s1,s2,szm,fnm,bold,hex,b2,ol,sh,olc,shc,olw,shd}=x,any=cs||zs||fn||bd||ol||sh;
+ let sec='',SF=null,EF=null,hit=0,bs3=false;
  const names=(a.styles||'').split(SEP).map(v=>v.trim().toLowerCase()).filter(Boolean);
- const clean=v=>{if(cs)v=v.replace(/\\1?c&H[0-9A-Fa-f]+&?/g,'');if(zs)v=v.replace(/\\fs\d+(?:\.\d+)?/g,'');if(fn)v=v.replace(/\\fn[^\\}]*/g,'');if(bd)v=v.replace(/\\b\d+/g,'');return v.replace(/\{\}/g,'')};
+ /* 行内覆盖标签：只保留已启用的项，逐条删除 */
+ const RM=[[cs,/\\1?c&H[0-9A-Fa-f]+&?/g],[zs,/\\fs\d+(?:\.\d+)?/g],[fn,/\\fn[^\\}]*/g],[bd,/\\b\d+/g],
+  [ol,/\\3c&H[0-9A-Fa-f]+&?/g],[ol,/\\[xy]?bord\d+(?:\.\d+)?/g],[sh,/\\4c&H[0-9A-Fa-f]+&?/g],[sh,/\\[xy]?shad-?\d+(?:\.\d+)?/g]].filter(r=>r[0]).map(r=>r[1]);
+ const clean=v=>RM.reduce((t,r)=>t.replace(r,''),v).replace(/\{\}/g,'');
  const out=t.split(/\r?\n/).map(ln=>{const h=/^\[(.+?)\]/.exec(ln);if(h){sec=h[1].toLowerCase();return ln}
   if(sec.includes('styles')){
    if(/^Format:/i.test(ln)){SF=cols(ln);return ln}
    const m=/^(Style:\s?)(.*)$/i.exec(ln);if(!m||!SF)return ln;const p=m[2].split(',');if(p.length<SF.length)return ln;
    const nm=p[SF.indexOf('name')].trim().toLowerCase(),inF=!names.length||names.includes(nm);
-   const kf=SF.indexOf('fontsize'),kc=SF.indexOf('primarycolour'),kn=SF.indexOf('fontname'),kb=SF.indexOf('bold');
-   if(zs&&kf>=0){const v=szm.has(nm)?szm.get(nm):(inF?s1:0);if(v){p[kf]=String(fz(v));hit++}}
-   if(cs&&kc>=0&&inF){p[kc]=assCol(p[kc],hex);hit++}
-   if(fn&&kn>=0&&inF){p[kn]=fnm;hit++}
-   if(bd&&kb>=0&&inF){p[kb]=bold?'-1':'0';hit++}
+   const put=(k,f)=>{const i=SF.indexOf(k);if(i<0)return;p[i]=f(p[i]);hit++};
+   if(zs){const v=szm.has(nm)?szm.get(nm):(inF?s1:0);if(v)put('fontsize',()=>String(fz(v)))}
+   if(inF){
+    if(cs)put('primarycolour',o=>assCol(o,hex));
+    if(fn)put('fontname',()=>fnm);
+    if(bd)put('bold',()=>bold?'-1':'0');
+    if(ol||sh){const i=SF.indexOf('borderstyle');if(i>=0&&p[i].trim()=='3'){p[i]='1';bs3=true}}
+    if(ol){put(SF.includes('outlinecolour')?'outlinecolour':'tertiarycolour',o=>assCol(o,olc));if(olw>=0)put('outline',()=>String(fz(olw)))}
+    if(sh){put('backcolour',o=>assCol(o,shc));if(shd>=0)put('shadow',()=>String(fz(shd)))}}
    return m[1]+p.join(',')}
   if(sec=='events'){
    if(/^Format:/i.test(ln)){EF=cols(ln);return ln}
@@ -228,10 +239,16 @@ function adjAss(x){const{a,t,tm,T,cs,cs2,zs,fn,bd,ev,s1,s2,szm,fnm,bold,hex,b2}=
    if((zs&&s2||cs2)&&on){const tg=(cs2?`\\c&H${b2}&`:'')+(zs&&s2?`\\fs${fz(s2)}`:'');tx=tx.replace(/\\[Nn]((?:\{[^}]*\})*)/,g=>{hit++;return g+`{${tg}}`})}
    return m[1]+h2.concat(tx).join(',')}
   return ln}).join(x.nl);
+ if(bs3)x.notes.push('BorderStyle=3（不透明底框）的样式已改为 1，否则边框 / 阴影不显示');
  if(any&&!hit)x.notes.push('没有匹配的样式（检查样式名）');
  return out}
 
-function adjVtt(x){const{t,tm,T,cs,cs2,zs,fn,bd,ev,s1,s2,szm,fnm,bold,hex,hex2,sz}=x;let L=t.split(/\r?\n/);
+/* VTT 的 ::cue 只能用 text-shadow：边框 = 八方向描边，阴影 = 偏移 + 模糊 */
+const vttShadow=({ol,sh,olc,shc,olw,shd})=>{if(!ol&&!sh)return'';const w=ol&&olw>0?olw:0,d=sh&&shd>0?shd:0,l=[];
+ if(w)for(const[dx,dy]of[[-1,-1],[1,-1],[-1,1],[1,1],[0,-1],[0,1],[-1,0],[1,0]])l.push(`${dx*w}px ${dy*w}px 0 #${olc}`);
+ if(d)l.push(`${d+w}px ${d+w}px ${d}px #${shc}`);
+ return`text-shadow:${l.length?l.join(','):'none'};`};
+function adjVtt(x){const{t,tm,T,cs,cs2,zs,fn,bd,ev,s1,s2,szm,fnm,bold,hex,hex2,sz,ol,sh}=x;let L=t.split(/\r?\n/);
  if(tm)L=L.map(ln=>ln.includes('-->')?ln.replace(/^(\s*)([\d:.,]+)(\s*-->\s*)([\d:.,]+)/,(_,w,s,m,e)=>w+hmsms(T(pt(s)),'.')+m+hmsms(T(pt(e)),'.')):ln);
  if(zs&&(s2||szm.size))x.notes.push('VTT 不支持分行 / 分样式字号，已忽略');
  if(ev||cs2){const out=[];let buf=null;
@@ -239,8 +256,8 @@ function adjVtt(x){const{t,tm,T,cs,cs2,zs,fn,bd,ev,s1,s2,szm,fnm,bold,hex,hex2,s
    if(cs2&&c.length>1)c=c.map((l,k)=>k?`<c.l2>${l}</c.l2>`:l);out.push(...c);buf=null};
   for(const ln of L){if(buf){if(ln.trim())buf.push(ln);else{flush();out.push(ln)}}else{out.push(ln);if(ln.includes('-->'))buf=[]}}
   flush();L=out}
- if(cs||(zs&&s1)||fn||bd){let i=L.findIndex((v,k)=>k>0&&!v.trim());if(i<0){L.push('');i=L.length-1}
-  const rule=(cs?`color:#${hex};`:'')+(zs&&s1?`font-size:${sz}px;`:'')+(fn?`font-family:"${fnm}";`:'')+(bd?`font-weight:${bold?'bold':'normal'};`:'');
+ if(cs||(zs&&s1)||fn||bd||ol||sh){let i=L.findIndex((v,k)=>k>0&&!v.trim());if(i<0){L.push('');i=L.length-1}
+  const rule=vttShadow(x)+(cs?`color:#${hex};`:'')+(zs&&s1?`font-size:${sz}px;`:'')+(fn?`font-family:"${fnm}";`:'')+(bd?`font-weight:${bold?'bold':'normal'};`:'');
   L.splice(i+1,0,'STYLE',`::cue{${rule}}`,...(cs2?[`::cue(.l2){color:#${hex2}}`]:[]),'')}
  return L.join(x.nl)}
 
@@ -277,7 +294,7 @@ const ADJ={ass:adjAss,ssa:adjAss,vtt:adjVtt,srt:adjSrt,sub:adjSub,sbv:adjSbv,lrc
 
 function adjust(f,a){if(!f.fmt)throw Error('无法识别字幕格式');
  const x=adjCtx(f,a),{notes}=x;
- if(!(x.tm||x.cs||x.zs||x.ev||x.fn||x.bd))return{text:f.text,notes:notes.concat('没有可应用的调整项')};
+ if(!(x.tm||x.cs||x.zs||x.ev||x.fn||x.bd||x.ol||x.sh))return{text:f.text,notes:notes.concat('没有可应用的调整项')};
  const text=ADJ[f.fmt](x);
  if(x.ev)notes.push(x.enN?`已去除 ${x.enN} 行英文`:'没有找到可去除的英文行（整条都是英文的字幕会保留）');
  return{text,notes}}
@@ -286,8 +303,8 @@ function adjust(f,a){if(!f.fmt)throw Error('无法识别字幕格式');
 const q=s=>R.querySelector(s),$$=s=>[...R.querySelectorAll(s)];
 const opt=(l,v)=>l.map(([k,n])=>`<option value="${k}"${String(k)==String(v)?' selected':''}>${n}</option>`).join('');
 const ic=d=>`<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
-const base=n=>n.replace(/\.[^.\\/]+$/,''),ext=n=>(n.match(/\.[^.\\/]+$/)||[''])[0];
-const outName=f=>tab=='c'?(O.to==f.fmt?f.name:base(f.name)+FM[O.to][1]):base(f.name)+'.adjusted'+(ext(f.name)||FM[f.fmt][1]);
+const base=n=>n.replace(/\.[^.\\/]+$/,'');
+const outName=f=>tab=='c'?(O.to==f.fmt?f.name:base(f.name)+FM[O.to][1]):f.name;
 function save(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),30000)}
 function mk(name,buf){const d=decode(buf,O.encIn),f={name,buf,text:d.text,enc:d.enc};info(f);return f}
 function info(f){f.fmt=sniff(f.name,f.text);f.n=0;if(f.fmt)try{f.n=parse(f.text,f.fmt,O.fpsIn).c.length}catch(_){f.n=0}}
@@ -312,7 +329,7 @@ function common(){return`<label class="fld">源编码<select data-k="encIn">${op
 const fpsIn=(k,v)=>`<input class="in" type="number" step="any" min="0.001" list="sbFps" data-k="${k}" value="${v}">`;
 const swt=(k,on,t)=>`<label class="rh"><input type="checkbox" class="sw" data-k="${k}"${on?' checked':''}>${t}</label>`;
 const colorIn=(k,v,n)=>`<div class="sb-c"><input type="color" data-k="${k}" value="${v}" aria-label="${n}"><input class="in" data-k="${k}" value="${v}" maxlength="7" spellcheck="false" aria-label="${n}值"></div>`;
-const numIn=(k,v,ex='')=>`<input class="in" type="number" min="1" step="any" data-k="${k}" value="${v}"${ex}>`;
+const numIn=(k,v,ex='min="1"')=>`<input class="in" type="number" step="any" ${ex} data-k="${k}" value="${v}">`;
 function render(){const a=O.adj;
  q('#sbT').innerHTML=[['c','格式转换'],['a','字幕调整']].map(([k,n])=>`<button class="btn${k==tab?' pri':''}" data-tab="${k}">${n}</button>`).join('');
  q('#sbO').innerHTML=tab=='c'?`<div class="sb-g">
@@ -324,16 +341,24 @@ function render(){const a=O.adj;
   <label class="fld" data-show="ass">ASS / SSA 颜色<span class="sb-c"><input type="color" data-k="asColor" value="${O.asColor}"></span></label></div>`
  :`<div class="sb-g">${common()}</div>
   <div class="sb-s">外观</div>
-  <div class="rg3">
+  <div class="rg3 fill">
    <div class="rr">${swt('adj.color',a.color,'颜色')}<div class="rb">
     <div class="sb-r"><span>第一行</span>${colorIn('adj.hex',a.hex,'第一行颜色')}</div>
     <div class="sb-r"><label class="chk" title="勾选后，第二行起单独使用右侧颜色"><input type="checkbox" data-k="adj.color2"${a.color2?' checked':''}>第二行</label>${colorIn('adj.hex2',a.hex2,'第二行颜色')}</div></div></div>
    <div class="rr">${swt('adj.size',a.size,'字号')}<div class="rb">
     <div class="sb-r"><span>第一行</span>${numIn('adj.sz',a.sz)}</div>
-    <div class="sb-r"><span>第二行</span>${numIn('adj.sz2',isNaN(a.sz2)?'':a.sz2,' placeholder="同第一行"')}</div></div></div>
+    <div class="sb-r"><span>第二行</span>${numIn('adj.sz2',isNaN(a.sz2)?'':a.sz2,'min="1" placeholder="同第一行"')}</div></div></div>
    <div class="rr">${swt('adj.font',a.font,'字体')}<div class="rb">
     <div class="sb-r"><span>字体名</span><input class="in" data-k="adj.fname" value="${esc(a.fname)}" list="sbFont" placeholder="留空则不改字体" spellcheck="false" aria-label="字体名"></div>
     <div class="sb-r"><span>字重</span><div class="sb-seg" role="radiogroup" aria-label="字重">${[['','保持'],['b','粗体'],['n','常规']].map(([v,n])=>`<label><input type="radio" name="sbBold" data-k="adj.bold" value="${v}"${a.bold==v?' checked':''}><span>${n}</span></label>`).join('')}</div></div></div></div>
+   <div class="rr">${swt('adj.ol',a.ol,'边框')}<div class="rb">
+    <div class="sb-r"><span>颜色</span>${colorIn('adj.olhex',a.olhex,'边框颜色')}</div>
+    <div class="sb-r"><span>粗细</span>${numIn('adj.olw',a.olw,'min="0"')}</div>
+    <small class="sb-h">仅 ASS / SSA / VTT；粗细填 0 即无边框</small></div></div>
+   <div class="rr">${swt('adj.sh',a.sh,'阴影')}<div class="rb">
+    <div class="sb-r"><span>颜色</span>${colorIn('adj.shhex',a.shhex,'阴影颜色')}</div>
+    <div class="sb-r"><span>深度</span>${numIn('adj.shd',a.shd,'min="0"')}</div>
+    <small class="sb-h">仅 ASS / SSA / VTT；深度填 0 即无阴影</small></div></div>
   </div>
   <div class="sb-s">内容与时间</div>
   <div class="rg3">
@@ -349,17 +374,17 @@ function render(){const a=O.adj;
   </div>
   <div class="sb-s">ASS / SSA 选项</div>
   <div class="rr"><div class="rb sb-ass">
-   <label class="fld">作用样式<input class="in" data-k="adj.styles" value="${esc(a.styles)}" placeholder="留空 = 全部样式；如 Default, Top" spellcheck="false"><small class="sb-h">限定颜色、字号、字体、字重、去除英文行作用的样式，逗号分隔</small></label>
+   <label class="fld">作用样式<input class="in" data-k="adj.styles" value="${esc(a.styles)}" placeholder="留空 = 全部样式；如 Default, Top" spellcheck="false"><small class="sb-h">限定颜色、字号、字体、字重、边框、阴影、去除英文行作用的样式，逗号分隔</small></label>
    <label class="fld">分样式字号<input class="in" data-k="adj.szmap" value="${esc(a.szmap)}" placeholder="Default=20, E=12" spellcheck="false"><small class="sb-h">样式名=字号，用于中英文分成不同样式的字幕</small></label>
-   <label class="chk"><input type="checkbox" data-k="adj.clean"${a.clean?' checked':''}>同时清除行内的颜色 / 字号 / 字体 / 粗体标签</label></div></div>
+   <label class="chk"><input type="checkbox" data-k="adj.clean"${a.clean?' checked':''}>同时清除行内的颜色 / 字号 / 字体 / 粗体 / 边框 / 阴影标签</label></div></div>
   <details class="sb-d"><summary>各格式的支持与写入方式</summary><div class="tw"><table>
-   <tr><th>格式</th><th>颜色</th><th>字号</th><th>字体 / 字重</th><th>去除英文行</th></tr>
-   <tr><td>ASS / SSA</td><td>样式主色；第二行用行内 \\c</td><td>样式字号；第二行用行内 \\fs</td><td>样式 Fontname / Bold</td><td>按 \\N 分行，连同 {\\rEng} 等标签一并删去</td></tr>
-   <tr><td>SRT</td><td>&lt;font color&gt;</td><td>&lt;font size&gt;</td><td>&lt;font face&gt; / &lt;b&gt;</td><td>按行</td></tr>
-   <tr><td>VTT</td><td>::cue；第二行 ::cue(.l2)</td><td>::cue font-size（无第二行）</td><td>font-family / font-weight</td><td>按行</td></tr>
-   <tr><td>SUB</td><td>{c:$…}</td><td>{s:…}</td><td>{f:…} / {y:b}</td><td>按行</td></tr>
-   <tr><td>SBV / LRC</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></table></div>
-   <p>帧速率与时间偏移适用于全部格式。「第二行」指同一条字幕里的第 2 行起。字体需已安装在播放设备上。</p></details>`;
+   <tr><th>格式</th><th>颜色</th><th>字号</th><th>字体 / 字重</th><th>边框 / 阴影</th><th>去除英文行</th></tr>
+   <tr><td>ASS / SSA</td><td>样式主色；第二行用行内 \\c</td><td>样式字号；第二行用行内 \\fs</td><td>样式 Fontname / Bold</td><td>样式 Outline、OutlineColour / Shadow、BackColour</td><td>按 \\N 分行，连同 {\\rEng} 等标签一并删去</td></tr>
+   <tr><td>SRT</td><td>&lt;font color&gt;</td><td>&lt;font size&gt;</td><td>&lt;font face&gt; / &lt;b&gt;</td><td>—</td><td>按行</td></tr>
+   <tr><td>VTT</td><td>::cue；第二行 ::cue(.l2)</td><td>::cue font-size（无第二行）</td><td>font-family / font-weight</td><td>::cue text-shadow（文字描边模拟）</td><td>按行</td></tr>
+   <tr><td>SUB</td><td>{c:$…}</td><td>{s:…}</td><td>{f:…} / {y:b}</td><td>—</td><td>按行</td></tr>
+   <tr><td>SBV / LRC</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></table></div>
+   <p>帧速率与时间偏移适用于全部格式。「第二行」指同一条字幕里的第 2 行起。字体需已安装在播放设备上；边框粗细与阴影深度的单位同字号（ASS 随 PlayRes，VTT 为 px）。</p></details>`;
  sync();list();preview()}
 function setK(k,v){const p=k.split('.');let o=O;while(p.length>1)o=o[p.shift()];o[p[0]]=v}
 function init(r){R=document.createElement('div');R.className='sb';
